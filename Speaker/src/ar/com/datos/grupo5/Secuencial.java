@@ -12,20 +12,22 @@ public class Secuencial implements Archivo {
 	 * @param archivo Path completo del archivo.
 	 * @param modo Es el modo en el que se abrirá el archivo {R,W,R+,A}.
 	 */
-	public void abrir(String archivo, String modo) {
+	public void abrir(final String archivo, final String modo) {
 		// TODO Auto-generated method stub
 
 	}
 
 	/**
 	 * Metodo para borrar una cadena en el archivo en el que se está trabajando.
-	 * @param patron: Es la cadena a buscar en el archivo.
-	 * @return Devuelve el resultado de la operación, y queda posicionado el puntero
+	 * @param patron Es la cadena a buscar en el archivo.
+	 * @return Devuelve el resultado de la operación,
+	 * y queda posicionado el puntero
 	 * en la posición donde se encontraba la cadena buscada.
-	 * En caso de no encontrar la cadena, devuelve false y el puntero queda donde
+	 * En caso de no encontrar la cadena, devuelve false y el
+	 * puntero queda donde
 	 * debería estar la cadena buscada.
 	 */
-	public boolean borrar(String patron) {
+	public final boolean borrar(final String patron) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -36,7 +38,7 @@ public class Secuencial implements Archivo {
 	 * @return Devuelve el resultado de la búsqueda, quedando posicionado el
 	 * puntero en la posición donde debería estar el patrón buscado.
 	 */
-	public boolean buscar(String patron) {
+	public final boolean buscar(final String patron) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -54,7 +56,7 @@ public class Secuencial implements Archivo {
 	 * @param archivo Path completo del archivo.
 	 * @param tipo Es el tipo de archivo que se quiere crear {B,T}.
 	 */
-	public void crear(String archivo, String tipo) {
+	public void crear(final String archivo, final String tipo) {
 		// TODO Auto-generated method stub
 
 	}
@@ -64,7 +66,7 @@ public class Secuencial implements Archivo {
 	 * en el que se está trabajando.
 	 * @param cadena Es la palabra o frase que se va a agregar al archivo.
 	 */
-	public void insertar(String cadena) {
+	public void insertar(final String cadena) {
 		// TODO Auto-generated method stub
 
 	}

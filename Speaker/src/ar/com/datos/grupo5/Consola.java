@@ -63,7 +63,7 @@ public class Consola implements InterfazUsuario {
 	 * Para que el que usa la consola pueda comunicar algo.
 	 * @param mensaje El mensaje que va a la salida standar.
 	 */
-	public void mensaje(final String mensaje) {
+	public final void mensaje(final String mensaje) {
 		
 		System.out.println(mensaje);
 	}
@@ -71,6 +71,7 @@ public class Consola implements InterfazUsuario {
 	/**
 	 * Lee desde la entrada estandar y ejecuta el metodo correspondiente.
 	 */
+	@SuppressWarnings("unchecked")
 	public final void leer() {
 		
 		BufferedReader br = new BufferedReader(
@@ -100,27 +101,27 @@ public class Consola implements InterfazUsuario {
 					
 					pos = linea.indexOf(" ");
 					//Si es un comando con parametros.
-                    if (pos > 0) {
-                            paramsAux = linea.substring(pos + 1).split(" ");
-                            params = new Object[paramsAux.length + 1];
-                            params[0] = this;
-                            for (int i = 0; i < paramsAux.length; i++) {
-                                    params[i + 1] = paramsAux[i];
-                            }
-                            paramsClass = new Class[params.length];
-                            paramsClass[0] = InterfazUsuario.class;
-                            for (int i = 1; i < params.length; i++) {
-                                    paramsClass[i] = String.class;
-                            }
-                            comando = linea.substring(0, linea.indexOf(" "));
-                            
-                    } else { //Si es un comando sin parametros.
-                            comando = linea.trim();
-                            paramsClass = new Class[1];
-                            paramsClass[0] = InterfazUsuario.class;
-                            params = new Object[1];
-                            params[0] = this;
-                    }
+					if (pos > 0) {
+						paramsAux = linea.substring(pos + 1).split(" ");
+						params = new Object[paramsAux.length + 1];
+						params[0] = this;
+						for (int i = 0; i < paramsAux.length; i++) {
+							params[i + 1] = paramsAux[i];
+						}
+						paramsClass = new Class[params.length];
+						paramsClass[0] = InterfazUsuario.class;
+						for (int i = 1; i < params.length; i++) {
+							paramsClass[i] = String.class;
+						}
+						comando = linea.substring(0, linea.indexOf(" "));
+
+					} else { // Si es un comando sin parametros.
+						comando = linea.trim();
+						paramsClass = new Class[1];
+						paramsClass[0] = InterfazUsuario.class;
+						params = new Object[1];
+						params[0] = this;
+					}
 
 					try {
 						
@@ -135,7 +136,9 @@ public class Consola implements InterfazUsuario {
 						
 					} catch (Exception e) {
 						//Indico que no conozco el comando y espero por otro.
-						System.out.println("No se encuentra el comando solicitado: " + linea);
+						System.out
+							.println("No se encuentra el comando solicitado: "
+										+ linea);
 					}
 					
 				} catch (Exception e) {

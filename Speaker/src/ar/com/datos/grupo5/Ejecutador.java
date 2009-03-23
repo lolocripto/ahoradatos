@@ -20,7 +20,8 @@ public class Ejecutador {
 		
 		System.out.println("Funciono la invocacion al metodo");
 		
-		consola.mensaje("Este mensaje esta escrito desde el objeto que invoca a la consola.");
+		consola
+				.mensaje("Este mensaje esta escrito desde el objeto que invoca a la consola.");
 		
 		String nombre = consola.obtenerDatos("Ingrese su nombre: ");
 		

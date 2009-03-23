@@ -1,6 +1,6 @@
 package ar.com.datos.grupo5;
 
-import java.io.*;
+import java.io.File;
 /**
  * @author xxvkue
  *
@@ -10,59 +10,63 @@ public class Core {
 	/** Atributos de la Clase.
 	 *  
 	 */
-	String 	PalabraActual;
-	File	Documento;
+	private String palabraActual;
+	
+	/**
+	 * documento.
+	 */
+	private File documento;
 
 	/* Hilo para la parte de grabacion */
 
 	/**
 	 * 
-	 * @param PathDocumento
-	 * @return
+	 * @param pathDocumento Agrergar comentario.
+	 * @return lo mismo.
 	 */
-	public String DocumentoAParsear(String PathDocumento) {
+	public final String documentoAParsear(final String pathDocumento) {
 		// 0 => Ok, 1 => No se encontro
-		int EstadoArchivo = 0;
+		int estadoArchivo = 0;
 
 		/**
 		 * creamos el archivo a leer
 		 */
-		Documento = new File(PathDocumento);
+		documento = new File(pathDocumento);
 
 		return "";
 	}
 
 	/**
 	 * 
-	 * @return
+	 * @return coemntar
 	 */
-	public int ComenazarGrabacion() {
+	public final int comenazarGrabacion() {
 		return 0;
 	}
 
 	/**
 	 * 
-	 * @return
+	 * @return comentar.
 	 */
-	public int FinalizarGrabacion() {
+	public final int finalizarGrabacion() {
 		return 0;
 	}
 
 	/**
 	 * 
-	 * @param PathDocumento
-	 * @return
+	 * @param pathDocumento comentar
+	 * @return comentar.
 	 */
-	public int ReproducirDocumento(String PathDocumento) {
+	public final int reproducirDocumento(final String pathDocumento) {
 		return 0;
 	}
 
 	/**
 	 * 
-	 * @param TextoAReproducir
-	 * @return
+	 * @param textoAReproducir comentar
+	 * @return comentar
 	 */
-	public int ReproducirTexto(String TextoAReproducir) {
+	public final int reproducirTexto(final String textoAReproducir) {
 		return 0;
 	}
 
@@ -76,20 +80,20 @@ public class Core {
 	 * En caso de ser incorrecta la grabacion de la palabra se devuelve 
 	 * la proxima palabra
 	 * a ser grabada que en este caso es la misma dado que se grabo mal.
-	 * @param Respuesta
+	 * @param respuesta
 	 * Confirmación introducida por el usuario. 
 	 * @return
 	 * Proxima palabra a grabar.
 	 */
-	public String ConfirmarGrabacion(String Respuesta) {
-		if (Respuesta.compareToIgnoreCase("S") == 0) {
+	public final String confirmarGrabacion(final String respuesta) {
+		if (respuesta.compareToIgnoreCase("S") == 0) {
 			/* 
 			 Grabo al archivo 
 			 Archivo.WriteAudio(Palabra,Audio);
 			 this.PalabraActual = BuscarSiguientePalabra();
 			 */
-			return this.PalabraActual;
+			return this.palabraActual;
 		}
-		return this.PalabraActual;
+		return this.palabraActual;
 	}
 }
