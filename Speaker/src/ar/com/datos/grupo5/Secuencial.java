@@ -9,8 +9,8 @@ import ar.com.datos.grupo5.interfaces.Archivo;
 public class Secuencial implements Archivo {
 	/**
 	 * Metodo para Intentar abrir un archivo, pasado por parámetro.
-	 * @param archivo: Path completo del archivo.
-	 * @param modo: Es el modo en el que se abrirá el archivo {R,W,R+,A}.
+	 * @param archivo Path completo del archivo.
+	 * @param modo Es el modo en el que se abrirá el archivo {R,W,R+,A}.
 	 */
 	public void abrir(String archivo, String modo) {
 		// TODO Auto-generated method stub
@@ -32,7 +32,7 @@ public class Secuencial implements Archivo {
 
 	/**
 	 * Metodo para buscar en un archivo, una cadena pasada por parámetro.
-	 * @param patron: Es la cadena a buscar en el archivo.
+	 * @param patron Es la cadena a buscar en el archivo.
 	 * @return Devuelve el resultado de la búsqueda, quedando posicionado el
 	 * puntero en la posición donde debería estar el patrón buscado.
 	 */
@@ -51,8 +51,8 @@ public class Secuencial implements Archivo {
 
 	/**
 	 * Metodo para Intentar crear un archivo, pasado por parámetro.
-	 * @param archivo: Path completo del archivo.
-	 * @param tipo: Es el tipo de archivo que se quiere crear {B,T}.
+	 * @param archivo Path completo del archivo.
+	 * @param tipo Es el tipo de archivo que se quiere crear {B,T}.
 	 */
 	public void crear(String archivo, String tipo) {
 		// TODO Auto-generated method stub
@@ -60,8 +60,9 @@ public class Secuencial implements Archivo {
 	}
 
 	/**
-	 * Metodo para Insertar la cadena en el archivo en el que se está trabajando.
-	 * @param cadena: Es la palabra o frase que se va a agregar al archivo.
+	 * Metodo para Insertar la cadena en el archivo
+	 * en el que se está trabajando.
+	 * @param cadena Es la palabra o frase que se va a agregar al archivo.
 	 */
 	public void insertar(String cadena) {
 		// TODO Auto-generated method stub
