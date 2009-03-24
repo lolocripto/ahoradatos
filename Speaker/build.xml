@@ -1,4 +1,6 @@
-<project name="Speaker" default="dist" basedir=".">
+<?xml version="1.0" encoding="ISO8859-1"?>
+
+<project name="Speaker" default="dist" basedir="." >
 
 	<description>
        Conpilacion del trabajo practico.
@@ -76,8 +78,8 @@
 
 	</target>
 
-	<target name="javadoc" description="Javadoc">
-		<javadoc access="public" destdir="${doc}" author="true" version="true" use="true" windowtitle="ar.com.datos">
+	<target name="javadoc" description="Javadoc" >
+		<javadoc access="public" encoding="ISO8859-1" destdir="${doc}" author="true" version="true" use="true" windowtitle="ar.com.datos">
 
 			<fileset dir="${src}" defaultexcludes="yes">
 				<include name="**/*.java" />
