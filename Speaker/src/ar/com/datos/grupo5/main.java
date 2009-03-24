@@ -1,15 +1,18 @@
 package ar.com.datos.grupo5;
 
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioInputStream;
 
 import org.apache.log4j.Logger;
+
+import sun.audio.AudioStream;
 
 import ar.com.datos.capturaaudio.core.SimpleAudioRecorder;
 import ar.com.datos.reproduccionaudio.core.SimpleAudioPlayer;
@@ -63,13 +66,17 @@ public class main {
 			
 			logger.debug("Terminando de grabar");
 			
-			logger.debug("reproduciendo....");
+			File audio = new File("/home/cristian/Desktop/audio.au");         
+
+			InputStream input = new FileInputStream(audio);
 			
-			InputStream input = new FileInputStream(file);
+			AudioStream as = new AudioStream(input);
 			
-			SimpleAudioPlayer player = new SimpleAudioPlayer(input);
+			SimpleAudioPlayer player = new SimpleAudioPlayer(as);
 			
 			player.init();
+
+			logger.debug("reproduciendo....");
 			
 			player.startPlaying();
 			
