@@ -1,7 +1,6 @@
 package ar.com.datos.grupo5;
 
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -94,6 +93,8 @@ public class Secuencial implements Archivo {
 	 */
 	public void insertar(final Registro registro) {
 
+		Integer a = 0;
+	
 //		int start = 0;
 //		int endAux = cadena.length();
 //		
