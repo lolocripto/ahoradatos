@@ -15,7 +15,7 @@ import ar.com.datos.grupo5.interfaces.Registro;
  */
 public interface Archivo {
 	/**
-	 * Metodo para Intentar abrir un archivo, pasado por parámetro.
+	 * Método para Intentar abrir un archivo, pasado por parámetro.
 	 * @param archivo Path completo del archivo.
 	 * @param modo Es el modo en el que se abrirá el archivo {R,W,R+,A}.
 	 * @return devuelve el resultado de la operación.
@@ -24,20 +24,20 @@ public interface Archivo {
 	boolean abrir(final String archivo, final String modo) throws FileNotFoundException;
 	
 	/**
-	 * Metodo para Intentar crear un archivo, pasado por parámetro.
+	 * Método para Intentar crear un archivo, pasado por parámetro.
 	 * @param archivo Path completo del archivo.
 	 * @throws FileNotFoundException si no se puede crear el archivo.
 	 */
 	void crear(final String archivo) throws FileNotFoundException;
 	
 	/**
-	 * Metodo para cerrar el archivo que se está manipulando.
+	 * Método para cerrar el archivo que se está manipulando.
 	 * @throws IOException 
 	 */
 	void cerrar() throws IOException;
 		
 	/**
-	 * Metodo para buscar en un archivo, una cadena pasada por parámetro.
+	 * Método para buscar en un archivo, una cadena pasada por parámetro.
 	 * @param registro : Es el registro a buscar en el archivo.
 	 * @return Devuelve el resultado de la búsqueda, quedando posicionado el
 	 * puntero en la posición donde debería estar el patrón buscado.
