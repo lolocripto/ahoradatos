@@ -5,6 +5,7 @@ import ar.com.datos.grupo5.interfaces.Archivo;
 
 /**
  * Clase que permite manipular el diccionario
+ * @see ar.com.datos.grupo5.interfaces.Archivo.
  * @author Diego
  *
  */

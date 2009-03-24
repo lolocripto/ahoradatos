@@ -5,59 +5,86 @@ import ar.com.datos.grupo5.interfaces.Registro;
 
 /**
  * Esta clase implementa el registro para el diccionario.
+ * @see ar.com.datos.grupo5.interfaces.Registro
  * @author Diego
- *
  */
 public class RegistroDiccionario implements Registro {
 	
-	
+
 	private byte[] buffer;
-	
-	private long offset;
-	
-	private long longitud;
-	
+	private Long longitud;
+	private Long offset;
 	private String dato;
-	
-	
-	public long getOffset() {
-		return offset;
-	}
-
-	public void setOffset(long offset) {
-		this.offset = offset;
-	}
-
-	public long getLongitud() {
-		return longitud;
-	}
-
-	public void setLongitud(long longitud) {
-		this.longitud = longitud;
-	}
-
-	public String getDato() {
-		return dato;
-	}
-
-	public void setDato(String dato) {
-		this.dato = dato;
-	}
 	
 	/* (non-Javadoc)
 	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
 	 */
 	public byte[] toBytes() {
-	
-		return dato.getBytes();
+		String cadena;
+		/**
+		 * 1° Agrego el offset.
+		 */
+		cadena = this.offset.toString();
+		this.longitud = (long)this.dato.length();
+		/**
+		 * Luego agrego la longitud.
+		 */
+		cadena += this.longitud.toString();
+		/**
+		 * Por ultimo, el dato.
+		 */
+		cadena += this.dato;
+		this.buffer = cadena.getBytes();
+		return this.buffer;
 	}
 	
 	/**
-	 * Método que devuelve el buffer como cadena
-	 * @return 
+	 * Método que llena el registro con la información del buffer
 	 */
-	public String toString() {
-		return buffer.toString();
+	public void llenar() {
+		// TODO Llenar este método
+	}
+	
+	/**
+	 * @return the longitud
+	 */
+	public Long getLongitud() {
+		return longitud;
+	}
+
+	/**
+	 * @param longitud the longitud to set
+	 */
+	public void setLongitud(Long longitud) {
+		this.longitud = longitud;
+	}
+
+	/**
+	 * @return the offset
+	 */
+	public Long getOffset() {
+		return offset;
+	}
+
+	/**
+	 * @param offset the offset to set
+	 */
+	public void setOffset(Long offset) {
+		this.offset = offset;
+	}
+
+	/**
+	 * @return the dato
+	 */
+	public String getDato() {
+		return dato;
+	}
+
+	/**
+	 * @param dato the dato to set
+	 */
+	public void setDato(String dato) {
+		this.dato = dato;
 	}
 
 }
