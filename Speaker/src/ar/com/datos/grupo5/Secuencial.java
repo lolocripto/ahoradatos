@@ -1,24 +1,21 @@
 package ar.com.datos.grupo5;
 
-import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
+import java.io.RandomAccessFile;
 
 import ar.com.datos.grupo5.interfaces.Archivo;
+import ar.com.datos.grupo5.interfaces.Registro;
 
 /**
  * Clase Para el manejo de archivos secuenciales.
  * @author Diego
  */
 public class Secuencial implements Archivo {
-	
-	private static int tamanioBuffer = 128;
-	
+
 	/**
-	 * OutputStram para el archivo.
+	 * Archivo en disco.
 	 */
-	private DataOutputStream dataOutputStream = null;
+	private RandomAccessFile file = null;
 	
 	/**
 	 * Metodo para Intentar abrir un archivo, pasado por parámetro.
@@ -27,7 +24,6 @@ public class Secuencial implements Archivo {
 	 * @return devuelve el resultado de la operación.
 	 */
 	public boolean abrir(final String archivo, final String modo) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -67,23 +63,21 @@ public class Secuencial implements Archivo {
 
 	/**
 	 * Metodo para Intentar crear un archivo, pasado por parámetro.
+	 * Si el archivo existe lo reemplaza.
 	 * @param archivo Path completo del archivo.
 	 * @param tipo Es el tipo de archivo que se quiere crear {B,T}.
-	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException si no se puede crear el archivo.
 	 */
-	public void crear(final String archivo, final String tipo) throws FileNotFoundException {
-		
-		OutputStream outputStream = null;
+	public final void crear(final String archivo, final String tipo)
+			throws FileNotFoundException {
 		
 		try {
-			outputStream = new FileOutputStream(archivo);
+			
+			file = new RandomAccessFile(archivo, "rw");
+
 		} catch (FileNotFoundException e) {
 			throw e;
 		}
-		
-		dataOutputStream = new DataOutputStream(outputStream);
-
-		//TODO inicializar el archivo con los datos de control.
 	}
 
 	/**
@@ -95,13 +89,26 @@ public class Secuencial implements Archivo {
 
 		Integer a = 0;
 	
-//		int start = 0;
-//		int endAux = cadena.length();
-//		
-//		if (cadena.length() > tamanioBuffer) {
-//			endAux = tamanioBuffer;
-//		}
+		int start = 0;
+		int bytesTotal = registro.toBytes().length;
+		int bytesAux = Constantes.TAMANIO_BUFFER_ESCRITURA;
+		int bytesEscritos = 0;
+		
+		if (bytesTotal < bytesAux) {
+			bytesAux = bytesTotal;
+		}
+    
+//        byte[] bytes = new byte[Constantes.TAMANIO_BUFFER_ESCRITURA];
+//    
+//        // Read in the bytes
+//        int offset = 0;
+//        int numRead = 0;
+//        while (offset < bytes.length
+//               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
+//            offset += numRead;
+//        }
+//
+//        return bytes;
 		
 	}
-
 }
