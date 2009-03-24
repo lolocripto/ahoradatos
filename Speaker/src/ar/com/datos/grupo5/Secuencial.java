@@ -6,11 +6,10 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import ar.com.datos.grupo5.interfaces.Archivo;
-import ar.com.datos.grupo5.interfaces.Registro;
 
 /**
+ * Clase Para el manejo de archivos secuenciales.
  * @author Diego
- *
  */
 public class Secuencial implements Archivo {
 	
@@ -25,10 +24,11 @@ public class Secuencial implements Archivo {
 	 * Metodo para Intentar abrir un archivo, pasado por parámetro.
 	 * @param archivo Path completo del archivo.
 	 * @param modo Es el modo en el que se abrirá el archivo {R,W,R+,A}.
+	 * @return devuelve el resultado de la operación.
 	 */
-	public void abrir(final String archivo, final String modo) {
+	public boolean abrir(final String archivo, final String modo) {
 		// TODO Auto-generated method stub
-
+		return false;
 	}
 
 	/**

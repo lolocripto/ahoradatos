@@ -1,18 +1,6 @@
 package ar.com.datos.grupo5;
 
-import java.util.*;
-import ar.com.datos.grupo5.interfaces.InterfazUsuario;
-import ar.com.datos.grupo5.interfaces.Audio;
-import ar.com.datos.reproduccionaudio.core.SimpleAudioPlayer;
-import ar.com.datos.reproduccionaudio.exception.SimpleAudioPlayerException;
-import ar.com.datos.capturaaudio.core.SimpleAudioRecorder;
-import ar.com.datos.parser.ITextInput;
-import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
-import javax.sound.sampled.AudioFileFormat;
-import java.io.InputStream;
-import java.io.OutputStream;
-import org.apache.log4j.Logger;
-
+import java.io.File;
 /**
  * @author xxvkue
  *
@@ -23,77 +11,28 @@ public class Core {
 	 *  
 	 */
 	private String palabraActual;
+	
+	/**
+	 * documento.
+	 */
+	private File documento;
 
-	/**
-	 * 
-	 */
-	private ITextInput parser;
-	
-	/**
-	 * 
-	 */
-	private Audio manipularAudio;
-	
-	private OutputStream oStream;
-	/**
-	 * 
-	 */
-	private Collection<IunidadDeHabla>  contenedor; 
 	/* Hilo para la parte de grabacion */
 
-	/**
-	 * Logger para la clase.
-	 */
-	private static Logger logger = Logger.getLogger(Core.class);
-	/**
-	 * 
-	 */
-	private InterfazUsuario interfazConUsuarios;
-	
 	/**
 	 * 
 	 * @param pathDocumento Agrergar comentario.
 	 * @return lo mismo.
 	 */
-	public final String load(final InterfazUsuario invocador, final String pathDocumento) {
-		
-		Iterator iterador;
-		// Mando a parsear el documento y obtengo un collection
-		contenedor = this.parser.archivoDeCarga(pathDocumento);
-		
-		IunidadDeHabla elemento;
-		iterador = contenedor.iterator();
-		// Mientras tenga palabras para verificar consulto
-		while (iterador.hasNext()) {
-			
-			elemento = (IunidadDeHabla) iterador.next();
-			
-			// Si lo encontro sigo en el bucle
-			if (true==true) continue;
-			
-			// Si no lo encontro pido ingresar el audio
-			String mensaje = new String("Para ingresar el audio para la palabra: ");
-			String respuesta = "0";
-			invocador.mensaje(mensaje);
-			
-			//pido que grabe hasta que sea correcta la grabación
-			while (respuesta.compareToIgnoreCase("S") != 0) {
-				
-				// Protocolo de Grabacion
-				this.iniciarGrabacion(invocador);
-				
-				// Protocolo para terminar la grabacion
-				this.finalizarGrabacion(invocador);
-				
-			    //this.playWord(this.oStream);
-			    
-			    mensaje = "La grabación ha sido correcta? S/N:";
-			    respuesta = invocador.obtenerDatos(mensaje);
-			    }
-			 
-			//
-		}
-		System.out.println("Sali de al funcion load");
+	public final String documentoAParsear(final String pathDocumento) {
+		// 0 => Ok, 1 => No se encontro
+		int estadoArchivo = 0;
+
+		/**
+		 * creamos el archivo a leer
+		 */
+		documento = new File(pathDocumento);
+
 		return "";
 	}
 
@@ -101,7 +40,7 @@ public class Core {
 	 * 
 	 * @return coemntar
 	 */
-	public final int i() {
+	public final int comenazarGrabacion() {
 		return 0;
 	}
 
@@ -109,57 +48,16 @@ public class Core {
 	 * 
 	 * @return comentar.
 	 */
-	public final int f() {
+	public final int finalizarGrabacion() {
 		return 0;
 	}
 
-	private int iniciarGrabacion(InterfazUsuario invocador){
-		String mensaje;
-		String respuesta;
-		
-		mensaje = "Para empezar la grabación ingrese la tecla i y luego enter";
-		respuesta = invocador.obtenerDatos(mensaje);
-		
-		while (respuesta.compareToIgnoreCase("i") != 0 && respuesta.compareToIgnoreCase("c") != 0) {
-			respuesta = invocador.obtenerDatos("Comando incorrecto. Ingrese I para grabar.");
-		}
-		
-		if (respuesta.compareToIgnoreCase("i") == 0){
-			// Pido grabar el audio 
-			this.manipularAudio.grabar(AudioFileFormat.Type.AU, oStream);
-			return 0;
-		} else {
-			//Detengo la ejecucion del programa y dejo la consola activa
-			return 1;
-		}
-	}
-	
-	private int finalizarGrabacion(InterfazUsuario invocador) {
-		String mensaje;
-		String respuesta;
-		
-		mensaje = "Para detener la grabación ingrese la tecla f y luego enter";
-		respuesta = invocador.obtenerDatos(mensaje);
-		
-		while (respuesta.compareToIgnoreCase("f") != 0 && respuesta.compareToIgnoreCase("c") != 0) {
-			respuesta = invocador.obtenerDatos("Comando incorrecto. Ingrese f para terminar.");
-		}
-		
-		if (respuesta.compareToIgnoreCase("i") == 0) {
-			//Termino la grabacion
-			this.manipularAudio.terminargrabacion();
-			return 0;
-		} else {
-			//Detengo la ejecucion del programa y dejo la consola activa
-			return 1;
-	    }
-	}
 	/**
 	 * 
 	 * @param pathDocumento comentar
 	 * @return comentar.
 	 */
-	public final int playDocument(final String pathDocumento) {
+	public final int reproducirDocumento(final String pathDocumento) {
 		return 0;
 	}
 
@@ -168,46 +66,34 @@ public class Core {
 	 * @param textoAReproducir comentar
 	 * @return comentar
 	 */
-	public final int playText(final String textoAReproducir) {
+	public final int reproducirTexto(final String textoAReproducir) {
 		return 0;
 	}
 
 	/**
-	 * @param audio
+	 * Recibe la respuesta del usuario si esta bien o no la grabación 
+	 * de la palabra. 
+	 * En caso de ser correcta la grabacion de la palabra se procede a 
+	 * grabar la palabra
+	 * y el correspondiente audio, luego devuelve la siquiente palabra 
+	 * a ser grabada.
+	 * En caso de ser incorrecta la grabacion de la palabra se devuelve 
+	 * la proxima palabra
+	 * a ser grabada que en este caso es la misma dado que se grabo mal.
+	 * @param respuesta
+	 * Confirmación introducida por el usuario. 
 	 * @return
+	 * Proxima palabra a grabar.
 	 */
-	public final int playWord(final InputStream audio) {
-		this.manipularAudio.reproducir(audio);
-		return 0;
-	}
-	
-	/**.
-	 * Puta funcion para probar
-	 * @param consola
-	 * @return
-	 */
-	public final String test(final InterfazUsuario consola) {
-		
-		System.out.println("Funciono la invocacion al metodo");
-/*		
-		this.interfazConUsuarios.mensaje("Este mensaje esta escrito desde el objeto que invoca a la consola.");
-		
-		String nombre = this.interfazConUsuarios.obtenerDatos("Ingrese su nombre: ");
-	*/	
-		System.out.println("Recibi esto:");
-		return "Todo OK";
-	}
-
-	/**
-	 * @param args Los argumentos del programa.
-	 */
-	public static void main(final String[] args) {
-		
-		//Creo la consola y le paso la clase que ejecuta los metodos.
-		Consola consola = new Consola(Core.class);
-		
-		//Me quedo leyendo la entrada.
-		consola.leer();
-		
+	public final String confirmarGrabacion(final String respuesta) {
+		if (respuesta.compareToIgnoreCase("S") == 0) {
+			/* 
+			 Grabo al archivo 
+			 Archivo.WriteAudio(Palabra,Audio);
+			 this.PalabraActual = BuscarSiguientePalabra();
+			 */
+			return this.palabraActual;
+		}
+		return this.palabraActual;
 	}
 }

@@ -5,6 +5,8 @@ package ar.com.datos.grupo5.interfaces;
 
 import java.io.FileNotFoundException;
 
+import ar.com.datos.grupo5.interfaces.Registro;
+
 /**
  * Interface para manejar Archivos.
  * @author Diego
@@ -13,10 +15,11 @@ import java.io.FileNotFoundException;
 public interface Archivo {
 	/**
 	 * Metodo para Intentar abrir un archivo, pasado por parámetro.
-	 * @param archivo : Path completo del archivo.
-	 * @param modo : Es el modo en el que se abrirá el archivo {R,W,R+,A}.
+	 * @param archivo Path completo del archivo.
+	 * @param modo Es el modo en el que se abrirá el archivo {R,W,R+,A}.
+	 * @return devuelve el resultado de la operación.
 	 */
-	void abrir(final String archivo, final String modo);
+	boolean abrir(final String archivo, final String modo);
 	
 	/**
 	 * Metodo para Intentar crear un archivo, pasado por parámetro.
