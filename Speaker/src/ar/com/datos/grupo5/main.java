@@ -16,6 +16,8 @@ import javax.sound.sampled.AudioInputStream;
 
 import org.apache.log4j.Logger;
 
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+
 import sun.audio.AudioStream;
 
 import ar.com.datos.capturaaudio.core.SimpleAudioRecorder;
@@ -52,65 +54,55 @@ public class main {
 		//consola.leer();
 		
 		try {
-//			File file = new File("/home/cristian/Desktop/audio.au");
-//			OutputStream oStream = new FileOutputStream(file);
-//			
-//			SimpleAudioRecorder rec = new SimpleAudioRecorder(AudioFileFormat.Type.AU, oStream);
-//		
-//		
-//			rec.init();
-//			
-//			logger.debug("Grabando...");
-//			
-//			rec.startRecording();
-//			
-//			Thread.sleep(5000);
-//			
-//			rec.stopRecording();
-//			
-//			oStream.flush();
-//			oStream.close();
-//			
-//			logger.debug("Terminando de grabar");
-//			
-//			File audio = new File("/home/cristian/Desktop/audio_real.au");         
-//
-//			InputStream input = new FileInputStream(audio);
-//			
-//			AudioStream as = new AudioStream(input);
-//			
-//			byte[] lectura = new byte[10000];
-//			input.read(lectura, 0, 10000);
-//			
-//			SimpleAudioPlayer player = new SimpleAudioPlayer(new ByteArrayInputStream(lectura));
-//			
-//			player.init();
-//
-//			logger.debug("reproduciendo....");
-//			
-//			player.startPlaying();
-//			
-//			Thread.sleep(5000);
-//			
-//			player.stopPlaying();
-//			
-//			logger.debug("Terminó");
+			
+			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+
+			SimpleAudioRecorder rec = new SimpleAudioRecorder(
+					AudioFileFormat.Type.AU, byteArray);
+		
+			rec.init();
+			
+			logger.debug("Grabando...");
+			
+			rec.startRecording();
+			
+			Thread.sleep(5000);
+			
+			rec.stopRecording();
+			
+			logger.debug("Terminando de grabar");
+
+			InputStream is = new ByteArrayInputStream(
+					((ByteArrayOutputStream) rec.getOutput()).toByteArray());
+
+			SimpleAudioPlayer player = new SimpleAudioPlayer(is);
+			
+			player.init();
+
+			logger.debug("reproduciendo....");
+			
+			player.startPlaying();
+			
+			Thread.sleep(5000);
+			
+			player.stopPlaying();
+			
+			logger.debug("Terminó");
 			
 			
-			Archivo archivo = new Secuencial();
-			
-			//archivo.crear("/home/cristian/Desktop/test.txt");
-			archivo.abrir("/home/cristian/Desktop/test.txt",Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-			
-			RegistroDiccionario registro = new RegistroDiccionario();
-			
-			registro.setDato("hola");
-			
-			archivo.insertar(registro);
-			registro.setDato(" que tal");
-			archivo.insertar(registro);
-			
-			archivo.cerrar();
+//			Archivo archivo = new Secuencial();
+//			
+//			//archivo.crear("/home/cristian/Desktop/test.txt");
+//			archivo.abrir("/home/cristian/Desktop/test.txt",Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+//			
+//			RegistroDiccionario registro = new RegistroDiccionario();
+//			
+//			registro.setDato("hola");
+//			archivo.insertar(registro);
+//			registro.setDato(" que tal");
+//			archivo.insertar(registro);
+//			
+//			archivo.cerrar();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
