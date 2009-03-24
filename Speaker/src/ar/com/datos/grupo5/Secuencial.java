@@ -1,12 +1,27 @@
 package ar.com.datos.grupo5;
 
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+
 import ar.com.datos.grupo5.interfaces.Archivo;
+import ar.com.datos.grupo5.interfaces.Registro;
 
 /**
  * @author Diego
  *
  */
 public class Secuencial implements Archivo {
+	
+	private static int tamanioBuffer = 128;
+	
+	/**
+	 * OutputStram para el archivo.
+	 */
+	private DataOutputStream dataOutputStream = null;
+	
 	/**
 	 * Metodo para Intentar abrir un archivo, pasado por parámetro.
 	 * @param archivo Path completo del archivo.
@@ -19,7 +34,7 @@ public class Secuencial implements Archivo {
 
 	/**
 	 * Metodo para borrar una cadena en el archivo en el que se está trabajando.
-	 * @param patron Es la cadena a buscar en el archivo.
+	 * @param registro Es el registro a buscar en el archivo.
 	 * @return Devuelve el resultado de la operación,
 	 * y queda posicionado el puntero
 	 * en la posición donde se encontraba la cadena buscada.
@@ -27,18 +42,18 @@ public class Secuencial implements Archivo {
 	 * puntero queda donde
 	 * debería estar la cadena buscada.
 	 */
-	public final boolean borrar(final String patron) {
+	public final boolean borrar(final Registro registro) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	/**
 	 * Metodo para buscar en un archivo, una cadena pasada por parámetro.
-	 * @param patron Es la cadena a buscar en el archivo.
+	 * @param registro Es el registro a buscar en el archivo.
 	 * @return Devuelve el resultado de la búsqueda, quedando posicionado el
 	 * puntero en la posición donde debería estar el patrón buscado.
 	 */
-	public final boolean buscar(final String patron) {
+	public final boolean buscar(final Registro registro) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -55,20 +70,37 @@ public class Secuencial implements Archivo {
 	 * Metodo para Intentar crear un archivo, pasado por parámetro.
 	 * @param archivo Path completo del archivo.
 	 * @param tipo Es el tipo de archivo que se quiere crear {B,T}.
+	 * @throws FileNotFoundException 
 	 */
-	public void crear(final String archivo, final String tipo) {
-		// TODO Auto-generated method stub
+	public void crear(final String archivo, final String tipo) throws FileNotFoundException {
+		
+		OutputStream outputStream = null;
+		
+		try {
+			outputStream = new FileOutputStream(archivo);
+		} catch (FileNotFoundException e) {
+			throw e;
+		}
+		
+		dataOutputStream = new DataOutputStream(outputStream);
 
+		//TODO inicializar el archivo con los datos de control.
 	}
 
 	/**
 	 * Metodo para Insertar la cadena en el archivo
 	 * en el que se está trabajando.
-	 * @param cadena Es la palabra o frase que se va a agregar al archivo.
+	 * @param registro Es el registro que se va a agregar al archivo.
 	 */
-	public void insertar(final String cadena) {
-		// TODO Auto-generated method stub
+	public void insertar(final Registro registro) {
 
+//		int start = 0;
+//		int endAux = cadena.length();
+//		
+//		if (cadena.length() > tamanioBuffer) {
+//			endAux = tamanioBuffer;
+//		}
+		
 	}
 
 }

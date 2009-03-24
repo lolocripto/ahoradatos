@@ -28,6 +28,7 @@ public class SimpleAudioPlayer extends Thread{
 	public void init()throws SimpleAudioPlayerException{
 		try{
 			m_audioInputStream = AudioSystem.getAudioInputStream(m_input);
+			
 			AudioFormat	audioFormat = m_audioInputStream.getFormat();
 			
 			DataLine.Info	info = new DataLine.Info(SourceDataLine.class, audioFormat);

@@ -31,7 +31,7 @@ public class SimpleAudioRecorder extends Thread{
 	
 	public void init()throws SimpleAudioRecorderException{
 		AudioFormat	audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,44100.0F, 16, 2, 4, 44100.0F, false);
-		init(audioFormat);	
+		init(audioFormat);
 	}
 	
 	public void init(AudioFormat audioFormat)throws SimpleAudioRecorderException {
