@@ -18,6 +18,8 @@ public interface Audio {
 	 */
 	void grabar(AudioFileFormat.Type targetType, OutputStream output);
 	
+	void terminargrabacion();
+	
 	/**
 	 * 
 	 * @param input
