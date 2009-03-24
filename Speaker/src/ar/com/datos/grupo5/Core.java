@@ -55,21 +55,16 @@ public class Core {
 	 * @param pathDocumento Agrergar comentario.
 	 * @return lo mismo.
 	 */
-	public final String load(final String pathDocumento) {
+	public final String load(final InterfazUsuario invocador, final String pathDocumento) {
 		
 		Iterator iterador;
 		// Mando a parsear el documento y obtengo un collection
 		contenedor = this.parser.archivoDeCarga(pathDocumento);
 		
-		System.out.println(pathDocumento);
-		
 		IunidadDeHabla elemento;
 		iterador = contenedor.iterator();
-		System.out.println("Voy a iterar");
 		// Mientras tenga palabras para verificar consulto
 		while (iterador.hasNext()) {
-			
-			System.out.println("Entre en el while");
 			
 			elemento = (IunidadDeHabla) iterador.next();
 			
@@ -79,21 +74,21 @@ public class Core {
 			// Si no lo encontro pido ingresar el audio
 			String mensaje = new String("Para ingresar el audio para la palabra: ");
 			String respuesta = "0";
-			this.interfazConUsuarios.mensaje(mensaje);
+			invocador.mensaje(mensaje);
 			
 			//pido que grabe hasta que sea correcta la grabación
 			while (respuesta.compareToIgnoreCase("S") != 0) {
 				
 				// Protocolo de Grabacion
-				this.iniciarGrabacion();
+				this.iniciarGrabacion(invocador);
 				
 				// Protocolo para terminar la grabacion
-				this.finalizarGrabacion();
+				this.finalizarGrabacion(invocador);
 				
 			    //this.playWord(this.oStream);
 			    
 			    mensaje = "La grabación ha sido correcta? S/N:";
-			    respuesta = this.interfazConUsuarios.obtenerDatos(mensaje);
+			    respuesta = invocador.obtenerDatos(mensaje);
 			    }
 			 
 			//
@@ -118,15 +113,15 @@ public class Core {
 		return 0;
 	}
 
-	private int iniciarGrabacion(){
+	private int iniciarGrabacion(InterfazUsuario invocador){
 		String mensaje;
 		String respuesta;
 		
 		mensaje = "Para empezar la grabación ingrese la tecla i y luego enter";
-		respuesta = this.interfazConUsuarios.obtenerDatos(mensaje);
+		respuesta = invocador.obtenerDatos(mensaje);
 		
 		while (respuesta.compareToIgnoreCase("i") != 0 && respuesta.compareToIgnoreCase("c") != 0) {
-			respuesta = this.interfazConUsuarios.obtenerDatos("Comando incorrecto. Ingrese I para grabar.");
+			respuesta = invocador.obtenerDatos("Comando incorrecto. Ingrese I para grabar.");
 		}
 		
 		if (respuesta.compareToIgnoreCase("i") == 0){
@@ -139,15 +134,15 @@ public class Core {
 		}
 	}
 	
-	private int finalizarGrabacion() {
+	private int finalizarGrabacion(InterfazUsuario invocador) {
 		String mensaje;
 		String respuesta;
 		
 		mensaje = "Para detener la grabación ingrese la tecla f y luego enter";
-		respuesta = this.interfazConUsuarios.obtenerDatos(mensaje);
+		respuesta = invocador.obtenerDatos(mensaje);
 		
 		while (respuesta.compareToIgnoreCase("f") != 0 && respuesta.compareToIgnoreCase("c") != 0) {
-			respuesta = this.interfazConUsuarios.obtenerDatos("Comando incorrecto. Ingrese f para terminar.");
+			respuesta = invocador.obtenerDatos("Comando incorrecto. Ingrese f para terminar.");
 		}
 		
 		if (respuesta.compareToIgnoreCase("i") == 0) {
@@ -194,12 +189,12 @@ public class Core {
 	public final String test(final InterfazUsuario consola) {
 		
 		System.out.println("Funciono la invocacion al metodo");
-		
+/*		
 		this.interfazConUsuarios.mensaje("Este mensaje esta escrito desde el objeto que invoca a la consola.");
 		
 		String nombre = this.interfazConUsuarios.obtenerDatos("Ingrese su nombre: ");
-		
-		System.out.println("Recibi esto: " + nombre);
+	*/	
+		System.out.println("Recibi esto:");
 		return "Todo OK";
 	}
 
