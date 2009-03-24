@@ -34,5 +34,12 @@ public interface IunidadDeHabla {
 	 * dicho objeto.
 	 */
 	int hashCode();
+	
+	/**
+	 * "Setter" del audio asociado a la palabra. Como no se cual es el
+	 * tipo de dato pongo Object 
+	 * @param o objeto de sonido
+	 */
+	void setAudio(Object o);
 
 }
