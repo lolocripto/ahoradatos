@@ -4,6 +4,7 @@
 package ar.com.datos.grupo5.interfaces;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import ar.com.datos.grupo5.interfaces.Registro;
 
@@ -18,21 +19,22 @@ public interface Archivo {
 	 * @param archivo Path completo del archivo.
 	 * @param modo Es el modo en el que se abrirá el archivo {R,W,R+,A}.
 	 * @return devuelve el resultado de la operación.
+	 * @throws FileNotFoundException 
 	 */
-	boolean abrir(final String archivo, final String modo);
+	boolean abrir(final String archivo, final String modo) throws FileNotFoundException;
 	
 	/**
 	 * Metodo para Intentar crear un archivo, pasado por parámetro.
 	 * @param archivo Path completo del archivo.
-	 * @param tipo Es el tipo de archivo que se quiere crear {B,T}.
 	 * @throws FileNotFoundException si no se puede crear el archivo.
 	 */
-	void crear(final String archivo, final String tipo) throws FileNotFoundException;
+	void crear(final String archivo) throws FileNotFoundException;
 	
 	/**
 	 * Metodo para cerrar el archivo que se está manipulando.
+	 * @throws IOException 
 	 */
-	void cerrar();
+	void cerrar() throws IOException;
 		
 	/**
 	 * Metodo para buscar en un archivo, una cadena pasada por parámetro.
@@ -46,8 +48,9 @@ public interface Archivo {
 	 * Metodo para Insertar la cadena en el archivo 
 	 * en el que se está trabajando.
 	 * @param registro Es el registro que se va a agregar al archivo.
+	 * @throws IOException 
 	 */
-	void insertar(final Registro registro);
+	void insertar(final Registro registro) throws IOException;
 	
 	/**
 	 * Metodo para borrar una cadena en el archivo en el que se está trabajando.

@@ -1,6 +1,7 @@
 package ar.com.datos.grupo5;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,6 +19,8 @@ import org.apache.log4j.Logger;
 import sun.audio.AudioStream;
 
 import ar.com.datos.capturaaudio.core.SimpleAudioRecorder;
+import ar.com.datos.grupo5.interfaces.Archivo;
+import ar.com.datos.grupo5.interfaces.Registro;
 import ar.com.datos.reproduccionaudio.core.SimpleAudioPlayer;
 
 /**
@@ -49,46 +52,65 @@ public class main {
 		//consola.leer();
 		
 		try {
-			File file = new File("/home/cristian/Desktop/audio.au");
-			OutputStream oStream = new FileOutputStream(file);
+//			File file = new File("/home/cristian/Desktop/audio.au");
+//			OutputStream oStream = new FileOutputStream(file);
+//			
+//			SimpleAudioRecorder rec = new SimpleAudioRecorder(AudioFileFormat.Type.AU, oStream);
+//		
+//		
+//			rec.init();
+//			
+//			logger.debug("Grabando...");
+//			
+//			rec.startRecording();
+//			
+//			Thread.sleep(5000);
+//			
+//			rec.stopRecording();
+//			
+//			oStream.flush();
+//			oStream.close();
+//			
+//			logger.debug("Terminando de grabar");
+//			
+//			File audio = new File("/home/cristian/Desktop/audio_real.au");         
+//
+//			InputStream input = new FileInputStream(audio);
+//			
+//			AudioStream as = new AudioStream(input);
+//			
+//			byte[] lectura = new byte[10000];
+//			input.read(lectura, 0, 10000);
+//			
+//			SimpleAudioPlayer player = new SimpleAudioPlayer(new ByteArrayInputStream(lectura));
+//			
+//			player.init();
+//
+//			logger.debug("reproduciendo....");
+//			
+//			player.startPlaying();
+//			
+//			Thread.sleep(5000);
+//			
+//			player.stopPlaying();
+//			
+//			logger.debug("Terminó");
 			
-			SimpleAudioRecorder rec = new SimpleAudioRecorder(AudioFileFormat.Type.AU, oStream);
-		
-		
-			rec.init();
 			
-			logger.debug("Grabando...");
+			Archivo archivo = new Secuencial();
 			
-			rec.startRecording();
+			//archivo.crear("/home/cristian/Desktop/test.txt");
+			archivo.abrir("/home/cristian/Desktop/test.txt",Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 			
-			Thread.sleep(5000);
+			RegistroDiccionario registro = new RegistroDiccionario();
 			
-			rec.stopRecording();
+			registro.setDato("hola");
 			
-			oStream.flush();
-			oStream.close();
+			archivo.insertar(registro);
+			registro.setDato(" que tal");
+			archivo.insertar(registro);
 			
-			logger.debug("Terminando de grabar");
-			
-			File audio = new File("/home/cristian/Desktop/audio.au");         
-
-			InputStream input = new FileInputStream(audio);
-			
-			AudioStream as = new AudioStream(input);
-			
-			SimpleAudioPlayer player = new SimpleAudioPlayer(as);
-			
-			player.init();
-
-			logger.debug("reproduciendo....");
-			
-			player.startPlaying();
-			
-			Thread.sleep(5000);
-			
-			player.stopPlaying();
-			
-			logger.debug("Terminó");
+			archivo.cerrar();
 			
 		} catch (Exception e) {
 			e.printStackTrace();

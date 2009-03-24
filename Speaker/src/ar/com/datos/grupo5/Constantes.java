@@ -23,4 +23,14 @@ public class Constantes {
 	 * Tamaño del buffer de escritura.
 	 */
 	public static final int TAMANIO_BUFFER_ESCRITURA = 128;
+	
+	/**
+	 * Abrir un archivo para lectura.
+	 */
+	public static final String ABRIR_PARA_LECTURA = "r";
+	
+	/**
+	 * Abrir un archivo para lectura y escritura.
+	 */
+	public static final String ABRIR_PARA_LECTURA_ESCRITURA = "rw";
 }
