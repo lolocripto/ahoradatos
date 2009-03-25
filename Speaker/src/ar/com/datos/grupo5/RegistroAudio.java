@@ -14,10 +14,16 @@ public class RegistroAudio implements Registro {
 	private Long longitud;
 	private byte[] dato;
 	
+	
+	public boolean hasMoreBytes() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	/* Método toBytes(). Nos sirve para devoler la cadena de bytes a escribir.
 	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
 	 */
-	public byte[] toBytes() {
+	public byte[] getBytes() {
 		String cadena;
 		/**
 		 * 1° Agrego la longitud.
