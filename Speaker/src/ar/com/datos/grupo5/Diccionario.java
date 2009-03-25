@@ -27,11 +27,8 @@ public class Diccionario {
      * @see ar.com.datos.grupo5.interfaces.Archivo#cargar()
 	 * @throws FileNotFoundException 
 	 */
-<<<<<<< .mine
-	public boolean cargar(final String archivo, final String modo) {
-=======
+
 	public boolean  cargar(final String archivo, final String modo) throws FileNotFoundException {
->>>>>>> .r59
 		return this.archivo.abrir(archivo, modo);
 	}
 	/**
@@ -43,11 +40,7 @@ public class Diccionario {
 	}
 	/**
 	 * Método que cierra el diccionario.
-<<<<<<< .mine
      * @see ar.com.datos.grupo5.interfaces.Archivo#cerrar()
-=======
-	 * @throws IOException 
->>>>>>> .r59
 	 */
 	public void cerrar() throws IOException {
 		this.archivo.cerrar();
