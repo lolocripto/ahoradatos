@@ -25,6 +25,9 @@ public class RegistroDiccionario implements Registro {
 	 */
 	public byte[] toBytes() {
 		
+		
+		
+		
 		String cadena = "";
 		
 		/**
@@ -44,6 +47,7 @@ public class RegistroDiccionario implements Registro {
 		cadena += this.dato;
 		
 		return cadena.getBytes();
+		
 	}
 	
 	/**

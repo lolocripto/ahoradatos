@@ -90,21 +90,28 @@ public class main {
 //			logger.debug("Terminó");
 			
 			
-			Archivo archivo = new Secuencial();
+//			Archivo archivo = new Secuencial();
+//			
+//			archivo.crear("/home/cristian/Desktop/test.txt");
+//			//archivo.abrir("/home/cristian/Desktop/test.txt",Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+//			
+//			RegistroDiccionario registro = new RegistroDiccionario();
+//			
+//			registro.setDato("hola");
+//			registro.setOffset(123L);
+//			archivo.insertar(registro);
+//			registro.setDato(" que tal");
+//			registro.setOffset(124L);
+//			archivo.insertar(registro);
+//			
+//			archivo.cerrar();
 			
-			archivo.crear("/home/cristian/Desktop/test.txt");
-			//archivo.abrir("/home/cristian/Desktop/test.txt",Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+//			long a = 125L;
+//			byte[] bytes = Constantes.longToArrayByte(a);
+//			logger.debug(bytes);
+//			long b = Constantes.arrayByteToLong(bytes);
+//			logger.debug(b);
 			
-			RegistroDiccionario registro = new RegistroDiccionario();
-			
-			registro.setDato("hola");
-			registro.setOffset(123L);
-			archivo.insertar(registro);
-			registro.setDato(" que tal");
-			registro.setOffset(124L);
-			archivo.insertar(registro);
-			
-			archivo.cerrar();
 			
 		} catch (Exception e) {
 			e.printStackTrace();

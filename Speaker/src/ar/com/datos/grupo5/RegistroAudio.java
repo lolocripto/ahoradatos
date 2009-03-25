@@ -14,8 +14,7 @@ public class RegistroAudio implements Registro {
 	private Long longitud;
 	private byte[] dato;
 	
-	/** 
-	 * Método toBytes(). Nos sirve para devoler la cadena de bytes a escribir.
+	/* Método toBytes(). Nos sirve para devoler la cadena de bytes a escribir.
 	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
 	 */
 	public byte[] toBytes() {
@@ -34,32 +33,28 @@ public class RegistroAudio implements Registro {
 	}
 
 	/**
-	 * Método para devolver la longitud.
-	 * @return la longitud del dato.
+	 * @return the longitud
 	 */
 	public Long getLongitud() {
 		return longitud;
 	}
 
 	/**
-	 * Método para setear la longitud.
-	 * @param longitud La longitud a setear.
+	 * @param longitud the longitud to set
 	 */
 	public void setLongitud(Long longitud) {
 		this.longitud = longitud;
 	}
 
 	/**
-	 * Método para devolver el dato.
-	 * @return El dato.
+	 * @return the dato
 	 */
 	public byte[] getDato() {
 		return dato;
 	}
 
 	/**
-	 * Método para setear el dato.
-	 * @param dato El dato a setear.
+	 * @param dato the dato to set
 	 */
 	public void setDato(byte[] dato) {
 		this.dato = dato;
