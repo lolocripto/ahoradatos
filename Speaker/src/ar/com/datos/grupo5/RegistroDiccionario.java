@@ -16,6 +16,11 @@ import ar.com.datos.grupo5.utils.Conversiones;
 public class RegistroDiccionario implements Registro {
 	
 	/**
+	 * Si hay mas bytes para devolver.
+	 */
+	private boolean hasMore = true;
+	
+	/**
 	 * Offset.
 	 */
 	private Long offset;
@@ -26,9 +31,23 @@ public class RegistroDiccionario implements Registro {
 	private String dato;
 	
 	/**
+	 * En este caso se devuelve de una vez todos los bytes.
+	 * @return
+	 */
+	public boolean hasMoreBytes() {
+		
+		if (hasMore) {
+			hasMore = false;
+			return true;
+		}
+		
+		return hasMore;
+	}
+	
+	/**
 	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
 	 */
-	public byte[] toBytes() {
+	public byte[] getBytes() {
 		
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);

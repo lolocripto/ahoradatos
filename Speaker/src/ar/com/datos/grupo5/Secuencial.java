@@ -38,7 +38,6 @@ public class Secuencial implements Archivo {
 	}
 
 	/**
-	 * Metodo para borrar una cadena en el archivo en el que se está trabajando.
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#borrar(Registro)
 	 */
 	public final boolean borrar(final Registro registro) {
@@ -47,7 +46,6 @@ public class Secuencial implements Archivo {
 	}
 
 	/**
-	 * Metodo para buscar en un archivo, una cadena pasada por parámetro.
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#buscar(Registro)
 	 */
 	public final boolean buscar(final Registro registro) {
@@ -56,7 +54,6 @@ public class Secuencial implements Archivo {
 	}
 
 	/**
-	 * Metodo para cerrar el archivo que se está manipulando.
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#cerrar()
 	 */
 	public void cerrar() throws IOException {
@@ -65,7 +62,6 @@ public class Secuencial implements Archivo {
 	}
 
 	/**
-	 * Metodo para Intentar crear un archivo, pasado por parámetro.
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#crear(String)
 	 */
 	public final void crear(final String archivo)
@@ -79,7 +75,6 @@ public class Secuencial implements Archivo {
 			try {
 				file.setLength(0);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -89,7 +84,6 @@ public class Secuencial implements Archivo {
 	}
 
 	/**
-	 * Metodo para Insertar la cadena en el archivo
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#insertar(Registro)
 	 */
 	public void insertar(final Registro registro) throws IOException {
@@ -97,27 +91,36 @@ public class Secuencial implements Archivo {
 		if (file == null) {
 			throw new IOException("No se creo o abrio el archivo.");
 		}
-	
+
 		int offset = 0;
-		byte[] bytes = registro.toBytes();
-		int bytesTotal = registro.toBytes().length;
-		int bytesEnviar = Constantes.TAMANIO_BUFFER_ESCRITURA;
+		byte[] bytes = null;
+		int bytesTotal = 0;
+		int bytesEnviar = 0;
 		
-		if (bytesTotal < bytesEnviar) {
-			bytesEnviar = bytesTotal;
-		}
-		
+		//Me posiciono al final de archivo.
 		file.seek(file.length());
 		
-		while (offset < bytesTotal) {
+		while (registro.hasMoreBytes()) {
 			
-			if ((bytesTotal - offset) < bytesEnviar) {
-				bytesEnviar = bytesTotal - offset; 
+			offset = 0;
+			bytes = registro.getBytes();
+			bytesTotal = bytes.length;
+			bytesEnviar = Constantes.TAMANIO_BUFFER_ESCRITURA;
+			if (bytesTotal < bytesEnviar) {
+				bytesEnviar = bytesTotal;
 			}
 			
-			file.write(bytes, offset, bytesEnviar);
-			
-			offset += bytesEnviar;
+			//Escribo lacantidad que me permite.
+			while (offset < bytesTotal) {
+
+				if ((bytesTotal - offset) < bytesEnviar) {
+					bytesEnviar = bytesTotal - offset;
+				}
+
+				file.write(bytes, offset, bytesEnviar);
+
+				offset += bytesEnviar;
+			}
 		}
 	}
 }
