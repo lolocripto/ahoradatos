@@ -1,7 +1,12 @@
 
 package ar.com.datos.grupo5;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import ar.com.datos.grupo5.interfaces.Registro;
+import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
  * Esta clase implementa el registro para el diccionario.
@@ -25,28 +30,42 @@ public class RegistroDiccionario implements Registro {
 	 */
 	public byte[] toBytes() {
 		
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+		DataOutputStream dos = new DataOutputStream(bos);
 		
+		byte[] datosByte = dato.getBytes();
+		byte[] longDatoBytes = Conversiones.intToArrayByte(dato.length());
+		byte[] offsetBytes = Conversiones.longToArrayByte(offset);
 		
+		try {
+			dos.write(datosByte, 0, datosByte.length);
+			dos.write(datosByte, 0, longDatoBytes.length);
+			dos.write(datosByte, 0, offsetBytes.length);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
-		String cadena = "";
+		return bos.toByteArray();
 		
-		/**
-		 * 1° Agrego el offset.
-		 */
-		cadena = this.offset.toString();
-		
-		/**
-		 * Luego agrego la longitud.
-		 */
-		Integer len = this.dato.length();
-		cadena += len.toString();
-		
-		/**
-		 * Por ultimo, el dato.
-		 */
-		cadena += this.dato;
-		
-		return cadena.getBytes();
+//		String cadena = "";
+//		
+//		/**
+//		 * 1° Agrego el offset.
+//		 */
+//		cadena = this.offset.toString();
+//		
+//		/**
+//		 * Luego agrego la longitud.
+//		 */
+//		Integer len = this.dato.length();
+//		cadena += len.toString();
+//		
+//		/**
+//		 * Por ultimo, el dato.
+//		 */
+//		cadena += this.dato;
+//		
+//		return cadena.getBytes();
 		
 	}
 	
