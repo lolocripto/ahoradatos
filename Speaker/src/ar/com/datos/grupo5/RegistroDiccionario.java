@@ -39,8 +39,8 @@ public class RegistroDiccionario implements Registro {
 		
 		try {
 			dos.write(datosByte, 0, datosByte.length);
-			dos.write(datosByte, 0, longDatoBytes.length);
-			dos.write(datosByte, 0, offsetBytes.length);
+			dos.write(longDatoBytes, 0, longDatoBytes.length);
+			dos.write(offsetBytes, 0, offsetBytes.length);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
