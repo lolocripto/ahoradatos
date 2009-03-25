@@ -1,5 +1,6 @@
 package ar.com.datos.grupo5;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -41,7 +42,9 @@ public class Secuencial implements Archivo {
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#borrar(Registro)
 	 */
 	public final boolean borrar(final Registro registro) {
-		// TODO Auto-generated method stub
+		
+		//file.close();
+		//File archivo = new File();
 		return false;
 	}
 

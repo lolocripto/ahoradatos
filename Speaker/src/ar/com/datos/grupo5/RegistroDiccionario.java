@@ -31,17 +31,22 @@ public class RegistroDiccionario implements Registro {
 	private String dato;
 	
 	/**
-	 * En este caso se devuelve de una vez todos los bytes.
+	 * En este caso se devuelve de una vez todos los bytes. Devuelvo true la
+	 * primera vez y pongo en false, despues cuando se pregunta nuevamente
+	 * devuelvo false, pero pongo en true para que el registro pueda ser usado
+	 * denuevo.
+	 * 
 	 * @return
 	 */
 	public boolean hasMoreBytes() {
 		
 		if (hasMore) {
-			hasMore = false;
+			hasMore = !hasMore;
 			return true;
+		} else {
+			hasMore = !hasMore;
+			return false;
 		}
-		
-		return hasMore;
 	}
 	
 	/**
@@ -57,9 +62,9 @@ public class RegistroDiccionario implements Registro {
 		byte[] offsetBytes = Conversiones.longToArrayByte(offset);
 		
 		try {
-			dos.write(datosByte, 0, datosByte.length);
-			dos.write(longDatoBytes, 0, longDatoBytes.length);
 			dos.write(offsetBytes, 0, offsetBytes.length);
+			dos.write(longDatoBytes, 0, longDatoBytes.length);
+			dos.write(datosByte, 0, datosByte.length);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
