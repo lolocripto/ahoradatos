@@ -54,55 +54,57 @@ public class main {
 		//consola.leer();
 		
 		try {
-			
-			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-
-			SimpleAudioRecorder rec = new SimpleAudioRecorder(
-					AudioFileFormat.Type.AU, byteArray);
-		
-			rec.init();
-			
-			logger.debug("Grabando...");
-			
-			rec.startRecording();
-			
-			Thread.sleep(5000);
-			
-			rec.stopRecording();
-			
-			logger.debug("Terminando de grabar");
-
-			InputStream is = new ByteArrayInputStream(
-					((ByteArrayOutputStream) rec.getOutput()).toByteArray());
-
-			SimpleAudioPlayer player = new SimpleAudioPlayer(is);
-			
-			player.init();
-
-			logger.debug("reproduciendo....");
-			
-			player.startPlaying();
-			
-			Thread.sleep(5000);
-			
-			player.stopPlaying();
-			
-			logger.debug("Terminó");
-			
-			
-//			Archivo archivo = new Secuencial();
 //			
-//			//archivo.crear("/home/cristian/Desktop/test.txt");
-//			archivo.abrir("/home/cristian/Desktop/test.txt",Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+//			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+//
+//			SimpleAudioRecorder rec = new SimpleAudioRecorder(
+//					AudioFileFormat.Type.AU, byteArray);
+//		
+//			rec.init();
 //			
-//			RegistroDiccionario registro = new RegistroDiccionario();
+//			logger.debug("Grabando...");
 //			
-//			registro.setDato("hola");
-//			archivo.insertar(registro);
-//			registro.setDato(" que tal");
-//			archivo.insertar(registro);
+//			rec.startRecording();
 //			
-//			archivo.cerrar();
+//			Thread.sleep(5000);
+//			
+//			rec.stopRecording();
+//			
+//			logger.debug("Terminando de grabar");
+//
+//			InputStream is = new ByteArrayInputStream(
+//					((ByteArrayOutputStream) rec.getOutput()).toByteArray());
+//
+//			SimpleAudioPlayer player = new SimpleAudioPlayer(is);
+//			
+//			player.init();
+//
+//			logger.debug("reproduciendo....");
+//			
+//			player.startPlaying();
+//			
+//			Thread.sleep(5000);
+//			
+//			player.stopPlaying();
+//			
+//			logger.debug("Terminó");
+			
+			
+			Archivo archivo = new Secuencial();
+			
+			archivo.crear("/home/cristian/Desktop/test.txt");
+			//archivo.abrir("/home/cristian/Desktop/test.txt",Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			
+			RegistroDiccionario registro = new RegistroDiccionario();
+			
+			registro.setDato("hola");
+			registro.setOffset(123L);
+			archivo.insertar(registro);
+			registro.setDato(" que tal");
+			registro.setOffset(124L);
+			archivo.insertar(registro);
+			
+			archivo.cerrar();
 			
 		} catch (Exception e) {
 			e.printStackTrace();

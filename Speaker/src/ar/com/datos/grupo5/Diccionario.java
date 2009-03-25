@@ -1,4 +1,7 @@
 package ar.com.datos.grupo5;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import ar.com.datos.grupo5.interfaces.Archivo;
 
 
@@ -24,8 +27,9 @@ public class Diccionario {
 	 * @param archivo Path completo del archivo.
 	 * @param modo Es el modo en el que se abrirá el archivo {R,W,R+,A}.
 	 * @return devuelve el resultado de la operación.
+	 * @throws FileNotFoundException 
 	 */
-	public boolean  cargar(final String archivo, final String modo) {
+	public boolean  cargar(final String archivo, final String modo) throws FileNotFoundException {
 		return this.archivo.abrir(archivo, modo);
 	}
 	/**
@@ -37,8 +41,9 @@ public class Diccionario {
 	}
 	/**
 	 * Método que cierra el diccionario.
+	 * @throws IOException 
 	 */
-	public void cerrar() {
+	public void cerrar() throws IOException {
 		this.archivo.cerrar();
 	}
 
