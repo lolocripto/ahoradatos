@@ -23,6 +23,7 @@ import sun.audio.AudioStream;
 import ar.com.datos.capturaaudio.core.SimpleAudioRecorder;
 import ar.com.datos.grupo5.interfaces.Archivo;
 import ar.com.datos.grupo5.interfaces.Registro;
+import ar.com.datos.grupo5.utils.Conversiones;
 import ar.com.datos.reproduccionaudio.core.SimpleAudioPlayer;
 
 /**
@@ -106,11 +107,11 @@ public class main {
 //			
 //			archivo.cerrar();
 			
-//			long a = 125L;
-//			byte[] bytes = Constantes.longToArrayByte(a);
-//			logger.debug(bytes);
-//			long b = Constantes.arrayByteToLong(bytes);
-//			logger.debug(b);
+			long a = 125L;
+			byte[] bytes = Conversiones.longToArrayByte(a);
+			logger.debug(bytes);
+			long b = Conversiones.arrayByteToLong(bytes);
+			logger.debug(b);
 			
 			
 		} catch (Exception e) {
