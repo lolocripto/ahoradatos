@@ -10,33 +10,40 @@ import ar.com.datos.grupo5.interfaces.Registro;
  */
 public class RegistroDiccionario implements Registro {
 	
-
-	private byte[] buffer;
-	private Long longitud;
+	/**
+	 * Offset.
+	 */
 	private Long offset;
+	
+	/**
+	 * El dato que se guarda.
+	 */
 	private String dato;
 	
 	/**
-	 * Método toBytes(). Nos sirve para devoler la cadena de bytes a escribir.
 	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
 	 */
 	public byte[] toBytes() {
-		String cadena;
+		
+		String cadena = "";
+		
 		/**
 		 * 1° Agrego el offset.
 		 */
 		cadena = this.offset.toString();
-		this.longitud = (long)this.dato.length();
+		
 		/**
 		 * Luego agrego la longitud.
 		 */
-		cadena += this.longitud.toString();
+		Integer len = this.dato.length();
+		cadena += len.toString();
+		
 		/**
 		 * Por ultimo, el dato.
 		 */
 		cadena += this.dato;
-		this.buffer = cadena.getBytes();
-		return this.buffer;
+		
+		return cadena.getBytes();
 	}
 	
 	/**
@@ -46,27 +53,11 @@ public class RegistroDiccionario implements Registro {
 		// TODO Llenar este método
 	}
 	
-	/**
-	 * Método que devuelve la Longitud.
-	 * @return La longitud del dato.
-	 */
-	public Long getLongitud() {
-		return longitud;
-	}
-
-	/**
-	 * Método para setear la longitud.
-	 * @param longitud La longitud a setear.
-	 */
-	public void setLongitud(Long longitud) {
-		this.longitud = longitud;
-	}
-
-	/**
+	/*
 	 * Método que devuelve el offset.
 	 * @return El offset en el archivo de audio.
 	 */
-	public Long getOffset() {
+	public final Long getOffset() {
 		return offset;
 	}
 
@@ -74,7 +65,7 @@ public class RegistroDiccionario implements Registro {
 	 * Método para cargar el offset.
 	 * @param offset El offset a cargar.
 	 */
-	public void setOffset(Long offset) {
+	public final void setOffset(final Long offset) {
 		this.offset = offset;
 	}
 
@@ -82,7 +73,7 @@ public class RegistroDiccionario implements Registro {
 	 * Método para devolver el dato.
 	 * @return El dato.
 	 */
-	public String getDato() {
+	public final String getDato() {
 		return dato;
 	}
 
@@ -90,7 +81,7 @@ public class RegistroDiccionario implements Registro {
 	 * Método para cargar el dato.
 	 * @param dato El dato a setear.
 	 */
-	public void setDato(String dato) {
+	public final void setDato(final String dato) {
 		this.dato = dato;
 	}
 
