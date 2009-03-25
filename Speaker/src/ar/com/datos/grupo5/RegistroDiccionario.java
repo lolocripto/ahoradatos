@@ -16,7 +16,8 @@ public class RegistroDiccionario implements Registro {
 	private Long offset;
 	private String dato;
 	
-	/* (non-Javadoc)
+	/**
+	 * Método toBytes(). Nos sirve para devoler la cadena de bytes a escribir.
 	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
 	 */
 	public byte[] toBytes() {
@@ -39,49 +40,55 @@ public class RegistroDiccionario implements Registro {
 	}
 	
 	/**
-	 * Método que llena el registro con la información del buffer
+	 * Método que llena el registro con la información del buffer.
 	 */
 	public void llenar() {
 		// TODO Llenar este método
 	}
 	
 	/**
-	 * @return the longitud
+	 * Método que devuelve la Longitud.
+	 * @return La longitud del dato.
 	 */
 	public Long getLongitud() {
 		return longitud;
 	}
 
 	/**
-	 * @param longitud the longitud to set
+	 * Método para setear la longitud.
+	 * @param longitud La longitud a setear.
 	 */
 	public void setLongitud(Long longitud) {
 		this.longitud = longitud;
 	}
 
 	/**
-	 * @return the offset
+	 * Método que devuelve el offset.
+	 * @return El offset en el archivo de audio.
 	 */
 	public Long getOffset() {
 		return offset;
 	}
 
 	/**
-	 * @param offset the offset to set
+	 * Método para cargar el offset.
+	 * @param offset El offset a cargar.
 	 */
 	public void setOffset(Long offset) {
 		this.offset = offset;
 	}
 
 	/**
-	 * @return the dato
+	 * Método para devolver el dato.
+	 * @return El dato.
 	 */
 	public String getDato() {
 		return dato;
 	}
 
 	/**
-	 * @param dato the dato to set
+	 * Método para cargar el dato.
+	 * @param dato El dato a setear.
 	 */
 	public void setDato(String dato) {
 		this.dato = dato;
