@@ -147,7 +147,7 @@ public class Core {
 		
 		if (respuesta.compareToIgnoreCase("i") == 0) {
 			//Termino la grabacion
-			this.manipularAudio.terminargrabacion();
+			this.manipularAudio.terminarGrabacion();
 			return 0;
 		} else {
 			//Detengo la ejecucion del programa y dejo la consola activa

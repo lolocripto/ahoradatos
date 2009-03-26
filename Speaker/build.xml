@@ -24,7 +24,7 @@
 	</target>
 
 	<target name="compile" depends="init" description="compile the source ">
-		<javac srcdir="${src}" destdir="${build}">
+		<javac srcdir="${src}" destdir="${build}" encoding="ISO-8859-1">
 			<classpath refid="classpath"/>
 		</javac>
 	</target>
