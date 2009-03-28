@@ -1,7 +1,13 @@
 
 package ar.com.datos.grupo5;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import ar.com.datos.grupo5.interfaces.Registro;
+import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
  * Esta Clase implementa la interfaz del registro para audio.
@@ -10,60 +16,71 @@ import ar.com.datos.grupo5.interfaces.Registro;
  */
 public class RegistroAudio implements Registro {
 
-	private byte[] buffer;
-	private Long longitud;
-	private byte[] dato;
+	/**
+	 * Cuantos bytes puedo pasar.
+	 */
+	private Long moreBytes;
+	private Long longDato;
+	private DataOutputStream dato;
 	
-	
-	public boolean hasMoreBytes() {
-		// TODO Auto-generated method stub
+	/**
+	 * En este caso se devuelve de una vez todos los bytes. Devuelvo true la
+	 * primera vez y pongo en false, despues cuando se pregunta nuevamente
+	 * devuelvo false, pero pongo en true para que el registro pueda ser usado
+	 * denuevo.
+	 * @return true si hay mas bytes para pedir con getBytes.
+	 */
+	public final boolean hasMoreBytes() {		
+		if (moreBytes>0)
+			return true;
 		return false;
 	}
 	
-	/* Método toBytes(). Nos sirve para devoler la cadena de bytes a escribir.
+	/**
 	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
+	 * @return los bytes que representan al registro.
 	 */
-	public byte[] getBytes() {
-		String cadena;
-		/**
-		 * 1° Agrego la longitud.
-		 */
-		this.longitud = (long)this.dato.toString().length();
-		cadena = this.longitud.toString();
-		/**
-		 * Por ultimo, el dato.
-		 */
-		cadena += this.dato;
-		this.buffer = cadena.getBytes();
-		return this.buffer;
-	}
+	public final byte[] getBytes() {
 
-	/**
-	 * @return the longitud
-	 */
-	public Long getLongitud() {
-		return longitud;
-	}
-
-	/**
-	 * @param longitud the longitud to set
-	 */
-	public void setLongitud(Long longitud) {
-		this.longitud = longitud;
+		byte[] datosByte = null;
+		
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+		DataOutputStream dos = new DataOutputStream(bos);
+		try {
+			if(moreBytes == ((dato.size() + 1) * 8)){
+				dato.write(datosByte, 0, Constantes.TAMANIO_BUFFER_ESCRITURA);
+				byte[] longDatoBytes = Conversiones.longToArrayByte(longDato);
+				
+				dos.write(longDatoBytes, 0, longDatoBytes.length);
+				moreBytes -= longDatoBytes.length;
+			}
+			else{
+				dato.write(datosByte, (int)((dato.size() + 1) * 8 - moreBytes), Constantes.TAMANIO_BUFFER_ESCRITURA);
+			}
+			dos.write(datosByte, 0, datosByte.length);
+			moreBytes -= Constantes.TAMANIO_BUFFER_ESCRITURA;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return bos.toByteArray();
 	}
 
 	/**
 	 * @return the dato
 	 */
-	public byte[] getDato() {
+	public DataOutputStream getDato() {
 		return dato;
 	}
 
 	/**
 	 * @param dato the dato to set
 	 */
-	public void setDato(byte[] dato) {
+	public void setDato(DataOutputStream dato) {
 		this.dato = dato;
+		this.longDato = (long) dato.size();
+		// Acá considero el offset (long).
+		this.moreBytes = (long) (this.longDato + 1) * 8; 
 	}
 
 }

@@ -16,9 +16,9 @@ import ar.com.datos.grupo5.utils.Conversiones;
 public class RegistroDiccionario implements Registro {
 	
 	/**
-	 * Si hay mas bytes para devolver.
+	 * Cuantos bytes puedo pasar.
 	 */
-	private boolean hasMore = true;
+	private Long moreBytes;
 	
 	/**
 	 * Offset.
@@ -31,21 +31,21 @@ public class RegistroDiccionario implements Registro {
 	private String dato;
 	
 	/**
+	 * Tamaño del dato almacenado (SIZE_OF).
+	 */
+	private int longDato;
+	
+	/**
 	 * En este caso se devuelve de una vez todos los bytes. Devuelvo true la
 	 * primera vez y pongo en false, despues cuando se pregunta nuevamente
 	 * devuelvo false, pero pongo en true para que el registro pueda ser usado
 	 * denuevo.
 	 * @return true si hay mas bytes para pedir con getBytes.
 	 */
-	public final boolean hasMoreBytes() {
-		
-		if (hasMore) {
-			hasMore = !hasMore;
+	public final boolean hasMoreBytes() {		
+		if (moreBytes>0)
 			return true;
-		} else {
-			hasMore = !hasMore;
-			return false;
-		}
+		return false;
 	}
 	
 	/**
@@ -53,18 +53,24 @@ public class RegistroDiccionario implements Registro {
 	 * @return los bytes que representan al registro.
 	 */
 	public final byte[] getBytes() {
-		
+
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
-		
-		byte[] datosByte = dato.getBytes();
-		byte[] longDatoBytes = Conversiones.intToArrayByte(dato.length());
-		byte[] offsetBytes = Conversiones.longToArrayByte(offset);
-		
 		try {
-			dos.write(offsetBytes, 0, offsetBytes.length);
-			dos.write(longDatoBytes, 0, longDatoBytes.length);
+			
+			byte[] datosByte = dato.getBytes();
+			
+			if(moreBytes == (dato.length() * 8 + 12)){	
+				byte[] longDatoBytes = Conversiones.intToArrayByte(longDato);
+				byte[] offsetBytes = Conversiones.longToArrayByte(offset);
+				
+				dos.write(offsetBytes, 0, offsetBytes.length);
+				dos.write(longDatoBytes, 0, longDatoBytes.length);
+				moreBytes -= offsetBytes.length;
+				moreBytes -= longDatoBytes.length;
+			}	
 			dos.write(datosByte, 0, datosByte.length);
+			moreBytes -= datosByte.length;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -109,6 +115,9 @@ public class RegistroDiccionario implements Registro {
 	 */
 	public final void setDato(final String dato) {
 		this.dato = dato;
+		this.longDato = dato.length();
+		// Acá considero el tamaño (int) y el offset (long).
+		this.moreBytes = (long) this.longDato * 8 + 12; 
 	}
 
 }
