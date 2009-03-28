@@ -13,81 +13,131 @@ import javax.sound.sampled.TargetDataLine;
 import ar.com.datos.capturaaudio.exception.ForgotInitSimpleAudioRecorderException;
 import ar.com.datos.capturaaudio.exception.SimpleAudioRecorderException;
 
-
-public class SimpleAudioRecorder extends Thread{
+/**
+ * .
+ * @author cristian
+ *
+ */
+public class SimpleAudioRecorder extends Thread {
 	
-	private TargetDataLine		m_line;
-	private AudioFileFormat.Type	m_targetType;
-	private AudioInputStream	m_audioInputStream;
-	private OutputStream	m_output;
+	/**
+	 * .
+	 */
+	private TargetDataLine m_line;
+	
+	/**
+	 * .
+	 */
+	private AudioFileFormat.Type m_targetType;
+	
+	/**
+	 * .
+	 */
+	private AudioInputStream m_audioInputStream;
+	
+	/**
+	 * .
+	 */
+	private OutputStream m_output;
 
 
-	public SimpleAudioRecorder(AudioFileFormat.Type targetType, OutputStream output){
+	/**
+	 * .
+	 * @param targetType .
+	 * @param output .
+	 */
+	public SimpleAudioRecorder(final AudioFileFormat.Type targetType,
+			final OutputStream output) {
+		
 		super();
 		m_targetType = targetType;
 		m_output = output;
 	}
 	
-	
-	public void init()throws SimpleAudioRecorderException{
-		AudioFormat	audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,44100.0F, 16, 2, 4, 44100.0F, false);
+	/**
+	 * .
+	 * @throws SimpleAudioRecorderException .
+	 */
+	public final void init() throws SimpleAudioRecorderException {
+		
+		AudioFormat audioFormat = new AudioFormat(
+				AudioFormat.Encoding.PCM_SIGNED, 44100.0F, 16, 2, 4, 44100.0F,
+				false);
+		
 		init(audioFormat);
 	}
 	
-	public void init(AudioFormat audioFormat)throws SimpleAudioRecorderException {
-		DataLine.Info info = new DataLine.Info(TargetDataLine.class,audioFormat);
-		try{
+	/**
+	 * .
+	 * @param audioFormat .
+	 * @throws SimpleAudioRecorderException .
+	 */
+	public final void init(final AudioFormat audioFormat)
+			throws SimpleAudioRecorderException {
+		
+		DataLine.Info info = new DataLine.Info(TargetDataLine.class,
+				audioFormat);
+		try {
 			m_line = (TargetDataLine) AudioSystem.getLine(info);
 			m_line.open(audioFormat);
-			
-		}catch(LineUnavailableException e){
+
+		} catch (LineUnavailableException e) {
 			throw new SimpleAudioRecorderException(e);
 		}
-		
+
 		m_audioInputStream = new AudioInputStream(m_line);
 	}
 	
-	/*Forgetting to call init()*/
-	public void startRecording() throws SimpleAudioRecorderException{
-		try{
+	/**
+	 * @throws SimpleAudioRecorderException Forgetting to call init().
+	 */
+	public final void startRecording() throws SimpleAudioRecorderException {
+		
+		try {
 			start();
-		}catch(NullPointerException e){
+		} catch (NullPointerException e) {
 			throw new ForgotInitSimpleAudioRecorderException();
 		}
 	}
 	
-	/* Starts the recording.The line is started and the thread is started.*/
-	public void start()
-	{
+	/**
+	 *  Starts the recording.The line is started and the thread is started. 
+	 **/
+	public final void start() {
 		m_line.start();
 		super.start();
 	}
 
-
-	/* Stops the recording.*/
-	public void stopRecording()
-	{
+	/**
+	 *  Stops the recording.
+	 **/
+	public final void stopRecording() {
 		m_line.stop();
+		m_line.flush();
 		m_line.close();
 	}
 
-	public void run()
-	{
-			try
-			{
-					AudioSystem.write(m_audioInputStream, m_targetType,	m_output);
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
+	/**
+	 * .
+	 */
+	public final void run() {
+		try {
+			AudioSystem.write(m_audioInputStream, m_targetType, m_output);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public OutputStream getOutput(){
-		if(!isAlive())
+	/**
+	 * .
+	 * @return El stream de salida.
+	 */
+	public final OutputStream getOutput() {
+		if (!m_line.isActive()) {
 			return m_output;
-		else
+		} else {
 			return null;
+		}
 	}
 }
 

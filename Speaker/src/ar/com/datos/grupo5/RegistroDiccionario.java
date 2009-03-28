@@ -35,10 +35,9 @@ public class RegistroDiccionario implements Registro {
 	 * primera vez y pongo en false, despues cuando se pregunta nuevamente
 	 * devuelvo false, pero pongo en true para que el registro pueda ser usado
 	 * denuevo.
-	 * 
-	 * @return
+	 * @return true si hay mas bytes para pedir con getBytes.
 	 */
-	public boolean hasMoreBytes() {
+	public final boolean hasMoreBytes() {
 		
 		if (hasMore) {
 			hasMore = !hasMore;
@@ -51,8 +50,9 @@ public class RegistroDiccionario implements Registro {
 	
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
+	 * @return los bytes que representan al registro.
 	 */
-	public byte[] getBytes() {
+	public final byte[] getBytes() {
 		
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
@@ -70,27 +70,6 @@ public class RegistroDiccionario implements Registro {
 		}
 		
 		return bos.toByteArray();
-		
-//		String cadena = "";
-//		
-//		/**
-//		 * 1° Agrego el offset.
-//		 */
-//		cadena = this.offset.toString();
-//		
-//		/**
-//		 * Luego agrego la longitud.
-//		 */
-//		Integer len = this.dato.length();
-//		cadena += len.toString();
-//		
-//		/**
-//		 * Por ultimo, el dato.
-//		 */
-//		cadena += this.dato;
-//		
-//		return cadena.getBytes();
-		
 	}
 	
 	/**
@@ -100,7 +79,7 @@ public class RegistroDiccionario implements Registro {
 		// TODO Llenar este método
 	}
 	
-	/*
+	/**
 	 * Método que devuelve el offset.
 	 * @return El offset en el archivo de audio.
 	 */

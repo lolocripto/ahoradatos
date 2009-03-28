@@ -99,32 +99,32 @@ public class PatternRecognizer {
  * numero excluyendo a la ρ, las vocales acentuadas, la "u" con diιresis y,
  * por supuesto el espacio mismo
  */
-		String regEx= "[\\W&&[^ραινσϊό\\s]]";
-		
+		String regEx = "[\\W&&[^ραινσϊό\\s]]";
+
 		patron = Pattern.compile(regEx);
 		comparador = patron.matcher(linea);
-		
+
 		StringBuffer sb = new StringBuffer();
 		String caracterHallado;
-		
+
 		while (comparador.find()) {
-			 caracterHallado = comparador.group();
-		     comparador.appendReplacement(sb, " "+caracterHallado+" ");
-		 }
-		 comparador.appendTail(sb);
-		 return sb.toString();
+			caracterHallado = comparador.group();
+			comparador.appendReplacement(sb, " " + caracterHallado + " ");
+		}
+		comparador.appendTail(sb);
+		return sb.toString();
 		
 	}
 	
 	
-	private static String[] splitter (String linea) {
+	private static String[] splitter(String linea) {
 		return null;
-		
+
 	}
-	
+
 	public static String[] procesarLinea(String lineaEntrada) {
-		
-		 return splitter(correctorSintactico(analisisLexico(lineaEntrada)));
-		
+
+		return splitter(correctorSintactico(analisisLexico(lineaEntrada)));
+
 	}
 }
