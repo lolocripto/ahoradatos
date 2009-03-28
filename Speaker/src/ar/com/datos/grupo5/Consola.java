@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
+import ar.com.datos.parser.ConsolaParser;
 
 /**
  * .
@@ -17,6 +18,21 @@ public class Consola extends Thread implements InterfazUsuario {
 	 * Clase que implementa los metodos de la consola.
 	 */
 	private Object invocador = null;
+	
+	/**
+	 * Para parsear la entrada de la consola.
+	 */
+	private ConsolaParser parser = new ConsolaParser();
+	
+	/**
+	 * Caracter de la primera linea de la consola.
+	 */
+	private static final String PROMPCHAR = "> ";
+	
+	/**
+	 * Comando para terminar la consola.
+	 */
+	private static final String ENDWORD = "FIN";
 	
 	/**
 	 * Este metodo se llama cuando el hilo comienza.
@@ -52,7 +68,7 @@ public class Consola extends Thread implements InterfazUsuario {
 				new InputStreamReader(System.in));
 		
 		if (mensaje != null && !mensaje.equals("")) {
-			System.out.print(mensaje);
+			System.out.print(Consola.PROMPCHAR + mensaje);
 		}
 		
 		String result = "";
@@ -72,7 +88,7 @@ public class Consola extends Thread implements InterfazUsuario {
 	 */
 	public final void mensaje(final String mensaje) {
 		
-		System.out.println(mensaje);
+		System.out.println(Consola.PROMPCHAR + mensaje);
 	}
 	
 	/**
@@ -101,7 +117,7 @@ public class Consola extends Thread implements InterfazUsuario {
 			//Mientras no se ponga "FIN" o "fin".
 			do {
 				//Escrivo un promp
-				System.out.print("> ");
+				System.out.print(Consola.PROMPCHAR);
 				//Me quedo esperando por lo que ingrese el usuario.
 				linea = br.readLine();
 				try {
@@ -109,7 +125,7 @@ public class Consola extends Thread implements InterfazUsuario {
 					pos = linea.indexOf(" ");
 					//Si es un comando con parametros.
 					if (pos != -1) {
-						paramsAux = linea.substring(pos + 1).split(" ");
+						paramsAux = parser.parseLine(linea.substring(pos + 1));
 						params = new Object[paramsAux.length + 1];
 						params[0] = this;
 						for (int i = 0; i < paramsAux.length; i++) {
@@ -138,21 +154,26 @@ public class Consola extends Thread implements InterfazUsuario {
 								.invoke(invocador, params);
 						
 						//Escribo el resultado.
-						/*System.out.println("El resultado fue: " 
-								+ resultado.toString());*/
+						if (resultado != null) {
+							System.out.println(Consola.PROMPCHAR
+									+ resultado.toString());
+							resultado = null;
+						}
 						
 					} catch (Exception e) {
 						//Indico que no conozco el comando y espero por otro.
-						System.out
-							.println("> No se encuentra el comando solicitado: "
-										+ linea);
+						if (!comando.equalsIgnoreCase(Consola.ENDWORD)) {
+							System.out.println(Consola.PROMPCHAR
+									+ "No se encuentra el comando solicitado: "
+									+ linea);
+						}
 					}
 					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				
-			} while (!linea.equalsIgnoreCase("FIN"));	
+			} while (!linea.equalsIgnoreCase(Consola.ENDWORD));
 			
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -30,11 +30,11 @@ public class main {
 		try {
 			
 			//Creo la consola y le paso la clase que ejecuta los metodos.
-//			Consola consola = new Consola(Ejecutador.class);
-//			
-//			consola.start();
-//			
-//			consola.join();
+			Consola consola = new Consola(Ejecutador.class);
+			
+			consola.start();
+			
+			consola.join();
 			
 //			
 //			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
