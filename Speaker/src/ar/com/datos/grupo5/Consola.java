@@ -19,9 +19,9 @@ public class Consola extends Thread implements InterfazUsuario {
 	private Object invocador = null;
 	
 	/**
-	 * 
+	 * Este metodo se llama cuando el hilo comienza.
 	 */
-	public void run() {
+	public final void run() {
 	
 		this.leer();
 	}
@@ -108,7 +108,7 @@ public class Consola extends Thread implements InterfazUsuario {
 					
 					pos = linea.indexOf(" ");
 					//Si es un comando con parametros.
-					if (pos > 0) {
+					if (pos != -1) {
 						paramsAux = linea.substring(pos + 1).split(" ");
 						params = new Object[paramsAux.length + 1];
 						params[0] = this;
@@ -120,7 +120,7 @@ public class Consola extends Thread implements InterfazUsuario {
 						for (int i = 1; i < params.length; i++) {
 							paramsClass[i] = String.class;
 						}
-						comando = linea.substring(0, linea.indexOf(" "));
+						comando = linea.substring(0, pos);
 
 					} else { // Si es un comando sin parametros.
 						comando = linea.trim();
@@ -138,13 +138,13 @@ public class Consola extends Thread implements InterfazUsuario {
 								.invoke(invocador, params);
 						
 						//Escribo el resultado.
-						System.out.println("El resultado fue: " 
-								+ resultado.toString());
+						/*System.out.println("El resultado fue: " 
+								+ resultado.toString());*/
 						
 					} catch (Exception e) {
 						//Indico que no conozco el comando y espero por otro.
 						System.out
-							.println("No se encuentra el comando solicitado: "
+							.println("> No se encuentra el comando solicitado: "
 										+ linea);
 					}
 					

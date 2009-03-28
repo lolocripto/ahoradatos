@@ -26,21 +26,16 @@ public class main {
 	 */
 	public static void main(String[] args) {
 		
-		//Creo la consola y le paso la clase que ejecuta los metodos.
-//		Consola consola = new Consola(Ejecutador.class);
-//		
-//		consola.start();
-//		
-//		try {
-//			consola.join();
-//		} catch (InterruptedException e1) {
-//			e1.printStackTrace();
-//		}
-		
-		//Me quedo leyendo la entrada.
-		//consola.leer();
 		
 		try {
+			
+			//Creo la consola y le paso la clase que ejecuta los metodos.
+//			Consola consola = new Consola(Ejecutador.class);
+//			
+//			consola.start();
+//			
+//			consola.join();
+			
 //			
 //			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
 //
@@ -80,25 +75,25 @@ public class main {
 //			
 //			logger.debug("Terminó");
 			
-			
-			Archivo archivo = new Secuencial();
-			
-			archivo.crear("/home/cristian/Desktop/test.txt");
-			//archivo.abrir("/home/cristian/Desktop/test.txt",Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-			
-			RegistroDiccionario registro = new RegistroDiccionario();
-			
-			registro.setDato("hola");
-			registro.setOffset(123L);
-			archivo.insertar(registro);
-			registro.setDato("que");
-			registro.setOffset(124L);
-			archivo.insertar(registro);
-			registro.setDato("tal");
-			registro.setOffset(124L);
-			archivo.insertar(registro);
-			
-			archivo.cerrar();
+//			
+//			Archivo archivo = new Secuencial();
+//			
+//			archivo.crear("/home/cristian/Desktop/test.txt");
+//			//archivo.abrir("/home/cristian/Desktop/test.txt",Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+//			
+//			RegistroDiccionario registro = new RegistroDiccionario();
+//			
+//			registro.setDato("hola");
+//			registro.setOffset(123L);
+//			archivo.insertar(registro);
+//			registro.setDato("que");
+//			registro.setOffset(124L);
+//			archivo.insertar(registro);
+//			registro.setDato("tal");
+//			registro.setOffset(124L);
+//			archivo.insertar(registro);
+//			
+//			archivo.cerrar();
 			
 			
 		} catch (Exception e) {
