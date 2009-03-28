@@ -11,13 +11,20 @@ import ar.com.datos.grupo5.interfaces.InterfazUsuario;
  * @author cristian
  *
  */
-public class Consola implements InterfazUsuario {
+public class Consola extends Thread implements InterfazUsuario {
 
 	/**
 	 * Clase que implementa los metodos de la consola.
 	 */
 	private Object invocador = null;
 	
+	/**
+	 * 
+	 */
+	public void run() {
+	
+		this.leer();
+	}
 	/**
 	 * Constructor.
 	 * @param <clazz> .
