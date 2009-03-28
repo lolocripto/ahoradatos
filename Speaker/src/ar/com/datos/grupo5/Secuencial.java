@@ -113,7 +113,7 @@ public class Secuencial implements Archivo {
 				bytesEnviar = bytesTotal;
 			}
 			
-			//Escribo lacantidad que me permite.
+			//Escribo la cantidad que me permite.
 			while (offset < bytesTotal) {
 
 				if ((bytesTotal - offset) < bytesEnviar) {

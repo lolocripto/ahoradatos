@@ -1,30 +1,8 @@
 package ar.com.datos.grupo5;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.ByteBuffer;
-import java.nio.LongBuffer;
-
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioInputStream;
-
 import org.apache.log4j.Logger;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
-
-import sun.audio.AudioStream;
-
-import ar.com.datos.capturaaudio.core.SimpleAudioRecorder;
 import ar.com.datos.grupo5.interfaces.Archivo;
-import ar.com.datos.grupo5.interfaces.Registro;
-import ar.com.datos.grupo5.utils.Conversiones;
-import ar.com.datos.reproduccionaudio.core.SimpleAudioPlayer;
 
 /**
  * Esta clase es de ejemplo.
@@ -32,7 +10,7 @@ import ar.com.datos.reproduccionaudio.core.SimpleAudioPlayer;
 public class main {
 
 	/**
-	 * El constructor lo agrego para que checstyle no me rompa las bolas.
+	 * El constructor lo agrego para que checkstyle no me rompa las bolas.
 	 */
 	public main() {
 		super();
@@ -49,7 +27,15 @@ public class main {
 	public static void main(String[] args) {
 		
 		//Creo la consola y le paso la clase que ejecuta los metodos.
-		//Consola consola = new Consola(Ejecutador.class);
+//		Consola consola = new Consola(Ejecutador.class);
+//		
+//		consola.start();
+//		
+//		try {
+//			consola.join();
+//		} catch (InterruptedException e1) {
+//			e1.printStackTrace();
+//		}
 		
 		//Me quedo leyendo la entrada.
 		//consola.leer();
@@ -75,8 +61,12 @@ public class main {
 //
 //			InputStream is = new ByteArrayInputStream(
 //					((ByteArrayOutputStream) rec.getOutput()).toByteArray());
-//
-//			SimpleAudioPlayer player = new SimpleAudioPlayer(is);
+
+//			File soundFile = new File("/home/cristian/Desktop/audio_real.au");
+//			InputStream inf = new FileInputStream(soundFile);
+//			BufferedInputStream b = new BufferedInputStream(inf);
+//			
+//			SimpleAudioPlayer player = new SimpleAudioPlayer(b);
 //			
 //			player.init();
 //
@@ -101,7 +91,10 @@ public class main {
 			registro.setDato("hola");
 			registro.setOffset(123L);
 			archivo.insertar(registro);
-			registro.setDato(" que tal");
+			registro.setDato("que");
+			registro.setOffset(124L);
+			archivo.insertar(registro);
+			registro.setDato("tal");
 			registro.setOffset(124L);
 			archivo.insertar(registro);
 			

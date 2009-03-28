@@ -68,7 +68,7 @@
 			</fileset>
 		</copy>
 
-		<jar destfile="${dist}/Speaker.jar" >
+		<jar destfile="${dist}/Speaker.jar" encoding="ISO8859-1" >
 			<fileset dir="${build}" includes="**" />
 			<manifest>
 				<attribute name="Main-Class" value="ar.com.datos.grupo5.main" />
