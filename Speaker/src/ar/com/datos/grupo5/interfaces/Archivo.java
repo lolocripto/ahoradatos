@@ -30,7 +30,7 @@ public interface Archivo {
 	
 	/**
 	 * Método para cerrar el archivo que se está manipulando.
-	 * @throws IOException Excepcion de extrada/salida.
+	 * @throws IOException Excepcion de entrada/salida.
 	 */
 	void cerrar() throws IOException;
 		

@@ -58,10 +58,15 @@ public class Diccionario {
 
 		RegistroDiccionario registro = new RegistroDiccionario();
 		
+		registro.setDato(palabra);
+		registro.setOffset(0L);
 		//TODO buscar en el archivo secuencial la palabra
 		// y armar el registro.
+		if (this.archivo.buscar(registro)){
+			//TODO: Tengo que leer el registro pero no se con que? No hay manera.
+		}
 		
-		return null;
+		return registro;
 	}
 
 }

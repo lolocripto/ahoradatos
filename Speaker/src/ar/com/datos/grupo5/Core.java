@@ -12,7 +12,9 @@ import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.interfaces.Archivo;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.parser.ITextInput;
-
+import ar.com.datos.parser.TextInterpreter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 
 /**
@@ -34,10 +36,6 @@ public class Core {
 	/**
 	 * 
 	 */
-	private Archivo archivo;
-	/**
-	 * 
-	 */
 	private AudioManager manipularAudio;
 	/**
 	 * 
@@ -49,6 +47,10 @@ public class Core {
 	 */
 	private Collection<IunidadDeHabla>  contenedor; 
 	
+	/**
+	 * 
+	 */
+	private RegistroDiccionario registro;
 	/**
 	 * Logger para la clase.
 	 */
@@ -73,7 +75,11 @@ public class Core {
 			
 			elemento = (IunidadDeHabla) iterador.next();
 			
+			this.registro = new RegistroDiccionario();
+			this.registro.setDato(elemento.toString());
+			
 			// Si lo encontro sigo en el bucle
+//			if (this.archivo.buscar(this.registro)) {
 			if (1 == 2) {
 				continue;
 			}
@@ -97,11 +103,11 @@ public class Core {
 				
 			    //this.playWord(this.oStream);
 			    
-			    mensaje = "La grabación ha sido correcta? S/N:";
+			    mensaje = "La grabación ha sido correcta? S/N: ";
 			    respuesta = invocador.obtenerDatos(mensaje);
 			    }
+
 		}
-		
 		logger.debug("Sali de al funcion load");
 		return "";
 	}
@@ -129,12 +135,17 @@ public class Core {
 				
 			    this.playWord();
 			    
-			    mensaje = "La grabación ha sido correcta? S/N:";
+			    mensaje = "La grabación ha sido correcta? S/N: ";
 			    respuesta = invocador.obtenerDatos(mensaje);
 			    }
-			 
-			return respuesta;
-	
+			
+			//TODO: Grabar audio en el archivo de audio
+			
+			// Genero el nuevo registro del diccionario
+			RegistroDiccionario registro = new RegistroDiccionario();
+			registro.setDato(cadena);
+			registro.setOffset(123L);
+return "";	
 	}
 	
 	/**
@@ -142,12 +153,13 @@ public class Core {
 	 * @param invocador
 	 * @return
 	 */
-	private void iniciarGrabacion(final InterfazUsuario invocador){
+	private void iniciarGrabacion(final InterfazUsuario invocador) {
 
 		String mensaje;
 		String respuesta;
 	
-		mensaje = "Para iniciar la grabación ingrese la tecla i y luego enter: ";
+		mensaje = "Para iniciar la grabación ingrese la tecla i " +
+				"y luego enter: ";
 		respuesta = invocador.obtenerDatos(mensaje);
 		while (!respuesta.equalsIgnoreCase("i")) {
 			mensaje = "Comando incorrecto, por favor presione la tecla i.";
@@ -172,7 +184,7 @@ public class Core {
 		
 		String mensaje, respuesta;
 
-		mensaje = "Para detener la grabación ingrese la tecla f y luego enter";
+		mensaje = "Para detener la grabación ingrese la tecla f y luego enter: ";
 		respuesta = invocador.obtenerDatos(mensaje);
 		while (!respuesta.equalsIgnoreCase("f")) {
 			mensaje = "Comando incorrecto, por favor presione la tecla f.";
@@ -205,37 +217,17 @@ public class Core {
 	public final void playWord() {
 		this.manipularAudio.reproducir();
 	}
-	
-	/**.
-	 * Puta funcion para probar
-	 * @param consola
-	 * @return
-	 */
-	public final String test(final InterfazUsuario consola) {
-		
-		System.out.println("Funciono la invocacion al metodo");
-/*		
-		this.interfazConUsuarios.mensaje("Este mensaje esta escrito desde el objeto que invoca a la consola.");
-		
-		String nombre = this.interfazConUsuarios.obtenerDatos("Ingrese su nombre: ");
-	*/	
-		logger.debug("Recibi esto:");
-		return "Todo OK";
-	}
-	
+
 	/**
 	 * .
 	 */
 	public Core() {
-		archivo = new Secuencial();
+		this.diccionario = new Diccionario();
 		this.manipularAudio = new AudioManager();
 		this.oStream = new ByteArrayOutputStream();
 		this.diccionario = new Diccionario();
-		try {
-			archivo.crear("/home/xxvkue/Desktop/test.txt");
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
+		this.parser = new TextInterpreter();
+		
 	}
 
 	/**
