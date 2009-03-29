@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import ar.com.datos.grupo5.interfaces.*;
-import ar.com.datos.grupo5.utils.Conversiones;
+import ar.com.datos.grupo5.interfaces.Archivo;
+import ar.com.datos.grupo5.interfaces.Registro;
 
 /**
  * Clase Para el manejo de archivos secuenciales.
@@ -62,17 +62,18 @@ public class Secuencial implements Archivo {
 	 * puntero en la posición donde debería estar el patrón buscado.
 	 */
 	public final boolean buscar(final Registro registro) {
+		
 		// TODO Auto-generated method stub
-		byte buffer[] = null;
-		byte bufferRegistro[] = registro.getBytes();
+		byte[] buffer = null;
+		byte[] bufferRegistro = registro.getBytes();
 		
 		//Buscar en el registro de datos
 		try {
 			this.file.read(buffer, 0, bufferRegistro.length);
-			if (buffer.equals(bufferRegistro))
+			if (buffer.equals(bufferRegistro)) {
 				return true;
-		} 
-		catch (IOException e) {
+			}
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -151,7 +152,12 @@ public class Secuencial implements Archivo {
 		}
 	}
 
-	public boolean eliminar() throws IOException {
+	/**
+	 * Borra el archivo del disco.
+	 * @return true si pudo borrar el archivo.
+	 * @throws IOException .
+	 */
+	public final boolean eliminar() throws IOException {
 		
 		file.close();
 		File fileAux = new File(nombreArchivo);

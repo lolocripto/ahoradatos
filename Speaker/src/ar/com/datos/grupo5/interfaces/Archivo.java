@@ -68,4 +68,5 @@ public interface Archivo {
 	 * @throws IOException
 	 */
 	boolean eliminar() throws IOException;
+	
 }
