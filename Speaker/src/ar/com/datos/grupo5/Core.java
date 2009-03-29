@@ -34,12 +34,15 @@ public class Core {
 	 */
 	private Audio manipularAudio;
 	
+	/**
+	 * 
+	 */
 	private OutputStream oStream;
+	
 	/**
 	 * 
 	 */
 	private Collection<IunidadDeHabla>  contenedor; 
-	/* Hilo para la parte de grabacion */
 
 	/**
 	 * Logger para la clase.
@@ -126,7 +129,7 @@ public class Core {
 		
 		if (respuesta.compareToIgnoreCase("i") == 0){
 			// Pido grabar el audio 
-			this.manipularAudio.grabar(AudioFileFormat.Type.AU, oStream);
+			this.manipularAudio.grabar(oStream);
 			return 0;
 		} else {
 			//Detengo la ejecucion del programa y dejo la consola activa

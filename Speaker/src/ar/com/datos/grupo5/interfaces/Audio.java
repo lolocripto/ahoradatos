@@ -1,11 +1,12 @@
 package ar.com.datos.grupo5.interfaces;
 
-import javax.sound.sampled.AudioFileFormat;
-import java.io.OutputStream;
 import java.io.InputStream;
-import javax.sound.sampled.AudioFormat;
+import java.io.OutputStream;
+
+import javax.sound.sampled.AudioFileFormat;
+
 /**
- * Interfaz para poder realizar las grabaciones y repoducciones de audio
+ * Interfaz para poder realizar las grabaciones y repoducciones de audio.
  * @author xxvkue
  *
  */
@@ -13,10 +14,10 @@ public interface Audio {
 
 	/**
 	 * 
-	 * @param targetType
-	 * @param output
+	 * @param targetType .
+	 * @param output .
 	 */
-	void grabar(AudioFileFormat.Type targetType, OutputStream output);
+	void grabar(OutputStream output);
 
 	
 	/**
@@ -25,8 +26,25 @@ public interface Audio {
 	void terminarGrabacion();
 	
 	/**
-	 * 
-	 * @param input
+	 * Reproduce lo ulimo que se grabó.
+	 * @param input .
 	 */
-	void reproducir(InputStream input);
+	void reproducir();
+	
+	/**
+	 * Reproduce un Stram.
+	 * @param input .
+	 */
+	void reproducir(InputStream audio);
+	
+	/**
+	 * Termina la reproduccion de un audio.
+	 */
+	void terminarReproduccion();
+	
+	/**
+	 * 
+	 * @return El outputstream para obtener los datos grabados.
+	 */
+	OutputStream getAudio();
 }
