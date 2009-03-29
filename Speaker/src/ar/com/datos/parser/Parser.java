@@ -64,40 +64,34 @@ public class Parser implements BufferRecharger{
 		}
 	}
 	
-
-	@Override
 	public final boolean hasMoreItems() {
 		return moreLines;
 	}
 
-	
-
-	public final void recargarBuffer(final Collection<Object> coleccion, 
+	public final void recargarBuffer(final Collection<Object> coleccion,
 			final int maxLineas) {
-		
+
 		String materiaPrima;
-		int lineasProcesadas =0;
-		int sigPalabra =0;
+		int lineasProcesadas = 0;
+		int sigPalabra = 0;
 		String[] listaPalabras;
 		materiaPrima = this.leerLinea();
-				
-		while ( (lineasProcesadas<maxLineas)&& (materiaPrima !=null))	{
+
+		while ((lineasProcesadas < maxLineas) && (materiaPrima != null)) {
 			materiaPrima = this.leerLinea();
 			listaPalabras = PatternRecognizer.procesarLinea(materiaPrima);
-			
-			while ( sigPalabra < listaPalabras.length){
-				coleccion.add(PalabrasFactory.getPalabra(listaPalabras[sigPalabra]));
+
+			while (sigPalabra < listaPalabras.length) {
+				coleccion.add(PalabrasFactory
+						.getPalabra(listaPalabras[sigPalabra]));
 				sigPalabra++;
 			}
 			lineasProcesadas++;
-			
-			}
-			
+
 		}
 
+	}
 
-
-	@Override
 	public Collection< ? > listar() {
 		Collection<IunidadDeHabla> coleccion = new ArrayList<IunidadDeHabla>();
 		return coleccion;
