@@ -131,4 +131,14 @@ public class RegistroDiccionario implements Registro {
 	 public long getLongDatos(){
 		return (long)longDato;
 	}
+	 
+	/**
+	 * @see ar.com.datos.grupo5.interfaces.Registro#setBytes(byte[], Long)
+	 * @param la tira de bytes.
+	 * @param offset El offset en el que se encuentra el dato de audio asociado.
+	 */
+	void setBytes(final byte[] buffer, final Long offset){
+		this.setOffset(offset);
+		this.setDato(buffer.toString());
+	}
 }

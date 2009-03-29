@@ -7,7 +7,7 @@ import java.io.RandomAccessFile;
 
 import ar.com.datos.grupo5.interfaces.Archivo;
 import ar.com.datos.grupo5.interfaces.Registro;
-
+import ar.com.datos.grupo5.utils.*;
 /**
  * Clase Para el manejo de archivos secuenciales.
  * @see ar.com.datos.grupo5.interfaces.Archivo
@@ -89,6 +89,40 @@ public class Secuencial implements Archivo {
 	}
 
 	/**
+	 * @see ar.com.datos.grupo5.interfaces.Archivo#cerrar()
+	 * 
+	 */
+	public Registro primero(){
+		Registro registro = null;	
+		byte buffer[] = null;
+		Long offset;
+		int longitud;
+		try {
+			file.seek(0);
+			this.file.read(buffer, 0, Constantes.SIZE_OF_LONG);
+			offset = Conversiones.arrayByteToLong(buffer);
+			this.file.read(buffer, 0, Constantes.SIZE_OF_INT);
+			longitud = Conversiones.arrayByteToInt(buffer);
+			this.file.read(buffer, 0, longitud);
+			registro.setBytes(buffer, offset);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return registro;
+	}
+	
+	/**
+	 *Método para ver si tiene a continuación otro registro.
+	 *@return Si tiene otro regitro, true, sino, false.
+	 */
+	public boolean hasNext(){
+		//TODO Function
+		return true;
+	}
+	
+	/**
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#crear(String)
 	 */
 	public final void crear(final String archivo)
@@ -163,11 +197,6 @@ public class Secuencial implements Archivo {
 		File fileAux = new File(nombreArchivo);
 		return fileAux.delete();
 		
-	}
-
-	public Registro primero() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public Registro siguiente() {

@@ -47,7 +47,7 @@ public class RegistroAudio implements Registro {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
 		try {
-			if(moreBytes == ((dato.size() + 1) * 8)){
+			if(moreBytes == (dato.size() + Constantes.SIZE_OF_LONG)){
 				dato.write(datosByte, 0, Constantes.TAMANIO_BUFFER_ESCRITURA);
 				byte[] longDatoBytes = Conversiones.longToArrayByte(longDato);
 				
@@ -55,7 +55,7 @@ public class RegistroAudio implements Registro {
 				moreBytes -= longDatoBytes.length;
 			}
 			else{
-				dato.write(datosByte, (int)((dato.size() + 1) * 8 - moreBytes), Constantes.TAMANIO_BUFFER_ESCRITURA);
+				dato.write(datosByte, dato.size() + Constantes.SIZE_OF_LONG, Constantes.TAMANIO_BUFFER_ESCRITURA);
 			}
 			dos.write(datosByte, 0, datosByte.length);
 			moreBytes -= Constantes.TAMANIO_BUFFER_ESCRITURA;
@@ -80,7 +80,7 @@ public class RegistroAudio implements Registro {
 	 	this.dato = dato;
 		this.longDato = (long) dato.size();
 		// Acá considero el offset (long).
-		this.moreBytes = (long) (this.longDato + 1) * 8; 
+		this.moreBytes = (long) (this.longDato + Constantes.SIZE_OF_LONG); 
 	}
 	
 	/**
@@ -89,6 +89,16 @@ public class RegistroAudio implements Registro {
 	 */
 	 public long getLongDatos(){
 		return longDato;
+	}
+		
+	/**
+	 * @see ar.com.datos.grupo5.interfaces.Registro#setBytes(byte[], Long)
+	 * @param la tira de bytes.
+	 * @param offset El offset en el que se encuentra el dato de audio asociado.
+	 */
+	void setBytes(final byte[] buffer, final Long offset){
+		
+		//this.setDato(buffer.);
 	}
 
 }
