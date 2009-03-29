@@ -1,17 +1,16 @@
 package ar.com.datos.grupo5;
 
-import java.util.*;
-import ar.com.datos.grupo5.interfaces.InterfazUsuario;
-import ar.com.datos.grupo5.interfaces.Audio;
-import ar.com.datos.reproduccionaudio.core.SimpleAudioPlayer;
-import ar.com.datos.reproduccionaudio.exception.SimpleAudioPlayerException;
-import ar.com.datos.capturaaudio.core.SimpleAudioRecorder;
-import ar.com.datos.parser.ITextInput;
-import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
-import javax.sound.sampled.AudioFileFormat;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.apache.log4j.Logger;
+
+import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.grupo5.interfaces.Audio;
+import ar.com.datos.grupo5.interfaces.InterfazUsuario;
+import ar.com.datos.parser.ITextInput;
 
 /**
  * @author xxvkue
@@ -19,6 +18,11 @@ import org.apache.log4j.Logger;
  */
 public class Core {
 
+	/**
+	 * 
+	 */
+	private static final Logger logger = Logger.getLogger(Core.class);
+	
 	/** Atributos de la Clase.
 	 *  
 	 */
@@ -43,11 +47,7 @@ public class Core {
 	 * 
 	 */
 	private Collection<IunidadDeHabla>  contenedor; 
-
-	/**
-	 * Logger para la clase.
-	 */
-	private static Logger logger = Logger.getLogger(Core.class);
+	
 	/**
 	 * 
 	 */
@@ -75,7 +75,7 @@ public class Core {
 			if (true==true) continue;
 			
 			// Si no lo encontro pido ingresar el audio
-			String mensaje = new String("Para ingresar el audio para la palabra: ");
+			String mensaje = "Para ingresar el audio para la palabra: ";
 			String respuesta = "0";
 			invocador.mensaje(mensaje);
 			
@@ -96,7 +96,8 @@ public class Core {
 			 
 			//
 		}
-		System.out.println("Sali de al funcion load");
+		
+		logger.debug("Sali de al funcion load");
 		return "";
 	}
 
@@ -116,18 +117,26 @@ public class Core {
 		return 0;
 	}
 
-	private int iniciarGrabacion(InterfazUsuario invocador){
+	/**
+	 * 
+	 * @param invocador
+	 * @return
+	 */
+	private int iniciarGrabacion(final InterfazUsuario invocador){
 		String mensaje;
 		String respuesta;
 		
 		mensaje = "Para empezar la grabación ingrese la tecla i y luego enter";
 		respuesta = invocador.obtenerDatos(mensaje);
 		
-		while (respuesta.compareToIgnoreCase("i") != 0 && respuesta.compareToIgnoreCase("c") != 0) {
-			respuesta = invocador.obtenerDatos("Comando incorrecto. Ingrese I para grabar.");
+		while (!respuesta.equalsIgnoreCase("i")
+				&& !respuesta.equalsIgnoreCase("c")) {
+			
+			respuesta = invocador
+					.obtenerDatos("Comando incorrecto. Ingrese I para grabar.");
 		}
 		
-		if (respuesta.compareToIgnoreCase("i") == 0){
+		if (respuesta.equalsIgnoreCase("i")) {
 			// Pido grabar el audio 
 			this.manipularAudio.grabar(oStream);
 			return 0;
@@ -137,15 +146,23 @@ public class Core {
 		}
 	}
 	
-	private int finalizarGrabacion(InterfazUsuario invocador) {
+	/**
+	 * 
+	 * @param invocador
+	 * @return
+	 */
+	private int finalizarGrabacion(final InterfazUsuario invocador) {
 		String mensaje;
 		String respuesta;
 		
 		mensaje = "Para detener la grabación ingrese la tecla f y luego enter";
 		respuesta = invocador.obtenerDatos(mensaje);
 		
-		while (respuesta.compareToIgnoreCase("f") != 0 && respuesta.compareToIgnoreCase("c") != 0) {
-			respuesta = invocador.obtenerDatos("Comando incorrecto. Ingrese f para terminar.");
+		while (!respuesta.equalsIgnoreCase("f")
+				&& !respuesta.equalsIgnoreCase("c")) {
+			
+			respuesta = invocador
+					.obtenerDatos("Comando incorrecto. Ingrese f para terminar.");
 		}
 		
 		if (respuesta.compareToIgnoreCase("i") == 0) {
@@ -197,7 +214,7 @@ public class Core {
 		
 		String nombre = this.interfazConUsuarios.obtenerDatos("Ingrese su nombre: ");
 	*/	
-		System.out.println("Recibi esto:");
+		logger.debug("Recibi esto:");
 		return "Todo OK";
 	}
 
@@ -210,7 +227,13 @@ public class Core {
 		Consola consola = new Consola(Core.class);
 		
 		//Me quedo leyendo la entrada.
-		consola.leer();
+		consola.start();
+		
+		try {
+			consola.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
 	}
 }
