@@ -40,4 +40,9 @@ public class Constantes {
 	 */
 	public static final String ABRIR_PARA_LECTURA_ESCRITURA = "rw";
 	
+	/**
+	 * Tamaño
+	 */
+	public static final int BUFFER_LECTURA_TEXT_INPUT = 100;
+	
 }
