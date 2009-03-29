@@ -268,7 +268,7 @@ return "";
 		this.diccionario = new Diccionario();
 		this.manipularAudio = new AudioManager();
 		this.diccionario = new Diccionario();
-		this.parser = new TextInterpreter();	
+		this.parser = new TextInterpreter();
 	}
 
 	/** Inicia el programa.

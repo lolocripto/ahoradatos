@@ -137,7 +137,7 @@ public class RegistroDiccionario implements Registro {
 	 * @param la tira de bytes.
 	 * @param offset El offset en el que se encuentra el dato de audio asociado.
 	 */
-	void setBytes(final byte[] buffer, final Long offset){
+	public void setBytes(final byte[] buffer, final Long offset){
 		this.setOffset(offset);
 		this.setDato(buffer.toString());
 	}
