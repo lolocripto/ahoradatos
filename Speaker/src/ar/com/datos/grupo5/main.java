@@ -86,37 +86,37 @@ public class main {
 //			
 //			logger.debug("Terminó");
 
-//			Archivo archivo = new Secuencial();
+			Archivo archivo = new Secuencial();
+			
+			archivo.crear("/home/cristian/Desktop/test.txt");
+			//archivo.abrir("/home/cristian/Desktop/test.txt",Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			
+			RegistroDiccionario registro = new RegistroDiccionario();
+			
+			registro.setDato("hola");
+			registro.setOffset(123L);
+			archivo.insertar(registro);
+			registro.setDato("que");
+			registro.setOffset(124L);
+			archivo.insertar(registro);
+			registro.setDato("tal");
+			registro.setOffset(124L);
+			archivo.insertar(registro);
+			
+			archivo.cerrar();
+			
+//			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
 //			
-//			archivo.crear("/home/cristian/Desktop/test.txt");
-//			//archivo.abrir("/home/cristian/Desktop/test.txt",Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+//			AudioManager manager = new AudioManager();
 //			
-//			RegistroDiccionario registro = new RegistroDiccionario();
+//			manager.grabar(byteArray);
 //			
-//			registro.setDato("hola");
-//			registro.setOffset(123L);
-//			archivo.insertar(registro);
-//			registro.setDato("que");
-//			registro.setOffset(124L);
-//			archivo.insertar(registro);
-//			registro.setDato("tal");
-//			registro.setOffset(124L);
-//			archivo.insertar(registro);
+//			Thread.sleep(6000);
 //			
-//			archivo.cerrar();
-			
-			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-			
-			AudioManager manager = new AudioManager();
-			
-			manager.grabar(byteArray);
-			
-			Thread.sleep(6000);
-			
-			manager.terminarGrabacion();
-			
-			//Este reproducir no se puede parar, reproduce todo lo que hay.
-			manager.reproducir();
+//			manager.terminarGrabacion();
+//			
+//			//Este reproducir no se puede parar, reproduce todo lo que hay.
+//			manager.reproducir();
 			
 		} catch (Exception e) {
 			e.printStackTrace();

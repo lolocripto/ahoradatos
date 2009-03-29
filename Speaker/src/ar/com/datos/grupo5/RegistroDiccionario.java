@@ -81,7 +81,7 @@ public class RegistroDiccionario implements Registro {
 				dos.write(longDatoBytes, 0, longDatoBytes.length);
 				moreBytes -= offsetBytes.length;
 				moreBytes -= longDatoBytes.length;
-			}	
+			}
 			dos.write(datosByte, 0, datosByte.length);
 			moreBytes -= datosByte.length;
 		} catch (IOException e) {
@@ -130,7 +130,8 @@ public class RegistroDiccionario implements Registro {
 		this.dato = dato;
 		this.longDato = dato.length();
 		// Acá considero el tamaño (int) y el offset (long).
-		this.moreBytes = (long) this.longDato * SIZE_OF_LONG + SIZE_OF_INT; 
+		this.moreBytes = (long) this.longDato * SIZE_OF_LONG + SIZE_OF_INT
+				+ SIZE_OF_LONG;
 	}
 
 }
