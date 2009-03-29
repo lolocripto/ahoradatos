@@ -73,7 +73,7 @@ public class RegistroDiccionario implements Registro {
 			int longDatosAdic = SIZE_OF_INT + SIZE_OF_LONG;
 			byte[] datosByte = dato.getBytes();
 			
-			if (moreBytes == (dato.length() * SIZE_OF_LONG + longDatosAdic)) {
+			if (moreBytes == (dato.length() + longDatosAdic)) {
 				byte[] longDatoBytes = Conversiones.intToArrayByte(longDato);
 				byte[] offsetBytes = Conversiones.longToArrayByte(offset);
 
@@ -130,7 +130,7 @@ public class RegistroDiccionario implements Registro {
 		this.dato = dato;
 		this.longDato = dato.length();
 		// Acá considero el tamaño (int) y el offset (long).
-		this.moreBytes = (long) this.longDato * SIZE_OF_LONG + SIZE_OF_INT
+		this.moreBytes = (long) this.longDato + SIZE_OF_INT
 				+ SIZE_OF_LONG;
 	}
 
