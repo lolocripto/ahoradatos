@@ -3,6 +3,7 @@ package ar.com.datos.grupo5;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -143,9 +144,9 @@ return "";
 	 * Da comienzo a la grabación del audio de la palabra en cuestión.
 	 * @param invocador Interfaz por la cual se realizan peticiones al usuario 
 	 * y se obtienen las respuestas.
-	 * @return
+	 * @return 0 si la grabación termino bien, -1 si la grabación fue cancelada.
 	 */
-	private void iniciarGrabacion(final InterfazUsuario invocador) {
+	private int iniciarGrabacion(final InterfazUsuario invocador) {
 
 		String mensaje;
 		String respuesta;
@@ -153,18 +154,25 @@ return "";
 		mensaje = "Para iniciar la grabación ingrese la tecla i " +
 				"y luego enter: ";
 		respuesta = invocador.obtenerDatos(mensaje);
-		while (!respuesta.equalsIgnoreCase("i")) {
+		while (!respuesta.equalsIgnoreCase("i") && !respuesta.equalsIgnoreCase("c")) {
 			mensaje = "Comando incorrecto, por favor presione la tecla i.";
 			respuesta = invocador.obtenerDatos(mensaje);
+		}
+		
+		if (respuesta.equalsIgnoreCase("c")) {
+			return -1;
 		}
 		OutputStream byteArray = new ByteArrayOutputStream();
 		try {
 			// Pido grabar el audio 
 			this.manipularAudio.grabar(byteArray);
+			return 0;
 		} catch (Exception e) {
 			logger.error("Error, no puedo entrar en la inter audio"
 					+ e.getMessage());
+			return -2;
 		}
+		
 	}
 	
 	/**
@@ -196,13 +204,43 @@ return "";
 	/**
 	 * Reproduce un documento entero.
 	 * @param pathDocumento direccion del archivo que va a ser leido.
+	 * @return devuelve un mensaje informando el estado final del proceso.
 	 */
-	public final void playDocument(final String pathDocumento) {
+	public final String playDocument(final String pathDocumento) {
 		//TODO implementar.
+		Iterator iterador;
+		// Mando a parsear el documento y obtengo un collection
+		contenedor = this.parser.archivoDeCarga(pathDocumento);
+		
+		IunidadDeHabla elemento;
+		iterador = contenedor.iterator();
+		InputStream audioAReproducir;
+		// Mientras tenga palabras para verificar consulto
+		while (iterador.hasNext()) {
+			
+			elemento = (IunidadDeHabla) iterador.next();
+			
+			// Si lo encontro sigo en el bucle
+			RegistroDiccionario registro = 
+				this.diccionario.buscarPalabra(elemento.toString());
+			
+			if (registro.getOffset() == 0L) {
+				continue;
+			}
+			
+			// Si lo encontro busco el audio
+			
+			//TODO: Leer el registro, obtener el offset y buscar el audio
+							
+			//this.playWord(audioAReproducir);
+
+		}
+		logger.debug("Sali de al funcion playDocument");
+		return "Reproduccion finalizada";
 	}
 
 	/**
-	 * Reproduce un texto introducido palabra por palabra
+	 * Reproduce un texto introducido palabra por palabra.
 	 * @param textoAReproducir Las palabras a leer.
 	 */
 	public final void playText(final String textoAReproducir) {
@@ -216,6 +254,13 @@ return "";
 		this.manipularAudio.reproducir();
 	}
 
+	/**
+	 * Reproduce el audio que recibe.
+	 * @param audioAReproducir es el audio que se va a reproducir.
+	 */
+	public final void playWord(final InputStream audioAReproducir) {
+		this.manipularAudio.reproducir(audioAReproducir);
+	}
 	/**
 	 * Constructor de la clase.
 	 */
