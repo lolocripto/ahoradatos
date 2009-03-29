@@ -13,9 +13,9 @@ public interface Audio {
 
 	/**
 	 * 
-	 * @param targetType
+	 * @param oStream .
 	*/
-	void grabar(final AudioFileFormat.Type targetType, OutputStream oStream);
+	void grabar(OutputStream oStream);
 	
 	/**
 	 * 

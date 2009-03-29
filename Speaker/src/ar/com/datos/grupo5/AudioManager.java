@@ -58,14 +58,15 @@ public class AudioManager implements Audio {
 	 * @see ar.com.datos.grupo5.interfaces.Audio#grabar(javax.sound.sampled.AudioFileFormat.Type,
 	 *      java.io.OutputStream)
 	 */
-	public final void grabar(final AudioFileFormat.Type targetType, OutputStream output) {
+	public final void grabar(OutputStream output) {
 		
 		lastOutput = output;
 
 		try {
 			
 			recorder = new SimpleAudioRecorder(
-					targetType, lastOutput);
+                    AudioFileFormat.Type.AU, lastOutput);
+
 			
 			recorder.init();
 			

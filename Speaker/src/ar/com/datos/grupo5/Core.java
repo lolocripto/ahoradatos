@@ -157,7 +157,7 @@ public class Core {
 		String respuesta;
 	
 		// Pido grabar el audio 
-		this.manipularAudio.grabar(AudioFileFormat.Type.AU,this.oStream);
+		this.manipularAudio.grabar(this.oStream);
 		mensaje = "Para detener la grabación ingrese la tecla f y luego enter";
 		invocador.mensaje(mensaje);
 		return 0;
