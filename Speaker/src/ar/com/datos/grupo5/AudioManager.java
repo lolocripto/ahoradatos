@@ -85,6 +85,11 @@ public class AudioManager implements Audio {
 	public void reproducir() {
 		
 		this.reproducir(null);
+		try {
+			player.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**

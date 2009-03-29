@@ -48,43 +48,43 @@ public class main {
 //			consola.join();
 			
 			
-			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-
-			SimpleAudioRecorder rec = new SimpleAudioRecorder(
-					AudioFileFormat.Type.AU, byteArray);
-		
-			rec.init();
-			
-			logger.debug("Grabando...");
-			
-			rec.startRecording();
-			
-			Thread.sleep(5000);
-			
-			rec.stopRecording();
-			
-			logger.debug("Terminando de grabar");
-
-			InputStream is = new ByteArrayInputStream(
-					((ByteArrayOutputStream) rec.getOutput()).toByteArray());
-
-			File soundFile = new File("/home/cristian/Desktop/audio_real.au");
-			InputStream inf = new FileInputStream(soundFile);
-			BufferedInputStream b = new BufferedInputStream(inf);
-			
-			SimpleAudioPlayer player = new SimpleAudioPlayer(b);
-			
-			player.init();
-
-			logger.debug("reproduciendo....");
-			
-			player.startPlaying();
-			
-			Thread.sleep(5000);
-			
-			player.stopPlaying();
-			
-			logger.debug("Terminó");
+//			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+//
+//			SimpleAudioRecorder rec = new SimpleAudioRecorder(
+//					AudioFileFormat.Type.AU, byteArray);
+//		
+//			rec.init();
+//			
+//			logger.debug("Grabando...");
+//			
+//			rec.startRecording();
+//			
+//			Thread.sleep(5000);
+//			
+//			rec.stopRecording();
+//			
+//			logger.debug("Terminando de grabar");
+//
+//			InputStream is = new ByteArrayInputStream(
+//					((ByteArrayOutputStream) rec.getOutput()).toByteArray());
+//
+//			File soundFile = new File("/home/cristian/Desktop/audio_real.au");
+//			InputStream inf = new FileInputStream(soundFile);
+//			BufferedInputStream b = new BufferedInputStream(inf);
+//			
+//			SimpleAudioPlayer player = new SimpleAudioPlayer(b);
+//			
+//			player.init();
+//
+//			logger.debug("reproduciendo....");
+//			
+//			player.startPlaying();
+//			
+//			Thread.sleep(5000);
+//			
+//			player.stopPlaying();
+//			
+//			logger.debug("Terminó");
 
 //			Archivo archivo = new Secuencial();
 //			
@@ -105,6 +105,18 @@ public class main {
 //			
 //			archivo.cerrar();
 			
+			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+			
+			AudioManager manager = new AudioManager();
+			
+			manager.grabar(byteArray);
+			
+			Thread.sleep(6000);
+			
+			manager.terminarGrabacion();
+			
+			//Este reproducir no se puede para, reproduce todo lo que hay.
+			manager.reproducir();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
