@@ -48,5 +48,20 @@ public class Diccionario {
 	public void cerrar() throws IOException {
 		this.archivo.cerrar();
 	}
+	
+	/**
+	 * Busca en el diccionario la palabra que recibe.
+	 * @param palabra La palabra que se quiere buscar.
+	 * @return null si no encuentra la palabra, si no devuelve elregitro.
+	 */
+	public final RegistroDiccionario buscarPalabra(final String palabra) {
+
+		RegistroDiccionario registro = new RegistroDiccionario();
+		
+		//TODO buscar en el archivo secuencial la palabra
+		// y armar el registro.
+		
+		return null;
+	}
 
 }
