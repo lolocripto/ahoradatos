@@ -77,10 +77,18 @@ public class RegistroAudio implements Registro {
 	 * @param dato the dato to set
 	 */
 	public void setDato(DataOutputStream dato) {
-		this.dato = dato;
+	 	this.dato = dato;
 		this.longDato = (long) dato.size();
 		// Acá considero el offset (long).
 		this.moreBytes = (long) (this.longDato + 1) * 8; 
+	}
+	
+	/**
+	 * @see ar.com.datos.grupo5.interfaces.Registro#getLongDatos()
+	 * @return Devuelve la longitud del dato almacenado.
+	 */
+	 public long getLongDatos(){
+		return longDato;
 	}
 
 }

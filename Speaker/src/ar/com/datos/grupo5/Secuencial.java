@@ -4,8 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import ar.com.datos.grupo5.interfaces.Archivo;
-import ar.com.datos.grupo5.interfaces.Registro;
+import ar.com.datos.grupo5.interfaces.*;
+import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
  * Clase Para el manejo de archivos secuenciales.
@@ -24,9 +24,8 @@ public class Secuencial implements Archivo {
 	 * Metodo para Intentar abrir un archivo, pasado por parámetro.
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#abrir(String, String)
 	 */
-	public boolean abrir(final String archivo, final String modo)
-			throws FileNotFoundException {
-
+	public boolean abrir(final String archivo, final String modo) throws FileNotFoundException {
+		
 		try {
 
 			file = new RandomAccessFile(archivo, modo);
@@ -40,6 +39,8 @@ public class Secuencial implements Archivo {
 
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#borrar(Registro)
+	 * @param registro : Es el registro a buscar en el archivo.
+	 * @return Devuelve el resultado de la operación.
 	 */
 	public final boolean borrar(final Registro registro) {
 		
@@ -50,10 +51,31 @@ public class Secuencial implements Archivo {
 
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#buscar(Registro)
+	 * @param registro : Es el registro a buscar en el archivo.
+	 * @return Devuelve el resultado de la búsqueda, quedando posicionado el
+	 * puntero en la posición donde debería estar el patrón buscado.
 	 */
 	public final boolean buscar(final Registro registro) {
 		// TODO Auto-generated method stub
-		return false;
+		byte buffer[] = null;
+		Long offset = (long)0;
+		int tamanio = Constantes.SIZE_OF_INT;
+		
+		//Buscar en el registro de datos
+		try {
+			this.file.read(buffer, Constantes.SIZE_OF_LONG, tamanio);
+			if (registro.getLongDatos() == (long)Conversiones.arrayByteToInt(buffer))
+			{
+				//pueden ser iguales.
+				
+			}
+		} 
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	/**

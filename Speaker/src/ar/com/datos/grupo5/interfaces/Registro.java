@@ -9,7 +9,7 @@ package ar.com.datos.grupo5.interfaces;
 public interface Registro {
 	
 	/**
-	 * Este metodo convierte el objeto en una tira de bytes.
+	 * Este método convierte el objeto en una tira de bytes.
 	 * @return la tira de bytes.
 	 */
 	byte[] getBytes();
@@ -19,4 +19,10 @@ public interface Registro {
 	 * @return true si hay mas bytes para devolver con getBytes()
 	 */
 	boolean hasMoreBytes();
+	
+	/**
+	 * Longitud del dato almacenado.
+	 * @return Devuelve la longitud del dato almacenado.
+	 */
+	long getLongDatos();
 }

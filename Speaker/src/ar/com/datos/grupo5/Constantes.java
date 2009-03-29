@@ -39,7 +39,16 @@ public class Constantes {
 	 * Abrir un archivo para lectura y escritura.
 	 */
 	public static final String ABRIR_PARA_LECTURA_ESCRITURA = "rw";
+		
+    /**
+     * Tamaño en bytes del long.
+	 */
+	public static final int SIZE_OF_LONG = 8;
 	
+	/**
+	 * Tamaño en bytes del int.
+	 */
+	public static final int SIZE_OF_INT = 4;
 	/**
 	 * Tamaño
 	 */

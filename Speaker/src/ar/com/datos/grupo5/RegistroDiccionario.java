@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import ar.com.datos.grupo5.interfaces.Registro;
 import ar.com.datos.grupo5.utils.Conversiones;
+import ar.com.datos.grupo5.Constantes;
 
 /**
  * Esta clase implementa el registro para el diccionario.
@@ -36,16 +37,6 @@ public class RegistroDiccionario implements Registro {
 	private int longDato;
 	
 	/**
-	 * Tamaño en bytes del long.
-	 */
-	private static final int SIZE_OF_LONG = 8;
-	
-	/**
-	 * Tamaño en bytes del int.
-	 */
-	private static final int SIZE_OF_INT = 4;
-	
-	/**
 	 * En este caso se devuelve de una vez todos los bytes. Devuelvo true la
 	 * primera vez y pongo en false, despues cuando se pregunta nuevamente
 	 * devuelvo false, pero pongo en true para que el registro pueda ser usado
@@ -70,7 +61,7 @@ public class RegistroDiccionario implements Registro {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
 		try {
-			int longDatosAdic = SIZE_OF_INT + SIZE_OF_LONG;
+			int longDatosAdic = Constantes.SIZE_OF_INT + Constantes.SIZE_OF_LONG;
 			byte[] datosByte = dato.getBytes();
 			
 			if (moreBytes == (dato.length() + longDatosAdic)) {
@@ -130,8 +121,14 @@ public class RegistroDiccionario implements Registro {
 		this.dato = dato;
 		this.longDato = dato.length();
 		// Acá considero el tamaño (int) y el offset (long).
-		this.moreBytes = (long) this.longDato + SIZE_OF_INT
-				+ SIZE_OF_LONG;
+		this.moreBytes = (long) this.longDato + Constantes.SIZE_OF_INT + Constantes.SIZE_OF_LONG;
 	}
 
+	/**
+	 * @see ar.com.datos.grupo5.interfaces.Registro#getLongDatos()
+	 * @return Devuelve la longitud del dato almacenado.
+	 */
+	 public long getLongDatos(){
+		return (long)longDato;
+	}
 }
