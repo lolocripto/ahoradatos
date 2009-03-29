@@ -13,7 +13,7 @@ import ar.com.datos.grupo5.interfaces.Registro;
 public interface Archivo {
 	/**
 	 * Método para Intentar abrir un archivo, pasado por parámetro.
-	 * @param archivo Path completo del archivo.
+	 * @param archivo Path completo del arc/home/xxvkue/Datos/ahoradatoshivo.
 	 * @param modo Es el modo en el que se abrirá el archivo {R,W,R+,A}.
 	 * @return devuelve el resultado de la operación.
 	 * @throws FileNotFoundException Si no puede abrir el Archivo.

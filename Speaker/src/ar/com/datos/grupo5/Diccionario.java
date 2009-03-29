@@ -14,6 +14,9 @@ import ar.com.datos.grupo5.interfaces.Archivo;
  */
 public class Diccionario {
 	
+	/**
+	 * Archivo que contendrá las palabras y que será manejado por el diccionario.
+	 */
 	private Archivo archivo;
 	
 	/**

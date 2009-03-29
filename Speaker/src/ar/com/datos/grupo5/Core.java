@@ -1,16 +1,22 @@
 package ar.com.datos.grupo5;
 
+
+import java.util.*;
+import ar.com.datos.grupo5.interfaces.InterfazUsuario;
+import ar.com.datos.grupo5.interfaces.Audio;
+import ar.com.datos.parser.ITextInput;
+import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.grupo5.Diccionario;
+import ar.com.datos.grupo5.interfaces.Archivo;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
-
+import javax.sound.sampled.AudioFileFormat;
 import org.apache.log4j.Logger;
 
-import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
-import ar.com.datos.grupo5.interfaces.Audio;
-import ar.com.datos.grupo5.interfaces.InterfazUsuario;
-import ar.com.datos.parser.ITextInput;
+
 
 /**
  * @author xxvkue
@@ -18,40 +24,38 @@ import ar.com.datos.parser.ITextInput;
  */
 public class Core {
 
-	/**
-	 * 
-	 */
-	private static final Logger logger = Logger.getLogger(Core.class);
-	
+
 	/** Atributos de la Clase.
 	 *  
-	 */
-	private String palabraActual;
-
-	/**
-	 * 
 	 */
 	private ITextInput parser;
 	
 	/**
+	 * Contiene todas las palabras conocidas por el sistema.
+	 */
+	private Diccionario diccionario;
+	/**
+	 * 
+	 */
+	private Archivo archivo;
+	/**
 	 * 
 	 */
 	private Audio manipularAudio;
-	
 	/**
 	 * 
 	 */
 	private OutputStream oStream;
-	
+		
 	/**
 	 * 
 	 */
 	private Collection<IunidadDeHabla>  contenedor; 
 	
 	/**
-	 * 
+	 * Logger para la clase.
 	 */
-	private InterfazUsuario interfazConUsuarios;
+	private static Logger logger = Logger.getLogger(Core.class);
 	
 	/**
 	 * 
@@ -72,10 +76,11 @@ public class Core {
 			elemento = (IunidadDeHabla) iterador.next();
 			
 			// Si lo encontro sigo en el bucle
-			if (true==true) continue;
+			if (1 == 2) continue;
 			
 			// Si no lo encontro pido ingresar el audio
-			String mensaje = "Para ingresar el audio para la palabra: ";
+			String mensaje = new String("Para ingresar el audio para la palabra: "+elemento.toString());
+
 			String respuesta = "0";
 			invocador.mensaje(mensaje);
 			
@@ -101,19 +106,43 @@ public class Core {
 		return "";
 	}
 
+	
+	public final String loadTest(final InterfazUsuario invocador){
+		
+		String cadena = "Hola";
+		String mensaje = new String("Para ingresar el audio para la palabra: "+cadena);
+		String respuesta;
+		invocador.mensaje(mensaje);
+		return "Para empezar la grabación ingrese la tecla i y luego enter";
+	}
+	
+	public final int I(final InterfazUsuario invocador) {
+		this.i(invocador);
+		return 0;
+	}
 	/**
-	 * 
 	 * @return coemntar
 	 */
-	public final int i() {
+	public final int i(final InterfazUsuario invocador) {
+		this.iniciarGrabacion(invocador);
 		return 0;
 	}
 
+	public final void F(final InterfazUsuario invocador){
+		this.f(invocador);
+	}
 	/**
 	 * 
 	 * @return comentar.
 	 */
-	public final int f() {
+	public final int f(final InterfazUsuario invocador) {
+		String mensaje, respuesta;
+		this.finalizarGrabacion(invocador);
+ //		this.playWord(this.oStream);
+	    
+	    mensaje = "La grabación ha sido correcta? S/N:";
+	    respuesta = invocador.obtenerDatos(mensaje);
+	    System.out.println("La respuesta es: "+respuesta);
 		return 0;
 	}
 
@@ -123,27 +152,15 @@ public class Core {
 	 * @return
 	 */
 	private int iniciarGrabacion(final InterfazUsuario invocador){
+
 		String mensaje;
 		String respuesta;
-		
-		mensaje = "Para empezar la grabación ingrese la tecla i y luego enter";
-		respuesta = invocador.obtenerDatos(mensaje);
-		
-		while (!respuesta.equalsIgnoreCase("i")
-				&& !respuesta.equalsIgnoreCase("c")) {
-			
-			respuesta = invocador
-					.obtenerDatos("Comando incorrecto. Ingrese I para grabar.");
-		}
-		
-		if (respuesta.equalsIgnoreCase("i")) {
-			// Pido grabar el audio 
-			this.manipularAudio.grabar(oStream);
-			return 0;
-		} else {
-			//Detengo la ejecucion del programa y dejo la consola activa
-			return 1;
-		}
+	
+		// Pido grabar el audio 
+		this.manipularAudio.grabar(AudioFileFormat.Type.AU,this.oStream);
+		mensaje = "Para detener la grabación ingrese la tecla f y luego enter";
+		invocador.mensaje(mensaje);
+		return 0;
 	}
 	
 	/**
@@ -152,34 +169,20 @@ public class Core {
 	 * @return
 	 */
 	private int finalizarGrabacion(final InterfazUsuario invocador) {
-		String mensaje;
-		String respuesta;
-		
-		mensaje = "Para detener la grabación ingrese la tecla f y luego enter";
-		respuesta = invocador.obtenerDatos(mensaje);
-		
-		while (!respuesta.equalsIgnoreCase("f")
-				&& !respuesta.equalsIgnoreCase("c")) {
-			
-			respuesta = invocador
-					.obtenerDatos("Comando incorrecto. Ingrese f para terminar.");
-		}
-		
-		if (respuesta.equalsIgnoreCase("i")) {
-			//Termino la grabacion
-			this.manipularAudio.terminarGrabacion();
-			return 0;
-		} else {
-			//Detengo la ejecucion del programa y dejo la consola activa
-			return 1;
-	    }
+
+
+	//Termino la grabacion
+		System.out.println("terminando la grabacion...");
+	this.manipularAudio.terminarGrabacion();
+	return 0;
 	}
 	/**
 	 * 
 	 * @param pathDocumento comentar
 	 * @return comentar.
 	 */
-	public final int playDocument(final String pathDocumento) {
+	public final int playDocument(final OutputStream pathDocumento) {
+
 		return 0;
 	}
 
@@ -217,14 +220,31 @@ public class Core {
 		logger.debug("Recibi esto:");
 		return "Todo OK";
 	}
+	
+	public Core(){
+		archivo = new Secuencial();
+		try {
+			archivo.crear("/home/xxvkue/Desktop/test.txt");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}		
+		
+	}
 
 	/**
 	 * @param args Los argumentos del programa.
 	 */
 	public static void main(final String[] args) {
 		
-		//Creo la consola y le paso la clase que ejecuta los metodos.
 		Consola consola = new Consola(Core.class);
+		
+		consola.start();
+		
+		try {
+			consola.join();
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		
 		//Me quedo leyendo la entrada.
 		consola.start();
