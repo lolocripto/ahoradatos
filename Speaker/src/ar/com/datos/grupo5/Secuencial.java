@@ -58,24 +58,19 @@ public class Secuencial implements Archivo {
 	public final boolean buscar(final Registro registro) {
 		// TODO Auto-generated method stub
 		byte buffer[] = null;
-		Long offset = (long)0;
-		int tamanio = Constantes.SIZE_OF_INT;
+		byte bufferRegistro[] = registro.getBytes();
 		
 		//Buscar en el registro de datos
 		try {
-			this.file.read(buffer, Constantes.SIZE_OF_LONG, tamanio);
-			if (registro.getLongDatos() == (long)Conversiones.arrayByteToInt(buffer))
-			{
-				//pueden ser iguales.
-				
-			}
+			this.file.read(buffer, 0, bufferRegistro.length);
+			if (buffer.equals(bufferRegistro))
+				return true;
 		} 
 		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
 		}
-		return true;
+		return false;
 	}
 
 	/**
