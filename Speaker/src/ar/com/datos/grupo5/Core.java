@@ -245,15 +245,5 @@ public class Core {
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		
-		//Me quedo leyendo la entrada.
-		consola.start();
-		
-		try {
-			consola.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
 	}
 }

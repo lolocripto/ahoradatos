@@ -6,7 +6,6 @@ package ar.com.datos.grupo5;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -83,7 +82,7 @@ public class AudioManager implements Audio {
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Audio#reproducir()
 	 */
-	public void reproducir() {
+	public final void reproducir() {
 		
 		this.reproducir(null);
 		try {
@@ -96,7 +95,7 @@ public class AudioManager implements Audio {
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Audio#reproducir(java.io.InputStream)
 	 */
-	public void reproducir(final InputStream audio) {
+	public final void reproducir(final InputStream audio) {
 		
 		InputStream is = null;
 		
@@ -139,7 +138,7 @@ public class AudioManager implements Audio {
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Audio#terminarReproduccion()
 	 */
-	public void terminarReproduccion() {
+	public final void terminarReproduccion() {
 		
 		logger.info("Terminando reproduccion.");
 		

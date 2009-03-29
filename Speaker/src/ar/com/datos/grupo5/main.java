@@ -115,7 +115,7 @@ public class main {
 			
 			manager.terminarGrabacion();
 			
-			//Este reproducir no se puede para, reproduce todo lo que hay.
+			//Este reproducir no se puede parar, reproduce todo lo que hay.
 			manager.reproducir();
 			
 		} catch (Exception e) {
