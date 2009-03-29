@@ -25,8 +25,9 @@ public class Secuencial implements Archivo {
 	 * Metodo para Intentar abrir un archivo, pasado por parámetro.
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#abrir(String, String)
 	 */
-	public boolean abrir(final String archivo, final String modo) throws FileNotFoundException {
-		
+	public boolean abrir(final String archivo, final String modo)
+			throws FileNotFoundException {
+
 		try {
 
 			file = new RandomAccessFile(archivo, modo);

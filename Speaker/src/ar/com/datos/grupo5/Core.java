@@ -80,7 +80,7 @@ public class Core {
 			invocador.mensaje(mensaje);
 			
 			//pido que grabe hasta que sea correcta la grabación
-			while (respuesta.compareToIgnoreCase("S") != 0) {
+			while (!respuesta.equalsIgnoreCase("S")) {
 				
 				// Protocolo de Grabacion
 				this.iniciarGrabacion(invocador);
@@ -165,7 +165,7 @@ public class Core {
 					.obtenerDatos("Comando incorrecto. Ingrese f para terminar.");
 		}
 		
-		if (respuesta.compareToIgnoreCase("i") == 0) {
+		if (respuesta.equalsIgnoreCase("i")) {
 			//Termino la grabacion
 			this.manipularAudio.terminarGrabacion();
 			return 0;
