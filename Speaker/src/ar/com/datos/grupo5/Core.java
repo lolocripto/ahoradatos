@@ -24,8 +24,8 @@ import java.io.IOException;
 public class Core {
 
 
-	/** Atributos de la Clase.
-	 *  
+	/**
+	 * Obtiene todas las posibles palabras a ser lidas. 
 	 */
 	private ITextInput parser;
 	
@@ -34,32 +34,26 @@ public class Core {
 	 */
 	private Diccionario diccionario;
 	/**
-	 * 
+	 * Permite grabar y reproducir el audio correspondiente a un palabra.
 	 */
 	private AudioManager manipularAudio;
-	/**
-	 * 
-	 */
-	private ByteArrayOutputStream oStream;
 		
 	/**
-	 * 
+	 * Conteniene todas las palabras a grabar o a leer del documento ingresado.
 	 */
 	private Collection<IunidadDeHabla>  contenedor; 
 	
-	/**
-	 * 
-	 */
-	private RegistroDiccionario registro;
 	/**
 	 * Logger para la clase.
 	 */
 	private static Logger logger = Logger.getLogger(Core.class);
 	
 	/**
-	 * @param invocador .
-	 * @param pathDocumento Agrergar comentario.
-	 * @return lo mismo.
+	 * Busca las palabras a grabar, graba el audio y lo guarda.
+	 * @param invocador Interfaz por la cual se realizan peticiones al usuario 
+	 * y se obtienen las respuestas.
+	 * @param pathDocumento Direccion donde se encuentra el archivo a ser examinado.
+	 * @return devuelve un mensaje informando el estado final del proceso.
 	 */
 	public final String load(final InterfazUsuario invocador,
 			final String pathDocumento) {
@@ -74,9 +68,6 @@ public class Core {
 		while (iterador.hasNext()) {
 			
 			elemento = (IunidadDeHabla) iterador.next();
-			
-			this.registro = new RegistroDiccionario();
-			this.registro.setDato(elemento.toString());
 			
 			// Si lo encontro sigo en el bucle
 //			if (this.archivo.buscar(this.registro)) {
@@ -101,7 +92,7 @@ public class Core {
 				// Protocolo para terminar la grabacion
 				this.finalizarGrabacion(invocador);
 				
-			    //this.playWord(this.oStream);
+				this.playWord();
 			    
 			    mensaje = "La grabación ha sido correcta? S/N: ";
 			    respuesta = invocador.obtenerDatos(mensaje);
@@ -149,8 +140,9 @@ return "";
 	}
 	
 	/**
-	 * 
-	 * @param invocador
+	 * Da comienzo a la grabación del audio de la palabra en cuestión.
+	 * @param invocador Interfaz por la cual se realizan peticiones al usuario 
+	 * y se obtienen las respuestas.
 	 * @return
 	 */
 	private void iniciarGrabacion(final InterfazUsuario invocador) {
@@ -176,9 +168,11 @@ return "";
 	}
 	
 	/**
-	 * 
-	 * @param invocador .
-	 * @return ??
+	 * Termina la grabación del audio, tanto con un final correcto como por 
+	 * una cancelación del usuario.
+	 * @param invocador Interfaz por la cual se realizan peticiones al usuario 
+	 * y se obtienen las respuestas.
+	 * @return 0 si la grabación termino bien, -1 si la grabación fue cancelada.
 	 */
 	private int finalizarGrabacion(final InterfazUsuario invocador) {
 		
@@ -186,51 +180,53 @@ return "";
 
 		mensaje = "Para detener la grabación ingrese la tecla f y luego enter: ";
 		respuesta = invocador.obtenerDatos(mensaje);
-		while (!respuesta.equalsIgnoreCase("f")) {
+		while (!respuesta.equalsIgnoreCase("f") && !respuesta.equalsIgnoreCase("c")) {
 			mensaje = "Comando incorrecto, por favor presione la tecla f.";
 			respuesta = invocador.obtenerDatos(mensaje);
 		}
 		//Termino la grabacion
 		this.manipularAudio.terminarGrabacion();
-		return 0;
+		if (respuesta.equalsIgnoreCase("f")) {
+			return 0;
+		} else {
+			return -1;
+		}
 	}
 	
 	/**
-	 * 
-	 * @param pathDocumento comentar
+	 * Reproduce un documento entero.
+	 * @param pathDocumento direccion del archivo que va a ser leido.
 	 */
-	public final void playDocument(final OutputStream pathDocumento) {
+	public final void playDocument(final String pathDocumento) {
 		//TODO implementar.
 	}
 
 	/**
-	 * 
-	 * @param textoAReproducir comentar
+	 * Reproduce un texto introducido palabra por palabra
+	 * @param textoAReproducir Las palabras a leer.
 	 */
 	public final void playText(final String textoAReproducir) {
 		//TODO Implementar.
 	}
 
 	/**
-	 * @param audio
+	 * Reproduce la última palabra leida.
 	 */
 	public final void playWord() {
 		this.manipularAudio.reproducir();
 	}
 
 	/**
-	 * .
+	 * Constructor de la clase.
 	 */
 	public Core() {
 		this.diccionario = new Diccionario();
 		this.manipularAudio = new AudioManager();
-		this.oStream = new ByteArrayOutputStream();
 		this.diccionario = new Diccionario();
-		this.parser = new TextInterpreter();
-		
+		this.parser = new TextInterpreter();	
 	}
 
-	/**
+	/** Inicia el programa.
 	 * @param args Los argumentos del programa.
 	 */
 	public static void main(final String[] args) {
