@@ -64,6 +64,7 @@ public class Parser implements BufferRecharger{
 		}
 	}
 	
+
 	public final boolean hasMoreItems() {
 		return moreLines;
 	}
@@ -86,10 +87,8 @@ public class Parser implements BufferRecharger{
 						.getPalabra(listaPalabras[sigPalabra]));
 				sigPalabra++;
 			}
-			lineasProcesadas++;
-
+			lineasProcesadas++ ;
 		}
-
 	}
 
 	public Collection< ? > listar() {
