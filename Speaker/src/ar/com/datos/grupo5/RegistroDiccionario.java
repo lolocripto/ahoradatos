@@ -36,15 +36,28 @@ public class RegistroDiccionario implements Registro {
 	private int longDato;
 	
 	/**
+	 * Tamaño en bytes del long.
+	 */
+	private static final int SIZE_OF_LONG = 8;
+	
+	/**
+	 * Tamaño en bytes del int.
+	 */
+	private static final int SIZE_OF_INT = 4;
+	
+	/**
 	 * En este caso se devuelve de una vez todos los bytes. Devuelvo true la
 	 * primera vez y pongo en false, despues cuando se pregunta nuevamente
 	 * devuelvo false, pero pongo en true para que el registro pueda ser usado
 	 * denuevo.
 	 * @return true si hay mas bytes para pedir con getBytes.
 	 */
-	public final boolean hasMoreBytes() {		
-		if (moreBytes>0)
+	public final boolean hasMoreBytes() {
+		
+		if (moreBytes > 0) {
 			return true;
+		}
+		
 		return false;
 	}
 	
@@ -57,13 +70,13 @@ public class RegistroDiccionario implements Registro {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
 		try {
-			
+			int longDatosAdic = SIZE_OF_INT + SIZE_OF_LONG;
 			byte[] datosByte = dato.getBytes();
 			
-			if(moreBytes == (dato.length() * 8 + 12)){	
+			if (moreBytes == (dato.length() * SIZE_OF_LONG + longDatosAdic)) {
 				byte[] longDatoBytes = Conversiones.intToArrayByte(longDato);
 				byte[] offsetBytes = Conversiones.longToArrayByte(offset);
-				
+
 				dos.write(offsetBytes, 0, offsetBytes.length);
 				dos.write(longDatoBytes, 0, longDatoBytes.length);
 				moreBytes -= offsetBytes.length;
@@ -117,7 +130,7 @@ public class RegistroDiccionario implements Registro {
 		this.dato = dato;
 		this.longDato = dato.length();
 		// Acá considero el tamaño (int) y el offset (long).
-		this.moreBytes = (long) this.longDato * 8 + 12; 
+		this.moreBytes = (long) this.longDato * SIZE_OF_LONG + SIZE_OF_INT; 
 	}
 
 }
