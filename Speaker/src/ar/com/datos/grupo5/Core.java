@@ -8,7 +8,9 @@ import ar.com.datos.parser.ITextInput;
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.Diccionario;
 import ar.com.datos.grupo5.interfaces.Archivo;
+import ar.com.datos.capturaaudio.exception.SimpleAudioRecorderException;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
@@ -41,11 +43,11 @@ public class Core {
 	/**
 	 * 
 	 */
-	private Audio manipularAudio;
+	private AudioManager manipularAudio;
 	/**
 	 * 
 	 */
-	private OutputStream oStream;
+	private ByteArrayOutputStream oStream;
 		
 	/**
 	 * 
@@ -111,41 +113,28 @@ public class Core {
 		
 		String cadena = "Hola";
 		String mensaje = new String("Para ingresar el audio para la palabra: "+cadena);
-		String respuesta;
+		String respuesta = "0";
 		invocador.mensaje(mensaje);
-		return "Para empezar la grabación ingrese la tecla i y luego enter";
+				
+			//pido que grabe hasta que sea correcta la grabación
+			while (!respuesta.equalsIgnoreCase("S")) {
+				
+				// Protocolo de Grabacion
+				this.iniciarGrabacion(invocador);
+				
+				// Protocolo para terminar la grabacion
+				this.finalizarGrabacion(invocador);
+				
+			    this.playWord();
+			    
+			    mensaje = "La grabación ha sido correcta? S/N:";
+			    respuesta = invocador.obtenerDatos(mensaje);
+			    }
+			 
+			return respuesta;
+	
 	}
 	
-	public final int I(final InterfazUsuario invocador) {
-		this.i(invocador);
-		return 0;
-	}
-	/**
-	 * @return coemntar
-	 */
-	public final int i(final InterfazUsuario invocador) {
-		this.iniciarGrabacion(invocador);
-		return 0;
-	}
-
-	public final void F(final InterfazUsuario invocador){
-		this.f(invocador);
-	}
-	/**
-	 * 
-	 * @return comentar.
-	 */
-	public final int f(final InterfazUsuario invocador) {
-		String mensaje, respuesta;
-		this.finalizarGrabacion(invocador);
- //		this.playWord(this.oStream);
-	    
-	    mensaje = "La grabación ha sido correcta? S/N:";
-	    respuesta = invocador.obtenerDatos(mensaje);
-	    System.out.println("La respuesta es: "+respuesta);
-		return 0;
-	}
-
 	/**
 	 * 
 	 * @param invocador
@@ -156,10 +145,20 @@ public class Core {
 		String mensaje;
 		String respuesta;
 	
-		// Pido grabar el audio 
-		this.manipularAudio.grabar(this.oStream);
-		mensaje = "Para detener la grabación ingrese la tecla f y luego enter";
-		invocador.mensaje(mensaje);
+		mensaje = "Para iniciar la grabación ingrese la tecla i y luego enter: ";
+		respuesta = invocador.obtenerDatos(mensaje);
+		while (!respuesta.equalsIgnoreCase("i")) {
+			mensaje ="Comando incorrecto, por favor presione la tecla i.";
+			respuesta = invocador.obtenerDatos(mensaje);
+		}
+		OutputStream byteArray = new ByteArrayOutputStream();
+		try {
+			// Pido grabar el audio 
+			this.manipularAudio.grabar(byteArray);
+			//
+		} catch (Exception e) {
+			System.out.println("Error, no puedo entrar en la inter audio"+e.toString());
+		}		
 		return 0;
 	}
 	
@@ -169,12 +168,17 @@ public class Core {
 	 * @return
 	 */
 	private int finalizarGrabacion(final InterfazUsuario invocador) {
+		String mensaje,respuesta;
 
-
-	//Termino la grabacion
-		System.out.println("terminando la grabacion...");
-	this.manipularAudio.terminarGrabacion();
-	return 0;
+		mensaje = "Para detener la grabación ingrese la tecla f y luego enter";
+		respuesta = invocador.obtenerDatos(mensaje);
+		while (!respuesta.equalsIgnoreCase("f")) {
+			mensaje ="Comando incorrecto, por favor presione la tecla f.";
+			respuesta = invocador.obtenerDatos(mensaje);
+		}
+		//Termino la grabacion
+		this.manipularAudio.terminarGrabacion();
+		return 0;
 	}
 	/**
 	 * 
@@ -199,8 +203,8 @@ public class Core {
 	 * @param audio
 	 * @return
 	 */
-	public final int playWord(final InputStream audio) {
-		this.manipularAudio.reproducir(audio);
+	public final int playWord() {
+		this.manipularAudio.reproducir();
 		return 0;
 	}
 	
@@ -223,6 +227,9 @@ public class Core {
 	
 	public Core(){
 		archivo = new Secuencial();
+		this.manipularAudio = new AudioManager();
+		this.oStream = new ByteArrayOutputStream();
+		this.diccionario = new Diccionario();
 		try {
 			archivo.crear("/home/xxvkue/Desktop/test.txt");
 		} catch (Exception e) {
