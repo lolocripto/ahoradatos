@@ -5,22 +5,28 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import org.apache.log4j.Logger;
+
+import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 
 /**
  * @author zeke
  *
  */
-public class Parser {
+public class Parser implements BufferRecharger{
 
 	private String ruta_archivo;
 	private File archivo;
 	private static Logger milogueador;
 	private FileReader lector;
 	private BufferedReader buffer;
+	private boolean moreLines;
+	
 
-	public Parser(String ruta_archivo) throws FileNotFoundException {
+	public Parser(final String ruta_archivo) throws FileNotFoundException {
+		
 		this.ruta_archivo = ruta_archivo;
 		File archivo = new File(ruta_archivo);
 		milogueador = Logger.getLogger(Parser.class);
@@ -35,20 +41,66 @@ public class Parser {
 
 	}
 
+	
+	
 	/**
 	 * @param caca
 	 * @throws IOException
 	 */
-	
-	
-	private void leerLinea(String caca) throws IOException {
-
+	private String leerLinea() {
 		
-		String linea = (buffer.readLine()).toLowerCase();
-		String regEx = "([;\\s\\t:?!]+)|[,.\\s]{2} |(^(\\d\\D\\d)) ";
-		String[] vector = caca.split(regEx);
+		String linea=null;
+		try {
+			linea = (buffer.readLine());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (linea != null){
+		linea.toLowerCase();
+		return linea;
+		}else{
+			moreLines = false;
+			return null;
+		}
+	}
+	
 
+	@Override
+	public final boolean hasMoreItems() {
+		return moreLines;
 	}
 
+	
+
+	public final void recargarBuffer(final Collection<Object> coleccion, 
+			final int maxLineas) {
+		
+		String materiaPrima;
+		int lineasProcesadas =0;
+		int sigPalabra =0;
+		String[] listaPalabras;
+		materiaPrima = this.leerLinea();
+				
+		while ( (lineasProcesadas<maxLineas)&& (materiaPrima !=null))	{
+			materiaPrima = this.leerLinea();
+			listaPalabras = PatternRecognizer.procesarLinea(materiaPrima);
+			
+			while ( sigPalabra < listaPalabras.length){
+				coleccion.add(PalabrasFactory.getPalabra(listaPalabras[sigPalabra]));
+				sigPalabra++;
+			}
+			lineasProcesadas++;
+			
+			}
+			
+		}
+
+
+
+	@Override
+	public Collection< ? > listar() {
+		Collection<IunidadDeHabla> coleccion = new ArrayList<IunidadDeHabla>();
+		return coleccion;
+	}
 	
 	}

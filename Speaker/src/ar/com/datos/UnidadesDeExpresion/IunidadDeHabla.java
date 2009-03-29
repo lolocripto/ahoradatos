@@ -8,9 +8,9 @@ public interface IunidadDeHabla {
 	
 	/**
 	 * Método que permite reproducir la palabra actual.
-	 * 
+	 * @return Objeto con el stream de sonido asociado a la palabra
 	 */
-	void say();
+	Object getAudio();
 	
 	/**
 	 * Este método permite obtener la cadena a la que hace referencia el objeto.

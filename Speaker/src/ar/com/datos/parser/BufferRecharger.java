@@ -2,9 +2,32 @@ package ar.com.datos.parser;
 
 import java.util.Collection;
 
+/**
+ * Interfaz que permite usar la colección BufferizableCollection.
+ * El objeto que implementa esta interfaz podrá ofrecer al usuario
+ * un metodo de acceso a sus items transparentemente bufferisados
+ * mediante una colección que se auto-recarga al agotarse su buffer.
+ * @author zeke
+ *
+ */
 public interface BufferRecharger {
+	/**
+	 * 
+	 * @return
+	 */
+	Collection< ? > listar ();
 
-	public void recargarBuffer (Collection<Object> coleccion, int MaxBufferedObjects);
+	/**
+	 * Método que es llamado por la colección bufferizable cuando agota su buffer
+	 * por defecto.
+	 * @param coleccion colección bufferisable
+	 * @param MaxBufferedObjects cantidad máxima de objetos que entran en el buffer
+	 */
+	void recargarBuffer (Collection< Object > coleccion, int MaxBufferedObjects);
 
-	public boolean hasMoreItems(); 
+	/**
+	 * Permite saber si hay mas elementos para devolver
+	 * @return boolean que dice si hay mas elementos
+	 */
+	boolean hasMoreItems(); 
 }
