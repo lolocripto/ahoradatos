@@ -61,4 +61,11 @@ public interface Archivo {
 	 * debería estar la cadena buscada.
 	 */
 	boolean borrar(final Registro registro);
+	
+	/**
+	 * Borra el archivo en disco.
+	 * @return true si lo pudo borrar.
+	 * @throws IOException
+	 */
+	boolean eliminar() throws IOException;
 }

@@ -1,5 +1,6 @@
 package ar.com.datos.grupo5;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -21,6 +22,11 @@ public class Secuencial implements Archivo {
 	private RandomAccessFile file = null;
 	
 	/**
+	 * Ruta del archivo.
+	 */
+	private String nombreArchivo;
+	
+	/**
 	 * Metodo para Intentar abrir un archivo, pasado por parámetro.
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#abrir(String, String)
 	 */
@@ -28,6 +34,7 @@ public class Secuencial implements Archivo {
 		
 		try {
 
+			nombreArchivo = archivo;
 			file = new RandomAccessFile(archivo, modo);
 
 		} catch (FileNotFoundException e) {
@@ -44,8 +51,7 @@ public class Secuencial implements Archivo {
 	 */
 	public final boolean borrar(final Registro registro) {
 		
-		//file.close();
-		//File archivo = new File();
+		//No se implemeta esta funcionalidad.
 		return false;
 	}
 
@@ -89,7 +95,8 @@ public class Secuencial implements Archivo {
 		
 		try {
 			
-			file = new RandomAccessFile(archivo,
+			nombreArchivo = archivo;
+			file = new RandomAccessFile(nombreArchivo,
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 			//Si existe lo trunco.
 			try {
@@ -142,5 +149,13 @@ public class Secuencial implements Archivo {
 				offset += bytesEnviar;
 			}
 		}
+	}
+
+	public boolean eliminar() throws IOException {
+		
+		file.close();
+		File fileAux = new File(nombreArchivo);
+		return fileAux.delete();
+		
 	}
 }
