@@ -7,7 +7,7 @@ import java.io.RandomAccessFile;
 
 import ar.com.datos.grupo5.interfaces.Archivo;
 import ar.com.datos.grupo5.interfaces.Registro;
-import ar.com.datos.grupo5.utils.*;
+import ar.com.datos.grupo5.utils.Conversiones;
 /**
  * Clase Para el manejo de archivos secuenciales.
  * @see ar.com.datos.grupo5.interfaces.Archivo
@@ -83,7 +83,7 @@ public class Secuencial implements Archivo {
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#cerrar()
 	 */
-	public void cerrar() throws IOException {
+	public final void cerrar() throws IOException {
 		
 			file.close();
 	}
@@ -92,9 +92,10 @@ public class Secuencial implements Archivo {
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#cerrar()
 	 * 
 	 */
-	public Registro primero(){
+	public Registro primero() {
+		
 		Registro registro = null;	
-		byte buffer[] = null;
+		byte[] buffer = null;
 		Long offset;
 		int longitud;
 		try {
