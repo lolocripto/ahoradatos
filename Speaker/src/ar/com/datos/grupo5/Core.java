@@ -1,22 +1,17 @@
 package ar.com.datos.grupo5;
 
 
-import java.util.*;
-import ar.com.datos.grupo5.interfaces.InterfazUsuario;
-import ar.com.datos.grupo5.interfaces.Audio;
-import ar.com.datos.parser.ITextInput;
-import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
-import ar.com.datos.grupo5.Diccionario;
-import ar.com.datos.grupo5.interfaces.Archivo;
-import ar.com.datos.capturaaudio.exception.SimpleAudioRecorderException;
-
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
-import javax.sound.sampled.AudioFileFormat;
+
 import org.apache.log4j.Logger;
+
+import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.grupo5.interfaces.Archivo;
+import ar.com.datos.grupo5.interfaces.InterfazUsuario;
+import ar.com.datos.parser.ITextInput;
 
 
 
@@ -60,11 +55,12 @@ public class Core {
 	private static Logger logger = Logger.getLogger(Core.class);
 	
 	/**
-	 * 
+	 * @param invocador .
 	 * @param pathDocumento Agrergar comentario.
 	 * @return lo mismo.
 	 */
-	public final String load(final InterfazUsuario invocador, final String pathDocumento) {
+	public final String load(final InterfazUsuario invocador,
+			final String pathDocumento) {
 		
 		Iterator iterador;
 		// Mando a parsear el documento y obtengo un collection
@@ -78,10 +74,14 @@ public class Core {
 			elemento = (IunidadDeHabla) iterador.next();
 			
 			// Si lo encontro sigo en el bucle
-			if (1 == 2) continue;
+			if (1 == 2) {
+				continue;
+			}
 			
 			// Si no lo encontro pido ingresar el audio
-			String mensaje = new String("Para ingresar el audio para la palabra: "+elemento.toString());
+			String mensaje = new String(
+					"Para ingresar el audio para la palabra: "
+							+ elemento.toString());
 
 			String respuesta = "0";
 			invocador.mensaje(mensaje);
@@ -100,19 +100,21 @@ public class Core {
 			    mensaje = "La grabación ha sido correcta? S/N:";
 			    respuesta = invocador.obtenerDatos(mensaje);
 			    }
-			 
-			//
 		}
 		
 		logger.debug("Sali de al funcion load");
 		return "";
 	}
 
-	
+	/**
+	 * Para test.
+	 * @param invocador
+	 * @return
+	 */
 	public final String loadTest(final InterfazUsuario invocador){
 		
 		String cadena = "Hola";
-		String mensaje = new String("Para ingresar el audio para la palabra: "+cadena);
+		String mensaje = "Para ingresar el audio para la palabra: " + cadena;
 		String respuesta = "0";
 		invocador.mensaje(mensaje);
 				
@@ -140,7 +142,7 @@ public class Core {
 	 * @param invocador
 	 * @return
 	 */
-	private int iniciarGrabacion(final InterfazUsuario invocador){
+	private void iniciarGrabacion(final InterfazUsuario invocador){
 
 		String mensaje;
 		String respuesta;
@@ -148,64 +150,60 @@ public class Core {
 		mensaje = "Para iniciar la grabación ingrese la tecla i y luego enter: ";
 		respuesta = invocador.obtenerDatos(mensaje);
 		while (!respuesta.equalsIgnoreCase("i")) {
-			mensaje ="Comando incorrecto, por favor presione la tecla i.";
+			mensaje = "Comando incorrecto, por favor presione la tecla i.";
 			respuesta = invocador.obtenerDatos(mensaje);
 		}
 		OutputStream byteArray = new ByteArrayOutputStream();
 		try {
 			// Pido grabar el audio 
 			this.manipularAudio.grabar(byteArray);
-			//
 		} catch (Exception e) {
-			System.out.println("Error, no puedo entrar en la inter audio"+e.toString());
-		}		
-		return 0;
+			logger.error("Error, no puedo entrar en la inter audio"
+					+ e.getMessage());
+		}
 	}
 	
 	/**
 	 * 
-	 * @param invocador
-	 * @return
+	 * @param invocador .
+	 * @return ??
 	 */
 	private int finalizarGrabacion(final InterfazUsuario invocador) {
-		String mensaje,respuesta;
+		
+		String mensaje, respuesta;
 
 		mensaje = "Para detener la grabación ingrese la tecla f y luego enter";
 		respuesta = invocador.obtenerDatos(mensaje);
 		while (!respuesta.equalsIgnoreCase("f")) {
-			mensaje ="Comando incorrecto, por favor presione la tecla f.";
+			mensaje = "Comando incorrecto, por favor presione la tecla f.";
 			respuesta = invocador.obtenerDatos(mensaje);
 		}
 		//Termino la grabacion
 		this.manipularAudio.terminarGrabacion();
 		return 0;
 	}
+	
 	/**
 	 * 
 	 * @param pathDocumento comentar
-	 * @return comentar.
 	 */
-	public final int playDocument(final OutputStream pathDocumento) {
-
-		return 0;
+	public final void playDocument(final OutputStream pathDocumento) {
+		//TODO implementar.
 	}
 
 	/**
 	 * 
 	 * @param textoAReproducir comentar
-	 * @return comentar
 	 */
-	public final int playText(final String textoAReproducir) {
-		return 0;
+	public final void playText(final String textoAReproducir) {
+		//TODO Implementar.
 	}
 
 	/**
 	 * @param audio
-	 * @return
 	 */
-	public final int playWord() {
+	public final void playWord() {
 		this.manipularAudio.reproducir();
-		return 0;
 	}
 	
 	/**.
@@ -225,7 +223,10 @@ public class Core {
 		return "Todo OK";
 	}
 	
-	public Core(){
+	/**
+	 * .
+	 */
+	public Core() {
 		archivo = new Secuencial();
 		this.manipularAudio = new AudioManager();
 		this.oStream = new ByteArrayOutputStream();
@@ -233,9 +234,8 @@ public class Core {
 		try {
 			archivo.crear("/home/xxvkue/Desktop/test.txt");
 		} catch (Exception e) {
-			// TODO: handle exception
-		}		
-		
+			logger.error(e.getMessage());
+		}
 	}
 
 	/**
