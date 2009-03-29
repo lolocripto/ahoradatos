@@ -69,4 +69,15 @@ public interface Archivo {
 	 */
 	boolean eliminar() throws IOException;
 	
+	/**
+	 * devuelve el primer registro.
+	 * @return EL registro.
+	 */
+	Registro primero();
+	
+	/**
+	 * Devuelve el registro siguiente al actual.
+	 * @return EL registro.
+	 */
+	Registro siguiente();
 }

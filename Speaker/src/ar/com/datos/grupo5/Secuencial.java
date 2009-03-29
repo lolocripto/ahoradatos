@@ -164,4 +164,14 @@ public class Secuencial implements Archivo {
 		return fileAux.delete();
 		
 	}
+
+	public Registro primero() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Registro siguiente() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
