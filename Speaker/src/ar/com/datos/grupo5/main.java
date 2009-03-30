@@ -40,52 +40,6 @@ public class main {
 		
 		try {
 			
-			//Creo la consola y le paso la clase que ejecuta los metodos.
-//			Consola consola = new Consola(Ejecutador.class);
-//			
-//			consola.start();
-//			
-//			consola.join();
-			
-			
-//			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-//
-//			SimpleAudioRecorder rec = new SimpleAudioRecorder(
-//					AudioFileFormat.Type.AU, byteArray);
-//		
-//			rec.init();
-//			
-//			logger.debug("Grabando...");
-//			
-//			rec.startRecording();
-//			
-//			Thread.sleep(5000);
-//			
-//			rec.stopRecording();
-//			
-//			logger.debug("Terminando de grabar");
-//
-//			InputStream is = new ByteArrayInputStream(
-//					((ByteArrayOutputStream) rec.getOutput()).toByteArray());
-//
-//			File soundFile = new File("/home/cristian/Desktop/audio_real.au");
-//			InputStream inf = new FileInputStream(soundFile);
-//			BufferedInputStream b = new BufferedInputStream(inf);
-//			
-//			SimpleAudioPlayer player = new SimpleAudioPlayer(b);
-//			
-//			player.init();
-//
-//			logger.debug("reproduciendo....");
-//			
-//			player.startPlaying();
-//			
-//			Thread.sleep(5000);
-//			
-//			player.stopPlaying();
-//			
-//			logger.debug("Terminó");
-
 			Archivo archivo = new Secuencial();
 			
 			archivo.crear("/home/cristian/Desktop/test.txt");
