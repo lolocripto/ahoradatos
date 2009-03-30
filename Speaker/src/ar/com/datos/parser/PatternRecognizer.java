@@ -97,7 +97,7 @@ public class PatternRecognizer {
 		 * un numero excluyendo a la ρ, las vocales acentuadas, la "u" con
 		 * diιresis y, por supuesto el espacio mismo
 		 */
-		String regEx = "[[^a-zA-Z_ ]&&[^ραινσϊό\\s]]";
+		String regEx = "[[^a-zA-Z_]&&[^ραινσϊό\\s\\/]]";
 
 		patron = Pattern.compile(regEx);
 		comparador = patron.matcher(linea);
@@ -211,5 +211,13 @@ public class PatternRecognizer {
 		lineaEntrada = lineaEntrada.toLowerCase();
 		return splitter(correctorSintactico(analisisLexico(lineaEntrada)));
 
+	}
+	
+	public static boolean esLineaVacia (String texto){
+		
+		if ((texto == "")||(texto=="\n")){
+			return true;
+		}else return false;
+		
 	}
 }

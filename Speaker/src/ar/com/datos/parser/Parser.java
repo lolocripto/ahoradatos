@@ -54,21 +54,23 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 	 */
 	private String leerLinea() {
 		
-		String linea=null;
+		String linea;
+		
 		try {
 			linea = (buffer.readLine());
 		} catch (IOException e) {
 			e.printStackTrace();
 			this.moreLines=false;
+			return null;
 		}
 		if (linea != null){
 		this.moreLines=true;
-		linea.toLowerCase();
 		return linea;
 		}else{
 			moreLines = false;
 			return null;
 		}
+	
 	}
 	
 
@@ -84,18 +86,22 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 		String[] listaPalabras;
 		materiaPrima = this.leerLinea();
 
-	//	while ((lineasProcesadas < maxLineas) && ((materiaPrima != null)&&(materiaPrima!=""))) {
 		while ((lineasProcesadas < maxLineas) && (materiaPrima != null)) {
+			
+			if (!PatternRecognizer.esLineaVacia(materiaPrima)){
 			listaPalabras = PatternRecognizer.procesarLinea(materiaPrima);
 			while (sigPalabra < listaPalabras.length) {
 				coleccion.add(PalabrasFactory
 						.getPalabra(listaPalabras[sigPalabra]));
 				sigPalabra++;
 			}
+			}
+			sigPalabra=0;
 			lineasProcesadas++ ;
 			materiaPrima = this.leerLinea();
 		}
 	}
+	
 
 	public Collection< IunidadDeHabla > listar() {
 		BufferedCollection<IunidadDeHabla> coleccion = new BufferedCollection<IunidadDeHabla>(this);
