@@ -108,9 +108,11 @@ public class Secuencial implements Archivo {
 	
 	/**
 	 * Metodo para Intentar abrir un archivo, pasado por parámetro.
+	 * 
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#abrir(String, String)
 	 */
-	public boolean abrir(final String archivo, final String modo) throws FileNotFoundException {
+	public boolean abrir(final String archivo, final String modo)
+			throws FileNotFoundException {
 		
 		try {
 
@@ -172,17 +174,17 @@ public class Secuencial implements Archivo {
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#cerrar()
 	 */
 	public final Registro primero() {
-		
-		//Limpio todo y cargo la cache.
+
+		// Limpio todo y cargo la cache.
 		posicionActual = 0;
-		cacheRegistros = new ArrayList < Registro >();
-		
+		cacheRegistros = new ArrayList<Registro>();
+
 		recargarCache();
-		
+
 		if (cacheRegistros.size() == 0) {
 			return null;
 		}
-		
+
 		Registro registro = cacheRegistros.remove(0);
 
 		return registro;
@@ -200,15 +202,14 @@ public class Secuencial implements Archivo {
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#crear(String)
 	 */
-	public final void crear(final String archivo)
-			throws FileNotFoundException {
-		
+	public final void crear(final String archivo) throws FileNotFoundException {
+
 		try {
-			
+
 			nombreArchivo = archivo;
 			file = new RandomAccessFile(nombreArchivo,
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-			//Si existe lo trunco.
+			// Si existe lo trunco.
 			try {
 				file.setLength(0);
 			} catch (IOException e) {
@@ -233,12 +234,12 @@ public class Secuencial implements Archivo {
 		byte[] bytes = null;
 		int bytesTotal = 0;
 		int bytesEnviar = 0;
-		
-		//Me posiciono al final de archivo.
+
+		// Me posiciono al final de archivo.
 		file.seek(file.length());
-		
+
 		while (registro.hasMoreBytes()) {
-			
+
 			offset = 0;
 			bytes = registro.getBytes();
 			bytesTotal = bytes.length;
@@ -246,8 +247,8 @@ public class Secuencial implements Archivo {
 			if (bytesTotal < bytesEnviar) {
 				bytesEnviar = bytesTotal;
 			}
-			
-			//Escribo la cantidad que me permite.
+
+			// Escribo la cantidad que me permite.
 			while (offset < bytesTotal) {
 
 				if ((bytesTotal - offset) < bytesEnviar) {
@@ -263,28 +264,29 @@ public class Secuencial implements Archivo {
 
 	/**
 	 * Borra el archivo del disco.
+	 * 
 	 * @return true si pudo borrar el archivo.
 	 * @throws IOException .
 	 */
 	public final boolean eliminar() throws IOException {
-		
+
 		file.close();
 		File fileAux = new File(nombreArchivo);
 		return fileAux.delete();
-		
+
 	}
 
 	/**
 	 * @see Archivo#siguiente()
 	 */
 	public final Registro siguiente() {
-		
+
 		recargarCache();
-		
+
 		if (cacheRegistros.size() == 0) {
 			return null;
 		}
-		
+
 		Registro registro = cacheRegistros.remove(0);
 
 		return registro;

@@ -51,9 +51,12 @@ public class Core {
 	
 	/**
 	 * Busca las palabras a grabar, graba el audio y lo guarda.
-	 * @param invocador Interfaz por la cual se realizan peticiones al usuario 
-	 * y se obtienen las respuestas.
-	 * @param pathDocumento Direccion donde se encuentra el archivo a ser examinado.
+	 * 
+	 * @param invocador
+	 *            Interfaz por la cual se realizan peticiones al usuario y se
+	 *            obtienen las respuestas.
+	 * @param pathDocumento
+	 *            Direccion donde se encuentra el archivo a ser examinado.
 	 * @return devuelve un mensaje informando el estado final del proceso.
 	 */
 	public final String load(final InterfazUsuario invocador,
@@ -142,8 +145,10 @@ return "";
 	
 	/**
 	 * Da comienzo a la grabación del audio de la palabra en cuestión.
-	 * @param invocador Interfaz por la cual se realizan peticiones al usuario 
-	 * y se obtienen las respuestas.
+	 * 
+	 * @param invocador
+	 *            Interfaz por la cual se realizan peticiones al usuario y se
+	 *            obtienen las respuestas.
 	 * @return 0 si la grabación termino bien, -1 si la grabación fue cancelada.
 	 */
 	private int iniciarGrabacion(final InterfazUsuario invocador) {
@@ -176,10 +181,12 @@ return "";
 	}
 	
 	/**
-	 * Termina la grabación del audio, tanto con un final correcto como por 
-	 * una cancelación del usuario.
-	 * @param invocador Interfaz por la cual se realizan peticiones al usuario 
-	 * y se obtienen las respuestas.
+	 * Termina la grabación del audio, tanto con un final correcto como por una
+	 * cancelación del usuario.
+	 * 
+	 * @param invocador
+	 *            Interfaz por la cual se realizan peticiones al usuario y se
+	 *            obtienen las respuestas.
 	 * @return 0 si la grabación termino bien, -1 si la grabación fue cancelada.
 	 */
 	private int finalizarGrabacion(final InterfazUsuario invocador) {
@@ -203,7 +210,9 @@ return "";
 	
 	/**
 	 * Reproduce un documento entero.
-	 * @param pathDocumento direccion del archivo que va a ser leido.
+	 * 
+	 * @param pathDocumento
+	 *            direccion del archivo que va a ser leido.
 	 * @return devuelve un mensaje informando el estado final del proceso.
 	 */
 	public final String playDocument(final String pathDocumento) {

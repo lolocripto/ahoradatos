@@ -11,6 +11,7 @@ import ar.com.datos.grupo5.Constantes;
 
 /**
  * Esta clase implementa el registro para el diccionario.
+ * 
  * @see ar.com.datos.grupo5.interfaces.Registro
  * @author Diego
  */
@@ -41,6 +42,7 @@ public class RegistroDiccionario implements Registro {
 	 * primera vez y pongo en false, despues cuando se pregunta nuevamente
 	 * devuelvo false, pero pongo en true para que el registro pueda ser usado
 	 * denuevo.
+	 * 
 	 * @return true si hay mas bytes para pedir con getBytes.
 	 */
 	public final boolean hasMoreBytes() {
@@ -61,7 +63,8 @@ public class RegistroDiccionario implements Registro {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
 		try {
-			int longDatosAdic = Constantes.SIZE_OF_INT + Constantes.SIZE_OF_LONG;
+			int longDatosAdic = Constantes.SIZE_OF_INT
+					+ Constantes.SIZE_OF_LONG;
 			byte[] datosByte = dato.getBytes();
 			
 			if (moreBytes == (dato.length() + longDatosAdic)) {
@@ -91,6 +94,7 @@ public class RegistroDiccionario implements Registro {
 	
 	/**
 	 * Método que devuelve el offset.
+	 * 
 	 * @return El offset en el archivo de audio.
 	 */
 	public final Long getOffset() {
@@ -99,7 +103,9 @@ public class RegistroDiccionario implements Registro {
 
 	/**
 	 * Método para cargar el offset.
-	 * @param offset El offset a cargar.
+	 * 
+	 * @param offset
+	 *            El offset a cargar.
 	 */
 	public final void setOffset(final Long offset) {
 		this.offset = offset;
@@ -107,6 +113,7 @@ public class RegistroDiccionario implements Registro {
 
 	/**
 	 * Método para devolver el dato.
+	 * 
 	 * @return El dato.
 	 */
 	public final String getDato() {
@@ -115,29 +122,34 @@ public class RegistroDiccionario implements Registro {
 
 	/**
 	 * Método para cargar el dato.
-	 * @param dato El dato a setear.
+	 * 
+	 * @param dato
+	 *            El dato a setear.
 	 */
 	public final void setDato(final String dato) {
 		this.dato = dato;
 		this.longDato = dato.length();
 		// Acá considero el tamaño (int) y el offset (long).
-		this.moreBytes = (long) this.longDato + Constantes.SIZE_OF_INT + Constantes.SIZE_OF_LONG;
+		this.moreBytes = (long) this.longDato + Constantes.SIZE_OF_INT
+				+ Constantes.SIZE_OF_LONG;
 	}
 
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Registro#getLongDatos()
 	 * @return Devuelve la longitud del dato almacenado.
 	 */
-	 public long getLongDatos(){
-		return (long)longDato;
+	public final long getLongDatos() {
+		return (long) longDato;
 	}
 	 
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Registro#setBytes(byte[], Long)
-	 * @param la tira de bytes.
-	 * @param offset El offset en el que se encuentra el dato de audio asociado.
+	 * @param buffer
+	 *            la tira de bytes.
+	 * @param offset
+	 *            El offset en el que se encuentra el dato de audio asociado.
 	 */
-	public void setBytes(final byte[] buffer, final Long offset){
+	public final void setBytes(final byte[] buffer, final Long offset) {
 		this.setOffset(offset);
 		this.setDato(new String(buffer));
 	}
