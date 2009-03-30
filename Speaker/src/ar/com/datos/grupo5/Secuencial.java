@@ -166,7 +166,7 @@ public class Secuencial implements Archivo {
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#cerrar()
 	 */
-	public Registro primero() {
+	public final Registro primero() {
 		
 		//Limpio todo y cargo la cache.
 		posicionActual = 0;
@@ -183,7 +183,7 @@ public class Secuencial implements Archivo {
 	 *Método para ver si tiene a continuación otro registro.
 	 *@return Si tiene otro regitro, true, sino, false.
 	 */
-	public boolean hasNext(){
+	public final boolean hasNext(){
 		//TODO Function
 		return true;
 	}
@@ -214,7 +214,7 @@ public class Secuencial implements Archivo {
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#insertar(Registro)
 	 */
-	public void insertar(final Registro registro) throws IOException {
+	public final void insertar(final Registro registro) throws IOException {
 
 		if (file == null) {
 			throw new IOException("No se creo o abrio el archivo.");
@@ -266,9 +266,9 @@ public class Secuencial implements Archivo {
 	}
 
 	/**
-	 * 
+	 * @see Archivo#siguiente()
 	 */
-	public Registro siguiente() {
+	public final Registro siguiente() {
 		
 		recargarCache();
 		
