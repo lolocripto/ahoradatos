@@ -108,13 +108,13 @@ public class main {
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 			
 			RegistroDiccionario reg = (RegistroDiccionario) archivo.primero();
-			logger.debug("Dato [" + reg.getDato() + "] offset [" + reg.getOffset() + "]");
 			
-			reg = (RegistroDiccionario) archivo.siguiente();
-			logger.debug("Dato [" + reg.getDato() + "] offset [" + reg.getOffset() + "]");
-			
-			reg = (RegistroDiccionario) archivo.siguiente();
-			logger.debug("Dato [" + reg.getDato() + "] offset [" + reg.getOffset() + "]");
+			while (reg != null) {
+				
+				logger.debug("Dato [" + reg.getDato() + "] offset ["
+						+ reg.getOffset() + "]");
+				reg = (RegistroDiccionario) archivo.siguiente();
+			}
 			
 //			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
 //			

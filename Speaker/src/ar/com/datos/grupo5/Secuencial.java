@@ -179,6 +179,10 @@ public class Secuencial implements Archivo {
 		
 		recargarCache();
 		
+		if (cacheRegistros.size() == 0) {
+			return null;
+		}
+		
 		Registro registro = cacheRegistros.remove(0);
 
 		return registro;
@@ -276,6 +280,10 @@ public class Secuencial implements Archivo {
 	public final Registro siguiente() {
 		
 		recargarCache();
+		
+		if (cacheRegistros.size() == 0) {
+			return null;
+		}
 		
 		Registro registro = cacheRegistros.remove(0);
 
