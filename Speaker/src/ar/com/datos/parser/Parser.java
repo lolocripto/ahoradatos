@@ -54,14 +54,17 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 	 */
 	private String leerLinea() {
 		
-		String linea;
+		String linea="";
 		
+		
+		while ((linea != null)&&(linea.isEmpty())){
 		try {
 			linea = (buffer.readLine());
 		} catch (IOException e) {
 			e.printStackTrace();
 			this.moreLines=false;
 			return null;
+		}
 		}
 		if (linea != null){
 		this.moreLines=true;
@@ -70,8 +73,7 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 			moreLines = false;
 			return null;
 		}
-	
-	}
+		}
 	
 
 	public final boolean hasMoreItems() {
