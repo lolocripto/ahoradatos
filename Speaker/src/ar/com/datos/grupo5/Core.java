@@ -2,20 +2,17 @@ package ar.com.datos.grupo5;
 
 
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
-import ar.com.datos.grupo5.interfaces.Archivo;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.parser.ITextInput;
 import ar.com.datos.parser.TextInterpreter;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 
 /**

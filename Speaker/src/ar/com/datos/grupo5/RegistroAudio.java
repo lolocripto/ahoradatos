@@ -99,6 +99,12 @@ public class RegistroAudio implements Registro {
 	public void setBytes(final byte[] buffer, final Long offset){
 		
 		//this.setDato(buffer.);
+		try {
+			dato.write(buffer, 0, buffer.length );
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
