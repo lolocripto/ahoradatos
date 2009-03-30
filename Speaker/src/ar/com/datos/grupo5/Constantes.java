@@ -54,4 +54,9 @@ public class Constantes {
 	 */
 	public static final int BUFFER_LECTURA_TEXT_INPUT = 100;
 	
+	/**
+	 * Tamaño de la cache de registros.
+	 */
+	public static final int TAMANO_CACHE = 10;
+	
 }

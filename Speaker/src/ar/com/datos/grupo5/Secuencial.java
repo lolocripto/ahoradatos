@@ -39,12 +39,7 @@ public class Secuencial implements Archivo {
 	 * Logger.
 	 */
 	private static Logger logger = Logger.getLogger(Secuencial.class);
-	
-	/**
-	 * Tamaño de la cache de registros.
-	 */
-	private static final int TAMANO_CACHE = 10;
-	
+
 	/**
 	 * Cache de registros.
 	 */
@@ -74,7 +69,7 @@ public class Secuencial implements Archivo {
         	
     		long tamanioArchivo = file.length();
         	
-        	for (int i = 0; i < TAMANO_CACHE; i++) {
+        	for (int i = 0; i < Constantes.TAMANO_CACHE; i++) {
     			
         		if (posicionActual == tamanioArchivo) {
 	            	break;
