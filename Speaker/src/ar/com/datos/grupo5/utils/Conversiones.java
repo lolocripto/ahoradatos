@@ -22,7 +22,9 @@ public class Conversiones {
 
 	/**
 	 * Long to array byte.
-	 * @param l el long a convertir.
+	 * 
+	 * @param l
+	 *            el long a convertir.
 	 * @return el long en bytes.
 	 */
 	public static final byte[] longToArrayByte(final long l) {
@@ -43,7 +45,9 @@ public class Conversiones {
 	
 	/**
 	 * array byte to long.
-	 * @param array el array a convertir.
+	 * 
+	 * @param array
+	 *            el array a convertir.
 	 * @return el long obtenido.
 	 */
 	public static final long arrayByteToLong(final byte[] array) {
@@ -63,7 +67,9 @@ public class Conversiones {
 	
 	/**
 	 * Int to array byte.
-	 * @param numero el entero a convertir.
+	 * 
+	 * @param numero
+	 *            el entero a convertir.
 	 * @return el entero en bytes.
 	 */
 	public static final byte[] intToArrayByte(final int numero) {
@@ -84,7 +90,9 @@ public class Conversiones {
 	
 	/**
 	 * array byte to int.
-	 * @param array el array de bytes a convertir.
+	 * 
+	 * @param array
+	 *            el array de bytes a convertir.
 	 * @return el entero obtenido.
 	 */
 	public static final int arrayByteToInt(final byte[] array) {

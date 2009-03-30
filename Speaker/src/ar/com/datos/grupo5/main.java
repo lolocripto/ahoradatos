@@ -1,19 +1,8 @@
 package ar.com.datos.grupo5;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-
-import javax.sound.sampled.AudioFileFormat;
-
 import org.apache.log4j.Logger;
 
-import ar.com.datos.capturaaudio.core.SimpleAudioRecorder;
 import ar.com.datos.grupo5.interfaces.Archivo;
-import ar.com.datos.reproduccionaudio.core.SimpleAudioPlayer;
 
 /**
  * Esta clase es de ejemplo.

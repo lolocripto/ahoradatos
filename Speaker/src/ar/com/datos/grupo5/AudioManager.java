@@ -58,24 +58,23 @@ public class AudioManager implements Audio {
 	 *      java.io.OutputStream)
 	 */
 	public final void grabar(OutputStream output) {
-		
+
 		lastOutput = output;
 
 		try {
-			
-			recorder = new SimpleAudioRecorder(
-                    AudioFileFormat.Type.AU, lastOutput);
 
-			
+			recorder = new SimpleAudioRecorder(AudioFileFormat.Type.AU,
+					lastOutput);
+
 			recorder.init();
-			
+
 			recorder.startRecording();
-			
+
 		} catch (SimpleAudioRecorderException e) {
 			logger.error("Error al grabar: " + e.getMessage());
 			e.printStackTrace();
 		}
-		
+
 		logger.info("Grabando...");
 	}
 

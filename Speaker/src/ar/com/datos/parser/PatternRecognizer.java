@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PatternRecognizer {
+	
 	/**
 	 * Método que limpia cualquier cadena de caracteres pasada por parámetro,
 	 * modificando todos aquellos caracteres considerados inválidos. Son
