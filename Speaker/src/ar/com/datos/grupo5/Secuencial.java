@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.interfaces.Archivo;
 import ar.com.datos.grupo5.interfaces.Registro;
@@ -25,6 +28,78 @@ public class Secuencial implements Archivo {
 	 * Ruta del archivo.
 	 */
 	private String nombreArchivo;
+	
+	/**
+	 * Posicion en el archivo.
+	 */
+	private long posicionActual = 0;
+	
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = Logger.getLogger(Secuencial.class);
+	
+	/**
+	 * Tamaño de la cache de registros.
+	 */
+	private static final int TAMANO_CACHE = 10;
+	
+	/**
+	 * Cache de registros.
+	 */
+	private List < Registro > cacheRegistros = null;
+	
+	/**
+	 * Si la cache esta vacia, la carga.
+	 */
+	private void recargarCache() {
+		
+		
+		//TODO ver que pasa si no hay tantos registros para leer.
+		
+		if (cacheRegistros.size() != 0) {
+			return;
+		}
+		
+		Registro registro = null;       
+        byte[] buffer = null;
+        Long offset = 0L;
+        int longitud = 0;
+        int cantidadLeida = 0;
+        
+        try {
+        	
+    		long tamanioArchivo = file.length();
+        	
+        	for (int i = 0; i < TAMANO_CACHE; i++) {
+    			
+        		if (posicionActual == tamanioArchivo) {
+	            	break;
+	            }
+        		
+	        	registro = new RegistroDiccionario();
+	        	
+	            file.seek(posicionActual);
+	            cantidadLeida += file.read(buffer, 0, Constantes.SIZE_OF_LONG);
+	            
+	            offset = Conversiones.arrayByteToLong(buffer);
+	            cantidadLeida += file.read(buffer, 0, Constantes.SIZE_OF_INT);
+	            
+	            longitud = Conversiones.arrayByteToInt(buffer);
+	            cantidadLeida += file.read(buffer, 0, longitud);
+	            
+	            registro.setBytes(buffer, offset);
+	            
+	            cacheRegistros.add(registro);
+	            
+	            posicionActual += cantidadLeida;
+        	}
+            
+        } catch (IOException e) {
+            logger.equals("" + e.getMessage());
+            e.printStackTrace();
+        }
+	}
 	
 	/**
 	 * Metodo para Intentar abrir un archivo, pasado por parámetro.
@@ -90,26 +165,16 @@ public class Secuencial implements Archivo {
 
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#cerrar()
-	 * 
 	 */
 	public Registro primero() {
 		
-		Registro registro = null;	
-		byte[] buffer = null;
-		Long offset;
-		int longitud;
-		try {
-			file.seek(0);
-			this.file.read(buffer, 0, Constantes.SIZE_OF_LONG);
-			offset = Conversiones.arrayByteToLong(buffer);
-			this.file.read(buffer, 0, Constantes.SIZE_OF_INT);
-			longitud = Conversiones.arrayByteToInt(buffer);
-			this.file.read(buffer, 0, longitud);
-			registro.setBytes(buffer, offset);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//Limpio todo y cargo la cache.
+		posicionActual = 0;
+		cacheRegistros.clear();
+		
+		recargarCache();
+		
+		Registro registro = cacheRegistros.remove(0);
 
 		return registro;
 	}
@@ -200,8 +265,15 @@ public class Secuencial implements Archivo {
 		
 	}
 
+	/**
+	 * 
+	 */
 	public Registro siguiente() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		recargarCache();
+		
+		Registro registro = cacheRegistros.remove(0);
+
+		return registro;
 	}
 }
