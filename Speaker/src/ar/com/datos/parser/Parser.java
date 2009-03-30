@@ -9,13 +9,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.apache.log4j.Logger;
 
+import ar.com.datos.UnidadesDeExpresion.BufferedCollection;
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 
 /**
  * @author zeke
  *
  */
-public class Parser implements BufferRecharger{
+public class Parser implements BufferRecharger<IunidadDeHabla> {
 
 	private String ruta_archivo;
 	private File archivo;
@@ -25,7 +26,7 @@ public class Parser implements BufferRecharger{
 	private boolean moreLines;
 	
 
-	public Parser(final String ruta_archivo) throws FileNotFoundException {
+	public Parser(final String ruta_archivo) {
 		
 		this.ruta_archivo = ruta_archivo;
 		File archivo = new File(ruta_archivo);
@@ -36,12 +37,16 @@ public class Parser implements BufferRecharger{
 					new FileNotFoundException(
 							"No existe el archivo pasado al Parser"));
 		}
-		lector = new FileReader(archivo);
+		
+		try {
+			lector = new FileReader(archivo);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		buffer = new BufferedReader(lector);
 
 	}
 
-	
 	
 	/**
 	 * @param caca
@@ -54,8 +59,10 @@ public class Parser implements BufferRecharger{
 			linea = (buffer.readLine());
 		} catch (IOException e) {
 			e.printStackTrace();
+			this.moreLines=false;
 		}
 		if (linea != null){
+		this.moreLines=true;
 		linea.toLowerCase();
 		return linea;
 		}else{
@@ -69,8 +76,7 @@ public class Parser implements BufferRecharger{
 		return moreLines;
 	}
 
-	public final void recargarBuffer(final Collection<Object> coleccion,
-			final int maxLineas) {
+	public final void recargarBuffer( Collection<IunidadDeHabla> coleccion, int maxLineas) {
 
 		String materiaPrima;
 		int lineasProcesadas = 0;
@@ -78,21 +84,21 @@ public class Parser implements BufferRecharger{
 		String[] listaPalabras;
 		materiaPrima = this.leerLinea();
 
-		while ((lineasProcesadas < maxLineas) && (materiaPrima != null)) {
-			materiaPrima = this.leerLinea();
+		while ((lineasProcesadas < maxLineas) && ((materiaPrima != null)&&(materiaPrima!=""))) {
 			listaPalabras = PatternRecognizer.procesarLinea(materiaPrima);
-
 			while (sigPalabra < listaPalabras.length) {
 				coleccion.add(PalabrasFactory
 						.getPalabra(listaPalabras[sigPalabra]));
 				sigPalabra++;
 			}
 			lineasProcesadas++ ;
+			materiaPrima = this.leerLinea();
 		}
 	}
 
-	public Collection< ? > listar() {
-		Collection<IunidadDeHabla> coleccion = new ArrayList<IunidadDeHabla>();
+	public Collection< IunidadDeHabla > listar() {
+		BufferedCollection<IunidadDeHabla> coleccion = new BufferedCollection<IunidadDeHabla>(this);
+		recargarBuffer(coleccion, 1);
 		return coleccion;
 	}
 	

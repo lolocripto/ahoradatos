@@ -1,6 +1,7 @@
 package ar.com.datos.UnidadesDeExpresion;
 
 import java.io.BufferedReader;
+import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -8,20 +9,20 @@ import java.util.Iterator;
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.parser.BufferRecharger;
 
-public class BufferedCollection implements Collection {
+public class BufferedCollection<E> extends AbstractCollection<E> {
 
 
 	
-	private ArrayList lista_unidades;
-	private BufferRecharger recargador;
+	private ArrayList<E> lista_unidades;
+	protected BufferRecharger recargador;
 
 	public BufferedCollection(BufferRecharger recarga){
 	    lista_unidades= new ArrayList();
 		recargador = recarga;
 		
 	}
-	public boolean add(Object arg0) {
-		return lista_unidades.add(arg0);
+	public boolean add(E e) {
+		return lista_unidades.add(e);
 	}
 
 	public boolean addAll(Collection arg0) {
@@ -45,17 +46,14 @@ public class BufferedCollection implements Collection {
 	    return lista_unidades.isEmpty();
 	}
 
-	public Iterator iterator() {
-		// TODO Auto-generated method stub
-		return new BufferedCollectionIterator(this);
-	}
 
 	public boolean remove(Object o) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
 	public void recargar(){
-		recargador.recargarBuffer(lista_unidades,Constantes.BUFFER_LECTURA_TEXT_INPUT);
+		recargador.recargarBuffer(this,Constantes.BUFFER_LECTURA_TEXT_INPUT);
 	}
 
 	public boolean removeAll(Collection c) {
@@ -79,4 +77,13 @@ public class BufferedCollection implements Collection {
 		
 	}
 
+	public Iterator<E> iterator() {
+		BufferedCollectionIterator<E> iterador = new BufferedCollectionIterator(this);
+		return iterador;
+	}
+
+	
+	
+	
+	
 }
