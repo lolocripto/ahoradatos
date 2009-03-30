@@ -13,7 +13,7 @@ public class BufferedCollection<E> extends AbstractCollection<E> {
 
 
 	
-	private ArrayList<E> lista_unidades;
+	protected ArrayList<E> lista_unidades;
 	protected BufferRecharger recargador;
 
 	public BufferedCollection(BufferRecharger recarga){
@@ -78,7 +78,7 @@ public class BufferedCollection<E> extends AbstractCollection<E> {
 	}
 
 	public Iterator<E> iterator() {
-		BufferedCollectionIterator<E> iterador = new BufferedCollectionIterator(this);
+		BufferedCollectionIterator<E> iterador = new BufferedCollectionIterator<E>(this);
 		return iterador;
 	}
 

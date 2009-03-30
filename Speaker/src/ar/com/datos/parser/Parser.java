@@ -84,7 +84,8 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 		String[] listaPalabras;
 		materiaPrima = this.leerLinea();
 
-		while ((lineasProcesadas < maxLineas) && ((materiaPrima != null)&&(materiaPrima!=""))) {
+	//	while ((lineasProcesadas < maxLineas) && ((materiaPrima != null)&&(materiaPrima!=""))) {
+		while ((lineasProcesadas < maxLineas) && (materiaPrima != null)) {
 			listaPalabras = PatternRecognizer.procesarLinea(materiaPrima);
 			while (sigPalabra < listaPalabras.length) {
 				coleccion.add(PalabrasFactory

@@ -97,7 +97,7 @@ public class PatternRecognizer {
 		 * un numero excluyendo a la ñ, las vocales acentuadas, la "u" con
 		 * diéresis y, por supuesto el espacio mismo
 		 */
-		String regEx = "[\\W&&[^ñáéíóúü\\s]]";
+		String regEx = "[[^a-zA-Z_ ]&&[^ñáéíóúü\\s]]";
 
 		patron = Pattern.compile(regEx);
 		comparador = patron.matcher(linea);
@@ -115,8 +115,8 @@ public class PatternRecognizer {
 	}
 
 	private static String[] splitter(String linea) {
-
-		return linea.split("\\s");
+		linea = linea.trim();
+		return linea.split("(\\s)+");
 	}
 
 	/*
@@ -208,6 +208,7 @@ public class PatternRecognizer {
 
 	public static String[] procesarLinea(String lineaEntrada) {
 
+		lineaEntrada = lineaEntrada.toLowerCase();
 		return splitter(correctorSintactico(analisisLexico(lineaEntrada)));
 
 	}

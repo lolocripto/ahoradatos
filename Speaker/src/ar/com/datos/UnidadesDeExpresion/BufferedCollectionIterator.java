@@ -6,12 +6,12 @@ import java.util.Iterator;
 public class BufferedCollectionIterator<E> implements Iterator<E> {
 
 	
-	private BufferedCollection coleccionPabras;
+	private BufferedCollection<E> coleccionPabras;
 	private Iterator<E> buffer;
 	
-	public BufferedCollectionIterator(BufferedCollection lista){
+	public BufferedCollectionIterator(BufferedCollection<E> lista){
 		coleccionPabras=lista;
-		buffer = lista.iterator();
+		buffer = lista.lista_unidades.iterator();
 	}
 	
 	/**
@@ -40,7 +40,7 @@ public class BufferedCollectionIterator<E> implements Iterator<E> {
 	 * @return Object con el siguente objeto
 	 */
 	public E next() {
-		buffer.remove();
+	//	buffer.remove();
 	    return buffer.next();	
 	}
 
