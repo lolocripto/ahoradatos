@@ -97,6 +97,7 @@ public class Secuencial implements Archivo {
 	            cacheRegistros.add(registro);
 	            
 	            posicionActual += cantidadLeida;
+	            cantidadLeida = 0;
         	}
             
         } catch (IOException e) {

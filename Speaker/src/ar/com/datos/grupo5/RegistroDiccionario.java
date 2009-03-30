@@ -139,6 +139,6 @@ public class RegistroDiccionario implements Registro {
 	 */
 	public void setBytes(final byte[] buffer, final Long offset){
 		this.setOffset(offset);
-		this.setDato(buffer.toString());
+		this.setDato(new String(buffer));
 	}
 }
