@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -62,7 +63,9 @@ public class Secuencial implements Archivo {
 		}
 		
 		Registro registro = null;       
-        byte[] buffer = null;
+        byte[] bufferLong = new byte[Constantes.SIZE_OF_LONG];
+        byte[] bufferInt = new byte[Constantes.SIZE_OF_INT];
+        byte[] bufferDato = null;
         Long offset = 0L;
         int longitud = 0;
         int cantidadLeida = 0;
@@ -80,15 +83,16 @@ public class Secuencial implements Archivo {
 	        	registro = new RegistroDiccionario();
 	        	
 	            file.seek(posicionActual);
-	            cantidadLeida += file.read(buffer, 0, Constantes.SIZE_OF_LONG);
+	            cantidadLeida += file.read(bufferLong, 0, Constantes.SIZE_OF_LONG);
 	            
-	            offset = Conversiones.arrayByteToLong(buffer);
-	            cantidadLeida += file.read(buffer, 0, Constantes.SIZE_OF_INT);
+	            offset = Conversiones.arrayByteToLong(bufferLong);
+	            cantidadLeida += file.read(bufferInt, 0, Constantes.SIZE_OF_INT);
 	            
-	            longitud = Conversiones.arrayByteToInt(buffer);
-	            cantidadLeida += file.read(buffer, 0, longitud);
+	            longitud = Conversiones.arrayByteToInt(bufferInt);
+	            bufferDato = new byte[longitud];
+	            cantidadLeida += file.read(bufferDato, 0, longitud);
 	            
-	            registro.setBytes(buffer, offset);
+	            registro.setBytes(bufferDato, offset);
 	            
 	            cacheRegistros.add(registro);
 	            
@@ -170,7 +174,7 @@ public class Secuencial implements Archivo {
 		
 		//Limpio todo y cargo la cache.
 		posicionActual = 0;
-		cacheRegistros.clear();
+		cacheRegistros = new ArrayList < Registro >();
 		
 		recargarCache();
 		

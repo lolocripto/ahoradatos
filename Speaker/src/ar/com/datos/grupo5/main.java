@@ -89,7 +89,6 @@ public class main {
 			Archivo archivo = new Secuencial();
 			
 			archivo.crear("/home/cristian/Desktop/test.txt");
-			//archivo.abrir("/home/cristian/Desktop/test.txt",Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 			
 			RegistroDiccionario registro = new RegistroDiccionario();
 			
@@ -102,8 +101,17 @@ public class main {
 			registro.setDato("tal");
 			registro.setOffset(124L);
 			archivo.insertar(registro);
-			
+
 			archivo.cerrar();
+
+			archivo.abrir("/home/cristian/Desktop/test.txt",
+					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			
+			RegistroDiccionario reg = (RegistroDiccionario) archivo.primero();
+			
+			reg = (RegistroDiccionario) archivo.siguiente();
+			
+			reg = (RegistroDiccionario) archivo.siguiente();
 			
 //			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
 //			
