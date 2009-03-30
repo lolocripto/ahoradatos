@@ -109,38 +109,39 @@ public class Core {
 
 	/**
 	 * Para test.
+	 * 
 	 * @param invocador
 	 * @return
 	 */
-	public final String loadTest(final InterfazUsuario invocador){
-		
+	public final String loadTest(final InterfazUsuario invocador) {
+
 		String cadena = "Hola";
 		String mensaje = "Para ingresar el audio para la palabra: " + cadena;
 		String respuesta = "0";
 		invocador.mensaje(mensaje);
-				
-			//pido que grabe hasta que sea correcta la grabación
-			while (!respuesta.equalsIgnoreCase("S")) {
-				
-				// Protocolo de Grabacion
-				this.iniciarGrabacion(invocador);
-				
-				// Protocolo para terminar la grabacion
-				this.finalizarGrabacion(invocador);
-				
-			    this.playWord();
-			    
-			    mensaje = "La grabación ha sido correcta? S/N: ";
-			    respuesta = invocador.obtenerDatos(mensaje);
-			    }
-			
-			//TODO: Grabar audio en el archivo de audio
-			
-			// Genero el nuevo registro del diccionario
-			RegistroDiccionario registro = new RegistroDiccionario();
-			registro.setDato(cadena);
-			registro.setOffset(123L);
-return "";	
+
+		// pido que grabe hasta que sea correcta la grabación
+		while (!respuesta.equalsIgnoreCase("S")) {
+
+			// Protocolo de Grabacion
+			this.iniciarGrabacion(invocador);
+
+			// Protocolo para terminar la grabacion
+			this.finalizarGrabacion(invocador);
+
+			this.playWord();
+
+			mensaje = "La grabación ha sido correcta? S/N: ";
+			respuesta = invocador.obtenerDatos(mensaje);
+		}
+
+		// TODO: Grabar audio en el archivo de audio
+
+		// Genero el nuevo registro del diccionario
+		RegistroDiccionario registro = new RegistroDiccionario();
+		registro.setDato(cadena);
+		registro.setOffset(123L);
+		return "";
 	}
 	
 	/**
@@ -270,6 +271,7 @@ return "";
 	public final void playWord(final InputStream audioAReproducir) {
 		this.manipularAudio.reproducir(audioAReproducir);
 	}
+	
 	/**
 	 * Constructor de la clase.
 	 */

@@ -1,10 +1,5 @@
 package ar.com.datos.grupo5;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 
 /**
  * Constantes de la aplicacion.
@@ -43,14 +38,15 @@ public class Constantes {
     /**
      * Tamaño en bytes del long.
 	 */
-	public static final int SIZE_OF_LONG = 8;
+	public static final int SIZE_OF_LONG = Long.SIZE / 8;
 	
 	/**
 	 * Tamaño en bytes del int.
 	 */
-	public static final int SIZE_OF_INT = 4;
+	public static final int SIZE_OF_INT = Integer.SIZE / 8;
+	
 	/**
-	 * Tamaño
+	 * Tamaño.
 	 */
 	public static final int BUFFER_LECTURA_TEXT_INPUT = 100;
 	

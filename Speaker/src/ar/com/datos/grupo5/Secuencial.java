@@ -78,10 +78,12 @@ public class Secuencial implements Archivo {
 	        	registro = new RegistroDiccionario();
 	        	
 	            file.seek(posicionActual);
-	            cantidadLeida += file.read(bufferLong, 0, Constantes.SIZE_OF_LONG);
-	            
-	            offset = Conversiones.arrayByteToLong(bufferLong);
-	            cantidadLeida += file.read(bufferInt, 0, Constantes.SIZE_OF_INT);
+				cantidadLeida += file.read(bufferLong, 0,
+						Constantes.SIZE_OF_LONG);
+
+				offset = Conversiones.arrayByteToLong(bufferLong);
+				cantidadLeida += file
+						.read(bufferInt, 0, Constantes.SIZE_OF_INT);
 	            
 	            longitud = Conversiones.arrayByteToInt(bufferInt);
 	            bufferDato = new byte[longitud];
