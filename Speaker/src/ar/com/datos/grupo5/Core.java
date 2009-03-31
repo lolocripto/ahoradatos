@@ -191,7 +191,8 @@ public class Core {
 		
 		String mensaje, respuesta;
 
-		mensaje = "Para detener la grabación ingrese la tecla f y luego enter: ";
+		mensaje = "Para detener la grabación ingrese la tecla f y " +
+				"luego enter: ";
 		respuesta = invocador.obtenerDatos(mensaje);
 		while (!respuesta.equalsIgnoreCase("f") && !respuesta.equalsIgnoreCase("c")) {
 			mensaje = "Comando incorrecto, por favor presione la tecla f.";
