@@ -142,19 +142,14 @@ public class Secuencial implements Archivo {
 	 */
 	public final boolean buscar(final Registro registro) {
 		
-		// TODO Auto-generated method stub
-		byte[] buffer = null;
-		byte[] bufferRegistro = registro.getBytes();
+		RegistroDiccionario reg = (RegistroDiccionario) this.primero();
+		RegistroDiccionario palabra = (RegistroDiccionario)registro;
 		
-		//Buscar en el registro de datos
-		try {
-			this.file.read(buffer, 0, bufferRegistro.length);
-			if (buffer.equals(bufferRegistro)) {
+		while (reg != null) {
+			if (reg.getDato().equals(palabra.getDato())) {
 				return true;
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			reg = (RegistroDiccionario) this.siguiente();
 		}
 		return false;
 	}

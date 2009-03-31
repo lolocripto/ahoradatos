@@ -74,14 +74,12 @@ public class Diccionario {
 		RegistroDiccionario reg = (RegistroDiccionario) archivo.primero();
 		
 		while (reg != null) {
-	
 			if (reg.getDato().equals(palabra)) {
 				break;
 			}
 			reg = (RegistroDiccionario) archivo.siguiente();
 		}
-		
 		return reg;
 	}
-
 }
+
