@@ -132,6 +132,8 @@ public class PatternRecognizer {
 
 		String regEx = Constantes.ESCAPES_REGEX;
 
+	//	String regEx = "(l{2})";
+		
 		patron = Pattern.compile(regEx);
 		comparador = patron.matcher(linea);
 
@@ -149,8 +151,9 @@ public class PatternRecognizer {
 
 	private static String caracterEscape(String hallado) {
 
-		String caracterDeEscape = "x";
+		String caracterDeEscape = "";
 
+		if ((!hallado.isEmpty()) && (hallado != null) ){
 		switch (hallado.charAt(0)) {
 		case 'l': { //si encuentra 'LL' lo cambia por 'y'
 			caracterDeEscape = "y";
@@ -283,6 +286,7 @@ public class PatternRecognizer {
 		
 		default:
 			break;
+		}
 		}
 		return caracterDeEscape;
 	}

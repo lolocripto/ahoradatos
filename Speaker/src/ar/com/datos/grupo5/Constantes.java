@@ -88,6 +88,6 @@ public class Constantes {
 	 	+ "(([7]))|"    // numero siete
 	 	+ "(([8]))|"    // numero ocho
 	 	+ "(([9]))|"    // numero nueve
-	 	+ "(([0]))|"    // numero cero
+	 	+ "(([0]))"    // numero cero
 ;
 }
