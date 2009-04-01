@@ -6,16 +6,26 @@ import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 
 public class TextInterpreter implements ITextInput {
 
-	public Collection<IunidadDeHabla> archivoDeCarga(String pathArchivo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Collection<IunidadDeHabla> modoLectura(String reprodducion,
+	public Collection<IunidadDeHabla> modoCarga(String rutaOlinea,
 			boolean esArchivo) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Parser miparser = new Parser(rutaOlinea, esArchivo);
+		if (esArchivo) {
+			return miparser.listar();
+		} else {
+			return miparser.simpleString();
+		}
 	}
 
-	
+	public Collection<IunidadDeHabla> modoLectura(String rutaOlinea,
+			boolean esArchivo) {
+
+		Parser miparser = new Parser(rutaOlinea, false);
+		if (esArchivo) {
+			return miparser.listar();
+		} else {
+			return miparser.simpleString();
+		}
+	}
+
 }

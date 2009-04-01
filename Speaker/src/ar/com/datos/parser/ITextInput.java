@@ -20,7 +20,7 @@ public interface ITextInput  {
 	 * @param pathArchivo ruta absoluta del archivo de carga
 	 * @return Colección de objetos "palabra"
 	 */
-	Collection<IunidadDeHabla> archivoDeCarga(String pathArchivo);
+	Collection<IunidadDeHabla> modoCarga(String rutaOlinea, boolean esArchivo);
 	
 	/**
 	 * Método que permite obtener una colección ordenada de palabras para su
@@ -32,7 +32,7 @@ public interface ITextInput  {
 	 * @return Se devuelve una colección ordenada con los elementos
 	 * a pronunciarse
 	 */
-	Collection<IunidadDeHabla> modoLectura(String reprodducion, 
+	Collection<IunidadDeHabla> modoLectura(String rutaOlinea, 
 			boolean esArchivo);
 	
 	

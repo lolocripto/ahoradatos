@@ -61,7 +61,7 @@ public class Core {
 		
 		Iterator iterador;
 		// Mando a parsear el documento y obtengo un collection
-		contenedor = this.parser.archivoDeCarga(pathDocumento);
+		contenedor = this.parser.modoCarga(pathDocumento, true);
 		
 		IunidadDeHabla elemento;
 		iterador = contenedor.iterator();
@@ -218,7 +218,7 @@ public class Core {
 		//TODO implementar.
 		Iterator iterador;
 		// Mando a parsear el documento y obtengo un collection
-		contenedor = this.parser.archivoDeCarga(pathDocumento);
+		contenedor = this.parser.modoLectura(pathDocumento, true);
 		
 		IunidadDeHabla elemento;
 		iterador = contenedor.iterator();
