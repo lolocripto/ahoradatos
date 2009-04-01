@@ -31,7 +31,7 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 
 		if (esArchivo) {
 			esArchivo = true;
-			this.ruta_archivo = ruta_archivo;
+			this.ruta_archivo = rutaOlinea;
 			File archivo = new File(ruta_archivo);
 			milogueador = Logger.getLogger(Parser.class);
 
