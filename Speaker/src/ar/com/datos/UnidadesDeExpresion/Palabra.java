@@ -26,8 +26,12 @@ public class Palabra implements IunidadDeHabla {
 		this.equivalenteFonetico = equivalenteFonetico;
 	}
  
-	@Override
+
 	public String toString() {
+		return palabraEscrita;
+	}
+	
+	public String getTextoEscrito(){
 		return palabraEscrita;
 	}
 	

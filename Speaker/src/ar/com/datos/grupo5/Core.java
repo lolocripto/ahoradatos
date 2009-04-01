@@ -79,7 +79,7 @@ public class Core {
 			// Si no lo encontro pido ingresar el audio
 			String mensaje = new String(
 					"Para ingresar el audio para la palabra: "
-							+ elemento.toString());
+							+ elemento.getTextoEscrito());
 
 			String respuesta = "0";
 			invocador.mensaje(mensaje);
@@ -230,7 +230,7 @@ public class Core {
 			
 			// Si lo encontro sigo en el bucle
 			RegistroDiccionario registro = 
-				this.diccionario.buscarPalabra(elemento.toString());
+				this.diccionario.buscarPalabra(elemento.getEquivalenteFonetico());
 			
 			if (registro.getOffset() == 0L) {
 				continue;

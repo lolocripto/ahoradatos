@@ -7,16 +7,19 @@ package ar.com.datos.UnidadesDeExpresion;
 public interface IunidadDeHabla {
 	
 	/**
-	 * Método que permite reproducir la palabra actual.
-	 * @return Objeto con el stream de sonido asociado a la palabra
-	 */
-	Object getAudio();
-	
-	/**
 	 * Este método permite obtener la cadena a la que hace referencia el objeto.
 	 * @return string con la palabra a la que refiere el objeto
 	 */
 	String toString();
+	
+	/**
+	 * Al igual que el método toString, devuelve el string tal cual fue escrito
+	 * por el usuario o levantado del archivo de texto. sin procesamiento
+	 * fonético.
+	 * @return
+	 */
+	String getTextoEscrito();
+	
 	
 	/**
 	 * Permite saber si el la expresión asociada debe pronunciarse o no,
@@ -24,6 +27,12 @@ public interface IunidadDeHabla {
 	 * @return boolean
 	 */
 	boolean esPronunciable();
+	
+	/**
+	 * 
+	 * @param pronunciable
+	 */
+	void setPronunciable(boolean pronunciable);
 	
 	/**
 	 * Por la naturaleza de los algoritmos utilizados (HashMap) y las mejoras
@@ -41,5 +50,27 @@ public interface IunidadDeHabla {
 	 * @param o objeto de sonido
 	 */
 	void setAudio(Object o);
+	
+	/**
+	 * Método que permite reproducir la palabra actual.
+	 * @return Objeto con el stream de sonido asociado a la palabra
+	 */
+	Object getAudio();
+	
+	/**
+	 * Método que devuelve el string con el que será guardada en el diccionario
+	 * la palabra en cuestión. Puede o no diferir del texto escrito por el
+	 * usuario.
+	 * @return string con la informacion detallada anteriormente.
+	 */
+	String getEquivalenteFonetico();
+	
+	/**
+	 * Setea el String para ser almacenado por el diccionario. Este String
+	 * representa un equivalente fonético a la palabra o símbolo escrito.
+	 * @param equivalenteFonetico String equivalente
+	 */
+	void setEquivalenteFonetico(String equivalenteFonetico);
+	
 
 }
