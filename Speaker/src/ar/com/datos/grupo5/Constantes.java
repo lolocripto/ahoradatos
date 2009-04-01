@@ -55,4 +55,39 @@ public class Constantes {
 	 */
 	public static final int TAMANO_CACHE = 10;
 	
+	/**
+	 * 
+	 */
+	public static final String ESCAPES_REGEX =
+		"((l{2}))|"     // encuentra la "ll"
+		+ "([b])|"      // encuentra b
+		+ "((?<!c)h)|"  // encuentra "h" pero no antecedida por "c"
+		+ "((je))|"     // encuentra je 
+		+ "((ji))|"     // encuentra ji
+		+ "((mb))|"     // encuentra mb
+		+ "((ce))|"     // encuentra ce
+		+ "((ci))|"     // encuentra ci
+		+ "((za))|"     // encuentra za
+		+ "((zu))|"     // encuentra zu
+        + "((\\.))|"    // el punto
+        + "((\\,))|"    // la coma
+	 	+ "((\\-))|"    // signo menos
+	 	+ "((\\+))|"    // signo mas
+	 	+ "((\\=))|"    // signo igual
+	 	+ "((\\$))|"    // signo pesos
+	 	+ "((\\*))|"    // signo asterisco
+	 	+ "((\\%))|"    // signo porcentaje
+	 	+ "((\\#))|"    // signo numeral
+	 	+ "((\\@))|"    // signo arroba
+	 	+ "(([1]))|"    // numero uno
+	 	+ "(([2]))|"    // numero dos
+	 	+ "(([3]))|"    // numero tres
+	 	+ "(([4]))|"    // numero cuatro
+	 	+ "(([5]))|"    // numero cinco
+	 	+ "(([6]))|"    // numero seis
+	 	+ "(([7]))|"    // numero siete
+	 	+ "(([8]))|"    // numero ocho
+	 	+ "(([9]))|"    // numero nueve
+	 	+ "(([0]))|"    // numero cero
+;
 }

@@ -3,6 +3,8 @@ package ar.com.datos.parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ar.com.datos.grupo5.Constantes;
+
 public class PatternRecognizer {
 	
 	/**
@@ -128,16 +130,7 @@ public class PatternRecognizer {
 		Pattern patron;
 		Matcher comparador;
 
-		String regEx = "((l{2}))|"
-				+ // encuentra la "ll" ó la "y"
-				"([b])|"
-				+ // encuentra b ó v
-				"((?<!c)h)|"
-				+ // encuentra "h" pero no antecedida por "c"
-				"((je))|"
-				+ // encuentra la combinacion ge ó je
-				"((ji))|" + "((mb))|" + "((ce))|" + "((ci))|" + "((za))|"
-				+ "((zu))";
+		String regEx = Constantes.ESCAPES_REGEX;
 
 		patron = Pattern.compile(regEx);
 		comparador = patron.matcher(linea);
@@ -159,47 +152,135 @@ public class PatternRecognizer {
 		String caracterDeEscape = "x";
 
 		switch (hallado.charAt(0)) {
-		case 'l': {
+		case 'l': { //si encuentra 'LL' lo cambia por 'y'
 			caracterDeEscape = "y";
 			break;
 		}
-		case 'b': {
+		case 'b': { //si encuentra b, lo cambia por v
 			caracterDeEscape = "v";
 			break;
 		}
-		case 'h': {
+		case 'h': { //si encuentra h, la quita
 			caracterDeEscape = "";
 			break;
 		}
-		case 'm': {
+		case 'm': { //si encuentra mb lo cambia a nv
 			caracterDeEscape = "nv";
 			break;
 		}
-		case 'j': {
+		case 'j': { 
 			if (hallado.charAt(1) == 'e') {
-				caracterDeEscape = "ge";
+				caracterDeEscape = "ge"; //je por ge
 			} else {
-				caracterDeEscape = "gi";
+				caracterDeEscape = "gi"; //ji por gi
 			}
 			break;
 		}
 		case 'c': {
 			if (hallado.charAt(1) == 'e') {
-				caracterDeEscape = "se";
+				caracterDeEscape = "se"; //ce por se
 			} else {
-				caracterDeEscape = "su";
+				caracterDeEscape = "si"; //ci po si
 			}
 			break;
 		}
 		case 'z': {
 			if (hallado.charAt(1) == 'a') {
-				caracterDeEscape = "sa";
+				caracterDeEscape = "sa"; //za por sa
 			} else {
-				caracterDeEscape = "su";
+				caracterDeEscape = "su"; //zu por su
 			}
 			break;
 		}
+		case '.': {
+			caracterDeEscape = "punto"; 
+			break;
+		}
 
+		case ',': {
+			caracterDeEscape = "coma";
+			break;
+		}
+		case '-': {
+			caracterDeEscape = "menos";
+			break;
+		}
+		case '+': {
+			caracterDeEscape = "mas"; 
+			break;
+		}
+		
+		case '=': {
+			caracterDeEscape = "igual";
+			break;
+		}
+		case '$': {
+			caracterDeEscape = "pesos";
+			break;
+		}
+		case '*': {
+			caracterDeEscape = "asterisco"; 
+			break;
+		}
+		case '%': {
+			caracterDeEscape = "porciento";
+			break;
+		}
+		
+		case '#': {
+			caracterDeEscape = "numeral";
+			break;
+		}
+
+		case '@': {
+			caracterDeEscape = "arroba"; 
+			break;
+		}
+		case '1': {
+			caracterDeEscape = "uno"; 
+			break;
+		}
+		case '2': {
+			caracterDeEscape = "dos"; 
+			break;
+		}
+
+		case '3': {
+			caracterDeEscape = "tres"; 
+			break;
+		}
+
+		case '4': {
+			caracterDeEscape = "cuatro"; 
+			break;
+		}
+		case '5': {
+			caracterDeEscape = "cinco"; 
+			break;
+		}
+		case '6': {
+			caracterDeEscape = "seis"; 
+			break;
+		}
+		
+		case '7': {
+			caracterDeEscape = "siete"; 
+			break;
+		}
+
+		case '8': {
+			caracterDeEscape = "ocho"; 
+			break;
+		}
+		case '9': {
+			caracterDeEscape = "nueve"; 
+			break;
+		}
+		case '0': {
+			caracterDeEscape = "cero"; 
+			break;
+		}
+		
 		default:
 			break;
 		}
