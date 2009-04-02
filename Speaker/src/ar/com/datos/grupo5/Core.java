@@ -6,11 +6,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
+import java.io.FileNotFoundException;
 
 import org.apache.log4j.Logger;
 
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
+import ar.com.datos.grupo5.interfaces.Registro;
 import ar.com.datos.parser.ITextInput;
 import ar.com.datos.parser.TextInterpreter;
 
@@ -59,24 +61,52 @@ public class Core {
 	public final String load(final InterfazUsuario invocador,
 			final String pathDocumento) {
 		
+		logger.debug("Entre en load");
+		
 		Iterator<IunidadDeHabla> iterador;
-		// Mando a parsear el documento y obtengo un collection
+
+		// Cargo el parser con el documento en modo aprendizaje
 		contenedor = this.parser.modoCarga(pathDocumento, true);
+		logger.debug("tengo el contenedor de palabras.");
+	
+		/*
+		 * Abro el archivo para la carga y consulta
+		 */
+		try {
+			this.diccionario.cargar("/home/xxvkue/Desktop/test.txt",
+					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+		} catch (FileNotFoundException e) {
+			invocador.mensaje("No se pudo abrir el diccionario.");
+			return "Vuelva a intentarlo.";
+		}		
 		
 		IunidadDeHabla elemento;
 		iterador = contenedor.iterator();
+		
 		// Mientras tenga palabras para verificar consulto
 		while (iterador.hasNext()) {
 			
 			elemento = iterador.next();
-			
-			// Si lo encontro sigo en el bucle
-//			if (this.archivo.buscar(this.registro)) {
-			if (1 == 2) {
+			logger.debug("El elemento leido es: " + elemento.getTextoEscrito());
+			/* Si es una palabra pronunciable la 
+			 * proxima palabra, sino pido el audio para la misma
+			 */
+			if (elemento.esPronunciable()) {
+				
+				/* Si, es pronunciable, si la encuntra sigo con la 
+				 * proxima palabra, sino pido el audio para la misma
+				 */
+				if (this.diccionario.buscarPalabra(elemento.getTextoEscrito()) 
+						!= null) {
+					continue;
+				}
+				
+			} else {
 				continue;
 			}
 			
-			// Si no lo encontro pido ingresar el audio
+			
+			// Si no encontro la palabra pido ingresar el audio
 			String mensaje = new String(
 					"Para ingresar el audio para la palabra: "
 							+ elemento.getTextoEscrito());
@@ -88,7 +118,9 @@ public class Core {
 			while (!respuesta.equalsIgnoreCase("S")) {
 				
 				// Protocolo de Grabacion
-				this.iniciarGrabacion(invocador);
+				if( this.iniciarGrabacion(invocador) == -1 ){
+					// Usuario cancelo operacion
+				}
 				
 				// Protocolo para terminar la grabacion
 				this.finalizarGrabacion(invocador);
@@ -99,48 +131,28 @@ public class Core {
 			    respuesta = invocador.obtenerDatos(mensaje);
 			    }
 
+			// TODO: Grabar audio en el archivo de audio
+
+			// Genero el nuevo registro del diccionario
+			RegistroDiccionario registro = new RegistroDiccionario();
+			
+			registro.setDato(elemento.getTextoEscrito());
+			registro.setOffset(123L);
+			
+			//Agrego la palabra al diccionario 
+			this.diccionario.agregar((Registro) registro); 
+			
 		}
+		
+		try {
+			this.diccionario.cerrar();
+		} catch (Exception e) {
+			invocador.mensaje("Error al cerrar el archivo de diccionario.");
+		}		
 		logger.debug("Sali de al funcion load");
-		return "";
+		return "ff";
 	}
 
-	/**
-	 * Para test.
-	 * 
-	 * @param invocador
-	 * @return
-	 */
-	public final String loadTest(final InterfazUsuario invocador) {
-
-		String cadena = "Hola";
-		String mensaje = "Para ingresar el audio para la palabra: " + cadena;
-		String respuesta = "0";
-		invocador.mensaje(mensaje);
-
-		// pido que grabe hasta que sea correcta la grabación
-		while (!respuesta.equalsIgnoreCase("S")) {
-
-			// Protocolo de Grabacion
-			this.iniciarGrabacion(invocador);
-
-			// Protocolo para terminar la grabacion
-			this.finalizarGrabacion(invocador);
-
-			this.playWord();
-
-			mensaje = "La grabación ha sido correcta? S/N: ";
-			respuesta = invocador.obtenerDatos(mensaje);
-		}
-
-		// TODO: Grabar audio en el archivo de audio
-
-		// Genero el nuevo registro del diccionario
-		RegistroDiccionario registro = new RegistroDiccionario();
-		registro.setDato(cadena);
-		registro.setOffset(123L);
-		return "";
-	}
-	
 	/**
 	 * Da comienzo a la grabación del audio de la palabra en cuestión.
 	 * 
@@ -165,13 +177,15 @@ public class Core {
 		if (respuesta.equalsIgnoreCase("c")) {
 			return -1;
 		}
+		
 		OutputStream byteArray = new ByteArrayOutputStream();
+		
 		try {
 			// Pido grabar el audio 
 			this.manipularAudio.grabar(byteArray);
 			return 0;
 		} catch (Exception e) {
-			logger.error("Error, no puedo entrar en la inter audio"
+			logger.error("Error, no se pudo grabar el audio intentelo nuevamente."
 					+ e.getMessage());
 			return -2;
 		}

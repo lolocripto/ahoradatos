@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import sun.security.action.GetLongAction;
 
 import ar.com.datos.grupo5.interfaces.Archivo;
+import ar.com.datos.grupo5.interfaces.Registro;
 
 /**
  * Clase que permite manipular el diccionario.
@@ -80,6 +81,30 @@ public class Diccionario {
 			reg = (RegistroDiccionario) archivo.siguiente();
 		}
 		return reg;
+	}
+	
+	/**
+	 * Metodo para cargar el diccionario, accediendo al archivo.
+	 * 
+	 * @see ar.com.datos.grupo5.interfaces.Archivo#cargar()
+	 * @throws FileNotFoundException
+	 */
+	public boolean agregar(final Registro reg){
+		try {
+			this.archivo.insertar(reg);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}		
+	}
+
+	
+	/**
+	 * Constructor de la clase.
+	 *
+	 */
+	public Diccionario(){
+		this.archivo = new Secuencial();
 	}
 }
 
