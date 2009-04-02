@@ -59,7 +59,7 @@ public class Core {
 	public final String load(final InterfazUsuario invocador,
 			final String pathDocumento) {
 		
-		Iterator iterador;
+		Iterator<IunidadDeHabla> iterador;
 		// Mando a parsear el documento y obtengo un collection
 		contenedor = this.parser.modoCarga(pathDocumento, true);
 		
@@ -68,7 +68,7 @@ public class Core {
 		// Mientras tenga palabras para verificar consulto
 		while (iterador.hasNext()) {
 			
-			elemento = (IunidadDeHabla) iterador.next();
+			elemento = iterador.next();
 			
 			// Si lo encontro sigo en el bucle
 //			if (this.archivo.buscar(this.registro)) {
