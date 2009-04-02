@@ -32,7 +32,14 @@ public class PatternRecognizer {
 		}
 		return linea;
 	}
-
+    /**
+     * Metodo que pasado un string modifica cambiando tildes
+     * y/o caracteres invalidos relacionados principalmente
+     * con vocales o caracteres sin sentido en el iodoma español.
+     * Devuelve la string corregida  
+     * @param termino
+     * @return String
+     */
 	private static String correctorLexico(String termino) {
 		Pattern patron;
 		Matcher comparador;
@@ -88,7 +95,11 @@ public class PatternRecognizer {
 		termino = comparador.replaceAll("");
 		return termino;
 	}
-
+    /**
+     * 
+     * @param linea
+     * @return
+     */
 	private static String correctorSintactico(String linea) {
 
 		Pattern patron;
@@ -115,13 +126,18 @@ public class PatternRecognizer {
 		return sb.toString();
 
 	}
-
+    /**Metodo que separa la linea pasada por parametro
+     * y la separa en strings las palabras usando como separador
+     * el espacio en blanco o el caracter \s
+     * @param linea
+     * @return
+     */
 	private static String[] splitter(String linea) {
 		linea = linea.trim();
 		return linea.split("(\\s)+");
 	}
 
-	/*
+	/**
 	 * Método que permite detectar palabras Homónimas, es decir que suenan igual
 	 * pero se escriben diferente.
 	 */
@@ -148,7 +164,13 @@ public class PatternRecognizer {
 		return sb.toString();
 
 	}
-
+    /**
+     * Metodo que recibe una String por parametro y la modifica
+     * segun su fonetica para optimizar el guardado de palabras evitando 
+     * paralabras foneticamente reptidas. Devuelve el string modificado
+     * @param hallado
+     * @return
+     */
 	private static String caracterEscape(String hallado) {
 
 		String caracterDeEscape = "";
@@ -290,14 +312,23 @@ public class PatternRecognizer {
 		}
 		return caracterDeEscape;
 	}
-
-	public static String[] procesarLinea(String lineaEntrada) {
+    /**
+     * Metodo que recibe una string por parametro y la separa en strings mas pequeñas 
+     * separando por las palabras por expresiones regulares 
+     * @param lineaEntrada
+     * @return
+     */
+ 	public static String[] procesarLinea(String lineaEntrada) {
 
 		lineaEntrada = lineaEntrada.toLowerCase();
 		return splitter(correctorSintactico(analisisLexico(lineaEntrada)));
 
 	}
-	
+    /** Metodo que recibe una String e indica si la string esta vacia
+     * 
+     * @param texto
+     * @return
+     */	
 	public static boolean esLineaVacia (String texto){
 		
 		if ((texto == "")||(texto=="\n")){
