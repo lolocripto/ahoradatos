@@ -174,7 +174,7 @@ public class Consola extends Thread implements InterfazUsuario {
 									+ "No se encuentra el comando solicitado: "
 									+ linea);
 						}
-						
+						logger.error(e.getMessage(), e);
 					}
 					
 				} catch (Exception e) {

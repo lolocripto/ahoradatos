@@ -74,7 +74,7 @@ public class Core {
 		try {
 			contenedor = this.parser.modoCarga(pathDocumento, true);
 		} catch (Exception e) {
-			logger.error("Error al crear contenedor: " + e.getMessage());
+			logger.error("Error al crear contenedor: " + e.getMessage(),e);
 			return "Error inesperado, consulte al proveedor del software";
 		}
 		
@@ -261,7 +261,7 @@ public class Core {
 		try {
 			contenedor = this.parser.modoLectura(pathDocumento, true);
 		} catch (Exception e) {
-			logger.error("Error al crear contenedor: " + e.getMessage());
+			logger.error("Error al crear contenedor: " + e.getMessage(), e);
 			return "Error inesperado, consulte al proveedor del software";
 		}
 		
