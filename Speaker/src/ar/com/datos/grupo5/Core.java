@@ -87,7 +87,6 @@ public class Core {
 		while (iterador.hasNext()) {
 			
 			elemento = iterador.next();
-			logger.debug("El elemento leido es: " + elemento.getTextoEscrito());
 			/* Si es una palabra pronunciable la 
 			 * proxima palabra, sino pido el audio para la misma
 			 */
@@ -113,17 +112,31 @@ public class Core {
 
 			String respuesta = "0";
 			invocador.mensaje(mensaje);
-			
+
+			int resultado;
 			//pido que grabe hasta que sea correcta la grabación
 			while (!respuesta.equalsIgnoreCase("S")) {
 				
 				// Protocolo de Grabacion
-				if( this.iniciarGrabacion(invocador) == -1 ){
-					// Usuario cancelo operacion
+				resultado = this.iniciarGrabacion(invocador);
+				// Segun el resultado
+				switch(resultado){
+					case -1:
+						return "Operacion cancelada.";
+					case -2:
+						continue;
+					default:
 				}
 				
 				// Protocolo para terminar la grabacion
-				this.finalizarGrabacion(invocador);
+				resultado = this.finalizarGrabacion(invocador);
+				
+//				 Segun el resultado
+				switch(resultado){
+					case -1:
+						return "Operacion cancelada.";
+					default:
+				}
 				
 				this.playWord();
 			    
@@ -132,15 +145,9 @@ public class Core {
 			    }
 
 			// TODO: Grabar audio en el archivo de audio
-
-			// Genero el nuevo registro del diccionario
-			RegistroDiccionario registro = new RegistroDiccionario();
-			
-			registro.setDato(elemento.getTextoEscrito());
-			registro.setOffset(123L);
 			
 			//Agrego la palabra al diccionario 
-			this.diccionario.agregar((Registro) registro); 
+			this.diccionario.agregar(elemento.getTextoEscrito(),123L); 
 			
 		}
 		
@@ -149,6 +156,7 @@ public class Core {
 		} catch (Exception e) {
 			invocador.mensaje("Error al cerrar el archivo de diccionario.");
 		}		
+		
 		logger.debug("Sali de al funcion load");
 		return "ff";
 	}
