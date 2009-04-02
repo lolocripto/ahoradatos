@@ -95,11 +95,7 @@ public class PatternRecognizer {
 		termino = comparador.replaceAll("");
 		return termino;
 	}
-    /**
-     * 
-     * @param linea
-     * @return
-     */
+    
 	private static String correctorSintactico(String linea) {
 
 		Pattern patron;
@@ -325,7 +321,6 @@ public class PatternRecognizer {
 
 	}
     /** Metodo que recibe una String e indica si la string esta vacia
-     * 
      * @param texto
      * @return
      */	
