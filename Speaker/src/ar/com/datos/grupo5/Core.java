@@ -74,32 +74,11 @@ public class Core {
 		contenedor = this.parser.modoCarga(pathDocumento, true);
 		logger.debug("tengo el contenedor de palabras.");
 	
-		/*
-		 * Abro el archivo para la carga y consulta del diccionario
-		 */
-		try {
-			this.diccionario.abrir(Constantes.ARCHIVO_DICCIONARIO,
-					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-		} catch (FileNotFoundException e) {
-			invocador.mensaje("No se pudo abrir el diccionario.");
-			return "Vuelva a intentarlo.";
-		}		
-		
-		logger.debug("Abrio el test.txt.");
-		
-		/*
-		 * Abro el archivo para la carga y consulta de los audios
-		 */
-		try {
-			this.audioFileManager.abrir(Constantes.ARCHIVO_AUDIO,
-					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-		} catch (FileNotFoundException e) {
-			invocador.mensaje("No se pudo abrir el archivo de audio.");
-			return "Vuelva a intentarlo.";
-		}
-		
-		logger.debug("Abrio el testAudio.txt.");
 		Long offsetRegistroAudio;
+		
+		if (!abrirArchivo(invocador)) {
+			return "Intente denuevo";
+		}
 		
 		IunidadDeHabla elemento;
 		iterador = contenedor.iterator();
@@ -179,6 +158,7 @@ public class Core {
 		
 		try {
 			this.diccionario.cerrar();
+			this.audioFileManager.cerrar();
 		} catch (Exception e) {
 			invocador.mensaje("Error al cerrar el archivo de diccionario.");
 		}		
@@ -266,7 +246,7 @@ public class Core {
 	 *            direccion del archivo que va a ser leido.
 	 * @return devuelve un mensaje informando el estado final del proceso.
 	 */
-	public final String playDocument(final String pathDocumento) {
+	public final String playDocument(InterfazUsuario invocador, final String pathDocumento) {
 		//TODO implementar.
 		Iterator iterador;
 		// Mando a parsear el documento y obtengo un collection
@@ -346,4 +326,35 @@ public class Core {
 			e1.printStackTrace();
 		}
 	}
+	
+	private boolean abrirArchivo(InterfazUsuario invocador) {
+		
+		/*
+		 * Abro el archivo para la carga y consulta del diccionario
+		 */
+		try {
+			this.diccionario.abrir(Constantes.ARCHIVO_DICCIONARIO,
+					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+		} catch (FileNotFoundException e) {
+			invocador.mensaje("No se pudo abrir el diccionario.");
+			return false;
+		}		
+		
+		logger.debug("Abrio el test.txt.");
+		
+		/*
+		 * Abro el archivo para la carga y consulta de los audios
+		 */
+		try {
+			this.audioFileManager.abrir(Constantes.ARCHIVO_AUDIO,
+					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+		} catch (FileNotFoundException e) {
+			invocador.mensaje("No se pudo abrir el archivo de audio.");
+			return false;
+		}
+		
+		logger.debug("Abrio el testAudio.txt.");
+		return true;
+	}
+	
 }
