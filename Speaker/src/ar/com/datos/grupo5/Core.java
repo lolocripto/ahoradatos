@@ -265,6 +265,10 @@ public class Core {
 			return "Error inesperado, consulte al proveedor del software";
 		}
 		
+		if (!abrirArchivo(invocador)) {
+			return "Intente denuevo";
+		}
+		
 		IunidadDeHabla elemento;
 		iterador = contenedor.iterator();
 		// Mientras tenga palabras para verificar consulto
@@ -273,9 +277,11 @@ public class Core {
 			elemento = (IunidadDeHabla) iterador.next();
 			
 			// Si lo encontro sigo en el bucle
-			RegistroDiccionario registro = this.diccionario
-					.buscarPalabra(elemento.getEquivalenteFonetico());
+			//RegistroDiccionario registro = this.diccionario
+//					.buscarPalabra(elemento.getEquivalenteFonetico());
 			
+			RegistroDiccionario registro = this.diccionario
+				.buscarPalabra(elemento.getTextoEscrito());
 			if (registro == null) {
 				continue;
 			}
@@ -288,6 +294,13 @@ public class Core {
 
 		}
 		logger.debug("Sali de al funcion playDocument");
+		
+		try {
+			this.diccionario.cerrar();
+			this.audioFileManager.cerrar();
+		} catch (Exception e) {
+			invocador.mensaje("Error al cerrar el archivo de diccionario.");
+		}		
 		return "Reproduccion finalizada";
 	}
 
