@@ -97,9 +97,9 @@ public class Directo extends Archivo {
 	 *              La posición en la cual empieza el registro buscado.
 	 * @return 
 	 *        Retorna el registro que se encuentra en la posición offset.
-	 * @throws IOException.
+	 * @throws IOException .
 	 */
-	final public Registro Leer(final Long offset) throws IOException {
+	public final Registro leer(final Long offset) throws IOException {
 		Registro reg = null;
 		int longitud = 0;
 		

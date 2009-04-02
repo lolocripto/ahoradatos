@@ -155,4 +155,25 @@ public class Secuencial extends Archivo {
 				"Funcion no valida en este tipo de archivo");
 
 	}
+
+	/**
+	 * @see Archivo#getOffset()
+	 */
+	@Override
+	public final long getOffset() throws UnImplementedMethodException {
+
+		throw new UnImplementedMethodException(
+				"Funcion no valida en este tipo de archivo");
+	}
+
+	/**
+	 * @see Archivo#leer(Long)
+	 */
+	@Override
+	public final Registro leer(final Long offset) throws IOException,
+			UnImplementedMethodException {
+
+		throw new UnImplementedMethodException(
+				"Funcion no valida en este tipo de archivo");
+	}
 }

@@ -208,4 +208,23 @@ public abstract class Archivo {
 	 */
 	public abstract Registro siguiente() throws UnImplementedMethodException;
 
+	/**
+	 * Método para recuperar un registro de un archivo Directo.
+	 * 
+	 * @param offset
+	 *            La posición en la cual empieza el registro buscado.
+	 * @return Retorna el registro que se encuentra en la posición offset.
+	 * @throws IOException .
+	 * @throws UnImplementedMethodException
+	 *             Si la clase que hereda no implementa el metodo.
+	 */
+	public abstract Registro leer(final Long offset) throws IOException,
+			UnImplementedMethodException;
+
+	/**
+	 * @return El offset del ultimo registro insertado.
+	 * @throws UnImplementedMethodException
+	 *             Si la clase que hereda no implementa el metodo.
+	 */
+	public abstract long getOffset() throws UnImplementedMethodException;
 }

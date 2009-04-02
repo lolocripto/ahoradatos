@@ -1,6 +1,11 @@
 package ar.com.datos.grupo5;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+
 import org.apache.log4j.Logger;
+
+import ar.com.datos.grupo5.interfaces.Registro;
 
 /**
  * Esta clase es de ejemplo.
@@ -27,35 +32,35 @@ public class main {
 		
 		try {
 			
-			Archivo archivo = new Secuencial();
-			
-			archivo.crear("C:\\Users\\PowerData\\Desktop\\test.txt");
-			
-			RegistroDiccionario registro = new RegistroDiccionario();
-			
-			registro.setDato("hola");
-			registro.setOffset(13L);
-			archivo.insertar(registro);
-			registro.setDato("que");
-			registro.setOffset(124L);
-			archivo.insertar(registro);
-			registro.setDato("tal");
-			registro.setOffset(124L);
-			archivo.insertar(registro);
-
-			archivo.cerrar();
-
-			archivo.abrir("C:\\Users\\PowerData\\Desktop\\test.txt",
-					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-			
-			RegistroDiccionario reg = (RegistroDiccionario) archivo.primero();
-			
-			while (reg != null) {
-				
-				logger.debug("Dato [" + reg.getDato() + "] offset ["
-						+ reg.getOffset() + "]");
-				reg = (RegistroDiccionario) archivo.siguiente();
-			}
+//			Archivo archivo = new Secuencial();
+//			
+//			archivo.crear("C:\\Users\\PowerData\\Desktop\\test.txt");
+//			
+//			RegistroDiccionario registro = new RegistroDiccionario();
+//			
+//			registro.setDato("hola");
+//			registro.setOffset(13L);
+//			archivo.insertar(registro);
+//			registro.setDato("que");
+//			registro.setOffset(124L);
+//			archivo.insertar(registro);
+//			registro.setDato("tal");
+//			registro.setOffset(124L);
+//			archivo.insertar(registro);
+//
+//			archivo.cerrar();
+//
+//			archivo.abrir("C:\\Users\\PowerData\\Desktop\\test.txt",
+//					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+//			
+//			RegistroDiccionario reg = (RegistroDiccionario) archivo.primero();
+//			
+//			while (reg != null) {
+//				
+//				logger.debug("Dato [" + reg.getDato() + "] offset ["
+//						+ reg.getOffset() + "]");
+//				reg = (RegistroDiccionario) archivo.siguiente();
+//			}
 			
 //			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
 //			
@@ -70,6 +75,24 @@ public class main {
 //			//Este reproducir no se puede parar, reproduce todo lo que hay.
 //			manager.reproducir();
 			
+			
+			Archivo archivo = new Directo();
+			
+			archivo.crear("/home/cristian/Desktop/audio.data");
+			
+			RegistroAudio registroAudio = new RegistroAudio();
+			
+			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+			AudioManager manager = new AudioManager();
+			manager.grabar(byteArray);
+			Thread.sleep(6000);
+			manager.terminarGrabacion();
+			
+			registroAudio.setDato(byteArray);
+			
+			archivo.insertar(registroAudio);
+			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
