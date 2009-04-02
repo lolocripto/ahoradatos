@@ -64,14 +64,28 @@ public class Constantes {
 
 	
 	/**
-	 * 
+	 * Codificación por defecto utilizada en el parser
 	 */
 	public static final String DEFAULT_TEXT_INPUT_CHARSET = "UTF-8";
 	
+	/**
+	 * Definición de juego de caracteres utf8.
+	 */
+	public static final String CHARSET_UTF8 = "UTF-8";
+	
+	/**
+	 * Definición de juego de caracteres ISO.
+	 */
 	public static final String CHARSET_ISO = "ISO-8859-1";
 	
+	/**
+	 * Definición de juego de caracteres UTF16
+	 */
 	public static final String CHARSET_UTF16 = "UTF-16";
 	
+	/**
+	 * Definición de juego de caracteres ASCII
+	 */
 	public static final String CHARSET_ASCII = "US-ASCII";
 	
 	
