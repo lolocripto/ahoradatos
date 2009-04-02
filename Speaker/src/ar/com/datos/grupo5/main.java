@@ -2,8 +2,6 @@ package ar.com.datos.grupo5;
 
 import org.apache.log4j.Logger;
 
-import ar.com.datos.grupo5.interfaces.Archivo;
-
 /**
  * Esta clase es de ejemplo.
  */

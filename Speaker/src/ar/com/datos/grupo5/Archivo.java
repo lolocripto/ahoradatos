@@ -1,15 +1,14 @@
-package ar.com.datos.grupo5.interfaces;
+package ar.com.datos.grupo5;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
+import ar.com.datos.grupo5.interfaces.Registro;
 
 /**
  * Interface para manejar Archivos.

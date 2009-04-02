@@ -4,8 +4,7 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-import ar.com.datos.grupo5.interfaces.Archivo;
-import ar.com.datos.grupo5.interfaces.Registro;
+import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 
 /**
  * Clase que permite manipular el diccionario.
@@ -61,14 +60,22 @@ public class Diccionario {
 	 */
 	public final RegistroDiccionario buscarPalabra(final String palabra) {
 		
-		RegistroDiccionario reg = (RegistroDiccionario) archivo.primero();
+		RegistroDiccionario reg = null;
 		
-		while (reg != null) {
-			if (reg.getDato().equals(palabra)) {
-				break;
+		try {
+			reg = (RegistroDiccionario) archivo.primero();
+			
+			while (reg != null) {
+				if (reg.getDato().equals(palabra)) {
+					break;
+				}
+				reg = (RegistroDiccionario) archivo.siguiente();
 			}
-			reg = (RegistroDiccionario) archivo.siguiente();
+			
+		} catch (UnImplementedMethodException e) {
+			logger.error("Error: " + e.getMessage());
 		}
+		
 		return reg;
 	}
 	
