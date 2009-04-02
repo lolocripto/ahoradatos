@@ -76,8 +76,8 @@ public class Secuencial implements Archivo {
 	            }
         		
 	        	registro = new RegistroDiccionario();
-	        	
-	            file.seek(posicionActual);
+	        	//FIXME: ver si esto esta al pedo!!
+	        	file.seek(posicionActual);
 				cantidadLeida += file.read(bufferLong, 0,
 						Constantes.SIZE_OF_LONG);
 

@@ -31,12 +31,12 @@ public class main {
 			
 			Archivo archivo = new Secuencial();
 			
-			archivo.crear("/home/cristian/Desktop/test.txt");
+			archivo.crear("C:\\Users\\PowerData\\Desktop\\test.txt");
 			
 			RegistroDiccionario registro = new RegistroDiccionario();
 			
 			registro.setDato("hola");
-			registro.setOffset(123L);
+			registro.setOffset(13L);
 			archivo.insertar(registro);
 			registro.setDato("que");
 			registro.setOffset(124L);
@@ -47,7 +47,7 @@ public class main {
 
 			archivo.cerrar();
 
-			archivo.abrir("/home/cristian/Desktop/test.txt",
+			archivo.abrir("C:\\Users\\PowerData\\Desktop\\test.txt",
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 			
 			RegistroDiccionario reg = (RegistroDiccionario) archivo.primero();
