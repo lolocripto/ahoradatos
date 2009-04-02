@@ -130,8 +130,8 @@ public class Core {
 				// Protocolo para terminar la grabacion
 				resultado = this.finalizarGrabacion(invocador);
 				
-//				 Segun el resultado
-				switch(resultado){
+				//Segun el resultado
+				switch(resultado) {
 					case -1:
 						return "Operacion cancelada.";
 					default:
