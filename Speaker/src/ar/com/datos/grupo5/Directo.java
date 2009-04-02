@@ -106,9 +106,11 @@ public class Directo extends Archivo {
 		file.seek(offset);
 		byte[] bufferInt = new byte[Constantes.SIZE_OF_INT];
         byte[] bufferDato = null;
+        file.read(bufferInt, 0, Constantes.SIZE_OF_INT);
         longitud = Conversiones.arrayByteToInt(bufferInt);
         bufferDato = new byte[longitud];
         
+        file.read(bufferDato, 0, longitud);
         reg = new RegistroAudio();
         reg.setBytes(bufferDato, (long) longitud);
 		return reg;
