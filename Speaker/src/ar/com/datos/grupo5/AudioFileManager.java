@@ -3,10 +3,16 @@
  */
 package ar.com.datos.grupo5;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.io.InputStream;
+
+import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
+
+
 
 /**
  * @author xxvkue
@@ -62,7 +68,7 @@ public class AudioFileManager {
 	 * @throws FileNotFoundException
 	 * @link ar.com.datos.grupo5.interfaces.Archivo#insertar(Registro)
 	 */
-	public boolean agregar(final OutputStream audio){
+	public Long agregar(final OutputStream audio){
 		
 		RegistroAudio reg = new RegistroAudio();
 		
@@ -74,8 +80,26 @@ public class AudioFileManager {
 			this.archivo.insertar(reg);
 			return this.archivo.getOffset();
 		} catch (Exception e) {
-			return false;
+			return null;
 		}		
+	}
+	
+	public InputStream leerAudio(final Long offset){
+		
+
+		InputStream is = null;			
+			
+		RegistroAudio reg = new RegistroAudio();
+		try {
+			reg = (RegistroAudio) this.archivo.leer(offset);
+		} catch (IOException e) {
+			return null;
+		} catch (UnImplementedMethodException e1) {
+			return null;
+		}
+		
+		is = new ByteArrayInputStream(reg.getBytes());
+		return is;
 	}
 
 }

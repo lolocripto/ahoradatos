@@ -37,6 +37,7 @@ public class Core {
 	 */
 	private AudioManager manipularAudio;
 		
+	private AudioFileManager manipularArchivoAudio;
 	/**
 	 * Conteniene todas las palabras a grabar o a leer del documento ingresado.
 	 */
@@ -69,7 +70,7 @@ public class Core {
 		logger.debug("tengo el contenedor de palabras.");
 	
 		/*
-		 * Abro el archivo para la carga y consulta
+		 * Abro el archivo para la carga y consulta del diccionario
 		 */
 		try {
 			this.diccionario.abrir("/home/xxvkue/Desktop/test.txt",
@@ -79,6 +80,22 @@ public class Core {
 			return "Vuelva a intentarlo.";
 		}		
 		
+		logger.debug("Abrio el test.txt.");
+		
+		/*
+		 * Abro el archivo para la carga y consulta de los audios
+		 */
+		try {
+			this.manipularArchivoAudio.abrir("/home/xxvkue/Desktop/testAudio.txt",
+					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+		} catch (FileNotFoundException e) {
+			invocador.mensaje("No se pudo abrir el archivo de audio.");
+			return "Vuelva a intentarlo.";
+		}
+		
+		logger.debug("Abrio el testAudio.txt.");
+		Long offsetRegistroAudio;
+		
 		IunidadDeHabla elemento;
 		iterador = contenedor.iterator();
 		
@@ -86,19 +103,22 @@ public class Core {
 		while (iterador.hasNext()) {
 			
 			elemento = iterador.next();
+			logger.debug("Itero una vez.txt.");
+			
 			/* Si es una palabra pronunciable la 
 			 * proxima palabra, sino pido el audio para la misma
 			 */
 			if (elemento.esPronunciable()) {
-				
+				logger.debug("Es pronunciable.");
 				/* Si, es pronunciable, si la encuntra sigo con la 
 				 * proxima palabra, sino pido el audio para la misma
 				 */
 				if (this.diccionario.buscarPalabra(elemento.getTextoEscrito()) 
 						!= null) {
+					logger.debug("existe en el archivo de texto.");
 					continue;
 				}
-				
+				logger.debug("No esta en el archivo de texto.");
 			} else {
 				continue;
 			}
@@ -143,10 +163,10 @@ public class Core {
 			    respuesta = invocador.obtenerDatos(mensaje);
 			    }
 
-			// TODO: Grabar audio en el archivo de audio
+			offsetRegistroAudio = this.manipularArchivoAudio.agregar(this.manipularAudio.getAudio());
 			
 			//Agrego la palabra al diccionario 
-			this.diccionario.agregar(elemento.getTextoEscrito(), 123L); 
+
 			
 		}
 		
@@ -302,6 +322,7 @@ public class Core {
 		this.manipularAudio = new AudioManager();
 		this.diccionario = new Diccionario();
 		this.parser = new TextInterpreter();
+		this.manipularArchivoAudio = new AudioFileManager();
 	}
 
 	/** Inicia el programa.
