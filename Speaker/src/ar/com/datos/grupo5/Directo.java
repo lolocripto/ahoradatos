@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 import ar.com.datos.grupo5.interfaces.Registro;
+import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
  * @author cristian
@@ -88,6 +89,29 @@ public class Directo extends Archivo {
 	public Registro siguiente() throws UnImplementedMethodException {
 		
 		throw new UnImplementedMethodException("Funcionalidad no implementada.");
+	}
+	
+	/**
+	 * Método para recuperar un registro de un archivo Directo.
+	 * @param offset
+	 *              La posición en la cual empieza el registro buscado.
+	 * @return 
+	 *        Retorna el registro que se encuentra en la posición offset.
+	 * @throws IOException.
+	 */
+	final public Registro Leer(final Long offset) throws IOException {
+		Registro reg = null;
+		int longitud = 0;
+		
+		file.seek(offset);
+		byte[] bufferInt = new byte[Constantes.SIZE_OF_INT];
+        byte[] bufferDato = null;
+        longitud = Conversiones.arrayByteToInt(bufferInt);
+        bufferDato = new byte[longitud];
+        
+        reg = new RegistroAudio();
+        reg.setBytes(bufferDato, (long) longitud);
+		return reg;
 	}
 
 }

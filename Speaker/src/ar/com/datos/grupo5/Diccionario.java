@@ -8,10 +8,7 @@ import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 
 /**
  * Clase que permite manipular el diccionario.
- * 
- * @see ar.com.datos.grupo5.interfaces.Archivo
  * @author Diego
- * 
  */
 public class Diccionario {
 	
@@ -28,7 +25,8 @@ public class Diccionario {
 	
 	/**
 	 * Metodo para cargar el diccionario, accediendo al archivo.
-	 * 
+	 * @param archivo La ruta completa del archivo a cargar.
+	 * @param modo El modo en el cual se debe abrir el archivo.
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#cargar()
 	 */
 	public final boolean abrir(final String archivo, final String modo)
@@ -38,6 +36,7 @@ public class Diccionario {
 	
 	/**
 	 * Método que cierra el diccionario.
+	 * @throws IOException
      * @see ar.com.datos.grupo5.interfaces.Archivo#cerrar()
 	 */
 	public final void cerrar() throws IOException {
@@ -82,8 +81,7 @@ public class Diccionario {
 	 * @throws FileNotFoundException
 	 * @link ar.com.datos.grupo5.interfaces.Archivo#insertar(Registro)
 	 */
-	public final boolean agregar(final String palabra, final Long offset) {
-		
+	public final boolean agregar(final String palabra, final Long offset) {		
 		RegistroDiccionario reg = new RegistroDiccionario();
 		
 		reg.setOffset(offset);
