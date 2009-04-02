@@ -78,7 +78,7 @@ public class Core {
 		 * Abro el archivo para la carga y consulta del diccionario
 		 */
 		try {
-			this.diccionario.abrir("/home/xxvkue/Desktop/test.txt",
+			this.diccionario.abrir(Constantes.ARCHIVO_DICCIONARIO,
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 		} catch (FileNotFoundException e) {
 			invocador.mensaje("No se pudo abrir el diccionario.");
@@ -91,7 +91,7 @@ public class Core {
 		 * Abro el archivo para la carga y consulta de los audios
 		 */
 		try {
-			this.audioFileManager.abrir("/home/xxvkue/Desktop/testAudio.txt",
+			this.audioFileManager.abrir(Constantes.ARCHIVO_AUDIO,
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 		} catch (FileNotFoundException e) {
 			invocador.mensaje("No se pudo abrir el archivo de audio.");

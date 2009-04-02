@@ -7,13 +7,6 @@ package ar.com.datos.grupo5;
  *
  */
 public class Constantes {
-
-	/**
-	 * Constructor.
-	 */
-	public Constantes() {
-		super();
-	}
 	
 	/**
 	 * Tamaño del buffer de lectura.
@@ -62,7 +55,7 @@ public class Constantes {
 	public static final boolean SPANISH_OPTIMIZATION_ACTIVATED = true;
 	
 	/**
-	 * Codificación por defecto utilizada en el parser
+	 * Codificación por defecto utilizada en el parser.
 	 */
 	public static final String DEFAULT_TEXT_INPUT_CHARSET = "UTF-8";
 	
@@ -77,16 +70,26 @@ public class Constantes {
 	public static final String CHARSET_ISO = "ISO-8859-1";
 	
 	/**
-	 * Definición de juego de caracteres UTF16
+	 * Definición de juego de caracteres UTF16.
 	 */
 	public static final String CHARSET_UTF16 = "UTF-16";
 	
 	/**
-	 * Definición de juego de caracteres ASCII
+	 * Definición de juego de caracteres ASCII.
 	 */
 	public static final String CHARSET_ASCII = "US-ASCII";
 	
+	/**
+	 * Archivo que usa el diccionario para guardar las palabras.
+	 */
+	public static final String ARCHIVO_DICCIONARIO = 
+			"/home/cristian/Desktop/Diccionario.data";
 	
+	/**
+	 * Archivo que usa el diccionario para guardar las palabras.
+	 */
+	public static final String ARCHIVO_AUDIO = 
+			"/home/cristian/Desktop/Audio.data";
 	
 	/**
 	 * expresiones regulares que definen optimizaciones en el español.
