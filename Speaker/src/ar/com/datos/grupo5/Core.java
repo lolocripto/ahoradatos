@@ -32,12 +32,17 @@ public class Core {
 	 * Contiene todas las palabras conocidas por el sistema.
 	 */
 	private Diccionario diccionario;
+	
 	/**
 	 * Permite grabar y reproducir el audio correspondiente a un palabra.
 	 */
-	private AudioManager manipularAudio;
-		
-	private AudioFileManager manipularArchivoAudio;
+	private AudioManager audioManager;
+	
+	/**
+	 * 
+	 */
+	private AudioFileManager audioFileManager;
+	
 	/**
 	 * Conteniene todas las palabras a grabar o a leer del documento ingresado.
 	 */
@@ -86,7 +91,7 @@ public class Core {
 		 * Abro el archivo para la carga y consulta de los audios
 		 */
 		try {
-			this.manipularArchivoAudio.abrir("/home/xxvkue/Desktop/testAudio.txt",
+			this.audioFileManager.abrir("/home/xxvkue/Desktop/testAudio.txt",
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 		} catch (FileNotFoundException e) {
 			invocador.mensaje("No se pudo abrir el archivo de audio.");
@@ -163,7 +168,7 @@ public class Core {
 			    respuesta = invocador.obtenerDatos(mensaje);
 			    }
 
-			offsetRegistroAudio = this.manipularArchivoAudio.agregar(this.manipularAudio.getAudio());
+			offsetRegistroAudio = this.audioFileManager.agregar(this.audioManager.getAudio());
 			
 			//Agrego la palabra al diccionario 
 			this.diccionario.agregar(elemento.getTextoEscrito(), offsetRegistroAudio); 
@@ -193,8 +198,8 @@ public class Core {
 		String mensaje;
 		String respuesta;
 	
-		mensaje = "Para iniciar la grabación ingrese la tecla i " +
-				"y luego enter: ";
+		mensaje = "Para iniciar la grabación ingrese la tecla i "
+				+ "y luego enter: ";
 		respuesta = invocador.obtenerDatos(mensaje);
 		while (!respuesta.equalsIgnoreCase("i")
 				&& !respuesta.equalsIgnoreCase("c")) {
@@ -210,7 +215,7 @@ public class Core {
 		
 		try {
 			// Pido grabar el audio
-			this.manipularAudio.grabar(byteArray);
+			this.audioManager.grabar(byteArray);
 			return 0;
 		} catch (Exception e) {
 			logger
@@ -244,7 +249,7 @@ public class Core {
 			respuesta = invocador.obtenerDatos(mensaje);
 		}
 		//Termino la grabacion
-		this.manipularAudio.terminarGrabacion();
+		this.audioManager.terminarGrabacion();
 		if (respuesta.equalsIgnoreCase("f")) {
 			return 0;
 		} else {
@@ -303,7 +308,7 @@ public class Core {
 	 * Reproduce la última palabra leida.
 	 */
 	public final void playWord() {
-		this.manipularAudio.reproducir();
+		this.audioManager.reproducir();
 	}
 
 	/**
@@ -311,7 +316,7 @@ public class Core {
 	 * @param audioAReproducir es el audio que se va a reproducir.
 	 */
 	public final void playWord(final InputStream audioAReproducir) {
-		this.manipularAudio.reproducir(audioAReproducir);
+		this.audioManager.reproducir(audioAReproducir);
 	}
 	
 	/**
@@ -319,10 +324,9 @@ public class Core {
 	 */
 	public Core() {
 		this.diccionario = new Diccionario();
-		this.manipularAudio = new AudioManager();
-		this.diccionario = new Diccionario();
+		this.audioManager = new AudioManager();
 		this.parser = new TextInterpreter();
-		this.manipularArchivoAudio = new AudioFileManager();
+		this.audioFileManager = new AudioFileManager();
 	}
 
 	/** Inicia el programa.
