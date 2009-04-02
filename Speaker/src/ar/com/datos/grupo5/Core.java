@@ -241,16 +241,23 @@ public class Core {
 	
 	/**
 	 * Reproduce un documento entero.
-	 * 
+	 * @param invocador .
 	 * @param pathDocumento
 	 *            direccion del archivo que va a ser leido.
 	 * @return devuelve un mensaje informando el estado final del proceso.
 	 */
-	public final String playDocument(final InterfazUsuario invocador, final String pathDocumento) {
-		//TODO implementar.
+	public final String playDocument(final InterfazUsuario invocador,
+			final String pathDocumento) {
+		
 		Iterator iterador;
+		
 		// Mando a parsear el documento y obtengo un collection
-		contenedor = this.parser.modoLectura(pathDocumento, true);
+		try {
+			contenedor = this.parser.modoLectura(pathDocumento, true);
+		} catch (Exception e) {
+			logger.error("Error al crear contenedor: " + e.getMessage());
+			return "Error inesperado, consulte al proveedor del software";
+		}
 		
 		IunidadDeHabla elemento;
 		iterador = contenedor.iterator();
