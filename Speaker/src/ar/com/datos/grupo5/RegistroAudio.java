@@ -10,6 +10,7 @@ import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
  * Esta Clase implementa la interfaz del registro para audio.
+ * 
  * @see ar.com.datos.grupo5.interfaces.Registro
  * @author Diego
  */
@@ -79,10 +80,10 @@ public class RegistroAudio implements Registro {
 	}
 
 	/**
-	 * @param dato the dato to set
+	 * @param datos the dato to set
 	 */
-	public final void setDato(final ByteArrayOutputStream dato) {
-	 	this.dato = dato;
+	public final void setDato(final ByteArrayOutputStream datos) {
+	 	this.dato = datos;
 		this.longDato = dato.size();
 		this.moreBytes = (long) (this.longDato + Constantes.SIZE_OF_INT); 
 	}

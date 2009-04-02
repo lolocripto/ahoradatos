@@ -25,8 +25,12 @@ public class Diccionario {
 	
 	/**
 	 * Metodo para cargar el diccionario, accediendo al archivo.
-	 * @param archivo La ruta completa del archivo a cargar.
-	 * @param modo El modo en el cual se debe abrir el archivo.
+	 * 
+	 * @param archivo
+	 *            La ruta completa del archivo a cargar.
+	 * @param modo
+	 *            El modo en el cual se debe abrir el archivo.
+	 * @return true si pudo abrir el archivo.
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#cargar()
 	 */
 	public final boolean abrir(final String archivo, final String modo)
@@ -36,8 +40,9 @@ public class Diccionario {
 	
 	/**
 	 * Método que cierra el diccionario.
+	 * 
 	 * @throws IOException
-     * @see ar.com.datos.grupo5.interfaces.Archivo#cerrar()
+	 * @see ar.com.datos.grupo5.interfaces.Archivo#cerrar()
 	 */
 	public final void cerrar() throws IOException {
 		this.archivo.cerrar();
@@ -45,7 +50,9 @@ public class Diccionario {
 	
 	/**
 	 * Busca en el diccionario la palabra que recibe.
-	 * @param palabra La palabra que se quiere buscar.
+	 * 
+	 * @param palabra
+	 *            La palabra que se quiere buscar.
 	 * @return null si no encuentra la palabra, si no devuelve elregitro.
 	 */
 	public final RegistroDiccionario buscarPalabra(final String palabra) {
