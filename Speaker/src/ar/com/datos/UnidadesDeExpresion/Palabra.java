@@ -21,6 +21,7 @@ public class Palabra implements IunidadDeHabla {
 	 * @param equivalenteFonetico palabra procesada para almacenar en disco
 	 */
 	public Palabra(String palabraEscrita, String equivalenteFonetico) {
+		
 		this.pronunciable = true;
 		this.palabraEscrita = palabraEscrita;
 		this.equivalenteFonetico = equivalenteFonetico;
