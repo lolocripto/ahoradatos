@@ -62,18 +62,20 @@ public class Palabra implements IunidadDeHabla {
 		this.sonido = o;
 
 	}
-
+    /**
+     * Devuelve su equivalente fonético
+     * 
+     */
 	public String getEquivalenteFonetico() {
 		return equivalenteFonetico;
 	}
-
+   
 	public void setEquivalenteFonetico(String equivalenteFonetico) {
 		this.equivalenteFonetico = equivalenteFonetico;
 	}
 
 	public void say() {
 		// TODO Auto-generated method stub
-		
-	}
+    }
 
 }
