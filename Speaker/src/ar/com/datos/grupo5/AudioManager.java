@@ -84,7 +84,8 @@ public class AudioManager implements Audio {
 	public final void reproducir() {
 		
 		this.reproducir(null);
-		
+
+		esperarFin();
 	}
 	
 	/**
@@ -112,8 +113,7 @@ public class AudioManager implements Audio {
 			player.startPlaying();
 			
 		} catch (SimpleAudioPlayerException e) {
-			logger.error("Error en la reproduccion: " + e.getMessage());
-			e.printStackTrace();
+			logger.error("Error en la reproduccion: " + e.getMessage(), e);
 		}
 		try {
 			player.join();
@@ -143,5 +143,18 @@ public class AudioManager implements Audio {
 		
 		player.stopPlaying();
 
+	}
+	
+	/**
+	 * Para esperar el fin de la reproduccion.
+	 */
+	public final void esperarFin() {
+		
+		try {
+			player.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

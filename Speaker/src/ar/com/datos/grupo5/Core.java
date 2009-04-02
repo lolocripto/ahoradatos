@@ -158,7 +158,7 @@ public class Core {
 			
 			//Agrego la palabra al diccionario 
 			this.diccionario.agregar(elemento.getTextoEscrito(),
-					offsetRegistroAudio); 
+					offsetRegistroAudio);
 			
 		}
 		
