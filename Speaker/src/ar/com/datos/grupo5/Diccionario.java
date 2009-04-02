@@ -47,15 +47,6 @@ public class Diccionario {
 			throws FileNotFoundException {
 		return this.archivo.abrir(archivo, modo);
 	}
-
-	/**
-	 * Método que devuelve el archivo referenciado.
-	 * 
-	 * @see ar.com.datos.grupo5.interfaces.Archivo#getArchivo()
-	 */
-	public final Archivo getArchivo() {
-		return archivo;
-	}
 	
 	/**
 	 * Método que cierra el diccionario.
@@ -84,12 +75,19 @@ public class Diccionario {
 	}
 	
 	/**
-	 * Metodo para cargar el diccionario, accediendo al archivo.
-	 * 
-	 * @see ar.com.datos.grupo5.interfaces.Archivo#cargar()
+	 * Metodo para agregar una palabra al diccionario.
+	 * @param palabra La palabra que se quiere agregar al diccionario.
+	 * @param offset Es la posición de la palabra dentro del archivo de audio.
+	 * @return retorna TRUE si pudo agregr la palabra, o FALSE en caso contrario.
 	 * @throws FileNotFoundException
+	 * @link ar.com.datos.grupo5.interfaces.Archivo#insertar(Registro)
 	 */
-	public boolean agregar(final Registro reg){
+	public boolean agregar(final String palabra, final Long offset){
+		
+		RegistroDiccionario reg = new RegistroDiccionario();
+		
+		reg.setOffset(offset);
+		reg.setDato(palabra);
 		try {
 			this.archivo.insertar(reg);
 			return true;
