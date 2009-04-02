@@ -71,7 +71,13 @@ public class Core {
 		Iterator<IunidadDeHabla> iterador;
 
 		// Cargo el parser con el documento en modo aprendizaje
-		contenedor = this.parser.modoCarga(pathDocumento, true);
+		try {
+			contenedor = this.parser.modoCarga(pathDocumento, true);
+		} catch (Exception e) {
+			logger.error("Error al crear contenedor: " + e.getMessage());
+			return "Error inesperado, consulte al proveedor del software";
+		}
+		
 		logger.debug("tengo el contenedor de palabras.");
 	
 		Long offsetRegistroAudio;
