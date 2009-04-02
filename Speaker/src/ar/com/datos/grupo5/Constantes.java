@@ -61,8 +61,23 @@ public class Constantes {
 	 */
 	public static final boolean SPANISH_OPTIMIZATION_ACTIVATED = true;
 	
+
+	
 	/**
-	 * expresiones regulares que definen optimizaciones en el español
+	 * 
+	 */
+	public static final String DEFAULT_TEXT_INPUT_CHARSET = "UTF-8";
+	
+	public static final String CHARSET_ISO = "ISO-8859-1";
+	
+	public static final String CHARSET_UTF16 = "UTF-16";
+	
+	public static final String CHARSET_ASCII = "US-ASCII";
+	
+	
+	
+	/**
+	 * expresiones regulares que definen optimizaciones en el español.
 	 */
 	public static final String ESCAPES_REGEX =
 		"((l{2}))|"     // encuentra la "LL"

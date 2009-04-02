@@ -2,15 +2,18 @@ package ar.com.datos.parser;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.UnidadesDeExpresion.BufferedCollection;
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.grupo5.Constantes;
 
 /**
  * @author zeke
@@ -40,13 +43,14 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 						new FileNotFoundException(
 								"No existe el archivo pasado al Parser"));
 			}
-
-			try {
-				lector = new FileReader(archivo);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+			try{
+			FileInputStream fis = new FileInputStream(archivo);
+			InputStreamReader isr = new InputStreamReader(fis, Constantes.DEFAULT_TEXT_INPUT_CHARSET);
+			buffer = new BufferedReader(isr);
 			}
-			buffer = new BufferedReader(lector);
+			catch(Exception e){}
+		
+		//	buffer = new BufferedReader(lector);
 
 		} else {
 			esArchivo = false;
@@ -55,6 +59,37 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 
 	}
 
+	
+	public Parser(final String rutaOlinea, boolean esArchivo, String charset) {
+
+		if (esArchivo) {
+			esArchivo = true;
+			this.ruta_archivo = rutaOlinea;
+			File archivo = new File(ruta_archivo);
+			milogueador = Logger.getLogger(Parser.class);
+
+			if (!archivo.exists()) {
+				milogueador.error("no existe el archivo",
+						new FileNotFoundException(
+								"No existe el archivo pasado al Parser"));
+			}
+			try{
+			FileInputStream fis = new FileInputStream(archivo);
+			InputStreamReader isr = new InputStreamReader(fis, charset);
+			buffer = new BufferedReader(isr);
+			}
+			catch(Exception e){}
+		
+		//	buffer = new BufferedReader(lector);
+
+		} else {
+			esArchivo = false;
+			lineaSimple = rutaOlinea;
+		}
+
+	}
+	
+	
 	/**
 	 * @param caca
 	 * @throws IOException
