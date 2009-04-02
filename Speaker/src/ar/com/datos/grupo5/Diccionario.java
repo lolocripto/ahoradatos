@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-import sun.security.action.GetLongAction;
-
 import ar.com.datos.grupo5.interfaces.Archivo;
 import ar.com.datos.grupo5.interfaces.Registro;
 

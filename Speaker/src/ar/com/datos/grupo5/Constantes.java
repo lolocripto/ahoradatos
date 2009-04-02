@@ -56,12 +56,10 @@ public class Constantes {
 	public static final int TAMANO_CACHE = 10;
 	
 	/**
-	 * esta variable permite activar o desactivar las optimizaciones realizadas
+	 * Esta variable permite activar o desactivar las optimizaciones realizadas
 	 * para el idioma español.
 	 */
 	public static final boolean SPANISH_OPTIMIZATION_ACTIVATED = true;
-	
-
 	
 	/**
 	 * Codificación por defecto utilizada en el parser

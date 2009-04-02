@@ -16,7 +16,7 @@ public class pruebas {
 
 
 		String ruta = "/home/zeke/Escritorio/problemafax";
-		Parser miparser = new Parser(ruta);
+		Parser miparser = new Parser(ruta, false);
 		Collection<IunidadDeHabla> micolec = miparser.listar();
 		
 		Iterator<IunidadDeHabla> it = micolec.iterator();
