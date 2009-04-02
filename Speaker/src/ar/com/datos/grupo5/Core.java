@@ -246,7 +246,7 @@ public class Core {
 	 *            direccion del archivo que va a ser leido.
 	 * @return devuelve un mensaje informando el estado final del proceso.
 	 */
-	public final String playDocument(InterfazUsuario invocador, final String pathDocumento) {
+	public final String playDocument(final InterfazUsuario invocador, final String pathDocumento) {
 		//TODO implementar.
 		Iterator iterador;
 		// Mando a parsear el documento y obtengo un collection

@@ -7,7 +7,7 @@ import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 public class TextInterpreter implements ITextInput {
 
 	public Collection<IunidadDeHabla> modoCarga(String rutaOlinea,
-			boolean esArchivo) {
+			boolean esArchivo) throws Exception {
 
 		Parser miparser = new Parser(rutaOlinea, esArchivo);
 		if (esArchivo) {
@@ -18,7 +18,7 @@ public class TextInterpreter implements ITextInput {
 	}
 
 	public Collection<IunidadDeHabla> modoLectura(String rutaOlinea,
-			boolean esArchivo) {
+			boolean esArchivo) throws Exception {
 
 		Parser miparser = new Parser(rutaOlinea, false);
 		if (esArchivo) {

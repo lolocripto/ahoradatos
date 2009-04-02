@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.apache.log4j.Logger;
+
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.parser.ConsolaParser;
 
@@ -33,6 +35,11 @@ public class Consola extends Thread implements InterfazUsuario {
 	 * Comando para terminar la consola.
 	 */
 	private static final String ENDWORD = "FIN";
+	
+	/**
+	 * 
+	 */
+	private final static Logger logger = Logger.getLogger(Consola.class);
 	
 	/**
 	 * Este metodo se llama cuando el hilo comienza.
@@ -167,6 +174,7 @@ public class Consola extends Thread implements InterfazUsuario {
 									+ "No se encuentra el comando solicitado: "
 									+ linea);
 						}
+						
 					}
 					
 				} catch (Exception e) {

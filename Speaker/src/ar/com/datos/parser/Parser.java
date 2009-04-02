@@ -21,24 +21,61 @@ import ar.com.datos.grupo5.Constantes;
  */
 public class Parser implements BufferRecharger<IunidadDeHabla> {
 
+	/**
+	 * 
+	 */
 	private String ruta_archivo;
+	
+	/**
+	 * FIXME:
+	 * ESte no se usa, para que esta??
+	 */
 	private File archivo;
+	
+	/**
+	 * 
+	 */
 	private static Logger milogueador;
+	
+	/**
+	 * FIXME: Esto para que esta??
+	 */
 	private FileReader lector;
+	
+	/**
+	 * 
+	 */
 	private BufferedReader buffer;
+	
+	/**
+	 * 
+	 */
 	private boolean moreLines;
+	
+	/**
+	 * FIXME: Esto para que esta??
+	 */
 	private boolean esArchivo;
+	
+	/**
+	 * 
+	 */
 	private String lineaSimple;
+	
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = Logger.getLogger(Parser.class);
 
-	  /**
-	    * Constructor.
-	    * Toma una cadena o archivo y realiza el procesado. Si es una linea,
-	    * se utiliza un buffer para su tratamiento. 
-	    * de palabras 
-	    * @param rutaOlinea
-	    * @param esArchivo
-	    */
-	public Parser(final String rutaOlinea, boolean esArchivo) {
+	 /**
+	 * Constructor. Toma una cadena o archivo y realiza el procesado. Si es una
+	 * linea, se utiliza un buffer para su tratamiento. de palabras
+	 * 
+	 * @param rutaOlinea
+	 * @param esArchivo
+	 * @throws Exception 
+	 */
+	public Parser(final String rutaOlinea, boolean esArchivo) throws Exception {
 
 		if (esArchivo) {
 			esArchivo = true;
@@ -51,14 +88,17 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 						new FileNotFoundException(
 								"No existe el archivo pasado al Parser"));
 			}
-			try{
-			FileInputStream fis = new FileInputStream(archivo);
-			InputStreamReader isr = new InputStreamReader(fis, Constantes.DEFAULT_TEXT_INPUT_CHARSET);
-			buffer = new BufferedReader(isr);
+			try {
+				FileInputStream fis = new FileInputStream(archivo);
+				InputStreamReader isr = new InputStreamReader(fis,
+						Constantes.DEFAULT_TEXT_INPUT_CHARSET);
+				buffer = new BufferedReader(isr);
+			} catch (Exception e) {
+				logger.error("Error al crear el parser: " + e.getMessage());
+				throw e;
 			}
-			catch(Exception e){}
-		
-		//	buffer = new BufferedReader(lector);
+
+			// buffer = new BufferedReader(lector);
 
 		} else {
 			esArchivo = false;
@@ -67,15 +107,15 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 
 	}
 
-	  /**
-	    * Constructor.
-	    * Toma una cadena o archivo y realiza el procesado. Si es una linea,
-	    * se utiliza un buffer para su tratamiento. 
-	    * de palabras 
-	    * @param rutaOlinea
-	    * @param esArchivo
-	    */
-	public Parser(final String rutaOlinea, boolean esArchivo, String charset) {
+	 /**
+	 * Constructor. Toma una cadena o archivo y realiza el procesado. Si es una
+	 * linea, se utiliza un buffer para su tratamiento. de palabras
+	 * 
+	 * @param rutaOlinea
+	 * @param esArchivo
+	 * @throws Exception
+	 */
+	public Parser(final String rutaOlinea, boolean esArchivo, String charset) throws Exception {
 
 		if (esArchivo) {
 			esArchivo = true;
@@ -88,12 +128,14 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 						new FileNotFoundException(
 								"No existe el archivo pasado al Parser"));
 			}
-			try{
-			FileInputStream fis = new FileInputStream(archivo);
-			InputStreamReader isr = new InputStreamReader(fis, charset);
-			buffer = new BufferedReader(isr);
+			try {
+				FileInputStream fis = new FileInputStream(archivo);
+				InputStreamReader isr = new InputStreamReader(fis, charset);
+				buffer = new BufferedReader(isr);
+			} catch (Exception e) {
+				logger.error("Error al crear el parser: " + e.getMessage());
+				throw e;
 			}
-			catch(Exception e){}
 		
 		//	buffer = new BufferedReader(lector);
 
@@ -106,7 +148,7 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 	
 	
 	/**
-	 * Metodo que devuelve la proxima linea a procesar
+	 * Metodo que devuelve la proxima linea a procesar.
 	 * @throws IOException
 	 */
 	private String leerLinea() {
@@ -161,12 +203,13 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 		}
 	}
 	
-	  /**
-     * Metodo que procesa una la linea, separandola por palabra y aplicando un filtrado
-     * a caracteres invalidos y agregando las palabras obtenidas a la coleccion pasada 
-     * por parametro
-     * @param coleccion
-     */
+	 /**
+	 * Metodo que procesa una la linea, separandola por palabra y aplicando un
+	 * filtrado a caracteres invalidos y agregando las palabras obtenidas a la
+	 * coleccion pasada por parametro.
+	 * 
+	 * @param coleccion
+	 */
 	private void procesarLineaSimple(Collection<IunidadDeHabla> coleccion) {
 
 		String[] listaPalabras;
@@ -183,9 +226,8 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 	}
 
 	/**
-     *  Metodo que devuelve una coleccion para ser usada
-     *  en bufferización
-     */
+	 * Metodo que devuelve una coleccion para ser usada en bufferización.
+	 */
 	public Collection<IunidadDeHabla> listar() {
 
 		BufferedCollection<IunidadDeHabla> coleccionBuf = new BufferedCollection<IunidadDeHabla>(
@@ -195,9 +237,10 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 	}
 
 	/**
-     * Método que genera una colection para el tratamiento de palabras
-     * @return Collection 
-     */
+	 * Método que genera una colection para el tratamiento de palabras.
+	 * 
+	 * @return Collection
+	 */
 	public Collection<IunidadDeHabla> simpleString() {
 
 		ArrayList<IunidadDeHabla> coleccion = new ArrayList<IunidadDeHabla>();
