@@ -104,6 +104,8 @@ public class RegistroAudio implements Registro {
 	 */
 	public final void setBytes(final byte[] buffer, final Long offset) {
 
+		this.longDato = buffer.length;
+		dato = new ByteArrayOutputStream(buffer.length);
 		dato.write(buffer, 0, buffer.length);
 	}
 

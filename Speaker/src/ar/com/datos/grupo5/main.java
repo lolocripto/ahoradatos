@@ -1,5 +1,6 @@
 package ar.com.datos.grupo5;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 
@@ -75,23 +76,31 @@ public class main {
 //			//Este reproducir no se puede parar, reproduce todo lo que hay.
 //			manager.reproducir();
 			
-			
 			Archivo archivo = new Directo();
 			
-			archivo.crear("/home/cristian/Desktop/audio.data");
-			
+			//archivo.crear("/home/cristian/Desktop/audio.data");
+			archivo.abrir("/home/cristian/Desktop/audio.data",
+					Constantes.ABRIR_PARA_LECTURA);
+				
 			RegistroAudio registroAudio = new RegistroAudio();
 			
-			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+//			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
 			AudioManager manager = new AudioManager();
-			manager.grabar(byteArray);
-			Thread.sleep(6000);
-			manager.terminarGrabacion();
+//			manager.grabar(byteArray);
+//			Thread.sleep(6000);
+//			manager.terminarGrabacion();
+//			
+//			registroAudio.setDato(byteArray);
+//			
+//			archivo.insertar(registroAudio);
 			
-			registroAudio.setDato(byteArray);
+			Registro recuperado = archivo.leer(archivo.getOffset());
 			
-			archivo.insertar(registroAudio);
+			ByteArrayInputStream is = new ByteArrayInputStream(recuperado
+					.getBytes());
+			manager.reproducir(is);
 			
+			Thread.sleep(10000);
 
 		} catch (Exception e) {
 			e.printStackTrace();
