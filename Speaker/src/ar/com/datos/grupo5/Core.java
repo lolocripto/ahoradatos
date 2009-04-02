@@ -168,10 +168,12 @@ public class Core {
 			    respuesta = invocador.obtenerDatos(mensaje);
 			    }
 
-			offsetRegistroAudio = this.audioFileManager.agregar(this.audioManager.getAudio());
+			offsetRegistroAudio = this.audioFileManager
+					.agregar(this.audioManager.getAudio());
 			
 			//Agrego la palabra al diccionario 
-			this.diccionario.agregar(elemento.getTextoEscrito(), offsetRegistroAudio); 
+			this.diccionario.agregar(elemento.getTextoEscrito(),
+					offsetRegistroAudio); 
 			
 		}
 		
