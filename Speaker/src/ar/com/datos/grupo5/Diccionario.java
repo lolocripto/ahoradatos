@@ -18,29 +18,20 @@ public class Diccionario {
 	/**
 	 * Logger.
 	 */
-	private static final Logger logger = Logger.getLogger(Diccionario.class);
+	private static Logger logger  = Logger.getLogger(Diccionario.class);
 
 	/**
 	 * Archivo que contendrá las palabras y que será manejado por el
 	 * diccionario.
 	 */
 	private Archivo archivo;
-
-	/**
-	 * @param archivo
-	 *            El archivo físico diccionario.
-	 */
-	private void setArchivo(final Archivo archivo) {
-		this.archivo = archivo;
-	}
 	
 	/**
 	 * Metodo para cargar el diccionario, accediendo al archivo.
 	 * 
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#cargar()
-	 * @throws FileNotFoundException
 	 */
-	public boolean cargar(final String archivo, final String modo)
+	public final boolean abrir(final String archivo, final String modo)
 			throws FileNotFoundException {
 		return this.archivo.abrir(archivo, modo);
 	}
@@ -81,13 +72,17 @@ public class Diccionario {
 	
 	/**
 	 * Metodo para agregar una palabra al diccionario.
-	 * @param palabra La palabra que se quiere agregar al diccionario.
-	 * @param offset Es la posición de la palabra dentro del archivo de audio.
-	 * @return retorna TRUE si pudo agregr la palabra, o FALSE en caso contrario.
+	 * 
+	 * @param palabra
+	 *            La palabra que se quiere agregar al diccionario.
+	 * @param offset
+	 *            Es la posición de la palabra dentro del archivo de audio.
+	 * @return retorna TRUE si pudo agregr la palabra, o FALSE en caso
+	 *         contrario.
 	 * @throws FileNotFoundException
 	 * @link ar.com.datos.grupo5.interfaces.Archivo#insertar(Registro)
 	 */
-	public boolean agregar(final String palabra, final Long offset){
+	public final boolean agregar(final String palabra, final Long offset) {
 		
 		RegistroDiccionario reg = new RegistroDiccionario();
 		
@@ -106,7 +101,7 @@ public class Diccionario {
 	 * Constructor de la clase.
 	 *
 	 */
-	public Diccionario(){
+	public Diccionario() {
 		this.archivo = new Secuencial();
 	}
 }

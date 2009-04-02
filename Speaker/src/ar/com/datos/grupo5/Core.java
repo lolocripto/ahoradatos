@@ -73,7 +73,7 @@ public class Core {
 		 * Abro el archivo para la carga y consulta
 		 */
 		try {
-			this.diccionario.cargar("/home/xxvkue/Desktop/test.txt",
+			this.diccionario.abrir("/home/xxvkue/Desktop/test.txt",
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 		} catch (FileNotFoundException e) {
 			invocador.mensaje("No se pudo abrir el diccionario.");
