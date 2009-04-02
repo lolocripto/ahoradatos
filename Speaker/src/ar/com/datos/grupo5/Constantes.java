@@ -46,7 +46,7 @@ public class Constantes {
 	public static final int SIZE_OF_INT = Integer.SIZE / 8;
 	
 	/**
-	 * Tamaño.
+	 * Tamaño del buffer de lectura para la colección auto pagináble.
 	 */
 	public static final int BUFFER_LECTURA_TEXT_INPUT = 100;
 	
@@ -56,10 +56,16 @@ public class Constantes {
 	public static final int TAMANO_CACHE = 10;
 	
 	/**
-	 * 
+	 * esta variable permite activar o desactivar las optimizaciones realizadas
+	 * para el idioma español.
+	 */
+	public static final boolean SPANISH_OPTIMIZATION_ACTIVATED = true;
+	
+	/**
+	 * expresiones regulares que definen optimizaciones en el español
 	 */
 	public static final String ESCAPES_REGEX =
-		"((l{2}))|"     // encuentra la "ll"
+		"((l{2}))|"     // encuentra la "LL"
 		+ "([b])|"      // encuentra b
 		+ "((?<!c)h)|"  // encuentra "h" pero no antecedida por "c"
 		+ "((je))|"     // encuentra je 
