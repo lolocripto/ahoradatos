@@ -283,7 +283,7 @@ public class Core {
 			RegistroDiccionario registro = this.diccionario
 					.buscarPalabra(elemento.getEquivalenteFonetico());
 			
-			if (registro.getOffset() == 0L) {
+			if (registro == null) {
 				continue;
 			}
 			
@@ -291,7 +291,7 @@ public class Core {
 			
 			//TODO: Leer el registro, obtener el offset y buscar el audio
 							
-			//this.playWord(audioAReproducir);
+			this.playWord(this.audioFileManager.leerAudio(registro.getOffset()));
 
 		}
 		logger.debug("Sali de al funcion playDocument");

@@ -83,13 +83,13 @@ public class Constantes {
 	 * Archivo que usa el diccionario para guardar las palabras.
 	 */
 	public static final String ARCHIVO_DICCIONARIO = 
-			"/home/cristian/Desktop/Diccionario.data";
+			"/home/xxvkue/Desktop/Diccionario.data";
 	
 	/**
 	 * Archivo que usa el diccionario para guardar las palabras.
 	 */
 	public static final String ARCHIVO_AUDIO = 
-			"/home/cristian/Desktop/Audio.data";
+			"/home/xxvkue/Desktop/Audio.data";
 	
 	/**
 	 * expresiones regulares que definen optimizaciones en el español.
