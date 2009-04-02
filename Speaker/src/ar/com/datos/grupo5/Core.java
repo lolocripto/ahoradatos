@@ -2,17 +2,16 @@ package ar.com.datos.grupo5;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
-import java.io.FileNotFoundException;
 
 import org.apache.log4j.Logger;
 
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
-import ar.com.datos.grupo5.interfaces.Registro;
 import ar.com.datos.parser.ITextInput;
 import ar.com.datos.parser.TextInterpreter;
 
@@ -120,7 +119,7 @@ public class Core {
 				// Protocolo de Grabacion
 				resultado = this.iniciarGrabacion(invocador);
 				// Segun el resultado
-				switch(resultado){
+				switch(resultado) {
 					case -1:
 						return "Operacion cancelada.";
 					case -2:
@@ -147,7 +146,7 @@ public class Core {
 			// TODO: Grabar audio en el archivo de audio
 			
 			//Agrego la palabra al diccionario 
-			this.diccionario.agregar(elemento.getTextoEscrito(),123L); 
+			this.diccionario.agregar(elemento.getTextoEscrito(), 123L); 
 			
 		}
 		
@@ -177,7 +176,8 @@ public class Core {
 		mensaje = "Para iniciar la grabación ingrese la tecla i " +
 				"y luego enter: ";
 		respuesta = invocador.obtenerDatos(mensaje);
-		while (!respuesta.equalsIgnoreCase("i") && !respuesta.equalsIgnoreCase("c")) {
+		while (!respuesta.equalsIgnoreCase("i")
+				&& !respuesta.equalsIgnoreCase("c")) {
 			mensaje = "Comando incorrecto, por favor presione la tecla i.";
 			respuesta = invocador.obtenerDatos(mensaje);
 		}
@@ -189,12 +189,13 @@ public class Core {
 		OutputStream byteArray = new ByteArrayOutputStream();
 		
 		try {
-			// Pido grabar el audio 
+			// Pido grabar el audio
 			this.manipularAudio.grabar(byteArray);
 			return 0;
 		} catch (Exception e) {
-			logger.error("Error, no se pudo grabar el audio intentelo nuevamente."
-					+ e.getMessage());
+			logger
+				.error("Error, no se pudo grabar el audio intentelo nuevamente."
+							+ e.getMessage());
 			return -2;
 		}
 		
@@ -213,10 +214,12 @@ public class Core {
 		
 		String mensaje, respuesta;
 
-		mensaje = "Para detener la grabación ingrese la tecla f y " +
-				"luego enter: ";
+		mensaje = "Para detener la grabación ingrese la tecla f y "
+				+ "luego enter: ";
 		respuesta = invocador.obtenerDatos(mensaje);
-		while (!respuesta.equalsIgnoreCase("f") && !respuesta.equalsIgnoreCase("c")) {
+		while (!respuesta.equalsIgnoreCase("f")
+				&& !respuesta.equalsIgnoreCase("c")) {
+			
 			mensaje = "Comando incorrecto, por favor presione la tecla f.";
 			respuesta = invocador.obtenerDatos(mensaje);
 		}
@@ -244,15 +247,14 @@ public class Core {
 		
 		IunidadDeHabla elemento;
 		iterador = contenedor.iterator();
-		InputStream audioAReproducir;
 		// Mientras tenga palabras para verificar consulto
 		while (iterador.hasNext()) {
 			
 			elemento = (IunidadDeHabla) iterador.next();
 			
 			// Si lo encontro sigo en el bucle
-			RegistroDiccionario registro = 
-				this.diccionario.buscarPalabra(elemento.getEquivalenteFonetico());
+			RegistroDiccionario registro = this.diccionario
+					.buscarPalabra(elemento.getEquivalenteFonetico());
 			
 			if (registro.getOffset() == 0L) {
 				continue;
