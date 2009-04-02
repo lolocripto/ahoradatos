@@ -84,11 +84,7 @@ public class AudioManager implements Audio {
 	public final void reproducir() {
 		
 		this.reproducir(null);
-		try {
-			player.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		
 	}
 	
 	/**
@@ -119,7 +115,11 @@ public class AudioManager implements Audio {
 			logger.error("Error en la reproduccion: " + e.getMessage());
 			e.printStackTrace();
 		}
-		
+		try {
+			player.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		logger.info("Reproduciendo...");
 	}
 
