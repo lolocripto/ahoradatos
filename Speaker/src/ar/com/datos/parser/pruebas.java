@@ -12,7 +12,7 @@ import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 public class pruebas {
 
 	
-	public static void main(String Args[]) {
+	public static void main(String Args[]) throws Exception {
 
 
 		String ruta = "/home/zeke/Escritorio/problemafax";

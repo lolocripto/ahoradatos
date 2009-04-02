@@ -74,7 +74,7 @@ public class Core {
 		try {
 			contenedor = this.parser.modoCarga(pathDocumento, true);
 		} catch (Exception e) {
-			logger.error("Error al crear contenedor: " + e.getMessage(),e);
+			logger.error("Error al crear contenedor: " + e.getMessage(), e);
 			return "Error inesperado, consulte al proveedor del software";
 		}
 		
@@ -290,7 +290,9 @@ public class Core {
 			
 			//TODO: Leer el registro, obtener el offset y buscar el audio
 							
-			this.playWord(this.audioFileManager.leerAudio(registro.getOffset()));
+			playWord(this.audioFileManager.leerAudio(registro.getOffset()));
+			
+			audioManager.esperarFin();
 
 		}
 		logger.debug("Sali de al funcion playDocument");
