@@ -166,7 +166,7 @@ public class Core {
 			offsetRegistroAudio = this.manipularArchivoAudio.agregar(this.manipularAudio.getAudio());
 			
 			//Agrego la palabra al diccionario 
-
+			this.diccionario.agregar(elemento.getTextoEscrito(), offsetRegistroAudio); 
 			
 		}
 		
