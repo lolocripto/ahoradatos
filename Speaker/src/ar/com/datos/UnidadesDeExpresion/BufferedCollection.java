@@ -9,10 +9,13 @@ import java.util.Iterator;
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.parser.BufferRecharger;
 
+
+/** Colection utlizada para el bufferizado 
+ *  @author gabriel
+ *  @param <E>
+ */
 public class BufferedCollection<E> extends AbstractCollection<E> {
-
-
-	
+   
 	protected ArrayList<E> lista_unidades;
 	protected BufferRecharger recargador;
 
@@ -52,6 +55,10 @@ public class BufferedCollection<E> extends AbstractCollection<E> {
 		return false;
 	}
 	
+	/**
+	 * Metodo que recarga la collection utilizada
+	 * 
+	 */
 	public void recargar(){
 		recargador.recargarBuffer(this,Constantes.BUFFER_LECTURA_TEXT_INPUT);
 	}
