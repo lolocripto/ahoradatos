@@ -71,7 +71,7 @@
 		<jar destfile="${dist}/Speaker.jar" encoding="ISO8859-1" >
 			<fileset dir="${build}" includes="**" />
 			<manifest>
-				<attribute name="Main-Class" value="ar.com.datos.grupo5.main" />
+				<attribute name="Main-Class" value="ar.com.datos.grupo5.Core" />
 				<attribute name="Class-Path" value="log4j-1.2.15.jar"/>
 			</manifest>
 		</jar>
