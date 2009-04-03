@@ -14,6 +14,9 @@ public class pruebas {
 	
 	public static void main(String Args[]) throws Exception {
 
+/*
+		String ruta = "/home/zeke/Escritorio/elgatonegro";
+		Parser miparser = new Parser(ruta, true);
 
 		String ruta = "/home/zeke/Escritorio/problemafax";
 		Parser miparser = new Parser(ruta, false);
@@ -24,9 +27,9 @@ public class pruebas {
 	
 	    while (it.hasNext()){
 	    	
-	    	System.out.println(it.next().toString());
+	    	System.out.println(it.next().getEquivalenteFonetico());
 	    }
-	    	
+	*/
 	}
 	
 	
