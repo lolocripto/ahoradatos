@@ -14,22 +14,22 @@ public class pruebas {
 	
 	public static void main(String Args[]) throws Exception {
 
-/*
-		String ruta = "/home/zeke/Escritorio/elgatonegro";
+
+		String ruta = "/home/zeke/Escritorio/prueba";
 		Parser miparser = new Parser(ruta, true);
 
-		String ruta = "/home/zeke/Escritorio/problemafax";
-		Parser miparser = new Parser(ruta, false);
 		Collection<IunidadDeHabla> micolec = miparser.listar();
 		
 		Iterator<IunidadDeHabla> it = micolec.iterator();
 
 	
 	    while (it.hasNext()){
-	    	
-	    	System.out.println(it.next().getEquivalenteFonetico());
+	    	IunidadDeHabla i = it.next();
+	    	System.out.print(i.getEquivalenteFonetico()+ " | ");
+	    	System.out.print(i.getTextoEscrito()+ " | ");
+	    	System.out.println(i.esPronunciable());
 	    }
-	*/
+	
 	}
 	
 	

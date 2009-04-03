@@ -198,7 +198,7 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 
 		materiaPrima = this.leerLinea();
 
-		while ((lineasProcesadas < maxLineas) && (materiaPrima != null)) {
+		while ((lineasProcesadas <= maxLineas) && (materiaPrima != null)) {
 
 			if (!PatternRecognizer.esLineaVacia(materiaPrima)) {
 				listaPalabras = PatternRecognizer.procesarLinea(materiaPrima);

@@ -95,7 +95,14 @@ public class PatternRecognizer {
 		termino = comparador.replaceAll("");
 		return termino;
 	}
-    
+    /**
+     * Permite separar en la linea pasada por parametro las palabras y numeros
+     * de los signos de puntuacion y caracteres de escape para que al momento
+     * de partir la línea se puedan capturar tanto palabras, numeros, simbolos
+     * y signos de puntuacion.
+     * @param linea
+     * @return
+     */
 	private static String correctorSintactico(String linea) {
 
 		Pattern patron;
@@ -106,7 +113,7 @@ public class PatternRecognizer {
 		 * un numero excluyendo a la ñ, las vocales acentuadas, la "u" con
 		 * diéresis y, por supuesto el espacio mismo
 		 */
-		String regEx = "[[^a-zA-Z_]&&[^ñáéíóúü\\s\\/]]";
+		String regEx = "[[^a-zA-Z_]&&[^ñáé~íóúü\\s\\/]]";
 
 		patron = Pattern.compile(regEx);
 		comparador = patron.matcher(linea);
@@ -122,6 +129,52 @@ public class PatternRecognizer {
 		return sb.toString();
 
 	}
+	
+	
+	 /**
+     * Permite separar en la linea pasada por parametro las palabras y numeros
+     * de los signos de puntuacion y caracteres de escape para que al momento
+     * de partir la línea se puedan capturar tanto palabras, numeros, simbolos
+     * y signos de puntuacion.
+     * @param linea
+     * @return
+     */
+	private static String analisisContextual(String linea) {
+
+		Pattern patron;
+		Matcher comparador;
+
+		/*
+		 * (?<=[a-z])\\.(?=[a-z])) machea un punto que este antecedido por una letra
+		 * y precedido por otra letra
+		 * ((?<=\\D)\\,(?=\\D)) machea una coma que este antecedida por cualquier
+		 * cosa menos un numero y precedida por cualquier cosa menos un numero
+		 * 
+		 */
+		String regEx = "((?<=[a-z])\\.(?=[a-z]))|((?<=\\d)\\,(?=\\d))";
+
+		patron = Pattern.compile(regEx);
+		comparador = patron.matcher(linea);
+
+		StringBuffer sb = new StringBuffer();
+		String caracterHallado;
+
+		while (comparador.find()) {
+			caracterHallado = comparador.group();
+			if (caracterHallado.equalsIgnoreCase(",")){
+			comparador.appendReplacement(sb, " " +"å"+" ");
+			}else{
+				comparador.appendReplacement(sb, " " +"~"+" ");
+			}
+		}
+		comparador.appendTail(sb);
+		return sb.toString();
+
+	}
+	
+	
+	
+	
     /**Metodo que separa la linea pasada por parametro
      * y la separa en strings las palabras usando como separador
      * el espacio en blanco o el caracter \s
@@ -316,8 +369,20 @@ public class PatternRecognizer {
      */
  	public static String[] procesarLinea(String lineaEntrada) {
 
-		lineaEntrada = lineaEntrada.toLowerCase();
-		return splitter(correctorSintactico(analisisLexico(lineaEntrada)));
+ 		//paso a minusculas
+		lineaEntrada = lineaEntrada.toLowerCase(); 
+		
+		 //saco caracteres inválidos
+		lineaEntrada = analisisLexico(lineaEntrada);
+		
+		//Detecto puntos y comas que deben pronunciarse
+		lineaEntrada = analisisContextual(lineaEntrada);
+		
+		//separo las unidades pronunciables con espacios
+		lineaEntrada = correctorSintactico(lineaEntrada);
+		
+		//corto el string en los espacios vacios
+		return splitter(lineaEntrada);
 
 	}
     /** Metodo que recibe una String e indica si la string esta vacia
