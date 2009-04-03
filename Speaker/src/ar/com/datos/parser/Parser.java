@@ -22,43 +22,40 @@ import ar.com.datos.grupo5.Constantes;
 public class Parser implements BufferRecharger<IunidadDeHabla> {
 
 	/**
-	 * 
+	 * Permite saber cual es la ruta del archivo pasado por parámetro.
 	 */
 	private String ruta_archivo;
 	
 	/**
-	 * FIXME:
-	 * ESte no se usa, para que esta??
+	 * Contiene el archivo a ser leído.
 	 */
 	private File archivo;
 	
 	/**
-	 * 
+	 * Atributo para administrar el nivel de logueo mediante Log4j
 	 */
 	private static Logger milogueador;
 	
 	/**
-	 * FIXME: Esto para que esta??
-	 */
-	private FileReader lector;
-	
-	/**
-	 * 
+	 * Buffer de lectura de archivo de texto.
 	 */
 	private BufferedReader buffer;
 	
 	/**
-	 * 
+	 * permite saber si existen mas líneas para levantar desde el 
+	 * archivo de texto.
 	 */
 	private boolean moreLines;
 	
 	/**
-	 * FIXME: Esto para que esta??
+	 * Permite saber si se esta trabajando sobre un archivo o una línea pasada.
+	 * desde la consola
 	 */
-	private boolean esArchivo;
+	private boolean bArchivo;
 	
 	/**
-	 * 
+	 * Si se trata de una línea simple, pasada desde la consola, se almacena en
+	 * esta variable para su manipulación.
 	 */
 	private String lineaSimple;
 	
@@ -78,9 +75,9 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 	public Parser(final String rutaOlinea, boolean esArchivo) throws Exception {
 
 		if (esArchivo) {
-			esArchivo = true;
+			this.bArchivo = true;
 			this.ruta_archivo = rutaOlinea;
-			File archivo = new File(ruta_archivo);
+			this.archivo = new File(ruta_archivo);
 			milogueador = Logger.getLogger(Parser.class);
 
 			if (!archivo.exists()) {
@@ -172,11 +169,25 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 			return null;
 		}
 	}
-
+	
+    /**
+     * Permite saber si hay mas lineas que levantar desde el archivo
+     * de texto.
+     * @return true si hay mas lineas y false si no las hay. 
+     */
 	public final boolean hasMoreItems() {
 		return moreLines;
 	}
 
+	/**
+	 * Método que implementa la interfaz Bufferizable y permite recargar a
+	 * pedido la colección recibida por parámetro. Se utiliza para paginar
+	 * una colección y no tener cargados a memoria todos los elementos que
+	 * la componen.
+	 * @param coleccion colección a la que se prentende recargar el buffer
+	 * @param maxLineas cantidad máxima de líneas que serán levantadas
+	 * de disco para cargar a la colección, representa un limite del buffer. 
+	 */
 	public final void recargarBuffer(Collection<IunidadDeHabla> coleccion,
 			int maxLineas) {
 
@@ -208,7 +219,7 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 	 * filtrado a caracteres invalidos y agregando las palabras obtenidas a la
 	 * coleccion pasada por parametro.
 	 * 
-	 * @param coleccion
+	 * @param coleccion colección donde cargar las palabras obtenidas.
 	 */
 	private void procesarLineaSimple(Collection<IunidadDeHabla> coleccion) {
 
@@ -226,7 +237,7 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 	}
 
 	/**
-	 * Metodo que devuelve una coleccion para ser usada en bufferización.
+	 * Metodo que devuelve una colección para ser usada en bufferización.
 	 */
 	public Collection<IunidadDeHabla> listar() {
 
