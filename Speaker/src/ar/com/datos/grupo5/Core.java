@@ -161,13 +161,7 @@ public class Core {
 					offsetRegistroAudio);
 			
 		}
-		
-		try {
-			this.diccionario.cerrar();
-			this.audioFileManager.cerrar();
-		} catch (Exception e) {
-			invocador.mensaje("Error al cerrar el archivo de diccionario.");
-		}		
+		cerrarArchivo(invocador);
 		
 		logger.debug("Sali de al funcion load");
 		return "ff";
@@ -296,13 +290,9 @@ public class Core {
 
 		}
 		logger.debug("Sali de al funcion playDocument");
-		
-		try {
-			this.diccionario.cerrar();
-			this.audioFileManager.cerrar();
-		} catch (Exception e) {
-			invocador.mensaje("Error al cerrar el archivo de diccionario.");
-		}		
+
+		cerrarArchivo(invocador);
+			
 		return "Reproduccion finalizada";
 	}
 
@@ -355,6 +345,16 @@ public class Core {
 		}
 	}
 	
+	private boolean cerrarArchivo(InterfazUsuario invocador) {
+		try {
+			this.diccionario.cerrar();
+			this.audioFileManager.cerrar();
+			return true;
+		} catch (Exception e) {
+			invocador.mensaje("Error al cerrar el archivo de diccionario.");
+			return false;
+		}		
+	}
 	private boolean abrirArchivo(InterfazUsuario invocador) {
 		
 		/*
@@ -384,5 +384,7 @@ public class Core {
 		logger.debug("Abrio el testAudio.txt.");
 		return true;
 	}
+	
+	
 	
 }
