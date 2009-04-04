@@ -30,7 +30,6 @@ public class PalabrasFactory {
 			palabraEscrita = ",";
 		}
 		
-		
 		if (Constantes.SPANISH_OPTIMIZATION_ACTIVATED()){
 		fonetica = PatternRecognizer.posProcesadorFonetico(palabraEscrita);
 		}else{
