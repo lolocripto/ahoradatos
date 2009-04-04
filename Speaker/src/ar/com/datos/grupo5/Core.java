@@ -11,6 +11,7 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.UnidadesDeExpresion.Palabra;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.parser.ITextInput;
 import ar.com.datos.parser.TextInterpreter;
@@ -328,19 +329,26 @@ public class Core {
 	public final void playText(final InterfazUsuario invocador,
 			final String textoAReproducir) {
 
+		
+	try{ 	
+		Iterator<IunidadDeHabla> iterador;
+		// Mando a parsear el documento y obtengo un collection
 		try {
-			Iterator<IunidadDeHabla> iterador;
-			
-			// Mando a parsear el documento y obtengo un collection
-			try {
-				contenedor = this.parser.modoLectura(textoAReproducir, false);
-			} catch (Exception e) {
-				logger.error("Error al crear contenedor: " + e.getMessage(), e);
-			}
-			
-			IunidadDeHabla elemento;
-			iterador = contenedor.iterator();
-			
+
+			contenedor = this.parser.modoLectura(textoAReproducir, false);
+		} catch (Exception e) {
+			logger.error("Error al crear contenedor: " + e.getMessage(), e);
+		}
+		
+		
+		if (!abrirArchivo(invocador)) {
+			invocador.mensaje("no eexisten los archivos de diccionario o datos ");
+		}
+
+		IunidadDeHabla elemento;
+		iterador = contenedor.iterator();
+		
+		
 			while (iterador.hasNext()) {
 				
 				elemento = iterador.next();
@@ -356,9 +364,17 @@ public class Core {
 			logger.debug("Sali de al funcion playText");
 		} catch (Exception e) {
 			logger.debug("Error: " + e.getMessage(), e);
-		}
+	}
 	}
 
+	
+	
+	private void cargarSonido (Palabra unapalabra){
+		
+		
+		
+		
+	}
 
 	/**
 	 * Reproduce la última palabra leida.
