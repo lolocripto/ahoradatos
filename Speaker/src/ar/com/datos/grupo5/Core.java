@@ -473,6 +473,4 @@ public class Core {
 		return true;
 	}
 	
-	
-	
 }
