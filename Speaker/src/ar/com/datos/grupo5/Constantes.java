@@ -4,7 +4,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
-import sun.jkernel.Bundle;
 /**
  * Constantes de la aplicacion.
  * @author cristian
