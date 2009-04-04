@@ -80,7 +80,7 @@ public class main {
 			
 			//archivo.crear("/home/cristian/Desktop/audio.data");
 			archivo.abrir("/home/cristian/Desktop/audio.data",
-					Constantes.ABRIR_PARA_LECTURA);
+					Constantes.ABRIR_PARA_LECTURA());
 				
 			RegistroAudio registroAudio = new RegistroAudio();
 			

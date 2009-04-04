@@ -49,7 +49,7 @@ public class Secuencial extends Archivo {
     		long tamanioArchivo = file.length();
         	file.seek(posicionActual);
         	
-        	for (int i = 0; i < Constantes.TAMANO_CACHE; i++) {
+        	for (int i = 0; i < Constantes.TAMANO_CACHE(); i++) {
     			
         		if (posicionActual >= tamanioArchivo) {
 	            	break;

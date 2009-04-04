@@ -31,7 +31,7 @@ public class PalabrasFactory {
 		}
 		
 		
-		if (Constantes.SPANISH_OPTIMIZATION_ACTIVATED){
+		if (Constantes.SPANISH_OPTIMIZATION_ACTIVATED()){
 		fonetica = PatternRecognizer.posProcesadorFonetico(palabraEscrita);
 		}else{
 			fonetica = palabraEscrita;

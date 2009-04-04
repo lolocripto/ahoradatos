@@ -60,7 +60,7 @@ public class BufferedCollection<E> extends AbstractCollection<E> {
 	 * 
 	 */
 	public void recargar(){
-		recargador.recargarBuffer(this,Constantes.BUFFER_LECTURA_TEXT_INPUT);
+		recargador.recargarBuffer(this,Constantes.BUFFER_LECTURA_TEXT_INPUT());
 	}
 
 	public boolean removeAll(Collection c) {

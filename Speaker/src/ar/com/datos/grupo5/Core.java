@@ -361,8 +361,8 @@ public class Core {
 		 * Abro el archivo para la carga y consulta del diccionario
 		 */
 		try {
-			this.diccionario.abrir(Constantes.ARCHIVO_DICCIONARIO,
-					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			this.diccionario.abrir(Constantes.ARCHIVO_DICCIONARIO(),
+					Constantes.ABRIR_PARA_LECTURA_ESCRITURA());
 		} catch (FileNotFoundException e) {
 			invocador.mensaje("No se pudo abrir el diccionario.");
 			return false;
@@ -374,8 +374,8 @@ public class Core {
 		 * Abro el archivo para la carga y consulta de los audios
 		 */
 		try {
-			this.audioFileManager.abrir(Constantes.ARCHIVO_AUDIO,
-					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			this.audioFileManager.abrir(Constantes.ARCHIVO_AUDIO(),
+					Constantes.ABRIR_PARA_LECTURA_ESCRITURA());
 		} catch (FileNotFoundException e) {
 			invocador.mensaje("No se pudo abrir el archivo de audio.");
 			return false;

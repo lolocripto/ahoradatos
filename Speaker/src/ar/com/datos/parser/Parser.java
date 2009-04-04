@@ -88,7 +88,7 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 			try {
 				FileInputStream fis = new FileInputStream(archivo);
 				InputStreamReader isr = new InputStreamReader(fis,
-						Constantes.DEFAULT_TEXT_INPUT_CHARSET);
+						Constantes.DEFAULT_TEXT_INPUT_CHARSET());
 				buffer = new BufferedReader(isr);
 			} catch (Exception e) {
 				logger.error("Error al crear el parser: " + e.getMessage());

@@ -1,32 +1,46 @@
 package ar.com.datos.grupo5;
 
-
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
 /**
  * Constantes de la aplicacion.
  * @author cristian
  *
  */
 public class Constantes {
+	private static SAXBuilder builder;
+	private static Document doc;
+    private static Element raiz; 
+	
 	
 	/**
 	 * Tamaño del buffer de lectura.
 	 */
-	public static final int TAMANIO_BUFFER_LECTURA = 128;
+	public static final int TAMANIO_BUFFER_LECTURA(){
+		return Integer.parseInt(getXML("TAMANIO_BUFFER_LECTURA"));
+	}
 	
 	/**
 	 * Tamaño del buffer de escritura.
 	 */
-	public static final int TAMANIO_BUFFER_ESCRITURA = 128;
+	public static final int TAMANIO_BUFFER_ESCRITURA(){
+		return Integer.parseInt(getXML("TAMANIO_BUFFER_ESCRITURA"));
+	}
 	
 	/**
 	 * Abrir un archivo para lectura.
 	 */
-	public static final String ABRIR_PARA_LECTURA = "r";
+	public static final String ABRIR_PARA_LECTURA(){
+		return getXML("ABRIR_PARA_LECTURA");
+	}
 	
 	/**
 	 * Abrir un archivo para lectura y escritura.
 	 */
-	public static final String ABRIR_PARA_LECTURA_ESCRITURA = "rw";
+	public static final String ABRIR_PARA_LECTURA_ESCRITURA(){
+		return getXML("ABRIR_PARA_LECTURA_ESCRITURA");
+	}
 		
     /**
      * Tamaño en bytes del long.
@@ -41,23 +55,35 @@ public class Constantes {
 	/**
 	 * Tamaño del buffer de lectura para la colección auto pagináble.
 	 */
-	public static final int BUFFER_LECTURA_TEXT_INPUT = 100;
+	public static final int BUFFER_LECTURA_TEXT_INPUT () {
+		return Integer.parseInt(getXML("BUFFER_LECTURA_TEXT_INPUT"));
+	}
 	
 	/**
 	 * Tamaño de la cache de registros.
 	 */
-	public static final int TAMANO_CACHE = 10;
+	public static final int TAMANO_CACHE() {
+	return Integer.parseInt(getXML("TAMANO_CACHE"));
+	}
 	
 	/**
 	 * Esta variable permite activar o desactivar las optimizaciones realizadas
 	 * para el idioma español.
 	 */
-	public static final boolean SPANISH_OPTIMIZATION_ACTIVATED = true;
+	public static final boolean SPANISH_OPTIMIZATION_ACTIVATED() {
+		if (getXML("SPANISH_OPTIMIZATION_ACTIVATED").equalsIgnoreCase("true")){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	
 	/**
 	 * Codificación por defecto utilizada en el parser.
 	 */
-	public static final String DEFAULT_TEXT_INPUT_CHARSET = "UTF-8";
+	public static final String DEFAULT_TEXT_INPUT_CHARSET() {
+		return getXML("DEFAULT_TEXT_INPUT_CHARSET");
+	}
 	
 	/**
 	 * Definición de juego de caracteres utf8.
@@ -82,18 +108,45 @@ public class Constantes {
 	/**
 	 * Archivo que usa el diccionario para guardar las palabras.
 	 */
-	public static final String ARCHIVO_DICCIONARIO = 
-			"/home/cristian/Desktop/Diccionario.data";
+	public static final String ARCHIVO_DICCIONARIO(){
+		return getXML("ARCHIVO_DICCIONARIO");
+	}
 	
 	/**
 	 * Archivo que usa el diccionario para guardar las palabras.
 	 */
-	public static final String ARCHIVO_AUDIO = 
-			"/home/cristian/Desktop/Audio.data";
+	public static final String ARCHIVO_AUDIO() {
+		return getXML("ARCHIVO_AUDIO");
+	}
+	
+	
+	public static String getXML(String nombre){
+		
+		if((builder == null)||(doc == null)){
+		try {
+	        SAXBuilder builder=new SAXBuilder(false); 
+	     
+	        doc=builder.build("SpeakerConfig.xml");
+	        raiz=doc.getRootElement();
+	  
+	     }catch (Exception e){
+	        e.printStackTrace();
+	     }
+	  }
+		 Element e =raiz.getChild(nombre);
+	     return e.getTextTrim();
+		
+	}
+
+	public static final String ESCAPES_REGEX() {
+		return getXML("ESCAPES_REGEX");
+	}
+	
 	
 	/**
 	 * expresiones regulares que definen optimizaciones en el español.
 	 */
+/*	
 	public static final String ESCAPES_REGEX =
 		"((l{2}))|"     // encuentra la "LL"
 		+ "([b])|"      // encuentra b
@@ -125,5 +178,5 @@ public class Constantes {
 	 	+ "(([8]))|"    // numero ocho
 	 	+ "(([9]))|"    // numero nueve
 	 	+ "(([0]))"    // numero cero
-;
+;*/
 }

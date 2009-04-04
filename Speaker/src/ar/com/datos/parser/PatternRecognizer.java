@@ -195,7 +195,7 @@ public class PatternRecognizer {
 		Pattern patron;
 		Matcher comparador;
 
-		String regEx = Constantes.ESCAPES_REGEX;
+		String regEx = Constantes.ESCAPES_REGEX();
 
 	//	String regEx = "(l{2})";
 		
