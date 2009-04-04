@@ -168,34 +168,39 @@ public class Core {
 		return "ff";
 	}
 
-	
-	public void help (final InterfazUsuario invocador){
+	/**
+	 * 
+	 * @param invocador .
+	 */
+	public final void help(final InterfazUsuario invocador) {
 		
-		String clear = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
-				"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
-				"\n\n\n\n\n\n";
-		String mensaje ="Funcion: Load \n" +
-	"Caracteristicas: carga un documento para almacenar las palabras desconocidas \n" +
-	"Uso: load <\"path_absoluto_del_documento\"> \n" +
-	"Ej: load \"/home/usuario/Escritorio/prueba.txt\" \n\n" +
+		String clear = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+				+ "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+				+ "\n\n\n\n\n\n";
+		String mensaje = "Funcion: Load \n"
+	+ "Caracteristicas: carga un documento para almacenar las palabras "
+	+ "desconocidas \n"
+	+ "Uso: load <\"path_absoluto_del_documento\"> \n"
+	+ "Ej: load \"/home/usuario/Escritorio/prueba.txt\" \n\n"
 
-	"Funcion: playDocument \n" +
-	"Caracteristicas: carga un documento reproduciendo las palabras reconocidas \n" +
-	"Uso: playDocument <\"path_absoluto_del_documento\"> \n" +
-	"Ej: load \"/home/usuario/Escritorio/prueba.txt\" \n\n" +
+	+ "Funcion: playDocument \n"
+	+ "Caracteristicas: carga un documento reproduciendo las "
+			+ "palabras reconocidas \n"
+	+ "Uso: playDocument <\"path_absoluto_del_documento\"> \n"
+	+ "Ej: load \"/home/usuario/Escritorio/prueba.txt\" \n\n"
 	
-	"Funcion: help \n" +
-	"Caracteristicas: muestra los comandos disponibles para su ejecución \n" +
-	"Uso: help \n" +
-	"Ej: help \n\n" + 
+	+ "Funcion: help \n"
+	+ "Caracteristicas: muestra los comandos disponibles para su ejecución \n"
+	+ "Uso: help \n"
+	+ "Ej: help \n\n" 
 	
-	"Funcion: playText \n" +
-	"Caracteristicas: reproduce el texto ingresado, omitiendo las palabras que no conoce \n" +
-	"Uso: playText <\"texto ingresado\"> \n" +
-	"Ej: playText \"hola, como estas\" \n\n"
-	;
+	+ "Funcion: playText \n"
+	+ "Caracteristicas: reproduce el texto ingresado, omitiendo las "
+			+ "palabras que no conoce \n"
+	+ "Uso: playText <\"texto ingresado\"> \n"
+	+ "Ej: playText \"hola, como estas\" \n\n";
 		
-		invocador.mensaje(clear+ mensaje);
+		invocador.mensaje(clear + mensaje);
 	}
 	
 	
