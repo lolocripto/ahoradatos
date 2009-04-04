@@ -1,6 +1,5 @@
 package ar.com.datos.UnidadesDeExpresion;
 
-import java.io.BufferedReader;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +9,7 @@ import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.parser.BufferRecharger;
 
 
-/** Colection utlizada para el bufferizado 
+/** Colection utlizada para el bufferizado.
  *  @author gabriel
  *  @param <E>
  */
@@ -60,7 +59,7 @@ public class BufferedCollection<E> extends AbstractCollection<E> {
 	 * 
 	 */
 	public void recargar(){
-		recargador.recargarBuffer(this,Constantes.BUFFER_LECTURA_TEXT_INPUT());
+		recargador.recargarBuffer(this,Constantes.BUFFER_LECTURA_TEXT_INPUT);
 	}
 
 	public boolean removeAll(Collection c) {

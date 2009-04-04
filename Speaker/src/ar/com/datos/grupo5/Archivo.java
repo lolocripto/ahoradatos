@@ -78,7 +78,7 @@ public abstract class Archivo {
 
 			nombreArchivo = archivo;
 			file = new RandomAccessFile(nombreArchivo,
-					Constantes.ABRIR_PARA_LECTURA_ESCRITURA());
+					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 			// Si existe lo trunco.
 			try {
 				file.setLength(0);
@@ -130,7 +130,7 @@ public abstract class Archivo {
 			offset = 0;
 			bytes = registro.getBytes();
 			bytesTotal = bytes.length;
-			bytesEnviar = Constantes.TAMANIO_BUFFER_ESCRITURA();
+			bytesEnviar = Constantes.TAMANIO_BUFFER_ESCRITURA;
 			if (bytesTotal < bytesEnviar) {
 				bytesEnviar = bytesTotal;
 			}

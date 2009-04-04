@@ -4,13 +4,14 @@ import ar.com.datos.UnidadesDeExpresion.Palabra;
 import ar.com.datos.grupo5.Constantes;
 
 /**
- * Factory de palabras, que si esta activado la optimización al español,
- * se genera un proceso de limpiado de la palabra por su fonética de modo que,
- * solo se tienen en cuenta letras de la palabra que influyan a su pronunciación,
+ * Factory de palabras, que si esta activado la optimización al español, se
+ * genera un proceso de limpiado de la palabra por su fonética de modo que, solo
+ * se tienen en cuenta letras de la palabra que influyan a su pronunciación,
  * evitando palabras foneticamente repetidas
+ * 
  * @see PatterRecognizer
  * @author gabriel
- *
+ * 
  */
 public class PalabrasFactory {
 
@@ -24,13 +25,14 @@ public class PalabrasFactory {
 		 * el equivalente fonético puede ser diferente a la palabra escrita,
 		 * según los usos de este idioma en particular.
 		 */
-		if (palabraEscrita.equalsIgnoreCase("~")){
+		if (palabraEscrita.equalsIgnoreCase("~")) {
 			palabraEscrita = ".";
-		}if (palabraEscrita.equalsIgnoreCase("å")){
+		}
+		if (palabraEscrita.equalsIgnoreCase("å")) {
 			palabraEscrita = ",";
 		}
 		
-		if (Constantes.SPANISH_OPTIMIZATION_ACTIVATED()){
+		if (Constantes.SPANISH_OPTIMIZATION_ACTIVATED){
 		fonetica = PatternRecognizer.posProcesadorFonetico(palabraEscrita);
 		}else{
 			fonetica = palabraEscrita;

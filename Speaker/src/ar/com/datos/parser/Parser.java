@@ -4,11 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.apache.log4j.Logger;
 
 import ar.com.datos.UnidadesDeExpresion.BufferedCollection;
@@ -32,7 +32,7 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 	private File archivo;
 	
 	/**
-	 * Atributo para administrar el nivel de logueo mediante Log4j
+	 * Atributo para administrar el nivel de logueo mediante Log4j.
 	 */
 	private static Logger milogueador;
 	
@@ -88,7 +88,7 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 			try {
 				FileInputStream fis = new FileInputStream(archivo);
 				InputStreamReader isr = new InputStreamReader(fis,
-						Constantes.DEFAULT_TEXT_INPUT_CHARSET());
+						Constantes.DEFAULT_TEXT_INPUT_CHARSET);
 				buffer = new BufferedReader(isr);
 			} catch (Exception e) {
 				logger.error("Error al crear el parser: " + e.getMessage());
