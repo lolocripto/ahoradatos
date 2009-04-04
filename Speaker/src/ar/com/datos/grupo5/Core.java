@@ -7,11 +7,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.apache.log4j.Logger;
-
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
-import ar.com.datos.UnidadesDeExpresion.Palabra;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.parser.ITextInput;
 import ar.com.datos.parser.TextInterpreter;
@@ -344,7 +341,7 @@ public class Core {
 			final String textoAReproducir) {
 
 		
-	try{ 	
+	try { 	
 		
 		Iterator<IunidadDeHabla> iterador;
 		// Mando a parsear el documento y obtengo un collection
@@ -357,7 +354,8 @@ public class Core {
 		
 		
 		if (!abrirArchivo(invocador)) {
-			invocador.mensaje("no eexisten los archivos de diccionario o datos ");
+			invocador.mensaje("no eexisten los archivos de "
+					+ "diccionario o datos ");
 		}
 
 		IunidadDeHabla elemento;
