@@ -171,6 +171,9 @@ public class Core {
 	
 	public void help (final InterfazUsuario invocador){
 		
+		String clear = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+				"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+				"\n\n\n\n\n\n";
 		String mensaje ="Funcion: Load \n" +
 	"Caracteristicas: carga un documento para almacenar las palabras desconocidas \n" +
 	"Uso: load <\"path_absoluto_del_documento\"> \n" +
@@ -192,7 +195,7 @@ public class Core {
 	"Ej: playText \"hola, como estas\" \n\n"
 	;
 		
-		invocador.mensaje(mensaje);
+		invocador.mensaje(clear+ mensaje);
 	}
 	
 	
