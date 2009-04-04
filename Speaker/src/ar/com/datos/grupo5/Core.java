@@ -320,35 +320,43 @@ public class Core {
 
 	/**
 	 * Reproduce un texto introducido palabra por palabra.
-	 * @param textoAReproducir Las palabras a leer.
+	 * 
+	 * @param textoAReproducir
+	 *            Las palabras a leer.
+	 * @param invocador .
 	 */
-	public final void playText(final InterfazUsuario invocador, final String textoAReproducir) {
+	public final void playText(final InterfazUsuario invocador,
+			final String textoAReproducir) {
 
-		Iterator<IunidadDeHabla> iterador;
-		
-		// Mando a parsear el documento y obtengo un collection
 		try {
-			contenedor = this.parser.modoLectura(textoAReproducir, false);
-		} catch (Exception e) {
-			logger.error("Error al crear contenedor: " + e.getMessage(), e);
-		}
-		
-		IunidadDeHabla elemento;
-		iterador = contenedor.iterator();
-		
-		while (iterador.hasNext()) {
+			Iterator<IunidadDeHabla> iterador;
 			
-			elemento = iterador.next();
-			RegistroDiccionario registro = this.diccionario
-				.buscarPalabra(elemento.getTextoEscrito());
-			if (registro == null) {
-				continue;
+			// Mando a parsear el documento y obtengo un collection
+			try {
+				contenedor = this.parser.modoLectura(textoAReproducir, false);
+			} catch (Exception e) {
+				logger.error("Error al crear contenedor: " + e.getMessage(), e);
 			}
-					
-			playWord(this.audioFileManager.leerAudio(registro.getOffset()));
-			audioManager.esperarFin();
+			
+			IunidadDeHabla elemento;
+			iterador = contenedor.iterator();
+			
+			while (iterador.hasNext()) {
+				
+				elemento = iterador.next();
+				RegistroDiccionario registro = this.diccionario
+					.buscarPalabra(elemento.getTextoEscrito());
+				if (registro == null) {
+					continue;
+				}
+						
+				playWord(this.audioFileManager.leerAudio(registro.getOffset()));
+				audioManager.esperarFin();
+			}
+			logger.debug("Sali de al funcion playText");
+		} catch (Exception e) {
+			logger.debug("Error: " + e.getMessage(), e);
 		}
-		logger.debug("Sali de al funcion playText");
 	}
 
 
