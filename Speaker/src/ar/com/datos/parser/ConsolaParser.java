@@ -19,13 +19,13 @@ public class ConsolaParser {
 	 */
 	public final String[] parseLine(final String linea) {
 		
-		String starts = " \"";
-		String ends = "\" ";
+		String starts = "\"";
+		String ends = "\"";
 		
 		String lineaAux = linea;
 		
-		lineaAux = lineaAux.replaceAll(starts, " \"'");
-		lineaAux = lineaAux.replaceAll(ends, "'\" ");
+		lineaAux = lineaAux.replaceAll(starts, "\"'");
+		lineaAux = lineaAux.replaceAll(ends, "'\"");
 		
 		List < String > param = new ArrayList < String >();
 		
