@@ -331,6 +331,7 @@ public class Core {
 
 		
 	try{ 	
+		
 		Iterator<IunidadDeHabla> iterador;
 		// Mando a parsear el documento y obtengo un collection
 		try {
