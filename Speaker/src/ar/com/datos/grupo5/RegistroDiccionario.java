@@ -33,11 +33,6 @@ public class RegistroDiccionario implements Registro {
 	private String dato;
 	
 	/**
-	 * Tamaño del dato almacenado (SIZE_OF).
-	 */
-	private int longDato;
-	
-	/**
 	 * En este caso se devuelve de una vez todos los bytes. Devuelvo true la
 	 * primera vez y pongo en false, despues cuando se pregunta nuevamente
 	 * devuelvo false, pero pongo en true para que el registro pueda ser usado
@@ -68,7 +63,8 @@ public class RegistroDiccionario implements Registro {
 			byte[] datosByte = dato.getBytes();
 			
 			if (moreBytes == (dato.length() + longDatosAdic)) {
-				byte[] longDatoBytes = Conversiones.intToArrayByte(longDato);
+				byte[] longDatoBytes = Conversiones
+						.intToArrayByte(datosByte.length);
 				byte[] offsetBytes = Conversiones.longToArrayByte(offset);
 
 				dos.write(offsetBytes, 0, offsetBytes.length);
@@ -128,18 +124,9 @@ public class RegistroDiccionario implements Registro {
 	 */
 	public final void setDato(final String dato) {
 		this.dato = dato;
-		this.longDato = dato.length();
 		// Acá considero el tamaño (int) y el offset (long).
-		this.moreBytes = (long) this.longDato + Constantes.SIZE_OF_INT
+		this.moreBytes = (long) dato.getBytes().length + Constantes.SIZE_OF_INT
 				+ Constantes.SIZE_OF_LONG;
-	}
-
-	/**
-	 * @see ar.com.datos.grupo5.interfaces.Registro#getLongDatos()
-	 * @return Devuelve la longitud del dato almacenado.
-	 */
-	public final long getLongDatos() {
-		return (long) longDato;
 	}
 	 
 	/**

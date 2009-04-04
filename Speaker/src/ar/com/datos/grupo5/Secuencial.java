@@ -65,6 +65,7 @@ public class Secuencial extends Archivo {
 						.read(bufferInt, 0, Constantes.SIZE_OF_INT);
 	            
 	            longitud = Conversiones.arrayByteToInt(bufferInt);
+	            logger.debug("Lei:" + longitud);
 	            bufferDato = new byte[longitud];
 	            cantidadLeida += file.read(bufferDato, 0, longitud);
 	            
@@ -74,6 +75,7 @@ public class Secuencial extends Archivo {
 	            
 	            posicionActual += cantidadLeida;
 	            cantidadLeida = 0;
+	            logger.info("Pase por aca");
         	}
             
         } catch (IOException e) {

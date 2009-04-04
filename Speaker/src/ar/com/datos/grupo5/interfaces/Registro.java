@@ -32,10 +32,4 @@ public interface Registro {
 	 */
 	boolean hasMoreBytes();
 
-	/**
-	 * Longitud del dato almacenado.
-	 * 
-	 * @return Devuelve la longitud del dato almacenado.
-	 */
-	long getLongDatos();
 }

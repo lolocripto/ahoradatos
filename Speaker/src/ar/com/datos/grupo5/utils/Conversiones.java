@@ -97,9 +97,9 @@ public class Conversiones {
 	 */
 	public static final int arrayByteToInt(final byte[] array) {
 		
-		
 		ByteArrayInputStream bis = new ByteArrayInputStream(array);  
 		DataInputStream dos = new DataInputStream(bis);
+
 		int result = 0;
 			
 		try {
