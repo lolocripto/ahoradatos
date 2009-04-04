@@ -34,7 +34,7 @@ public class ConsolaParser {
 		for (int i = 0; i < parametros.length; i++) {
 			parametros[i] = parametros[i].trim();
 			if (parametros[i].length() != 0) {
-				if (parametros[i].indexOf("'") == -1) {
+				if (parametros[i].indexOf("'") != -1) {
 					parametros[i] = parametros[i].replace("'", "").trim();
 					if (parametros.length > 0) {
 						param.add(parametros[i]);
