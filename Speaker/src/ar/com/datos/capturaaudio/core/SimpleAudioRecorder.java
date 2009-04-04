@@ -15,7 +15,7 @@ import ar.com.datos.capturaaudio.exception.SimpleAudioRecorderException;
 
 /**
  * .
- * @author cristian
+ * @author .
  *
  */
 public class SimpleAudioRecorder extends Thread {

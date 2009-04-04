@@ -8,7 +8,7 @@ import java.io.IOException;
 
 /**
  * Funciones de conversion de datos.
- * @author cristian
+ * @author LedZeppeling
  *
  */
 public class Conversiones {

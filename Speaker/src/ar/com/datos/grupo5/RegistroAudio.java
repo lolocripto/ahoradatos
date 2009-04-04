@@ -12,7 +12,7 @@ import ar.com.datos.grupo5.utils.Conversiones;
  * Esta Clase implementa la interfaz del registro para audio.
  * 
  * @see ar.com.datos.grupo5.interfaces.Registro
- * @author Diego
+ * @author LedZeppeling
  */
 public class RegistroAudio implements Registro {
 

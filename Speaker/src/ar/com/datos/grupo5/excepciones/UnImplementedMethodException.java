@@ -4,7 +4,7 @@
 package ar.com.datos.grupo5.excepciones;
 
 /**
- * @author cristian
+ * @author LedZeppeling
  *
  */
 public class UnImplementedMethodException extends Exception {

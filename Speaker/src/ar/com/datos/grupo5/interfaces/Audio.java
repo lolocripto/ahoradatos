@@ -2,11 +2,10 @@ package ar.com.datos.grupo5.interfaces;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import javax.sound.sampled.AudioFileFormat;
 
 /**
  * Interfaz para poder realizar las grabaciones y repoducciones de audio.
- * @author xxvkue
+ * @author LedZeppeling
  *
  */
 public interface Audio {

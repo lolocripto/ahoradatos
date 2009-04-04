@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author cristian
+ * @author LedZeppeling
  *
  */
 public class ConsolaParser {

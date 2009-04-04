@@ -2,7 +2,7 @@ package ar.com.datos.grupo5.interfaces;
 
 /**
  * Interface para poder comunicarse con el usuario.
- * @author cristian
+ * @author LedZeppeling
  *
  */
 public interface InterfazUsuario {

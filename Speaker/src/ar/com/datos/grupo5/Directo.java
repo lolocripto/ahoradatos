@@ -12,7 +12,7 @@ import ar.com.datos.grupo5.interfaces.Registro;
 import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
- * @author cristian
+ * @author LedZeppeling
  *
  */
 public class Directo extends Archivo {

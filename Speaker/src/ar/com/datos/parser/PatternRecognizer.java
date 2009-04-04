@@ -5,6 +5,10 @@ import java.util.regex.Pattern;
 
 import ar.com.datos.grupo5.Constantes;
 
+/**
+ * @author LedZeppeling
+ *
+ */
 public class PatternRecognizer {
 	
 	/**

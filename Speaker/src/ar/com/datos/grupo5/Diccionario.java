@@ -8,7 +8,7 @@ import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 
 /**
  * Clase que permite manipular el diccionario.
- * @author Diego
+ * @author LedZeppeling
  */
 public class Diccionario {
 	

@@ -16,7 +16,7 @@ import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.Constantes;
 
 /**
- * @author zeke
+ * @author LedZeppeling
  * 
  */
 public class Parser implements BufferRecharger<IunidadDeHabla> {

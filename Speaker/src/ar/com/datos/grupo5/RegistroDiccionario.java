@@ -13,7 +13,7 @@ import ar.com.datos.grupo5.Constantes;
  * Esta clase implementa el registro para el diccionario.
  * 
  * @see ar.com.datos.grupo5.interfaces.Registro
- * @author Diego
+ * @author LedZeppeling
  */
 public class RegistroDiccionario implements Registro {
 	

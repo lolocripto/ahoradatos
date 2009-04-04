@@ -17,7 +17,7 @@ import ar.com.datos.parser.TextInterpreter;
 
 
 /**
- * @author xxvkue
+ * @author LedZeppeling
  *
  */
 public class Core {

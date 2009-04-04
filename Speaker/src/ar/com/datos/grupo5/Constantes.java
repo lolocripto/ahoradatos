@@ -6,13 +6,24 @@ import org.jdom.input.SAXBuilder;
 
 /**
  * Constantes de la aplicacion.
- * @author cristian
+ * @author LedZeppeling
  *
  */
 public class Constantes {
 	
+	/**
+	 * 
+	 */
 	private static SAXBuilder builder;
+	
+	/**
+	 * 
+	 */
 	private static Document doc;
+	
+	/**
+	 * 
+	 */
     private static Element raiz; 
 	
 	/**

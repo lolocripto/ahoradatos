@@ -12,7 +12,7 @@ import ar.com.datos.grupo5.interfaces.Registro;
 
 /**
  * Interface para manejar Archivos.
- * @author Diego
+ * @author LedZeppeling
  *
  */
 public abstract class Archivo {

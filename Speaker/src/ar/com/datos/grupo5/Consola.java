@@ -10,9 +10,7 @@ import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.parser.ConsolaParser;
 
 /**
- * .
- * @author cristian
- *
+ * @author LedZeppeling
  */
 public class Consola extends Thread implements InterfazUsuario {
 
@@ -169,7 +167,8 @@ public class Consola extends Thread implements InterfazUsuario {
 						
 					} catch (Exception e) {
 						//Indico que no conozco el comando y espero por otro.
-						if (!comando.equalsIgnoreCase(Consola.ENDWORD) && !comando.equals("")) {
+						if (!comando.equalsIgnoreCase(Consola.ENDWORD)
+								&& !comando.equals("")) {
 							System.out.println(Consola.PROMPCHAR
 									+ "No se encuentra el comando solicitado: "
 									+ linea);

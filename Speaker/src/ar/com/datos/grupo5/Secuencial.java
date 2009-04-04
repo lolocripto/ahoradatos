@@ -13,7 +13,7 @@ import ar.com.datos.grupo5.utils.Conversiones;
  * Clase Para el manejo de archivos secuenciales.
  * @see ar.com.datos.grupo5.Archivo
  * @see ar.com.datos.grupo5.interfaces.Registro
- * @author Diego
+ * @author LedZeppeling
  */
 public class Secuencial extends Archivo {
 

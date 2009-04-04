@@ -10,8 +10,8 @@ import ar.com.datos.parser.BufferRecharger;
 
 
 /** Colection utlizada para el bufferizado.
- *  @author gabriel
- *  @param <E>
+ * @author LedZeppeling
+ * @param <E>
  */
 public class BufferedCollection<E> extends AbstractCollection<E> {
    

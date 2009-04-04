@@ -4,14 +4,29 @@
 package ar.com.datos.UnidadesDeExpresion;
 
 /**
- * @author zeke
+ * @author LedZeppelin
  *
  */
 public class Palabra implements IunidadDeHabla {
 
+	/**
+	 * 
+	 */
 	private boolean pronunciable;
+	
+	/**
+	 * 
+	 */
 	private Object sonido;
+	
+	/**
+	 * 
+	 */
 	private String palabraEscrita;
+	
+	/**
+	 * 
+	 */
 	private String equivalenteFonetico;
 	
 	/**
@@ -27,55 +42,81 @@ public class Palabra implements IunidadDeHabla {
 		this.equivalenteFonetico = equivalenteFonetico;
 	}
  
-
-	public String toString() {
-		return palabraEscrita;
-	}
-	
-	public String getTextoEscrito(){
+	/**
+	 * @return El string con la palabra. 
+	 */
+	public final String toString() {
 		return palabraEscrita;
 	}
 	
 	/**
-	 * Dos palabras son iguales si y solo si tienen igual equivalente fonético
+	 * @return El string con la palabra.
 	 */
-	public int hashCode(){
+	public final String getTextoEscrito(){
+		return palabraEscrita;
+	}
+	
+	/**
+	 * Dos palabras son iguales si y solo si tienen igual equivalente fonético.
+	 * 
+	 * @return siempre 0;
+	 */
+	public final int hashCode(){
 		
 		return 0;
 		
 	}
 	
-	public boolean esPronunciable() {
+	/**
+	 * 
+	 */
+	public final boolean esPronunciable() {
 		return this.pronunciable;
 	}
 
-	public void setPronunciable(boolean pronunciable) {
+	/**
+	 * @param pronunciable .
+	 */
+	public final void setPronunciable(final boolean pronunciable) {
 		this.pronunciable = pronunciable;
 	}
 	
-	public Object getAudio() {
+	/**
+	 * 
+	 */
+	public final Object getAudio() {
 		return this.sonido;
 
 	}
 
-	public void setAudio(Object o) {
+	/**
+	 * 
+	 */
+	public final void setAudio(final Object o) {
 		this.sonido = o;
 
 	}
+	
     /**
-     * Devuelve su equivalente fonético
-     * 
+     * Devuelve su equivalente fonético.
+     * @return El string con el equivalente fonetico.
      */
-	public String getEquivalenteFonetico() {
+	public final String getEquivalenteFonetico() {
 		return equivalenteFonetico;
 	}
    
-	public void setEquivalenteFonetico(String equivalenteFonetico) {
+	/**
+	 * 
+	 */
+	public final void setEquivalenteFonetico(String equivalenteFonetico) {
 		this.equivalenteFonetico = equivalenteFonetico;
 	}
 
+	/**
+	 * 
+	 */
 	public void say() {
-		// TODO Auto-generated method stub
+		
     }
 
 }

@@ -4,8 +4,16 @@ import java.util.Collection;
 
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 
+/**
+ * Es la clase que se utiliza para parsear y cargar las palabras.
+ * 
+ * @author LedZeppeling
+ */
 public class TextInterpreter implements ITextInput {
 
+	/**
+	 * 
+	 */
 	public Collection<IunidadDeHabla> modoCarga(String rutaOlinea,
 			boolean esArchivo) throws Exception {
 
@@ -17,6 +25,9 @@ public class TextInterpreter implements ITextInput {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public Collection<IunidadDeHabla> modoLectura(String rutaOlinea,
 			boolean esArchivo) throws Exception {
 

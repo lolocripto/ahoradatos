@@ -20,7 +20,7 @@ import ar.com.datos.reproduccionaudio.core.SimpleAudioPlayer;
 import ar.com.datos.reproduccionaudio.exception.SimpleAudioPlayerException;
 
 /**
- * @author cristian
+ * @author LedZeppeling
  *
  */
 public class AudioManager implements Audio {

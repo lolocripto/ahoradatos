@@ -15,7 +15,7 @@ import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 
 
 /**
- * @author xxvkue
+ * @author LedZeppeling
  *
  */
 public class AudioFileManager {
