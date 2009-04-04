@@ -368,7 +368,7 @@ public class Core {
 				
 				elemento = iterador.next();
 				RegistroDiccionario registro = this.diccionario
-					.buscarPalabra(elemento.getTextoEscrito());
+					.buscarPalabra(elemento.getEquivalenteFonetico());
 				if (registro == null) {
 					continue;
 				}
@@ -458,7 +458,7 @@ public class Core {
 			return false;
 		}		
 		
-		logger.debug("Abrio el test.txt.");
+		logger.debug("Abrio el archivo Diccionario");
 		
 		/*
 		 * Abro el archivo para la carga y consulta de los audios
@@ -471,7 +471,7 @@ public class Core {
 			return false;
 		}
 		
-		logger.debug("Abrio el testAudio.txt.");
+		logger.debug("Abrio el archivo Audio");
 		return true;
 	}
 	
