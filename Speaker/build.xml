@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO8859-1"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 
 <project name="Speaker" default="dist" basedir="." >
 
@@ -73,9 +73,11 @@
 			</fileset>
 		</copy>
 
-		<exec command="chmod +x dist/Speaker.sh"></exec>
+		<exec executable="chmod">
+			<arg line="+x dist/Speaker.sh"/>
+		</exec>
 		
-		<jar destfile="${dist}/Speaker.jar" encoding="ISO8859-1" >
+		<jar destfile="${dist}/Speaker.jar" encoding="ISO-8859-1" >
 			<fileset dir="${build}" includes="**" />
 			<manifest>
 				<attribute name="Main-Class" value="ar.com.datos.grupo5.Core" />
