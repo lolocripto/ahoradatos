@@ -421,12 +421,24 @@ public class Core {
 		}
 	}
 	
+	public final void quit (final InterfazUsuario invocador){
+	//	this.cerrarArchivo(invocador);
+		invocador.mensaje("gracias por usar TheSpeaker");
+	}
+	
+	
 	private boolean cerrarArchivo(InterfazUsuario invocador) {
 		try {
-			this.diccionario.cerrar();
-			this.audioFileManager.cerrar();
+			if (this.diccionario != null) this.diccionario.cerrar();
+			if (this.audioFileManager != null)this.audioFileManager.cerrar();
 			return true;
+			
 		} catch (Exception e) {
+			try{
+				if (this.audioFileManager != null)this.audioFileManager.cerrar();
+			}catch (Exception g){
+				invocador.mensaje("Error al cerrar el archivo de audio.");
+			}
 			invocador.mensaje("Error al cerrar el archivo de diccionario.");
 			return false;
 		}		

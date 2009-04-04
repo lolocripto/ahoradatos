@@ -139,7 +139,8 @@ public class BufferedCollection<E> extends AbstractCollection<E> {
 	 * 
 	 */
 	public final Iterator<E> iterator() {
-		BufferedCollectionIterator<E> iterador = new BufferedCollectionIterator<E>(
+		BufferedCollectionIterator<E> iterador = 
+			new BufferedCollectionIterator<E>(
 				this);
 		return iterador;
 	}

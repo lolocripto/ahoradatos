@@ -228,7 +228,7 @@ public class PatternRecognizer {
 
 		String caracterDeEscape = "";
 
-		if ((!hallado.isEmpty()) && (hallado != null) ){
+		if ((!hallado.isEmpty()) && (hallado != null) ) {
 		switch (hallado.charAt(0)) {
 		case 'l': { //si encuentra 'LL' lo cambia por 'y'
 			caracterDeEscape = "y";

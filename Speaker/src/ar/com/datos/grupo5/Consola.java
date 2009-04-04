@@ -3,6 +3,7 @@ package ar.com.datos.grupo5;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 
 import org.apache.log4j.Logger;
 
@@ -15,7 +16,7 @@ import ar.com.datos.parser.ConsolaParser;
 public class Consola extends Thread implements InterfazUsuario {
 
 	/**
-	 * Clase que implementa los metodos de la consola.
+	 * Clase que implementa los métodos de la consola.
 	 */
 	private Object invocador = null;
 	
@@ -71,7 +72,7 @@ public class Consola extends Thread implements InterfazUsuario {
 		
 		BufferedReader br = new BufferedReader(
 				new InputStreamReader(System.in));
-		
+
 		if (mensaje != null && !mensaje.equals("")) {
 			System.out.print(Consola.PROMPCHAR + mensaje);
 		}
@@ -181,6 +182,14 @@ public class Consola extends Thread implements InterfazUsuario {
 				}
 				
 			} while (!linea.equalsIgnoreCase(Consola.ENDWORD));
+			
+	try {
+		
+		((Core)invocador).quit(this);
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+	}	
 			
 		} catch (IOException e) {
 			e.printStackTrace();
