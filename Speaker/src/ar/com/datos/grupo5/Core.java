@@ -126,7 +126,7 @@ public class Core {
 			//pido que grabe hasta que sea correcta la grabación
 			while (!respuesta.equalsIgnoreCase("S")) {
 				
-				// Protocolo de Grabacion
+				// Protocolo de Grabación
 				resultado = this.iniciarGrabacion(invocador);
 				// Segun el resultado
 				switch(resultado) {
@@ -137,7 +137,7 @@ public class Core {
 					default:
 				}
 				
-				// Protocolo para terminar la grabacion
+				// Protocolo para terminar la grabación
 				resultado = this.finalizarGrabacion(invocador);
 				
 				//Segun el resultado
