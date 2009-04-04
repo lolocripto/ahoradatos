@@ -15,41 +15,75 @@ import ar.com.datos.parser.BufferRecharger;
  */
 public class BufferedCollection<E> extends AbstractCollection<E> {
    
-	protected ArrayList<E> lista_unidades;
-	protected BufferRecharger recargador;
+	/**
+	 * 
+	 */
+	protected ArrayList<E> listaUnidades;
+	
+	/**
+	 * .
+	 */
+	protected BufferRecharger<E> recargador;
 
-	public BufferedCollection(BufferRecharger recarga){
-	    lista_unidades= new ArrayList();
+	/**
+	 * 
+	 * @param recarga
+	 */
+	public BufferedCollection(final BufferRecharger<E> recarga) {
+		listaUnidades = new ArrayList<E>();
 		recargador = recarga;
-		
-	}
-	public boolean add(E e) {
-		return lista_unidades.add(e);
-	}
-
-	public boolean addAll(Collection arg0) {
-		return lista_unidades.addAll(arg0);
-	}
-
-	public void clear() {
-		lista_unidades.clear();
 
 	}
-
-	public boolean contains(Object arg0) {
-		return lista_unidades.contains(arg0);
+	
+	/**
+	 * 
+	 */
+	public final boolean add(final E e) {
+		return listaUnidades.add(e);
 	}
 
-	public boolean containsAll(Collection arg0) {
-		return lista_unidades.containsAll(arg0);
+	/**
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public final boolean addAll(final Collection arg0) {
+		return listaUnidades.addAll(arg0);
 	}
 
-	public boolean isEmpty() {
-	    return lista_unidades.isEmpty();
+	/**
+	 * 
+	 */
+	public final void clear() {
+		listaUnidades.clear();
+
 	}
 
+	/**
+	 * 
+	 */
+	public final boolean contains(final Object arg0) {
+		return listaUnidades.contains(arg0);
+	}
 
-	public boolean remove(Object o) {
+	/**
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public final boolean containsAll(final Collection arg0) {
+		return listaUnidades.containsAll(arg0);
+	}
+
+	/**
+	 * 
+	 */
+	public final boolean isEmpty() {
+	    return listaUnidades.isEmpty();
+	}
+
+	/**
+	 * 
+	 */
+	public final boolean remove(final Object o) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -58,33 +92,55 @@ public class BufferedCollection<E> extends AbstractCollection<E> {
 	 * Metodo que recarga la collection utilizada
 	 * 
 	 */
-	public void recargar(){
-		recargador.recargarBuffer(this,Constantes.BUFFER_LECTURA_TEXT_INPUT);
+	public final void recargar() {
+		recargador.recargarBuffer(this, Constantes.BUFFER_LECTURA_TEXT_INPUT);
 	}
 
-	public boolean removeAll(Collection c) {
-		return lista_unidades.removeAll(c);
+	/**
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public final boolean removeAll(final Collection c) {
+		return listaUnidades.removeAll(c);
 	}
 
-	public boolean retainAll(Collection c) {
-		return lista_unidades.retainAll(c);
+	/**
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public final boolean retainAll(final Collection c) {
+		return listaUnidades.retainAll(c);
 	}
 
-	public int size() {
-		return lista_unidades.size();
+	/**
+	 * 
+	 */
+	public final int size() {
+		return listaUnidades.size();
 	}
 
-	public Object[] toArray() {
-	     return lista_unidades.toArray();
+	/**
+	 * 
+	 */
+	public final Object[] toArray() {
+		return listaUnidades.toArray();
 	}
 
-	public Object[] toArray(Object[] a) {
-		return lista_unidades.toArray(a) ;
-		
+	/**
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public final Object[] toArray(final Object[] a) {
+		return listaUnidades.toArray(a);
+
 	}
 
-	public Iterator<E> iterator() {
-		BufferedCollectionIterator<E> iterador = new BufferedCollectionIterator<E>(this);
+	/**
+	 * 
+	 */
+	public final Iterator<E> iterator() {
+		BufferedCollectionIterator<E> iterador = new BufferedCollectionIterator<E>(
+				this);
 		return iterador;
 	}
 

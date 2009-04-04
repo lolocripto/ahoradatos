@@ -11,7 +11,7 @@ public class BufferedCollectionIterator<E> implements Iterator<E> {
 	
 	public BufferedCollectionIterator(BufferedCollection<E> lista){
 		coleccionPabras=lista;
-		buffer = lista.lista_unidades.iterator();
+		buffer = lista.listaUnidades.iterator();
 	}
 	
 	/**
@@ -28,7 +28,7 @@ public class BufferedCollectionIterator<E> implements Iterator<E> {
 		    if (coleccionPabras.recargador.hasMoreItems()){  // si hay mas
 		    	coleccionPabras.clear();     // se vacia la lista
 		    	coleccionPabras.recargar();  // se recarga
-			buffer = coleccionPabras.lista_unidades.iterator();  //se renueva el iterador
+			buffer = coleccionPabras.listaUnidades.iterator();  //se renueva el iterador
 			return buffer.hasNext();    //se pregunta si fue realmente recargado
 		}
 	}

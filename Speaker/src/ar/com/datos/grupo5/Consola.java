@@ -169,7 +169,7 @@ public class Consola extends Thread implements InterfazUsuario {
 						
 					} catch (Exception e) {
 						//Indico que no conozco el comando y espero por otro.
-						if (!comando.equalsIgnoreCase(Consola.ENDWORD)) {
+						if (!comando.equalsIgnoreCase(Consola.ENDWORD) && !comando.equals("")) {
 							System.out.println(Consola.PROMPCHAR
 									+ "No se encuentra el comando solicitado: "
 									+ linea);
