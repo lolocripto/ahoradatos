@@ -8,6 +8,9 @@ import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 import org.apache.log4j.Logger;
+
+import com.sun.management.GarbageCollectorMXBean;
+
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.parser.ITextInput;
@@ -89,7 +92,7 @@ public class Core {
 		
 		// Mientras tenga palabras para verificar consulto
 		while (iterador.hasNext()) {
-			
+	
 			elemento = iterador.next();
 			logger.debug("Itero una vez.txt.");
 			
@@ -101,7 +104,7 @@ public class Core {
 				/* Si, es pronunciable, si la encuntra sigo con la 
 				 * proxima palabra, sino pido el audio para la misma
 				 */
-				if (this.diccionario.buscarPalabra(elemento.getTextoEscrito()) 
+				if (this.diccionario.buscarPalabra(elemento.getEquivalenteFonetico()) 
 						!= null) {
 					logger.debug("existe en el archivo de texto.");
 					continue;
@@ -110,7 +113,6 @@ public class Core {
 			} else {
 				continue;
 			}
-			
 			
 			// Si no encontro la palabra pido ingresar el audio
 			String mensaje = new String(
@@ -155,7 +157,7 @@ public class Core {
 					.agregar(this.audioManager.getAudio());
 			
 			//Agrego la palabra al diccionario 
-			this.diccionario.agregar(elemento.getTextoEscrito(),
+			this.diccionario.agregar(elemento.getEquivalenteFonetico(),
 					offsetRegistroAudio);
 			
 		}
