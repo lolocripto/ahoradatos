@@ -99,8 +99,7 @@ public class Core {
 			/* Si es una palabra pronunciable la 
 			 * proxima palabra, sino pido el audio para la misma
 			 */
-			if (elemento.esPronunciable()) {
-				logger.debug("Es pronunciable.");
+			
 				/* Si, es pronunciable, si la encuntra sigo con la 
 				 * proxima palabra, sino pido el audio para la misma
 				 */
@@ -110,9 +109,7 @@ public class Core {
 					continue;
 				}
 				logger.debug("No esta en el archivo de texto.");
-			} else {
-				continue;
-			}
+			
 			
 			// Si no encontro la palabra pido ingresar el audio
 			String mensaje = new String(
@@ -311,7 +308,7 @@ public class Core {
 //					.buscarPalabra(elemento.getEquivalenteFonetico());
 			
 			RegistroDiccionario registro = this.diccionario
-				.buscarPalabra(elemento.getTextoEscrito());
+				.buscarPalabra(elemento.getEquivalenteFonetico());
 			if (registro == null) {
 				continue;
 			}
