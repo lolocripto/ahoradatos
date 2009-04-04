@@ -60,7 +60,7 @@ public class Core {
 	 *            Interfaz por la cual se realizan peticiones al usuario y se
 	 *            obtienen las respuestas.
 	 * @param pathDocumento
-	 *            Direccion donde se encuentra el archivo a ser examinado.
+	 *            Dirección donde se encuentra el archivo a ser examinado.
 	 * @return devuelve un mensaje informando el estado final del proceso.
 	 */
 	public final String load(final InterfazUsuario invocador,
@@ -167,6 +167,28 @@ public class Core {
 		return "ff";
 	}
 
+	
+	public void help (final InterfazUsuario invocador){
+		
+		String mensaje ="Funcion: Load \n" +
+	"Caracteristicas: carga un documento para almacenar las palabras desconocidas \n" +
+	"Uso: load <\"path_absoluto_del_documento\"> \n" +
+	"Ej: load \"/home/usuario/Escritorio/prueba.txt\" \n\n" +
+
+	"Funcion: playDocument \n" +
+	"Caracteristicas: carga un documento reproduciendo las palabras reconocidas \n" +
+	"Uso: playDocument \"path_absoluto_del_documento\" \n" +
+	"Ej: load \"/home/usuario/Escritorio/prueba.txt\" \n\n" +
+	
+	"Funcion: help \n" +
+	"Caracteristicas: muestra los comandos disponibles para su ejecución \n" +
+	"Uso: help \n" +
+	"Ej: help \n\n";
+		
+		invocador.mensaje(mensaje);
+	}
+	
+	
 	/**
 	 * Da comienzo a la grabación del audio de la palabra en cuestión.
 	 * 
@@ -249,7 +271,7 @@ public class Core {
 	public final String playDocument(final InterfazUsuario invocador,
 			final String pathDocumento) {
 		
-		Iterator iterador;
+		Iterator<IunidadDeHabla> iterador;
 		
 		// Mando a parsear el documento y obtengo un collection
 		try {
@@ -300,9 +322,35 @@ public class Core {
 	 * Reproduce un texto introducido palabra por palabra.
 	 * @param textoAReproducir Las palabras a leer.
 	 */
-	public final void playText(final String textoAReproducir) {
-		//TODO Implementar.
+	public final void playText(final InterfazUsuario invocador, final String textoAReproducir) {
+
+		Iterator<IunidadDeHabla> iterador;
+		
+		// Mando a parsear el documento y obtengo un collection
+		try {
+			contenedor = this.parser.modoLectura(textoAReproducir, false);
+		} catch (Exception e) {
+			logger.error("Error al crear contenedor: " + e.getMessage(), e);
+		}
+		
+		IunidadDeHabla elemento;
+		iterador = contenedor.iterator();
+		
+		while (iterador.hasNext()) {
+			
+			elemento = iterador.next();
+			RegistroDiccionario registro = this.diccionario
+				.buscarPalabra(elemento.getTextoEscrito());
+			if (registro == null) {
+				continue;
+			}
+					
+			playWord(this.audioFileManager.leerAudio(registro.getOffset()));
+			audioManager.esperarFin();
+		}
+		logger.debug("Sali de al funcion playText");
 	}
+
 
 	/**
 	 * Reproduce la última palabra leida.
