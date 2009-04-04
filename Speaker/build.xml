@@ -67,9 +67,6 @@
 				<include name="**/*.xml"/>
 			</fileset>
 		</copy>
-		<copy todir="${dist}">
-			<fileset file="SpeakerConfig.xml" />
-		</copy>
 
 		<jar destfile="${dist}/Speaker.jar" encoding="ISO8859-1" >
 			<fileset dir="${build}" includes="**" />
