@@ -328,20 +328,14 @@ public class Core {
 			//RegistroDiccionario registro = this.diccionario
 //					.buscarPalabra(elemento.getEquivalenteFonetico());
 			if (elemento.esPronunciable()){
-			invocador.mensajeSinSalto(elemento.getTextoEscrito() + " ");
 			RegistroDiccionario registro = this.diccionario
 				.buscarPalabra(elemento.getEquivalenteFonetico());
-			if (registro == null) {
-				continue;
+			
+			if (registro != null) {
+				invocador.mensajeSinSalto(elemento.getTextoEscrito() + " ");
+				playWord(this.audioFileManager.leerAudio(registro.getOffset()));
+				audioManager.esperarFin();
 			}
-			
-			// Si lo encontro busco el audio
-			
-			//TODO: Leer el registro, obtener el offset y buscar el audio
-							
-			playWord(this.audioFileManager.leerAudio(registro.getOffset()));
-			
-			audioManager.esperarFin();
 
 			}
 		}
@@ -389,15 +383,16 @@ public class Core {
 				
 				elemento = iterador.next();
 				if (elemento.esPronunciable()){
-					invocador.mensajeSinSalto(elemento.getTextoEscrito() + " ");
 				RegistroDiccionario registro = this.diccionario
 					.buscarPalabra(elemento.getEquivalenteFonetico());
-				if (registro == null) {
-					continue;
+				if (registro != null) {
+					invocador.mensajeSinSalto(elemento.getTextoEscrito() + " ");
+					playWord(this.audioFileManager.leerAudio(registro.getOffset()));
+					audioManager.esperarFin();
+					
 				}
 						
-				playWord(this.audioFileManager.leerAudio(registro.getOffset()));
-				audioManager.esperarFin();
+				
 			}
 			}
 			logger.debug("Sali de al funcion playText");
