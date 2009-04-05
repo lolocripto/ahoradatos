@@ -9,7 +9,19 @@ import org.jdom.input.SAXBuilder;
  * @author LedZeppeling
  *
  */
-public class Constantes {
+public final class Constantes {
+	
+	/**
+	 * Constructor privado.
+	 */
+	private Constantes() {
+		super();
+	}
+
+	/**
+	 * Tamaño en bits de un byte.
+	 */
+	private static final int SIZE_OF_BYTE = 8;
 	
 	/**
 	 * 
@@ -42,22 +54,22 @@ public class Constantes {
 	/**
 	 * Abrir un archivo para lectura.
 	 */
-	public static final String ABRIR_PARA_LECTURA = getXML("ABRIR_PARA_LECTURA");
+	public static final String ABRIR_PARA_LECTURA = "r";
 	
 	/**
 	 * Abrir un archivo para lectura y escritura.
 	 */
-	public static final String ABRIR_PARA_LECTURA_ESCRITURA = getXML("ABRIR_PARA_LECTURA_ESCRITURA");
+	public static final String ABRIR_PARA_LECTURA_ESCRITURA = "rw";
 		
     /**
      * Tamaño en bytes del long.
 	 */
-	public static final int SIZE_OF_LONG = Long.SIZE / 8;
+	public static final int SIZE_OF_LONG = Long.SIZE / SIZE_OF_BYTE;
 	
 	/**
 	 * Tamaño en bytes del int.
 	 */
-	public static final int SIZE_OF_INT = Integer.SIZE / 8;
+	public static final int SIZE_OF_INT = Integer.SIZE / SIZE_OF_BYTE;
 	
 	/**
 	 * Tamaño del buffer de lectura para la colección auto pagináble.
@@ -75,13 +87,15 @@ public class Constantes {
 	 * Esta variable permite activar o desactivar las optimizaciones realizadas
 	 * para el idioma español.
 	 */
-	public static final boolean SPANISH_OPTIMIZATION_ACTIVATED = (getXML("SPANISH_OPTIMIZATION_ACTIVATED")
+	public static final boolean SPANISH_OPTIMIZATION_ACTIVATED = 
+		(getXML("SPANISH_OPTIMIZATION_ACTIVATED")
 			.equalsIgnoreCase("true")) ? true : false;
 	
 	/**
 	 * Codificación por defecto utilizada en el parser.
 	 */
-	public static final String DEFAULT_TEXT_INPUT_CHARSET = getXML("DEFAULT_TEXT_INPUT_CHARSET");
+	public static final String DEFAULT_TEXT_INPUT_CHARSET =
+		getXML("DEFAULT_TEXT_INPUT_CHARSET");
 	
 	/**
 	 * Definición de juego de caracteres utf8.
@@ -106,19 +120,30 @@ public class Constantes {
 	/**
 	 * Archivo que usa el diccionario para guardar las palabras.
 	 */
-	public static final String ARCHIVO_DICCIONARIO = getXML("ARCHIVO_DICCIONARIO");
+	public static final String ARCHIVO_DICCIONARIO = 
+		getXML("ARCHIVO_DICCIONARIO");
+	
+	/**
+	 * .
+	 */
+	public static final String ESCAPES_REGEX = getXML("ESCAPES_REGEX");
 
 	/**
 	 * Archivo que usa el diccionario para guardar las palabras.
 	 */
 	public static final String ARCHIVO_AUDIO = getXML("ARCHIVO_AUDIO");
 	
-	
-	public static String getXML(String nombre) {
+	/**
+	 * Lee delarchivo de configuracion.
+	 * 
+	 * @param nombre clave para recuperar el valor.
+	 * @return El valor leido.
+	 */
+	public static String getXML(final String nombre) {
 
 		if ((builder == null) || (doc == null)) {
 			try {
-				SAXBuilder builder = new SAXBuilder(false);
+				builder = new SAXBuilder(false);
 
 				doc = builder.build("SpeakerConfig.xml");
 				raiz = doc.getRootElement();
@@ -131,46 +156,4 @@ public class Constantes {
 		return e.getTextTrim();
 
 	}
-
-	public static final String ESCAPES_REGEX() {
-		return getXML("ESCAPES_REGEX");
-	}
-	
-	
-	/**
-	 * expresiones regulares que definen optimizaciones en el español.
-	 */
-/*	
-	public static final String ESCAPES_REGEX =
-		"((l{2}))|"     // encuentra la "LL"
-		+ "([b])|"      // encuentra b
-		+ "((?<!c)h)|"  // encuentra "h" pero no antecedida por "c"
-		+ "((je))|"     // encuentra je 
-		+ "((ji))|"     // encuentra ji
-		+ "((mb))|"     // encuentra mb
-		+ "((ce))|"     // encuentra ce
-		+ "((ci))|"     // encuentra ci
-		+ "((za))|"     // encuentra za
-		+ "((zu))|"     // encuentra zu
-        + "((\\.))|"    // el punto
-        + "((\\,))|"    // la coma
-	 	+ "((\\-))|"    // signo menos
-	 	+ "((\\+))|"    // signo mas
-	 	+ "((\\=))|"    // signo igual
-	 	+ "((\\$))|"    // signo pesos
-	 	+ "((\\*))|"    // signo asterisco
-	 	+ "((\\%))|"    // signo porcentaje
-	 	+ "((\\#))|"    // signo numeral
-	 	+ "((\\@))|"    // signo arroba
-	 	+ "(([1]))|"    // numero uno
-	 	+ "(([2]))|"    // numero dos
-	 	+ "(([3]))|"    // numero tres
-	 	+ "(([4]))|"    // numero cuatro
-	 	+ "(([5]))|"    // numero cinco
-	 	+ "(([6]))|"    // numero seis
-	 	+ "(([7]))|"    // numero siete
-	 	+ "(([8]))|"    // numero ocho
-	 	+ "(([9]))|"    // numero nueve
-	 	+ "(([0]))"    // numero cero
-;*/
 }

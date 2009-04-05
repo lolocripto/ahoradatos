@@ -15,6 +15,7 @@ import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.parser.ITextInput;
 import ar.com.datos.parser.TextInterpreter;
+import ar.com.datos.reproduccionaudio.exception.SimpleAudioPlayerException;
 
 
 /**
@@ -69,96 +70,104 @@ public class Core {
 		
 		logger.debug("Entre en load");
 		
-		Iterator<IunidadDeHabla> iterador;
-
-		// Cargo el parser con el documento en modo aprendizaje
 		try {
-			contenedor = this.parser.modoCarga(pathDocumento, true);
-		} catch (Exception e) {
-			logger.error("Error al crear contenedor: " + e.getMessage(), e);
-			return "Error inesperado, consulte al proveedor del software";
-		}
-		
-		logger.debug("tengo el contenedor de palabras.");
-	
-		Long offsetRegistroAudio;
-		
-		if (!abrirArchivo(invocador)) {
-			return "Intente denuevo";
-		}
-		
-		IunidadDeHabla elemento;
-		iterador = contenedor.iterator();
-		
-		// Mientras tenga palabras para verificar consulto
-		while (iterador.hasNext()) {
-	
-			elemento = iterador.next();
-			logger.debug("Itero una vez.txt.");
+			Iterator<IunidadDeHabla> iterador;
+
+			// Cargo el parser con el documento en modo aprendizaje
+			try {
+				contenedor = this.parser.modoCarga(pathDocumento, true);
+			} catch (Exception e) {
+				logger.error("Error al crear contenedor: " + e.getMessage(), e);
+				return "Error inesperado, consulte al proveedor del software";
+			}
 			
-			/* Si es una palabra pronunciable la 
-			 * proxima palabra, sino pido el audio para la misma
-			 */
+			logger.debug("tengo el contenedor de palabras.");
+
+			Long offsetRegistroAudio;
 			
-				/* Si, es pronunciable, si la encuntra sigo con la 
-				 * proxima palabra, sino pido el audio para la misma
+			if (!abrirArchivo(invocador)) {
+				return "Intente denuevo";
+			}
+			
+			IunidadDeHabla elemento;
+			iterador = contenedor.iterator();
+			
+			// Mientras tenga palabras para verificar consulto
+			while (iterador.hasNext()) {
+
+				elemento = iterador.next();
+				logger.debug("Itero una vez.txt.");
+				
+				/*
+				 * Si es una palabra pronunciable la proxima palabra, sino pido el
+				 * audio para la misma
+				 * Si, es pronunciable, si la encuntra sigo con la proxima palabra,
+				 * sino pido el audio para la misma
 				 */
-				if (this.diccionario.buscarPalabra(elemento.getEquivalenteFonetico()) 
-						!= null) {
+				if (this.diccionario.buscarPalabra(elemento
+						.getEquivalenteFonetico()) != null) {
 					logger.debug("existe en el archivo de texto.");
 					continue;
 				}
+				
 				logger.debug("No esta en el archivo de texto.");
-			
-			
-			// Si no encontro la palabra pido ingresar el audio
-			String mensaje = new String(
-					"Para ingresar el audio para la palabra: "
-							+ elemento.getTextoEscrito());
+				
+				
+				// Si no encontro la palabra pido ingresar el audio
+				String mensaje = new String(
+						"Para ingresar el audio para la palabra: "
+								+ elemento.getTextoEscrito());
 
-			String respuesta = "0";
-			invocador.mensaje(mensaje);
+				String respuesta = "0";
+				invocador.mensaje(mensaje);
 
-			int resultado;
-			//pido que grabe hasta que sea correcta la grabación
-			while (!respuesta.equalsIgnoreCase("S")) {
-				
-				// Protocolo de Grabación
-				resultado = this.iniciarGrabacion(invocador);
-				// Segun el resultado
-				switch(resultado) {
-					case -1:
-						return "Operacion cancelada.";
-					case -2:
-						continue;
-					default:
-				}
-				
-				// Protocolo para terminar la grabación
-				resultado = this.finalizarGrabacion(invocador);
-				
-				//Segun el resultado
-				switch(resultado) {
-					case -1:
-						return "Operacion cancelada.";
-					default:
-				}
-				
-				this.playWord();
-			    
-			    mensaje = "La grabación ha sido correcta? S/N: ";
-			    respuesta = invocador.obtenerDatos(mensaje);
-			    }
+				int resultado;
+				//pido que grabe hasta que sea correcta la grabación
+				while (!respuesta.equalsIgnoreCase("S")) {
+					
+					// Protocolo de Grabación
+					resultado = this.iniciarGrabacion(invocador);
+					// Segun el resultado
+					switch(resultado) {
+						case -1:
+							return "Operacion cancelada.";
+						case -2:
+							continue;
+						default:
+					}
+					
+					// Protocolo para terminar la grabación
+					resultado = this.finalizarGrabacion(invocador);
+					
+					//Segun el resultado
+					switch(resultado) {
+						case -1:
+							return "Operacion cancelada.";
+						default:
+					}
+					
+					this.playWord();
+				    
+				    mensaje = "La grabación ha sido correcta? S/N: ";
+				    respuesta = invocador.obtenerDatos(mensaje);
+				    }
 
-			offsetRegistroAudio = this.audioFileManager
-					.agregar(this.audioManager.getAudio());
-			
-			//Agrego la palabra al diccionario 
-			this.diccionario.agregar(elemento.getEquivalenteFonetico(),
-					offsetRegistroAudio);
-			
+				offsetRegistroAudio = this.audioFileManager
+						.agregar(this.audioManager.getAudio());
+				
+				//Agrego la palabra al diccionario 
+				this.diccionario.agregar(elemento.getEquivalenteFonetico(),
+						offsetRegistroAudio);
+				
+			}
+			cerrarArchivo(invocador);
+		} catch (SimpleAudioPlayerException e) {
+			logger.error("Error: " + e.getMessage());
+			return "Error en dispositivo de audio";
+		} catch (Exception e) {
+			logger.error("Error: " + e.getMessage());
+			return "Error inesperado";
 		}
-		cerrarArchivo(invocador);
 		
 		logger.debug("Sali de al funcion load");
 		return "ff";
@@ -171,37 +180,35 @@ public class Core {
 	public final void help(final InterfazUsuario invocador) {
 		
 		String mensaje = "Funcion: load \n"
-	+ "Caracteristicas: carga un documento para almacenar las palabras "
-	+ "desconocidas \n"
-	+ "Uso: load <\"path_absoluto_del_documento\"> \n"
-	+ "Ej: load \"/home/usuario/Escritorio/prueba.txt\" \n\n"
+			+ "Caracteristicas: carga un documento para almacenar las palabras "
+			+ "desconocidas \n"
+			+ "Uso: load <\"path_absoluto_del_documento\"> \n"
+			+ "Ej: load \"/home/usuario/Escritorio/prueba.txt\" \n\n"
 
-	+ "Funcion: playDocument \n"
-	+ "Caracteristicas: carga un documento reproduciendo las "
+			+ "Funcion: playDocument \n"
+			+ "Caracteristicas: carga un documento reproduciendo las "
 			+ "palabras reconocidas \n"
-	+ "Uso: playDocument <\"path_absoluto_del_documento\"> \n"
-	+ "Ej: load \"/home/usuario/Escritorio/prueba.txt\" \n\n"
-	
-	+ "Funcion: playText \n"
-	+ "Caracteristicas: reproduce el texto ingresado, omitiendo las "
+			+ "Uso: playDocument <\"path_absoluto_del_documento\"> \n"
+			+ "Ej: load \"/home/usuario/Escritorio/prueba.txt\" \n\n"
+
+			+ "Funcion: playText \n"
+			+ "Caracteristicas: reproduce el texto ingresado, omitiendo las "
 			+ "palabras que no conoce \n"
-	+ "Uso: playText <\"texto ingresado\"> \n"
-	+ "Ej: playText \"hola, como estas\" \n\n"
+			+ "Uso: playText <\"texto ingresado\"> \n"
+			+ "Ej: playText \"hola, como estas\" \n\n"
+
+			+ "Funcion: clear \n"
+			+ "Caracteristicas: borra la pantalla \n"
+			+ "Uso: clear \n"
+			+ "Ej: clear \n\n"
+
+			+ "Funcion: help \n"
+			+ "Caracteristicas: muestra los comandos disponibles para su ejecución \n"
+			+ "Uso: help \n" + "Ej: help \n\n"
+
+			+ "Funcion: fin \n" + "Caracteristicas: sale del programa \n"
+			+ "Uso: fin \n" + "Ej: fin \n\n";
 		
-	+ "Funcion: clear \n"
-	+ "Caracteristicas: borra la pantalla \n"
-	+ "Uso: clear \n"
-	+ "Ej: clear \n\n" 	
-	
-	+ "Funcion: help \n"
-	+ "Caracteristicas: muestra los comandos disponibles para su ejecución \n"
-	+ "Uso: help \n"
-	+ "Ej: help \n\n"
-	
-	+ "Funcion: fin \n"
-	+ "Caracteristicas: sale del programa \n"
-	+ "Uso: fin \n"
-	+ "Ej: fin \n\n";	
 		this.clear(invocador);
 		invocador.mensaje(mensaje);
 	}
@@ -303,46 +310,53 @@ public class Core {
 	public final String playDocument(final InterfazUsuario invocador,
 			final String pathDocumento) {
 		
-		Iterator<IunidadDeHabla> iterador;
-		
-		// Mando a parsear el documento y obtengo un collection
 		try {
-			contenedor = this.parser.modoLectura(pathDocumento, true);
+			Iterator<IunidadDeHabla> iterador;
+			
+			// Mando a parsear el documento y obtengo un collection
+			try {
+				contenedor = this.parser.modoLectura(pathDocumento, true);
+			} catch (Exception e) {
+				logger.error("Error al crear contenedor: " + e.getMessage(), e);
+				return "Error inesperado, consulte al proveedor del software";
+			}
+			
+			if (!abrirArchivo(invocador)) {
+				return "Intente denuevo";
+			}
+			
+			IunidadDeHabla elemento;
+			iterador = contenedor.iterator();
+			// Mientras tenga palabras para verificar consulto
+			while (iterador.hasNext()) {
+				
+				elemento = (IunidadDeHabla) iterador.next();
+				
+				// Si lo encontro sigo en el bucle
+				if (elemento.esPronunciable()) {
+				RegistroDiccionario registro = this.diccionario
+					.buscarPalabra(elemento.getEquivalenteFonetico());
+				
+				if (registro != null) {
+					invocador.mensajeSinSalto(elemento.getTextoEscrito() + " ");
+					playWord(this.audioFileManager.leerAudio(registro
+								.getOffset()));
+					audioManager.esperarFin();
+				}
+
+				}
+			}
+			logger.debug("Sali de la funcion playDocument");
+
+			invocador.mensaje("");
+			cerrarArchivo(invocador);
+		} catch (SimpleAudioPlayerException e) {
+			logger.error("Error: " + e.getMessage());
+			return "Error en dispositivo de audio.";
 		} catch (Exception e) {
-			logger.error("Error al crear contenedor: " + e.getMessage(), e);
-			return "Error inesperado, consulte al proveedor del software";
+			logger.error("Error : " + e.getMessage());
+			return "Error inesperado.";
 		}
-		
-		if (!abrirArchivo(invocador)) {
-			return "Intente denuevo";
-		}
-		
-		IunidadDeHabla elemento;
-		iterador = contenedor.iterator();
-		// Mientras tenga palabras para verificar consulto
-		while (iterador.hasNext()) {
-			
-			elemento = (IunidadDeHabla) iterador.next();
-			
-			// Si lo encontro sigo en el bucle
-			//RegistroDiccionario registro = this.diccionario
-//					.buscarPalabra(elemento.getEquivalenteFonetico());
-			if (elemento.esPronunciable()){
-			RegistroDiccionario registro = this.diccionario
-				.buscarPalabra(elemento.getEquivalenteFonetico());
-			
-			if (registro != null) {
-				invocador.mensajeSinSalto(elemento.getTextoEscrito() + " ");
-				playWord(this.audioFileManager.leerAudio(registro.getOffset()));
-				audioManager.esperarFin();
-			}
-
-			}
-		}
-		logger.debug("Sali de la funcion playDocument");
-
-		invocador.mensaje("");
-		cerrarArchivo(invocador);
 			
 		return "Reproduccion finalizada";
 	}
@@ -394,8 +408,12 @@ public class Core {
 			}
 			logger.debug("Sali de al funcion playText");
 			
+		} catch (SimpleAudioPlayerException e) {
+			logger.error("Error: " + e.getMessage(), e);
+			invocador.mensaje("Error en dispositivo de audio");
 		} catch (Exception e) {
-				logger.debug("Error: " + e.getMessage(), e);
+			logger.error("Error: " + e.getMessage(), e);
+			invocador.mensaje("Error inesperado");
 		}
 		
 		invocador.mensaje("");
@@ -403,16 +421,22 @@ public class Core {
 
 	/**
 	 * Reproduce la última palabra leida.
+	 * 
+	 * @throws SimpleAudioPlayerException .
 	 */
-	public final void playWord() {
+	public final void playWord() throws SimpleAudioPlayerException {
 		this.audioManager.reproducir();
 	}
 
 	/**
 	 * Reproduce el audio que recibe.
-	 * @param audioAReproducir es el audio que se va a reproducir.
+	 * 
+	 * @param audioAReproducir
+	 *            es el audio que se va a reproducir.
+	 * @throws SimpleAudioPlayerException .
 	 */
-	public final void playWord(final InputStream audioAReproducir) {
+	public final void playWord(final InputStream audioAReproducir)
+			throws SimpleAudioPlayerException {
 		this.audioManager.reproducir(audioAReproducir);
 	}
 	
@@ -440,6 +464,7 @@ public class Core {
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
+
 	}
 	
 	/**

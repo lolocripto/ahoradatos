@@ -57,7 +57,7 @@ public class AudioManager implements Audio {
 	 * @see ar.com.datos.grupo5.interfaces.Audio#grabar(javax.sound.sampled.AudioFileFormat.Type,
 	 *      java.io.OutputStream)
 	 */
-	public final void grabar(OutputStream output) {
+	public final void grabar(final OutputStream output) {
 
 		lastOutput = output;
 
@@ -79,9 +79,10 @@ public class AudioManager implements Audio {
 	}
 
 	/**
+	 * @throws SimpleAudioPlayerException .
 	 * @see ar.com.datos.grupo5.interfaces.Audio#reproducir()
 	 */
-	public final void reproducir() {
+	public final void reproducir() throws SimpleAudioPlayerException {
 		
 		this.reproducir(null);
 
@@ -89,9 +90,11 @@ public class AudioManager implements Audio {
 	}
 	
 	/**
+	 * @throws SimpleAudioPlayerException .
 	 * @see ar.com.datos.grupo5.interfaces.Audio#reproducir(java.io.InputStream)
 	 */
-	public final void reproducir(final InputStream audio) {
+	public final void reproducir(final InputStream audio)
+			throws SimpleAudioPlayerException {
 		
 		InputStream is = null;
 		
@@ -114,6 +117,7 @@ public class AudioManager implements Audio {
 			
 		} catch (SimpleAudioPlayerException e) {
 			logger.error("Error en la reproduccion: " + e.getMessage(), e);
+			throw e;
 		}
 		try {
 			player.join();

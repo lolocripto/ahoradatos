@@ -11,12 +11,12 @@ import java.io.IOException;
  * @author LedZeppeling
  *
  */
-public class Conversiones {
+public final class Conversiones {
 	
 	/**
 	 * Constructor.
 	 */
-	public Conversiones() {
+	private Conversiones() {
 		super();
 	}
 
@@ -27,7 +27,7 @@ public class Conversiones {
 	 *            el long a convertir.
 	 * @return el long en bytes.
 	 */
-	public static final byte[] longToArrayByte(final long l) {
+	public static byte[] longToArrayByte(final long l) {
 		
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
@@ -50,7 +50,7 @@ public class Conversiones {
 	 *            el array a convertir.
 	 * @return el long obtenido.
 	 */
-	public static final long arrayByteToLong(final byte[] array) {
+	public static long arrayByteToLong(final byte[] array) {
 		
 		
 		ByteArrayInputStream bis = new ByteArrayInputStream(array);  
@@ -72,7 +72,7 @@ public class Conversiones {
 	 *            el entero a convertir.
 	 * @return el entero en bytes.
 	 */
-	public static final byte[] intToArrayByte(final int numero) {
+	public static byte[] intToArrayByte(final int numero) {
 		
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
@@ -95,7 +95,7 @@ public class Conversiones {
 	 *            el array de bytes a convertir.
 	 * @return el entero obtenido.
 	 */
-	public static final int arrayByteToInt(final byte[] array) {
+	public static int arrayByteToInt(final byte[] array) {
 		
 		ByteArrayInputStream bis = new ByteArrayInputStream(array);  
 		DataInputStream dos = new DataInputStream(bis);

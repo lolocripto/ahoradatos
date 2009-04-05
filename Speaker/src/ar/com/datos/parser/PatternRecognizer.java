@@ -9,8 +9,14 @@ import ar.com.datos.grupo5.Constantes;
  * @author LedZeppeling
  *
  */
-public class PatternRecognizer {
+public final class PatternRecognizer {
 	
+	/**
+	 * Constructor.
+	 */
+	private PatternRecognizer() {
+		super();
+	}
 	/**
 	 * Método que limpia cualquier cadena de caracteres pasada por parámetro,
 	 * modificando todos aquellos caracteres considerados inválidos. Son
@@ -23,81 +29,85 @@ public class PatternRecognizer {
 	 *            String con la cadena a limpiar convertido a minúsculas
 	 * @return String con la cadena purificada
 	 */
-	private static String analisisLexico(String linea) {
+	private static String analisisLexico(final String linea) {
 
 		Pattern patron;
 		Matcher comparador;
+		String resultado = linea;
 
 		// busco si hay problemas que arreglar
 		patron = Pattern.compile("[âãäåàèêëìîïòôõöùû~]");
 		comparador = patron.matcher(linea);
 		if (comparador.find()) {
-			linea = correctorLexico(linea);
+			resultado = correctorLexico(linea);
 		}
-		return linea;
+		return resultado;
 	}
+	
     /**
-     * Metodo que pasado un string modifica cambiando tildes
-     * y/o caracteres invalidos relacionados principalmente
-     * con vocales o caracteres sin sentido en el iodoma español.
-     * Devuelve la string corregida  
-     * @param termino
-     * @return String
-     */
-	private static String correctorLexico(String termino) {
+	 * Metodo que pasado un string modifica cambiando tildes y/o caracteres
+	 * invalidos relacionados principalmente con vocales o caracteres sin
+	 * sentido en el iodoma español. Devuelve la string corregida
+	 * 
+	 * @param termino .
+	 * @return String
+	 */
+	private static String correctorLexico(final String termino) {
 		Pattern patron;
 		Matcher comparador;
+		String resultado = termino;
 
 		// ---Reemplazo las a---------
 		patron = Pattern.compile("[âãäå]");
-		comparador = patron.matcher(termino);
-		termino = comparador.replaceAll("a");
+		comparador = patron.matcher(resultado);
+		resultado = comparador.replaceAll("a");
 
 		patron = Pattern.compile("[à]");
-		comparador = patron.matcher(termino);
-		termino = comparador.replaceAll("á");
+		comparador = patron.matcher(resultado);
+		resultado = comparador.replaceAll("á");
 
 		// ---Reemplazo las e---------
 		patron = Pattern.compile("[è]");
-		comparador = patron.matcher(termino);
-		termino = comparador.replaceAll("é");
+		comparador = patron.matcher(resultado);
+		resultado = comparador.replaceAll("é");
 
 		patron = Pattern.compile("[êë]");
-		comparador = patron.matcher(termino);
-		termino = comparador.replaceAll("e");
+		comparador = patron.matcher(resultado);
+		resultado = comparador.replaceAll("e");
 
 		// ---Reemplazo las i---------
 		patron = Pattern.compile("[ì]");
-		comparador = patron.matcher(termino);
-		termino = comparador.replaceAll("í");
+		comparador = patron.matcher(resultado);
+		resultado = comparador.replaceAll("í");
 
 		patron = Pattern.compile("[îï]");
-		comparador = patron.matcher(termino);
-		termino = comparador.replaceAll("i");
+		comparador = patron.matcher(resultado);
+		resultado = comparador.replaceAll("i");
 
 		// ---Reemplazo las o---------
 		patron = Pattern.compile("[ò]");
-		comparador = patron.matcher(termino);
-		termino = comparador.replaceAll("ó");
+		comparador = patron.matcher(resultado);
+		resultado = comparador.replaceAll("ó");
 
 		patron = Pattern.compile("[ôõö]");
-		comparador = patron.matcher(termino);
-		termino = comparador.replaceAll("o");
+		comparador = patron.matcher(resultado);
+		resultado = comparador.replaceAll("o");
 
 		// ---Reemplazo las u---------
 		patron = Pattern.compile("[ù]");
-		comparador = patron.matcher(termino);
-		termino = comparador.replaceAll("ú");
+		comparador = patron.matcher(resultado);
+		resultado = comparador.replaceAll("ú");
 
 		patron = Pattern.compile("[û]");
-		comparador = patron.matcher(termino);
-		termino = comparador.replaceAll("u");
+		comparador = patron.matcher(resultado);
+		resultado = comparador.replaceAll("u");
 
 		// reemplazo caracteres sin sentido en español
 		patron = Pattern.compile("[~]");
-		comparador = patron.matcher(termino);
-		termino = comparador.replaceAll("");
-		return termino;
+		comparador = patron.matcher(resultado);
+		resultado = comparador.replaceAll("");
+		
+		return resultado;
 	}
     /**
      * Permite separar en la linea pasada por parametro las palabras y numeros
@@ -165,10 +175,10 @@ public class PatternRecognizer {
 
 		while (comparador.find()) {
 			caracterHallado = comparador.group();
-			if (caracterHallado.equalsIgnoreCase(",")){
-			comparador.appendReplacement(sb, " " +"å"+" ");
-			}else{
-				comparador.appendReplacement(sb, " " +"~"+" ");
+			if (caracterHallado.equalsIgnoreCase(",")) {
+				comparador.appendReplacement(sb, " " + "å" + " ");
+			} else {
+				comparador.appendReplacement(sb, " " + "~" + " ");
 			}
 		}
 		comparador.appendTail(sb);
@@ -176,15 +186,13 @@ public class PatternRecognizer {
 
 	}
 	
-	
-	
-	
-    /**Metodo que separa la linea pasada por parametro
-     * y la separa en strings las palabras usando como separador
-     * el espacio en blanco o el caracter \s
-     * @param linea
-     * @return
-     */
+    /**
+	 * Metodo que separa la linea pasada por parametro y la separa en strings
+	 * las palabras usando como separador el espacio en blanco o el caracter \s.
+	 * 
+	 * @param linea
+	 * @return
+	 */
 	private static String[] splitter(String linea) {
 		linea = linea.trim();
 		return linea.split("(\\s)+");
@@ -199,7 +207,7 @@ public class PatternRecognizer {
 		Pattern patron;
 		Matcher comparador;
 
-		String regEx = Constantes.ESCAPES_REGEX();
+		String regEx = Constantes.ESCAPES_REGEX;
 
 	//	String regEx = "(l{2})";
 		
@@ -217,13 +225,15 @@ public class PatternRecognizer {
 		return sb.toString();
 
 	}
+	
     /**
-     * Metodo que recibe una String por parametro y la modifica
-     * segun su fonetica para optimizar el guardado de palabras evitando 
-     * paralabras foneticamente reptidas. Devuelve el string modificado
-     * @param hallado
-     * @return
-     */
+	 * Metodo que recibe una String por parametro y la modifica segun su
+	 * fonetica para optimizar el guardado de palabras evitando paralabras
+	 * foneticamente reptidas. Devuelve el string modificado
+	 * 
+	 * @param hallado
+	 * @return
+	 */
 	private static String caracterEscape(String hallado) {
 
 		String caracterDeEscape = "";
@@ -365,12 +375,14 @@ public class PatternRecognizer {
 		}
 		return caracterDeEscape;
 	}
+	
     /**
-     * Metodo que recibe una string por parametro y la separa en strings mas pequeñas 
-     * separando por las palabras por expresiones regulares 
-     * @param lineaEntrada
-     * @return
-     */
+	 * Metodo que recibe una string por parametro y la separa en strings mas
+	 * pequeñas separando por las palabras por expresiones regulares.
+	 * 
+	 * @param lineaEntrada
+	 * @return
+	 */
  	public static String[] procesarLinea(String lineaEntrada) {
 
  		//paso a minusculas
@@ -389,15 +401,21 @@ public class PatternRecognizer {
 		return splitter(lineaEntrada);
 
 	}
-    /** Metodo que recibe una String e indica si la string esta vacia
-     * @param texto
-     * @return
-     */	
-	public static boolean esLineaVacia (String texto){
+ 	
+    /**
+	 * Metodo que recibe una String e indica si la string esta vacia.
+	 * 
+	 * @param texto .
+	 * @return .
+	 */	
+	public static boolean esLineaVacia(final String texto) {
+
+		boolean result = false;
 		
-		if ((texto == "")||(texto=="\n")){
-			return true;
-		}else return false;
+		if (texto.equals("") || texto.equals("\n")) {
+			result = true;
+		} 
 		
+		return result;
 	}
 }
