@@ -98,6 +98,14 @@ public class Consola extends Thread implements InterfazUsuario {
 	}
 	
 	/**
+	 * 
+	 * @param mensaje .
+	 */
+	public final void mensajeSinSalto(final String mensaje) {
+		System.out.print(mensaje);
+	}
+	
+	/**
 	 * Lee desde la entrada estandar y ejecuta el metodo correspondiente.
 	 */
 	@SuppressWarnings("unchecked")

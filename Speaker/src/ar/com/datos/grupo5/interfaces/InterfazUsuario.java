@@ -21,4 +21,10 @@ public interface InterfazUsuario {
 	 */
 	String obtenerDatos(final String mensaje);
 	
+	/**
+	 * 
+	 * @param mensaje .
+	 */
+	void mensajeSinSalto(final String mensaje);
+	
 }

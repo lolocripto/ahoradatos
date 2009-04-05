@@ -170,10 +170,7 @@ public class Core {
 	 */
 	public final void help(final InterfazUsuario invocador) {
 		
-		String clear = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-				+ "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-				+ "\n\n\n\n\n\n";
-		String mensaje = "Funcion: Load \n"
+		String mensaje = "Funcion: load \n"
 	+ "Caracteristicas: carga un documento para almacenar las palabras "
 	+ "desconocidas \n"
 	+ "Uso: load <\"path_absoluto_del_documento\"> \n"
@@ -185,18 +182,42 @@ public class Core {
 	+ "Uso: playDocument <\"path_absoluto_del_documento\"> \n"
 	+ "Ej: load \"/home/usuario/Escritorio/prueba.txt\" \n\n"
 	
-	+ "Funcion: help \n"
-	+ "Caracteristicas: muestra los comandos disponibles para su ejecución \n"
-	+ "Uso: help \n"
-	+ "Ej: help \n\n" 
-	
 	+ "Funcion: playText \n"
 	+ "Caracteristicas: reproduce el texto ingresado, omitiendo las "
 			+ "palabras que no conoce \n"
 	+ "Uso: playText <\"texto ingresado\"> \n"
-	+ "Ej: playText \"hola, como estas\" \n\n";
+	+ "Ej: playText \"hola, como estas\" \n\n"
 		
-		invocador.mensaje(clear + mensaje);
+	+ "Funcion: clear \n"
+	+ "Caracteristicas: borra la pantalla \n"
+	+ "Uso: clear \n"
+	+ "Ej: clear \n\n" 	
+	
+	+ "Funcion: help \n"
+	+ "Caracteristicas: muestra los comandos disponibles para su ejecución \n"
+	+ "Uso: help \n"
+	+ "Ej: help \n\n"
+	
+	+ "Funcion: fin \n"
+	+ "Caracteristicas: sale del programa \n"
+	+ "Uso: fin \n"
+	+ "Ej: fin \n\n";	
+		this.clear(invocador);
+		invocador.mensaje(mensaje);
+	}
+	
+	
+	/**
+	 * 
+	 * @param invocador .
+	 */
+	public final void clear(final InterfazUsuario invocador) {
+		
+		String clear = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+				+ "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+				+ "\n\n\n\n\n\n";
+		
+		invocador.mensaje(clear);
 	}
 	
 	
@@ -307,6 +328,7 @@ public class Core {
 			//RegistroDiccionario registro = this.diccionario
 //					.buscarPalabra(elemento.getEquivalenteFonetico());
 			if (elemento.esPronunciable()){
+			invocador.mensajeSinSalto(elemento.getTextoEscrito() + " ");
 			RegistroDiccionario registro = this.diccionario
 				.buscarPalabra(elemento.getEquivalenteFonetico());
 			if (registro == null) {
@@ -323,8 +345,9 @@ public class Core {
 
 			}
 		}
-		logger.debug("Sali de al funcion playDocument");
+		logger.debug("Sali de la funcion playDocument");
 
+		invocador.mensaje("");
 		cerrarArchivo(invocador);
 			
 		return "Reproduccion finalizada";
@@ -365,6 +388,8 @@ public class Core {
 			while (iterador.hasNext()) {
 				
 				elemento = iterador.next();
+				if (elemento.esPronunciable()){
+					invocador.mensajeSinSalto(elemento.getTextoEscrito() + " ");
 				RegistroDiccionario registro = this.diccionario
 					.buscarPalabra(elemento.getEquivalenteFonetico());
 				if (registro == null) {
@@ -374,10 +399,12 @@ public class Core {
 				playWord(this.audioFileManager.leerAudio(registro.getOffset()));
 				audioManager.esperarFin();
 			}
+			}
 			logger.debug("Sali de al funcion playText");
 		} catch (Exception e) {
 			logger.debug("Error: " + e.getMessage(), e);
 	}
+		invocador.mensaje("");
 	}
 
 	/**
