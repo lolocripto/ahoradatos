@@ -170,7 +170,7 @@ public class Core {
 		}
 		
 		logger.debug("Sali de al funcion load");
-		return "ff";
+		return "Las palabras han sido correctamente ingresadas.";
 	}
 
 	/**
