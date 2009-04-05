@@ -3,4 +3,4 @@
 
 #Ejecutar el Speaker
 
-java -jar Speaker.jar
+java -jar ./bin/Speaker.jar
