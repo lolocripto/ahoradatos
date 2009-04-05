@@ -2,7 +2,7 @@ package ar.com.datos.grupo5.interfaces;
 
 /**
  * Interface para poder comunicarse con el usuario.
- * @author cristian
+ * @author LedZeppeling
  *
  */
 public interface InterfazUsuario {
@@ -20,5 +20,11 @@ public interface InterfazUsuario {
 	 * @return mensaje con el resultado.
 	 */
 	String obtenerDatos(final String mensaje);
+	
+	/**
+	 * 
+	 * @param mensaje .
+	 */
+	void mensajeSinSalto(final String mensaje);
 	
 }

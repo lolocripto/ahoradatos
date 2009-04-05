@@ -3,7 +3,7 @@ package ar.com.datos.grupo5.interfaces;
 
 /**
  * Esta clase representa a los registros que se graban en un archivo.
- * @author Cristian, Diego
+ * @author LedZeppeling
  *
  */
 public interface Registro {
@@ -32,10 +32,4 @@ public interface Registro {
 	 */
 	boolean hasMoreBytes();
 
-	/**
-	 * Longitud del dato almacenado.
-	 * 
-	 * @return Devuelve la longitud del dato almacenado.
-	 */
-	long getLongDatos();
 }

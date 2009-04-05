@@ -62,7 +62,7 @@ public class RegistroDiccionario implements Registro {
 					+ Constantes.SIZE_OF_LONG;
 			byte[] datosByte = dato.getBytes();
 			
-			if (moreBytes == (dato.length() + longDatosAdic)) {
+			if (moreBytes == (datosByte.length + longDatosAdic)) {
 				byte[] longDatoBytes = Conversiones
 						.intToArrayByte(datosByte.length);
 				byte[] offsetBytes = Conversiones.longToArrayByte(offset);
