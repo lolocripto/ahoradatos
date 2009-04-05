@@ -35,9 +35,9 @@ public class Consola extends Thread implements InterfazUsuario {
 	private static final String ENDWORD = "FIN";
 	
 	/**
-	 * 
+	 * Logger.
 	 */
-	private final static Logger logger = Logger.getLogger(Consola.class);
+	private static final Logger LOGGER = Logger.getLogger(Consola.class);
 	
 	/**
 	 * Este metodo se llama cuando el hilo comienza.
@@ -97,8 +97,8 @@ public class Consola extends Thread implements InterfazUsuario {
 	}
 	
 	/**
-	 * 
-	 * @param mensaje .
+	 * Para que el que usa la consola pueda comunicar algo.
+	 * @param mensaje El mensaje que va a la salida standar.
 	 */
 	public final void mensajeSinSalto(final String mensaje) {
 		System.out.print(mensaje);
@@ -181,11 +181,11 @@ public class Consola extends Thread implements InterfazUsuario {
 									+ "No se encuentra el comando solicitado: "
 									+ linea);
 						}
-						logger.error(e.getMessage(), e);
+						LOGGER.error(e.getMessage(), e);
 					}
 					
 				} catch (Exception e) {
-					logger.error("Error: " + e.getMessage(), e);
+					LOGGER.error("Error: " + e.getMessage(), e);
 				}
 				
 			} while (!linea.equalsIgnoreCase(Consola.ENDWORD));
@@ -197,11 +197,11 @@ public class Consola extends Thread implements InterfazUsuario {
 						.invoke(invocador, this);
 				
 			} catch (Exception e) {
-				logger.error("Error: " + e.getMessage(), e);
+				LOGGER.error("Error: " + e.getMessage(), e);
 			}	
 			
 		} catch (IOException e) {
-			logger.error("Error: " + e.getMessage(), e);
+			LOGGER.error("Error: " + e.getMessage(), e);
 		}
 	}
 }

@@ -356,49 +356,48 @@ public class Core {
 	 */
 	public final void playText(final InterfazUsuario invocador,
 			final String textoAReproducir) {
-
 		
-	try { 	
-		
-		Iterator<IunidadDeHabla> iterador;
-		// Mando a parsear el documento y obtengo un collection
-		try {
-
-			contenedor = this.parser.modoLectura(textoAReproducir, false);
-		} catch (Exception e) {
-			logger.error("Error al crear contenedor: " + e.getMessage(), e);
-		}
-		
-		
-		if (!abrirArchivo(invocador)) {
-			invocador.mensaje("no eexisten los archivos de "
-					+ "diccionario o datos ");
-		}
-
-		IunidadDeHabla elemento;
-		iterador = contenedor.iterator();
-		
-		
-			while (iterador.hasNext()) {
-				
-				elemento = iterador.next();
-				if (elemento.esPronunciable()){
-				RegistroDiccionario registro = this.diccionario
-					.buscarPalabra(elemento.getEquivalenteFonetico());
-				if (registro != null) {
-					invocador.mensajeSinSalto(elemento.getTextoEscrito() + " ");
-					playWord(this.audioFileManager.leerAudio(registro.getOffset()));
-					audioManager.esperarFin();
-					
-				}
-						
-				
+		try { 	
+			
+			Iterator<IunidadDeHabla> iterador;
+			// Mando a parsear el documento y obtengo un collection
+			try {
+	
+				contenedor = this.parser.modoLectura(textoAReproducir, false);
+			} catch (Exception e) {
+				logger.error("Error al crear contenedor: " + e.getMessage(), e);
 			}
+				
+			if (!abrirArchivo(invocador)) {
+				invocador.mensaje("no eexisten los archivos de "
+						+ "diccionario o datos ");
+			}
+	
+			IunidadDeHabla elemento;
+			iterador = contenedor.iterator();
+	
+			while (iterador.hasNext()) {
+	
+				elemento = iterador.next();
+				if (elemento.esPronunciable()) {
+					RegistroDiccionario registro = this.diccionario
+							.buscarPalabra(elemento.getEquivalenteFonetico());
+					if (registro != null) {
+						invocador.mensajeSinSalto(elemento.getTextoEscrito()
+								+ " ");
+						playWord(this.audioFileManager.leerAudio(registro
+								.getOffset()));
+						audioManager.esperarFin();
+	
+					}
+				}
 			}
 			logger.debug("Sali de al funcion playText");
+			
 		} catch (Exception e) {
-			logger.debug("Error: " + e.getMessage(), e);
-	}
+				logger.debug("Error: " + e.getMessage(), e);
+		}
+		
 		invocador.mensaje("");
 	}
 
