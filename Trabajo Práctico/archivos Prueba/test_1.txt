@@ -1,0 +1,4 @@
+trabajo práctico de organización de datos.
+PI es 3,14.
+La página de la facultad es www.fi.uba.ar
+
