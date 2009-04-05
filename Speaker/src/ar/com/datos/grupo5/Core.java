@@ -455,23 +455,6 @@ public class Core {
 		this.parser = new TextInterpreter();
 		this.audioFileManager = new AudioFileManager();
 	}
-
-	/** Inicia el programa.
-	 * @param args Los argumentos del programa.
-	 */
-	public static void main(final String[] args) {
-		
-		Consola consola = new Consola(Core.class);
-		
-		consola.start();
-		
-		try {
-			consola.join();
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-
-	}
 	
 	/**
 	 * Se llama al terminar, para dar un mensaje.
