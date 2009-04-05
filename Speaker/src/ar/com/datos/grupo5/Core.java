@@ -306,7 +306,7 @@ public class Core {
 			// Si lo encontro sigo en el bucle
 			//RegistroDiccionario registro = this.diccionario
 //					.buscarPalabra(elemento.getEquivalenteFonetico());
-			
+			if (elemento.esPronunciable()){
 			RegistroDiccionario registro = this.diccionario
 				.buscarPalabra(elemento.getEquivalenteFonetico());
 			if (registro == null) {
@@ -321,6 +321,7 @@ public class Core {
 			
 			audioManager.esperarFin();
 
+			}
 		}
 		logger.debug("Sali de al funcion playDocument");
 
