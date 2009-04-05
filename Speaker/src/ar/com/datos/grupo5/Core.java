@@ -443,30 +443,57 @@ public class Core {
 		}
 	}
 	
-	public final void quit (final InterfazUsuario invocador){
-	//	this.cerrarArchivo(invocador);
+	/**
+	 * Se llama al terminar, para dar un mensaje.
+	 * 
+	 * @param invocador .
+	 */
+	public final void quit(final InterfazUsuario invocador) {
+
 		invocador.mensaje("gracias por usar TheSpeaker");
 	}
 	
-	
-	private boolean cerrarArchivo(InterfazUsuario invocador) {
+	/**
+	 * Cierra los archivos.
+	 * 
+	 * @param invocador
+	 *            .
+	 * @return true si pudo cerrar los archivos.
+	 */
+	private boolean cerrarArchivo(final InterfazUsuario invocador) {
+		
 		try {
-			if (this.diccionario != null) this.diccionario.cerrar();
-			if (this.audioFileManager != null)this.audioFileManager.cerrar();
-			return true;
 			
+			if (this.diccionario != null) {
+				this.diccionario.cerrar();
+			}
+			if (this.audioFileManager != null) {
+				this.audioFileManager.cerrar();
+			}
+			return true;
+
 		} catch (Exception e) {
-			try{
-				if (this.audioFileManager != null)this.audioFileManager.cerrar();
-			}catch (Exception g){
+			
+			try {
+				if (this.audioFileManager != null) {
+					this.audioFileManager.cerrar();
+				}
+			} catch (Exception g) {
 				invocador.mensaje("Error al cerrar el archivo de audio.");
 			}
 			invocador.mensaje("Error al cerrar el archivo de diccionario.");
 			return false;
-		}		
+		}
 	}
-	private boolean abrirArchivo(InterfazUsuario invocador) {
-		
+	
+	/**
+	 * Abre los archivo.
+	 * 
+	 * @param invocador .
+	 * @return true si pudo abrir los archivos.
+	 */
+	private boolean abrirArchivo(final InterfazUsuario invocador) {
+
 		/*
 		 * Abro el archivo para la carga y consulta del diccionario
 		 */
@@ -476,10 +503,10 @@ public class Core {
 		} catch (FileNotFoundException e) {
 			invocador.mensaje("No se pudo abrir el diccionario.");
 			return false;
-		}		
-		
+		}
+
 		logger.debug("Abrio el archivo Diccionario");
-		
+
 		/*
 		 * Abro el archivo para la carga y consulta de los audios
 		 */
@@ -490,7 +517,7 @@ public class Core {
 			invocador.mensaje("No se pudo abrir el archivo de audio.");
 			return false;
 		}
-		
+
 		logger.debug("Abrio el archivo Audio");
 		return true;
 	}

@@ -3,7 +3,6 @@ package ar.com.datos.grupo5;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
 
 import org.apache.log4j.Logger;
 
@@ -186,21 +185,23 @@ public class Consola extends Thread implements InterfazUsuario {
 					}
 					
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error("Error: " + e.getMessage(), e);
 				}
 				
 			} while (!linea.equalsIgnoreCase(Consola.ENDWORD));
 			
-	try {
-		
-		((Core)invocador).quit(this);
-		
-	} catch (Exception e) {
-		e.printStackTrace();
-	}	
+			try {
+				paramsClass = new Class[1];
+				paramsClass[0] = InterfazUsuario.class;
+				invocador.getClass().getMethod("quit", InterfazUsuario.class)
+						.invoke(invocador, this);
+				
+			} catch (Exception e) {
+				logger.error("Error: " + e.getMessage(), e);
+			}	
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Error: " + e.getMessage(), e);
 		}
 	}
 }
