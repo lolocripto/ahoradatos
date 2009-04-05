@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.grupo5.Constantes;
 
 public class pruebas {
 
@@ -15,7 +16,8 @@ public class pruebas {
 	public static void main(String Args[]) throws Exception {
 
 
-		String ruta = "/home/zeke/Escritorio/prueba";
+		
+		String ruta = "/home/zeke/Escritorio/test_1.txt";
 		Parser miparser = new Parser(ruta, true);
 
 		Collection<IunidadDeHabla> micolec = miparser.listar();
@@ -23,6 +25,8 @@ public class pruebas {
 		Iterator<IunidadDeHabla> it = micolec.iterator();
 
 	
+		Boolean a = Constantes.SPANISH_OPTIMIZATION_ACTIVATED;
+		
 	    while (it.hasNext()){
 	    	IunidadDeHabla i = it.next();
 	    	System.out.print(i.getEquivalenteFonetico()+ " | ");
@@ -31,6 +35,11 @@ public class pruebas {
 	    }
 	
 	}
+
+
+		
+	
+//	System.out.print(uso);
 	
 	
 	
