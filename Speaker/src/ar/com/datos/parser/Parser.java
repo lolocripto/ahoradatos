@@ -196,7 +196,7 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 		int sigPalabra = 0;
 		String[] listaPalabras;
 
-		materiaPrima = this.leerLinea();
+		materiaPrima =this.leerLinea();
 
 		while ((lineasProcesadas <= maxLineas) && (materiaPrima != null)) {
 
@@ -210,7 +210,9 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 			}
 			sigPalabra = 0;
 			lineasProcesadas++;
-			materiaPrima = this.leerLinea();
+			if (lineasProcesadas <= maxLineas){
+			materiaPrima =this.leerLinea();
+			}
 		}
 	}
 	
