@@ -6,10 +6,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+
+import sun.security.pkcs.EncodingException;
 
 import ar.com.datos.UnidadesDeExpresion.BufferedCollection;
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
@@ -24,7 +27,7 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 	/**
 	 * Permite saber cual es la ruta del archivo pasado por parámetro.
 	 */
-	private String ruta_archivo;
+	private String rutaArchivo;
 	
 	/**
 	 * Contiene el archivo a ser leído.
@@ -34,7 +37,7 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 	/**
 	 * Atributo para administrar el nivel de logueo mediante Log4j.
 	 */
-	private static Logger milogueador;
+	private static Logger milogueador = Logger.getLogger(Parser.class);
 	
 	/**
 	 * Buffer de lectura de archivo de texto.
@@ -58,11 +61,6 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 	 * esta variable para su manipulación.
 	 */
 	private String lineaSimple;
-	
-	/**
-	 * Logger.
-	 */
-	private static Logger logger = Logger.getLogger(Parser.class);
 
 	 /**
 	 * Constructor. Toma una cadena o archivo y realiza el procesado. Si es una
@@ -71,29 +69,33 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 	 * @param rutaOlinea
 	 * @param esArchivo
 	 * @throws Exception 
+	 * @throws Exception 
 	 */
 	public Parser(final String rutaOlinea, boolean esArchivo) throws Exception {
 
 		if (esArchivo) {
 			this.bArchivo = true;
-			this.ruta_archivo = rutaOlinea;
-			this.archivo = new File(ruta_archivo);
+			this.rutaArchivo = rutaOlinea;
+			this.archivo = new File(rutaArchivo);
 			milogueador = Logger.getLogger(Parser.class);
 
 			if (!archivo.exists()) {
-				milogueador.error("no existe el archivo",
-						new FileNotFoundException(
-								"No existe el archivo pasado al Parser"));
+				FileNotFoundException e = new FileNotFoundException(
+						"No existe el archivo pasado al Parser");
+				milogueador.error("no existe el archivo", e);
+				throw e;
 			}
+			
 			try {
 				FileInputStream fis = new FileInputStream(archivo);
 				InputStreamReader isr = new InputStreamReader(fis,
 						Constantes.DEFAULT_TEXT_INPUT_CHARSET);
 				buffer = new BufferedReader(isr);
 			} catch (Exception e) {
-				logger.error("Error al crear el parser: " + e.getMessage());
+				milogueador.error("Error: " + e.getMessage());
 				throw e;
 			}
+			
 
 			// buffer = new BufferedReader(lector);
 
@@ -116,8 +118,8 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 
 		if (esArchivo) {
 			esArchivo = true;
-			this.ruta_archivo = rutaOlinea;
-			File archivo = new File(ruta_archivo);
+			this.rutaArchivo = rutaOlinea;
+			File archivo = new File(rutaArchivo);
 			milogueador = Logger.getLogger(Parser.class);
 
 			if (!archivo.exists()) {
@@ -130,7 +132,8 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 				InputStreamReader isr = new InputStreamReader(fis, charset);
 				buffer = new BufferedReader(isr);
 			} catch (Exception e) {
-				logger.error("Error al crear el parser: " + e.getMessage());
+				milogueador
+						.error("Error al crear el parser: " + e.getMessage());
 				throw e;
 			}
 		

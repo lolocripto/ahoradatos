@@ -7,9 +7,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
-import org.apache.log4j.Logger;
 
-import com.sun.management.GarbageCollectorMXBean;
+import org.apache.log4j.Logger;
 
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
@@ -76,6 +75,8 @@ public class Core {
 			// Cargo el parser con el documento en modo aprendizaje
 			try {
 				contenedor = this.parser.modoCarga(pathDocumento, true);
+			} catch (FileNotFoundException e) {
+				return "No se pudo abrir el archivo: " + pathDocumento;
 			} catch (Exception e) {
 				logger.error("Error al crear contenedor: " + e.getMessage(), e);
 				return "Error inesperado, consulte al proveedor del software";
@@ -99,10 +100,11 @@ public class Core {
 				logger.debug("Itero una vez.txt.");
 				
 				/*
-				 * Si es una palabra pronunciable la proxima palabra, sino pido el
-				 * audio para la misma
-				 * Si, es pronunciable, si la encuntra sigo con la proxima palabra,
-				 * sino pido el audio para la misma
+				 * Si es una palabra pronunciable la proxima palabra, sino pido
+				 * el audio para la misma. 
+				 * Si, es pronunciable, si la encuntra
+				 * sigo con la proxima palabra, sino pido el audio para la
+				 * misma.
 				 */
 				if (this.diccionario.buscarPalabra(elemento
 						.getEquivalenteFonetico()) != null) {
@@ -302,7 +304,9 @@ public class Core {
 	
 	/**
 	 * Reproduce un documento entero.
-	 * @param invocador .
+	 * 
+	 * @param invocador
+	 *            .
 	 * @param pathDocumento
 	 *            direccion del archivo que va a ser leido.
 	 * @return devuelve un mensaje informando el estado final del proceso.
@@ -316,6 +320,8 @@ public class Core {
 			// Mando a parsear el documento y obtengo un collection
 			try {
 				contenedor = this.parser.modoLectura(pathDocumento, true);
+			} catch (FileNotFoundException e) {
+				return "No se pudo abrir el archivo: " + pathDocumento;
 			} catch (Exception e) {
 				logger.error("Error al crear contenedor: " + e.getMessage(), e);
 				return "Error inesperado, consulte al proveedor del software";
