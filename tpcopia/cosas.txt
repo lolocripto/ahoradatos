@@ -1,0 +1,57 @@
+
+Arbol b# en disco:
+
+    Arbol en memoria va a tener la raiz, el ultimo recorrido hasta la hoja, ultimo nodo leido.
+    Nodo de tamaño parametrizable en el xml por default 4 kbytes. Con registros de longitud variables.
+    Clave de los nodos internos es una cadena representativa del termino.
+    Arbol en disco va a tener los nodos guardado en bloques, particularmente va a ser un nodo = un bloque.
+    La Raiz del archivo va tener el doble del tamaño.
+
+Split:
+    Al llenarse 2 nodos tenemos que redistribuir 
+	->  vemos con el hermano mayor ( el derecho ) y si tiene espacio para agregar datos con el front coding se lo agregamos, 
+	    previa decodificacion del contenido del hermano derecho, una vez agregado lo volvemos a codificar y actualizamos el indice del nodo padre. 
+	    Si no se pudo se intenta ver el hermano menor. En caso de no entrar se procede a la unión del nodo actual con el nodo de la derecha para luego dividir en tres nodos nuevos.
+
+    
+Nodo del arbol B#
+
+    Contiene los terminos en front coding, los cuales estan ordenados alfabeticamente.
+    En memoria tendrá el bloque codificado con front coding, la primer palabra del bloque para las busquedas ya que esta entera.
+
+
+Preguntas:
+
+   1) Al utilizar el front Coding se podria estar utilizar el front coding por secciones, que cada seccion sea un registro del nodo y que los nodos 
+      sean de cantidad de registros fijos de tamaño variable? de esta manera mantenemos registros variables sin un largo indefinido.
+   2) 
+    
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Algunas cosas mencionadas en la charla
+
+Interfaz Nodo
+
+NodoInterno
+Tamaño del nodo en xml de configuracion. Default 4kb.
+
+NodosHoja
+
+NodoRegistro
+NodoFrontCoding
+NodoTrie
+
+Btree
+BtreeSharp
+
+Archivos de listas de documentos por bloques
+Archivo de documentos, igual al de audio
+
+Cosas del arbol:
+Raiz en disco
+Ultimo nodo
+nodo Actual
+
+UltimaPalabra = casa
+Coding casa|o|orio|ualidad
+Siguiente = caso
