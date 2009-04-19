@@ -2,6 +2,8 @@ package ar.com.datos.grupo5.btree;
 
 import java.util.Vector;
 
+import ar.com.datos.grupo5.interfaces.Registro;
+
 /**
  * Representa el nodo de arbol b.
  * @author cristian
@@ -44,7 +46,7 @@ public class Nodo {
 	/**
 	 * Lista de nodos. 
 	 */
-	private Vector < Nodo > nodos;
+	private Vector < Registro > registros;
 	
 	/**
 	 * El nodo padre.
@@ -156,10 +158,10 @@ public class Nodo {
 	
 	/**
 	 * Agrega un nodo.
-	 * @param nodo El nodo para insertar.
+	 * @param registro El nodo para insertar.
 	 */
-	public final void insertarNodo(final Nodo nodo) {
-		nodos.add(nodo);
+	public final void insertarRegistro(final Registro registro) {
+		registros.add(registro);
 	}
 
 	/**
