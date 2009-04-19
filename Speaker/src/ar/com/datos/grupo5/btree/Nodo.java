@@ -137,7 +137,7 @@ public class Nodo {
 	
 	/**
 	 * Busca una clave. Sirve para algo??
-	 * @param clave
+	 * @param clave .
 	 * @return la clave buscada.
 	 */
 	public final Comparable<Object> buscarClave(final Comparable<Object> clave) {
@@ -149,4 +149,13 @@ public class Nodo {
 		}
 		return null;
 	}
+	
+	/**
+	 * Agrega un nodo.
+	 * @param nodo El nodo para insertar.
+	 */
+	public final void insertarNodo(final Nodo nodo) {
+		nodos.add(nodo);
+	}
+	
 }
