@@ -1,6 +1,7 @@
 package ar.com.datos.grupo5.btree;
 
 import java.util.Set;
+import java.util.Vector;
 
 /**
  * Representa el nodo de arbol b.
@@ -37,9 +38,14 @@ public class Nodo {
 	private boolean esHoja;
 
 	/**
-	 * Set con las claves.
+	 * Lista de claves.
 	 */
-	private Set < Comparable<Object> > claves;
+	private Vector < Comparable<Object> > claves;
+	
+	/**
+	 * Lista de nodos. 
+	 */
+	private Vector < Nodo > nodos;
 	
 	/**************************
 	 * Getters and Setters

@@ -12,17 +12,7 @@ public class Clave implements Comparable<Clave> {
 	 * La clave.
 	 */
 	private String clave;
-	
-	/**
-	 * 
-	 */
-	private Nodo nodoDerecho;
-	
-	/**
-	 *
-	 */
-	private Nodo nodoIzquierdo;
-	
+		
 	/**
 	 * Para comparar las claves.
 	 * @param clave la clave a comparar.
@@ -43,7 +33,7 @@ public class Clave implements Comparable<Clave> {
 	/**
 	 * @param clave the clave to set
 	 */
-	public final void setClave(String clave) {
+	public final void setClave(final String clave) {
 		this.clave = clave;
 	}
 	
@@ -69,34 +59,6 @@ public class Clave implements Comparable<Clave> {
 	 */
 	public final int hashCode() {
 		return 0;
-	}
-
-	/**
-	 * @return the registroDerecho
-	 */
-	public final Nodo getNodoDerecho() {
-		return nodoDerecho;
-	}
-
-	/**
-	 * @param nodoDerecho the nodoDerecho to set
-	 */
-	public final void setNodoDerecho(final Nodo nodoDerecho) {
-		this.nodoDerecho = nodoDerecho;
-	}
-
-	/**
-	 * @return the nodoIzquierdo
-	 */
-	public final Nodo getNodoIzquierdo() {
-		return nodoIzquierdo;
-	}
-
-	/**
-	 * @param nodoIzquierdo the nodoIzquierdo to set
-	 */
-	public final void setNodoIzquierdo(final Nodo nodoIzquierdo) {
-		this.nodoIzquierdo = nodoIzquierdo;
 	}
 
 }
