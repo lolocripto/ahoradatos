@@ -69,7 +69,7 @@ public class Directo extends Archivo {
 	/**
 	 * @return El offset del ultimo registro insertado.
 	 */
-	public final long getOffset() {
+	public long getOffset() {
 		return offset;
 	}
 
@@ -99,7 +99,7 @@ public class Directo extends Archivo {
 	 *        Retorna el registro que se encuentra en la posición offset.
 	 * @throws IOException .
 	 */
-	public final Registro leer(final Long offset) throws IOException {
+	public Registro leer(final Long offset) throws IOException {
 		Registro reg = null;
 		int longitud = 0;
 		

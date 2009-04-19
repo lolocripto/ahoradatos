@@ -22,7 +22,18 @@ public final class Constantes {
 	 * Tamaño en bits de un byte.
 	 */
 	private static final int SIZE_OF_BYTE = 8;
-	
+
+	/**
+	 * Tamaño en bytes del bloque del archivo de indice.
+	 */
+	public static final int SIZE_OF_INDEX_BLOCK = Integer
+	.parseInt(getXML("SIZE_OF_INDEX_BLOCK"));
+
+	/**
+	 * Tamaño del orden del  Trie.
+	 */
+	public static final int SIZE_OF_TRIE = Integer
+	.parseInt(getXML("SIZE_OF_TRIE"));	
 	/**
 	 * 
 	 */
