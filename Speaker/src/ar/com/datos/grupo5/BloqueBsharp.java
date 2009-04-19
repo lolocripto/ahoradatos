@@ -61,23 +61,17 @@ public class BloqueBsharp extends Directo{
 	 *        Retorna el registro que se encuentra en la posición offset.
 	 * @throws IOException .
 	 */
+	@Override
 	public final Registro leer(final Long offset) throws IOException {
 		Registro reg = null;
-		/*
-		int longitud = 0;
 		
 		file.seek(offset);
 		
-		byte[] bufferInt = new byte[Constantes.SIZE_OF_INT];
-        byte[] bufferDato = null;
-        file.read(bufferInt, 0, Constantes.SIZE_OF_INT);
-        longitud = Conversiones.arrayByteToInt(bufferInt);
-        bufferDato = new byte[longitud];
-        
-        file.read(bufferDato, 0, longitud);
-        reg = new RegistroAudio();
-        reg.setBytes(bufferDato, (long) longitud);
-		*/
+        byte[] bufferDato = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
+
+        file.read(bufferDato, 0, Constantes.SIZE_OF_INDEX_BLOCK);
+        reg = new RegistroTerminoDocumentos();
+        reg.setBytes(bufferDato, (long) Constantes.SIZE_OF_INDEX_BLOCK);
 		return reg;
 	}
 
