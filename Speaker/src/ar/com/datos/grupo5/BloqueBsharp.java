@@ -54,25 +54,21 @@ public class BloqueBsharp extends Directo{
 	}
 	
 	/**
-	 * Método para recuperar un registro de un archivo Directo.
+	 * Método para recuperar un bloque de un archivo directo por bloques.
 	 * @param offset
 	 *              La posición en la cual empieza el registro buscado.
 	 * @return 
 	 *        Retorna el registro que se encuentra en la posición offset.
 	 * @throws IOException .
 	 */
-	@Override
-	public final Registro leer(final Long offset) throws IOException {
-		Registro reg = null;
+	public final byte[] leerBloque(final Long offset) throws IOException {
 		
+		byte[] bufferDato = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
 		file.seek(offset);
-		
-        byte[] bufferDato = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
 
         file.read(bufferDato, 0, Constantes.SIZE_OF_INDEX_BLOCK);
-        reg = new RegistroTerminoDocumentos();
-        reg.setBytes(bufferDato, (long) Constantes.SIZE_OF_INDEX_BLOCK);
-		return reg;
+
+		return bufferDato;
 	}
 	
 	/**
