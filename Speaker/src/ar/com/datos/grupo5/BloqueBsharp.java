@@ -74,5 +74,27 @@ public class BloqueBsharp extends Directo{
         reg.setBytes(bufferDato, (long) Constantes.SIZE_OF_INDEX_BLOCK);
 		return reg;
 	}
-
+	
+	/**
+	 * Metodo para Insertar la cadena en el archivo en el que se está
+	 * trabajando.
+	 * 
+	 * @param registro
+	 *            Es el registro que se va a agregar al archivo.
+	 * @param offset
+	 *            Es la posición en donde comienza el bloque a modificar.
+	 * @throws IOException
+	 *             Excepcion de extrada/salida.
+	 */
+	public void insertar(final Registro registro, final Long offset) throws IOException {
+		
+		if (file == null) {
+			throw new IOException("No se creo o abrio el archivo.");
+		}
+		
+		byte[] bytes = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
+		// Me posiciono al comienzo del bloque.
+		file.seek(offset);
+		file.write(bytes, 0, Constantes.SIZE_OF_INDEX_BLOCK);
+	}
 }
