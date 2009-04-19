@@ -1,6 +1,5 @@
 package ar.com.datos.grupo5.btree;
 
-import java.util.Set;
 import java.util.Vector;
 
 /**
@@ -46,6 +45,11 @@ public class Nodo {
 	 * Lista de nodos. 
 	 */
 	private Vector < Nodo > nodos;
+	
+	/**
+	 * El nodo padre.
+	 */
+	private Nodo padre;
 	
 	/**************************
 	 * Getters and Setters
@@ -156,6 +160,20 @@ public class Nodo {
 	 */
 	public final void insertarNodo(final Nodo nodo) {
 		nodos.add(nodo);
+	}
+
+	/**
+	 * @return the padre
+	 */
+	public final Nodo getPadre() {
+		return padre;
+	}
+
+	/**
+	 * @param padre the padre to set
+	 */
+	public final void setPadre(final Nodo padre) {
+		this.padre = padre;
 	}
 	
 }
