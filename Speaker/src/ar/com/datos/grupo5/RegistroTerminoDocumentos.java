@@ -30,6 +30,8 @@ public class RegistroTerminoDocumentos implements Registro {
 	
 	private int	cantidadDocumentos;
 	
+	private String dato;
+	
 	/**
 	 * En este caso se devuelve de una vez todos los bytes. Devuelvo true la
 	 * primera vez y pongo en false, despues cuando se pregunta nuevamente
@@ -121,7 +123,7 @@ public class RegistroTerminoDocumentos implements Registro {
 			if (moreBytes == (datosByte.length + longDatosAdic)) {
 				byte[] longDatoBytes = Conversiones
 						.intToArrayByte(datosByte.length);
-				byte[] offsetBytes = Conversiones.longToArrayByte(offset);
+				byte[] offsetBytes = Conversiones.longToArrayByte(dato.length());
 
 				dos.write(offsetBytes, 0, offsetBytes.length);
 				dos.write(longDatoBytes, 0, longDatoBytes.length);
@@ -142,6 +144,11 @@ public class RegistroTerminoDocumentos implements Registro {
 	 */
 	public void llenar() {
 		// TODO Llenar este método
+	}
+
+	public void setBytes(byte[] buffer, Long offset) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	 
