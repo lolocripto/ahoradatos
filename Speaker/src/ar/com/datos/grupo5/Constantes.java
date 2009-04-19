@@ -84,6 +84,11 @@ public final class Constantes {
 			.parseInt(getXML("TAMANO_CACHE"));
 	
 	/**
+	 * Tamaño del buffer de lectura.
+	 */
+	public static final int TAMANIO_BLOQUE_ARCHIVO = Integer
+			.parseInt(getXML("TAMANIO_BLOQUE_ARCHIVO"));
+	/**
 	 * Esta variable permite activar o desactivar las optimizaciones realizadas
 	 * para el idioma español.
 	 */
