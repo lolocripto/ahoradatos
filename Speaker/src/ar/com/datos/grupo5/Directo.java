@@ -37,6 +37,17 @@ public class Directo extends Archivo {
 	}
 
 	/**
+	 * @throws UnImplementedMetodException .
+	 * @see Archivo#leerBloque(Long)
+	 */
+	public final byte[] leerBloque(final Long offset)
+			throws UnImplementedMethodException {
+
+		throw new UnImplementedMethodException(
+				"Funcion no valida en este tipo de archivo");
+
+	}
+	/**
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#buscar(ar.com.datos.grupo5.interfaces.Registro)
 	 */
 	public final boolean buscar(final Registro registro)

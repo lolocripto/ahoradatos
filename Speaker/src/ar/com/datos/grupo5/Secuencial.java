@@ -160,6 +160,18 @@ public class Secuencial extends Archivo {
 	}
 
 	/**
+	 * @throws UnImplementedMetodException .
+	 * @see Archivo#leerBloque(Long)
+	 */
+	public final byte[] leerBloque(final Long offset)
+			throws UnImplementedMethodException {
+
+		throw new UnImplementedMethodException(
+				"Funcion no valida en este tipo de archivo");
+
+	}
+	
+	/**
 	 * @see Archivo#getOffset()
 	 */
 	@Override
