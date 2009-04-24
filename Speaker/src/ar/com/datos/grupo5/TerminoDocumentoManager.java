@@ -25,7 +25,7 @@ public class TerminoDocumentoManager {
 	 */
 	public TerminoDocumentoManager() {
 		//TODO: Revisar que el constructor de BloqueBSharp exista
-		this.archivo = new BloqueBsharp();
+		this.archivo = new ArchivoBloques();
 	}
 		
 	/**
