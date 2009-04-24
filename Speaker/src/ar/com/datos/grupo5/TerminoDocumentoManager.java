@@ -5,8 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.SortedMap;
+import java.util.Map;
 
 import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
+import ar.com.datos.grupo5.interfaces.Registro;
 
 public class TerminoDocumentoManager {
 
@@ -47,19 +50,23 @@ public class TerminoDocumentoManager {
 	/**
 	 * Metodo para agregar una palabra al diccionario.
 	 * 
-	 * @param palabra
-	 *            La palabra que se quiere agregar al diccionario.
-	 * @param offset
-	 *            Es la posición de la palabra dentro del archivo de audio.
-	 * @return retorna TRUE si pudo agregr la palabra, o FALSE en caso
-	 *         contrario.
+	 * @param frecuencia
+	 *            Un vector con las frecuencias de la palabra en el documento.
+	 * @param listaOffsetDocumentos
+	 *            Offset de los documentos en que se encuntran las palabras.
+	 * @return retorna el offset donde fue insertado el registro con la lista.
 	 * @throws FileNotFoundException
-	 * @link ar.com.datos.grupo5.interfaces.Archivo#insertar(Registro)
 	 */
-	public Long insertar(final Collection<Long> frecuencia, final Collection<Long> listaOffsetDocumentos){
+	public Long insertar(final Collection<ParFrecuenciaDocumento> Lista){
+		
+		// Voy a insertar OffsetProxRegistro + Bytes del registroTerminoDocumentos
+		
+		
 		
 		RegistroTerminoDocumentos reg = new RegistroTerminoDocumentos();
 		
+		reg.setDatosDocumentos(Lista);
+	
 		/*
 		ByteArrayOutputStream audioByteArray = (ByteArrayOutputStream) audio;
 		
@@ -68,6 +75,8 @@ public class TerminoDocumentoManager {
 		*/
 		
 		//TODO: Cargar el registro
+		
+		//reg = reg.set(frecuencia, listaOffsetDocumentos);
 		
 		try {
 			this.archivo.insertar(reg);
@@ -103,5 +112,8 @@ public RegistroTerminoDocumentos leer(final Long offset){
 	return reg;
 	}
 
-	
+	private boolean cargarRegistro(Collection<Long> frecuencia, Collection<Long> listaOffsetDocumentos){
+		RegistroTerminoDocumentos reg = new RegistroTerminoDocumentos();
+		return true;
+	}
 }

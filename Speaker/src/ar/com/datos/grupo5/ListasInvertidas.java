@@ -175,7 +175,7 @@ public class ListasInvertidas {
 	 *
 	 */
 	public ListasInvertidas() {
-		this.archivo = new BloqueBsharp();
+		this.archivo = new ArchivoBloques();
 		this.validarEncabezado();
 	}
 	
