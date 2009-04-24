@@ -40,8 +40,8 @@ public class Directo extends Archivo {
 	 * @throws UnImplementedMetodException .
 	 * @see Archivo#leerBloque(Long)
 	 */
-	public final byte[] leerBloque(final Long offset)
-			throws UnImplementedMethodException {
+	public byte[] leerBloque(final Long offset)
+			throws UnImplementedMethodException, IOException {
 
 		throw new UnImplementedMethodException(
 				"Funcion no valida en este tipo de archivo");
