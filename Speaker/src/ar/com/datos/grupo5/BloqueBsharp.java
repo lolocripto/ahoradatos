@@ -64,7 +64,7 @@ public class BloqueBsharp extends Directo{
 	public final byte[] leerBloque(final Long offset) throws IOException {
 		
 		byte[] bufferDato = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
-		file.seek(offset);
+		file.seek(offset*Constantes.SIZE_OF_INDEX_BLOCK);
 
         file.read(bufferDato, 0, Constantes.SIZE_OF_INDEX_BLOCK);
 
@@ -90,7 +90,7 @@ public class BloqueBsharp extends Directo{
 		
 		byte[] bytes = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
 		// Me posiciono al comienzo del bloque.
-		file.seek(offset);
+		file.seek(offset*Constantes.SIZE_OF_INDEX_BLOCK);
 		file.write(bytes, 0, Constantes.SIZE_OF_INDEX_BLOCK);
 	}
 }

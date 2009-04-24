@@ -83,6 +83,11 @@ public final class Constantes {
 	public static final int SIZE_OF_INT = Integer.SIZE / SIZE_OF_BYTE;
 	
 	/**
+     * Tamaño en bytes del short.
+	 */
+	public static final int SIZE_OF_SHORT = Short.SIZE / SIZE_OF_BYTE;
+	
+	/**
 	 * Tamaño del buffer de lectura para la colección auto pagináble.
 	 */
 	public static final int BUFFER_LECTURA_TEXT_INPUT = Integer

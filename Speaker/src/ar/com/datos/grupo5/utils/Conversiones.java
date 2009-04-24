@@ -109,4 +109,50 @@ public final class Conversiones {
 		}
 		return result;
 	}
+	/**
+	 * array byte to short.
+	 * 
+	 * @param array
+	 *            el array de bytes a convertir.
+	 * @return el entero obtenido.
+	 */
+	public static short arrayByteToShort(final byte[] array) {
+		
+		ByteArrayInputStream bis = new ByteArrayInputStream(array);  
+		DataInputStream dos = new DataInputStream(bis);
+
+		short result = 0;
+			
+		try {
+			result = dos.readShort();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * Int to array byte.
+	 * 
+	 * @param numero
+	 *            el entero a convertir.
+	 * @return el entero en bytes.
+	 */
+	public static byte[] shortToArrayByte(final int numero) {
+		
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+		DataOutputStream dos = new DataOutputStream(bos);
+		
+		try {
+			
+			dos.writeShort(numero);
+			dos.flush();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return bos.toByteArray();  
+	}
+	
 }
