@@ -12,7 +12,6 @@ import java.io.InputStreamReader;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
-import ar.com.datos.grupo5.utils.Conversiones;
 
 public class ListasInvertidas {
 
@@ -215,8 +214,8 @@ public class ListasInvertidas {
 				d.read(Control, 0, 7);
 				String claveDatoControl = new String(Control);
 				if(claveDatoControl.compareTo("Control") == 0) {
-					this.cantidadBloques = dis.readInt();
-					this.NroBloqueLista = dis.readInt();
+					this.setCantidadBloques(dis.readInt());
+					this.setNroBloqueLista(dis.readInt());
 					levantarListaAMemoria();
 				} else {
 					escribirEncabezadoArchivo();
@@ -313,6 +312,30 @@ public class ListasInvertidas {
 		
 		return true;
 
+	}
+
+	public void setNroBloqueLista(int nroBloqueLista) {
+		NroBloqueLista = nroBloqueLista;
+	}
+
+	public int getNroBloqueLista() {
+		return NroBloqueLista;
+	}
+
+	public void setCantidadBloques(int cantidadBloques) {
+		this.cantidadBloques = cantidadBloques;
+	}
+
+	public int getCantidadBloques() {
+		return cantidadBloques;
+	}
+
+	public void setEspacioLibrePorBloque(List<NodoListaEspacioLibre> espacioLibrePorBloque) {
+		this.espacioLibrePorBloque = espacioLibrePorBloque;
+	}
+
+	public List<NodoListaEspacioLibre> getEspacioLibrePorBloque() {
+		return espacioLibrePorBloque;
 	}
 
 }

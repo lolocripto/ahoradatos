@@ -4,11 +4,12 @@ import java.io.DataOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.Comparator;
+//import java.util.Comparator;
 
 import ar.com.datos.grupo5.utils.Conversiones;
 
-public class NodoListaEspacioLibre implements Comparator<NodoListaEspacioLibre>{
+public class NodoListaEspacioLibre{ 
+//implements Comparator<NodoListaEspacioLibre>{
 
 	private short espacio;
 	
@@ -75,9 +76,9 @@ public class NodoListaEspacioLibre implements Comparator<NodoListaEspacioLibre>{
 			e.printStackTrace();
 		}
 	}
-
+/*
 	@Override
-	public int compare(NodoListaEspacioLibre o1, NodoListaEspacioLibre o2) {
+	public int compare(final NodoListaEspacioLibre o1, final NodoListaEspacioLibre o2) {
 		if(o1.getEspacio() == o2.getEspacio()){
 			return 0;
 		}
@@ -89,4 +90,5 @@ public class NodoListaEspacioLibre implements Comparator<NodoListaEspacioLibre>{
 		}
 		return 0;
 	}
+	*/
 }

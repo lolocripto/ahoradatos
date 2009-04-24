@@ -31,6 +31,7 @@ public class RegistroTerminoDocumentos implements Registro {
 	
 	private int cantidadDocumentosLeidos;
 	
+	@SuppressWarnings("unused")
 	private void setCantidadDocumentosLeidos(int cantDocumentosLeidos){
 		this.cantidadDocumentosLeidos = cantDocumentosLeidos;
 	}
