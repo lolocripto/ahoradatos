@@ -6,7 +6,7 @@ import ar.com.datos.grupo5.interfaces.Registro;
 
 /**
  * Representa el nodo de arbol b.
- * @author cristian
+ * @author LedZeppeling
  *
  */
 public class Nodo {

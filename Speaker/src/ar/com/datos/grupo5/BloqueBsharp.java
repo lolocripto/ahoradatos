@@ -61,10 +61,11 @@ public class BloqueBsharp extends Directo{
 	 *        Retorna el registro que se encuentra en la posición offset.
 	 * @throws IOException .
 	 */
+	@Override
 	public final byte[] leerBloque(final Long offset) throws IOException {
 		
 		byte[] bufferDato = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
-		file.seek(offset*Constantes.SIZE_OF_INDEX_BLOCK);
+		file.seek(offset * Constantes.SIZE_OF_INDEX_BLOCK);
 
         file.read(bufferDato, 0, Constantes.SIZE_OF_INDEX_BLOCK);
 
@@ -82,15 +83,9 @@ public class BloqueBsharp extends Directo{
 	 * @throws IOException
 	 *             Excepcion de extrada/salida.
 	 */
-	public void insertar(final Registro registro, final Long offset) throws IOException {
-		
-		if (file == null) {
-			throw new IOException("No se creo o abrio el archivo.");
-		}
-		
-		byte[] bytes = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
+	public void insertar(final byte[] bytes, final Long offset) throws IOException {
 		// Me posiciono al comienzo del bloque.
-		file.seek(offset*Constantes.SIZE_OF_INDEX_BLOCK);
+		file.seek(offset * Constantes.SIZE_OF_INDEX_BLOCK);
 		file.write(bytes, 0, Constantes.SIZE_OF_INDEX_BLOCK);
 	}
 }
