@@ -29,7 +29,12 @@ public final class BAsterisk implements BTree {
 	 * @return El registro buscado o el siguiente inmediatamente mayor.
 	 */
 	public RegistroNodo buscar(final Clave clave) {
-		// TODO Auto-generated method stub
+		
+		if (nodoRaiz == null) {
+			return null;
+		}
+
+		
 		return null;
 	}
 

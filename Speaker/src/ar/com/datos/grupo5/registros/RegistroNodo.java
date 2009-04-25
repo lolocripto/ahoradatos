@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.ListasInvertidas;
 import ar.com.datos.grupo5.btree.Clave;
+import ar.com.datos.grupo5.btree.Nodo;
 import ar.com.datos.grupo5.interfaces.Registro;
 
 /**
@@ -29,6 +30,16 @@ public class RegistroNodo implements Registro {
 	 * Es la clave del nodo.
 	 */
 	private Clave claveNodo;
+	
+	/**
+	 * Nodo al que apunta por la izquierda.
+	 */
+	private Nodo nodoIzquierdo;
+	
+	/**
+	 * Nodo al que apunta por la derecha.
+	 */
+	private Nodo nodoDerecho;
 	
 	/**
 	 * En este caso se devuelve de una vez todos los bytes. Devuelvo true la
@@ -80,10 +91,10 @@ public class RegistroNodo implements Registro {
 	}
 
 	/**
-	 * @param claveNodo the claveNodo to set
+	 * @param clave the clave to set
 	 */
-	public final void setClaveNodo(final Clave claveNodo) {
-		this.claveNodo = claveNodo;
+	public final void setClaveNodo(final Clave clave) {
+		this.claveNodo = clave;
 	}
 
 	/**
@@ -91,6 +102,34 @@ public class RegistroNodo implements Registro {
 	 */
 	public final Clave getClaveNodo() {
 		return claveNodo;
+	}
+
+	/**
+	 * @return the nodoIzquierdo
+	 */
+	public final Nodo getNodoIzquierdo() {
+		return nodoIzquierdo;
+	}
+
+	/**
+	 * @param nodo the nodoIzquierdo to set
+	 */
+	public final void setNodoIzquierdo(final Nodo nodo) {
+		this.nodoIzquierdo = nodo;
+	}
+
+	/**
+	 * @return the nodoDerecho
+	 */
+	public final Nodo getNodoDerecho() {
+		return nodoDerecho;
+	}
+
+	/**
+	 * @param nodo the nodoDerecho to set
+	 */
+	public final void setNodoDerecho(final Nodo nodo) {
+		this.nodoDerecho = nodo;
 	}
 	
 }

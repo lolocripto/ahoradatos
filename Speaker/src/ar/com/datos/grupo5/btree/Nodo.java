@@ -16,8 +16,6 @@ public class Nodo {
 	 */
 	public Nodo() {
 		
-		this.nodoIzquierdo = null;
-		this.nodoDerecho = null;
 		this.nodoSiguiente = null;
 		this.nodoPadre = null;
 		this.registros = new ArrayList<RegistroNodo>();
@@ -29,8 +27,6 @@ public class Nodo {
 	 */
 	public Nodo(final Nodo nodoPadre) {
 		
-		this.nodoIzquierdo = null;
-		this.nodoDerecho = null;
 		this.nodoSiguiente = null;
 		this.nodoPadre = nodoPadre;
 		this.registros = new ArrayList<RegistroNodo>();
@@ -60,16 +56,6 @@ public class Nodo {
 	 * Lista de registros.
 	 */
 	private ArrayList< RegistroNodo > registros;
-	
-	/**
-	 * Nodo al que apunta a la izquierda.
-	 */
-	private Nodo nodoIzquierdo;
-	
-	/**
-	 * Nodo al que apunta a la derecha.
-	 */
-	private Nodo nodoDerecho;
 	
 	/**
 	 * El nodo padre.
@@ -123,9 +109,10 @@ public class Nodo {
 	 * @return la clave buscada.
 	 */
 	public final Clave buscarClave(final Clave clave) {
+		Clave c = this.registros.get(0).getClaveNodo();
 		for (int i = 0; i < this.registros.size(); i++) {
-			if (clave.equals(this.registros.get(i).getClaveNodo())) {
-				return clave;
+			if ((c.equals(clave)) && (i > 0)) {
+				return c;
 			}
 		}
 		return null;
@@ -186,34 +173,6 @@ public class Nodo {
 	 */
 	public final void setEsHoja(final boolean hoja) {
 		this.esHoja = hoja;
-	}
-
-	/**
-	 * @return the nodoIzquierdo
-	 */
-	public final Nodo getNodoIzquierdo() {
-		return nodoIzquierdo;
-	}
-
-	/**
-	 * @param nodo the nodoIzquierdo to set
-	 */
-	public final void setNodoIzquierdo(final Nodo nodo) {
-		this.nodoIzquierdo = nodo;
-	}
-
-	/**
-	 * @return the nodoDerecho
-	 */
-	public final Nodo getNodoDerecho() {
-		return nodoDerecho;
-	}
-
-	/**
-	 * @param nodo the nodoDerecho to set
-	 */
-	public final void setNodoDerecho(final Nodo nodo) {
-		this.nodoDerecho = nodo;
 	}
 	
 }
