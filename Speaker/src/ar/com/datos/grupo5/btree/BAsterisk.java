@@ -12,13 +12,32 @@ import ar.com.datos.grupo5.registros.RegistroNodo;
 public final class BAsterisk implements BTree {
 	
 	/**
-	 * Nodo.
+	 * Nodo Actual.
 	 */
-	private Nodo nodo;
+	private Nodo actual;
+	
+	/**
+	 * Nodo Raiz.
+	 */
+	private Nodo raiz;
+
+	/**
+	 * @return the raiz
+	 */
+	public final Nodo getRaiz() {
+		return raiz;
+	}
+
+	/**
+	 * @param raiz the raiz to set
+	 */
+	public final void setRaiz(Nodo raiz) {
+		this.raiz = raiz;
+	}
 
 	/**
 	 * @see ar.com.datos.grupo5.btree.BTree#buscar(ar.com.datos.grupo5.btree.Clave)
-	 * @return retorna el Registro, si pudo encontrarlo.
+	 * @return retorna el Registro, si pudo encontrarlo. Sino retorna null.
 	 */
 	public RegistroNodo buscar(Clave clave) {
 		// TODO Auto-generated method stub
@@ -52,15 +71,15 @@ public final class BAsterisk implements BTree {
 	/**
 	 * @param nodo the nodo to set
 	 */
-	public void setNodo(final Nodo nodo) {
-		this.nodo = nodo;
+	public void setActual(final Nodo nodo) {
+		this.actual = nodo;
 	}
 
 	/**
 	 * @return the nodo
 	 */
-	public Nodo getNodo() {
-		return nodo;
+	public Nodo getActual() {
+		return actual;
 	}
 
 }
