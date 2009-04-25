@@ -1,29 +1,32 @@
-package ar.com.datos.grupo5.registros;
+package ar.com.datos.grupo5;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.utils.Conversiones;
 
 import ar.com.datos.grupo5.interfaces.Registro;
 
 public class RegistroTrie implements Registro {
 	/**
-	 * Nivel del trie
+	 * Nivel del trie.
 	 */
 	private int nivel;
 
 	/**
-	 * nro de Bloque en el que se guarda el registro
+	 * nro de Bloque en el que se guarda el registro.
 	 */
 	private int nroBloque;
 
-	private int idtermino;
-
-	private int longitud_termino;
-
+	/**
+	 * 
+	 */
+	private int longitudTermino;
+	
+	/**
+	 * 
+	 */
 	private String dato;
 
 	/**
@@ -32,13 +35,19 @@ public class RegistroTrie implements Registro {
 
 	private Long moreBytes;
 
-	public RegistroTrie(int nivel, int bloque, int id_termino, int longitud,
-			String dato) {
+	/**
+	 * 
+	 * @param nivel
+	 * @param bloque
+	 * @param longitud
+	 * @param datoExt
+	 */
+	public RegistroTrie(int nivel, int bloque, int longitud,
+			String datoExt) {
 		this.setNivel(nivel);
 		this.setNroBloque(bloque);
-		this.setIdtermino(id_termino);
-		this.setLongitud_termino(longitud);
-		this.setDato(dato);
+		this.setLongitudTermino(longitud);
+		this.setDato(datoExt);
 	}
 
 	public byte[] getBytes() {
@@ -101,20 +110,12 @@ public class RegistroTrie implements Registro {
 		return nroBloque;
 	}
 
-	public void setIdtermino(int id_termino) {
-		this.idtermino = id_termino;
-	}
-
-	public int getIdtermino() {
-		return idtermino;
-	}
-
-	public void setLongitud_termino(int longitud_termino) {
-		this.longitud_termino = longitud_termino;
+	public void setLongitudTermino(int longitud_termino) {
+		this.longitudTermino = longitud_termino;
 	}
 
 	public int getLongitud_termino() {
-		return longitud_termino;
+		return longitudTermino;
 	}
 
 	public void setDato(String dato) {
