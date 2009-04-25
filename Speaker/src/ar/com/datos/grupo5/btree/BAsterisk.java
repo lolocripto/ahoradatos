@@ -31,11 +31,13 @@ public final class BAsterisk implements BTree {
 	 * @return El registro buscado o el siguiente inmediatamente mayor.
 	 */
 	public RegistroNodo buscar(final Clave clave) {
+		//TODO CORREGIR ESTE METODO
+		RegistroNodo nodo = new RegistroNodo();
 		
 		if (nodoRaiz == null) {
 			return null;
 		}
-
+		 nodo = this.nodoRaiz.buscarRegistro(clave);
 		Nodo nodoAux = nodoRaiz;
 		int resultado = 0;
 		int posReg = 0;
