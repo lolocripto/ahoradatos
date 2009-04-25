@@ -120,10 +120,9 @@ public class Nodo {
 	 * @return la clave buscada.
 	 */
 	public final Clave buscarClave(final Clave clave) {
-		Clave c = this.registros.get(0).getClaveNodo();
 		for (int i = 0; i < this.registros.size(); i++) {
-			if ((c.equals(clave)) && (i > 0)) {
-				return c;
+			if (clave.equals(this.registros.get(i).getClaveNodo())) {
+				return clave;
 			}
 		}
 		return null;
