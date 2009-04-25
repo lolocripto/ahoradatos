@@ -13,15 +13,21 @@ import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 
+/**
+ * Clase que administra la inserción, modificación y busqueda de las listas
+ * invertidas en un archivo por bloques.
+ * @author Led Zeppelin
+ *
+ */
 public class ListasInvertidas {
 
 	/**
-	 * Último bloque leido
+	 * Último bloque leido.
 	 */
 	private byte[] datosLeidosPorBloque = null;
 	
 	/**
-	 * Cantidad de bloques dentro del archivo
+	 * Cantidad de bloques dentro del archivo.
 	 */
 	private int cantidadBloques;
 	/**
@@ -30,12 +36,12 @@ public class ListasInvertidas {
 	private static Logger logger  = Logger.getLogger(ListasInvertidas.class);
 
 	/**
-	 * Offset a la lista invertida dentro del bloque leido
+	 * Offset a la lista invertida dentro del bloque leido.
 	 */
 	private int offsetLista;
 	
 	/**
-	 * Nro de bloque donde empieza la lista invertida del termino
+	 * Nro de bloque donde empieza la lista invertida del termino.
 	 */
 	private long nroBloque;
 	
@@ -46,35 +52,38 @@ public class ListasInvertidas {
 	private Archivo archivo;
 	
 	/**
-	 * Lista con los espacios libres
+	 * Lista con los espacios libres.
 	 */
 	private List<NodoListaEspacioLibre> espacioLibrePorBloque;
 	
 	/**
-	 * Numero del bloque donde empieza la lista de espacio libre
+	 * Numero del bloque donde empieza la lista de espacio libre.
 	 */
-	private int NroBloqueLista;
+	private int nroBloqueLista;
 	
 	
 	/**
 	 * Metodo para cargar el diccionario, accediendo al archivo.
 	 * 
-	 * @param archivo
+	 * @param archivoNombre
 	 *            La ruta completa del archivo a cargar.
 	 * @param modo
 	 *            El modo en el cual se debe abrir el archivo.
 	 * @return true si pudo abrir el archivo.
+	 * @throws FileNotFoundException
+	 * 		El archivo no fue encontrado.
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#cargar()
 	 */
-	public final boolean abrir(final String archivo, final String modo)
+	public final boolean abrir(final String archivoNombre, final String modo)
 			throws FileNotFoundException {
-		return this.archivo.abrir(archivo, modo);
+		return this.archivo.abrir(archivoNombre, modo);
 	}
 	
 	/**
 	 * Método que cierra el diccionario.
 	 * 
 	 * @throws IOException
+	 * 			Puede ocurrir un error al cerrarse el archivo
 	 * @see ar.com.datos.grupo5.interfaces.Archivo#cerrar()
 	 */
 	public final void cerrar() throws IOException {
@@ -84,47 +93,55 @@ public class ListasInvertidas {
 	/**
 	 * Lee la lista del termino pedido en el bloque especificado.
 	 * 
-	 * @param id_termino
+	 * @param idTerminoExt
 	 *            El idtermino al que la lista a buscar esta vinculada.
-	 * @param NroBloque
+	 * @param nroBloqueExt
 	 * 			  El número del bloque donde se encuentra la lista.
 	 * @return null si no encuentra la lista, si no devuelve el registro.
 	 */
-	public final RegistroTerminoDocumentos leerLista(final long id_termino, final long NroBloque) {
+	public final RegistroTerminoDocumentos leerLista(final long idTerminoExt, 
+			final long nroBloqueExt) {
 		
 		RegistroTerminoDocumentos reg = new RegistroTerminoDocumentos();
-		this.nroBloque = NroBloque;
+		this.nroBloque = nroBloqueExt;
 		long siguiente = this.nroBloque;
 		short primerRegistro;
 		short espacioOcupado;
 		short cantBloquesLeidos = 0;
 
 		try {
-				while(reg.incompleto() || reg.getCantidadDocumentos() == 0){
+				while (reg.incompleto() || reg.getCantidadDocumentos() == 0) {
 				
 					/* Obtengo el bloque según el numero de bloque*/
-					//TODO: Ver que se convierta el nroBloque en offset
 					datosLeidosPorBloque = this.archivo.leerBloque(siguiente);
 					
 					/* Saco la información de control del bloque */
-					ByteArrayInputStream bis = new ByteArrayInputStream(datosLeidosPorBloque);  
+					ByteArrayInputStream bis 
+						= new ByteArrayInputStream(datosLeidosPorBloque);  
 					DataInputStream dis = new DataInputStream(bis);
 					
 					siguiente = dis.readLong();
 					primerRegistro = dis.readShort();
 					espacioOcupado = dis.readShort();
 					
-					if(cantBloquesLeidos == 0){
+					if (cantBloquesLeidos == 0) {
 						/* Busco el termino */
-						if( !this.buscarIdTermino(datosLeidosPorBloque,id_termino,primerRegistro,espacioOcupado) ){
-							/* Si no lo encuentro en el bloque esta mal el bloque por lo tanto no busco en bloques siguientes */
+						if (!this.buscarIdTermino(datosLeidosPorBloque, 
+								idTerminoExt, primerRegistro, espacioOcupado)) {
+							/* Si no lo encuentro en el bloque esta mal el 
+							 * bloque por lo tanto no busco en bloques 
+							 * siguientes */
 							return null;
 						}
 						
 						/* Armo la lista para el termino especifico */
-						reg.setBytes(this.datosLeidosPorBloque, (long) this.offsetLista);
+						reg.setBytes(this.datosLeidosPorBloque, 
+										(long) this.offsetLista);
+						
 					} else {
-						reg.setMoreBytes(datosLeidosPorBloque, Constantes.SIZE_OF_LONG+Constantes.SIZE_OF_SHORT*2);
+						reg.setMoreBytes(datosLeidosPorBloque, 
+								Constantes.SIZE_OF_LONG	
+								+ Constantes.SIZE_OF_SHORT * 2);
 					}
 				}
 
@@ -149,8 +166,6 @@ public class ListasInvertidas {
 	 *            Es la posición de la palabra dentro del archivo de audio.
 	 * @return retorna TRUE si pudo agregr la palabra, o FALSE en caso
 	 *         contrario.
-	 * @throws FileNotFoundException
-	 * @link ar.com.datos.grupo5.interfaces.Archivo#insertar(Registro)
 	 */
 	public final boolean agregar(final String palabra, final Long offset) {
 		/*
@@ -178,7 +193,11 @@ public class ListasInvertidas {
 		this.validarEncabezado();
 	}
 	
-	private void validarEncabezado(){
+	/**
+	 * Valida el encabezado del archivo, este esta en el primer bloque.
+	 *
+	 */
+	private void validarEncabezado() {
 		//TODO: Implementar
 		// CantidadBloques|offset Lista de lugares libres
 		leerEncabezadoArchivo();
@@ -186,12 +205,13 @@ public class ListasInvertidas {
 	}
 	
 	/**
-	 * Lee el encabezado del archivo, si no existe entonces lo escribe e inicializa el
+	 * Lee el encabezado del archivo, si no existe 
+	 * entonces lo escribe e inicializa el.
 	 * archivo de bloques
 	 */
-	private void leerEncabezadoArchivo(){
+	private void leerEncabezadoArchivo() {
 		byte[] datosControlArchivo = null;
-		char[] Control = new char[7];
+		char[] control = new char[1];
 
 		try {
 			//TODO: Implementar
@@ -205,15 +225,18 @@ public class ListasInvertidas {
 			datosControlArchivo = this.archivo.leerBloque(0L);
 			
 			//TODO: Este if debería ser una Exception
-			if(datosControlArchivo.length > 0){
-				ByteArrayInputStream bis = new ByteArrayInputStream(datosControlArchivo);  
+			if (datosControlArchivo.length > 0) {
+				
+				ByteArrayInputStream bis 
+				  = new ByteArrayInputStream(datosControlArchivo);  
 				DataInputStream dis = new DataInputStream(bis);
+				
 				BufferedReader d
 		          = new BufferedReader(new InputStreamReader(bis));
 				
-				d.read(Control, 0, 7);
-				String claveDatoControl = new String(Control);
-				if(claveDatoControl.compareTo("Control") == 0) {
+				d.read(control, 0, 1);
+				String claveDatoControl = new String(control);
+				if (claveDatoControl.compareTo("Control") == 0) {
 					this.setCantidadBloques(dis.readInt());
 					this.setNroBloqueLista(dis.readInt());
 					levantarListaAMemoria();
@@ -228,58 +251,68 @@ public class ListasInvertidas {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch ( UnImplementedMethodException e) {
+		} catch (UnImplementedMethodException e) {
 			e.printStackTrace();
 		}
 		
 	}
 
 	/**
-	 * Escribe el encabezado del archivo
+	 * Escribe el encabezado del archivo.
 	 */
-	private void escribirEncabezadoArchivo(){
+	private void escribirEncabezadoArchivo() {
 		//TODO: Implementar
 		
 	}
 	/**
 	 * Levanta la lista de espacios libres a memoria.
 	 */
-	private void levantarListaAMemoria(){
+	private void levantarListaAMemoria() {
 		
 	}
+	
 	/**
-	 * Busca en las listas la lista que tenga el idTerminoBuscado
-	 * @param Listas Una cadena de Byte que contiene las listas invertidas de terminos.
+	 * Busca en las listas la lista que tenga el idTerminoBuscado.
+	 * @param listas Una cadena de Byte que contiene las listas 
+	 * 			invertidas de terminos.
 	 * @param idTerminoBuscado Es el id de termino relacionado con la lista.
-	 * @param offsetPrimerLista	Es el offset donde comienzan las listas en la cadena de bytes
+	 * @param offsetPrimerLista	Es el offset donde comienzan las listas en la 
+	 * 			cadena de bytes
 	 * @param espacioOcupado Es el espacio ocupado del byte[]
-	 * @return True si encuentra la lista vinculada al idTermino y false si llega al final
-	 * de la cadena de bytes sin encontrarla. 
+	 * @return True si encuentra la lista vinculada al idTermino y false si 
+	 * 			llega al final de la cadena de bytes sin encontrarla. 
 	 */
-	private boolean buscarIdTermino( byte[] Listas, long idTerminoBuscado, int offsetPrimerLista, short espacioOcupado){
+	private boolean buscarIdTermino(final byte[] listas, 
+			final long idTerminoBuscado, final int offsetPrimerLista, 
+			final short espacioOcupado) {
 		
-		/* Estructura: idTermino->long, CantidadDocumentos->long, pares(long,long) */
+		/* Estructura: idTermino->long, CantidadDocumentos->long, 
+		 * pares(long,long) */
 		long idTermino = 0;
 		int cantDocumentos = 0;
-		int offsetAConsultar = Constantes.SIZE_OF_LONG + Constantes.SIZE_OF_SHORT*2 + offsetPrimerLista;
+		int offsetAConsultar = Constantes.SIZE_OF_LONG 
+			+ Constantes.SIZE_OF_SHORT * 2 + offsetPrimerLista;
 		
 		//Empiezo a leer desde la primer lista del bloque
 		ByteArrayInputStream bis; 
 		DataInputStream dis;
 		try {
-			while (offsetAConsultar < Listas.length
+			while (offsetAConsultar < listas.length
 					&& offsetAConsultar < espacioOcupado) {
 				/*
-				System.arraycopy(datoLongBytes, 0, Listas, offsetAConsultar, Constantes.SIZE_OF_LONG);
+				System.arraycopy(datoLongBytes, 0, Listas, 
+				offsetAConsultar, Constantes.SIZE_OF_LONG);
 				idTermino = Conversiones.arrayByteToLong(datoLongBytes);
 				 */
 				
-				bis = new ByteArrayInputStream(Listas,offsetAConsultar,espacioOcupado);  
+				bis = new ByteArrayInputStream(listas, offsetAConsultar, 
+							espacioOcupado);  
 				dis = new DataInputStream(bis);
 				
 				idTermino = dis.readLong();
 				if (idTerminoBuscado == idTermino) {
-					/* Son iguales por lo tanto el offset de la lista es igual a la primera lista */
+					/* Son iguales por lo tanto el offset de la lista es 
+					 * igual a la primera lista */
 					this.offsetLista = offsetAConsultar;
 					return true;
 				}
@@ -305,7 +338,8 @@ public class ListasInvertidas {
 			e.printStackTrace();
 		}
 		
-		if(offsetAConsultar >= Listas.length || offsetAConsultar > espacioOcupado){
+		if (offsetAConsultar >= listas.length 
+				|| offsetAConsultar > espacioOcupado) {
 			/* la lista no se encuentra */
 			return false;
 		}
@@ -314,27 +348,60 @@ public class ListasInvertidas {
 
 	}
 
-	public void setNroBloqueLista(int nroBloqueLista) {
-		NroBloqueLista = nroBloqueLista;
+	/**
+	 * Permite establecer el numero de bloque donde se encuentra 
+	 * la lista de espacios libres. 
+	 * @param nroBloqueListaExt
+	 * 		Número del bloque donde se encuentra la lista.
+	 */
+	public final void setNroBloqueLista(final int nroBloqueListaExt) {
+		nroBloqueLista = nroBloqueListaExt;
 	}
 
-	public int getNroBloqueLista() {
-		return NroBloqueLista;
+	/**
+	 * Permite obtener el número del bloque donde esta la lista
+	 * de espacios libres.
+	 * @return
+	 * 		El número de bloque.
+	 */
+	public final int getNroBloqueLista() {
+		return nroBloqueLista;
 	}
 
-	public void setCantidadBloques(int cantidadBloques) {
-		this.cantidadBloques = cantidadBloques;
+	/**
+	 * Permite establecer la cantidad de bloques totales que tiene el archivo.
+	 * @param cantidadBloquesExt
+	 * 		Devuelve la cantidad de bloques de archivo.
+	 */
+	private void setCantidadBloques(final int cantidadBloquesExt) {
+		this.cantidadBloques = cantidadBloquesExt;
 	}
 
-	public int getCantidadBloques() {
+	/**
+	 * Permite obtener la cantidad de bloques totales que tiene el archivo. 
+	 * @return
+	 * 		La cantidad de bloques en el archivo.
+	 */
+	public final int getCantidadBloques() {
 		return cantidadBloques;
 	}
 
-	public void setEspacioLibrePorBloque(List<NodoListaEspacioLibre> espacioLibrePorBloque) {
-		this.espacioLibrePorBloque = espacioLibrePorBloque;
+	/**
+	 * Permite cargar una lista con pares Bloque-EspacioLibre.
+	 * @param espacioLibrePorBloqueExt
+	 * 		Lista con los pares Bloque-EspacioLibre.
+	 */
+	public final void setEspacioLibrePorBloque(
+			final List<NodoListaEspacioLibre> espacioLibrePorBloqueExt) {
+		this.espacioLibrePorBloque = espacioLibrePorBloqueExt;
 	}
 
-	public List<NodoListaEspacioLibre> getEspacioLibrePorBloque() {
+	/**
+	 * Permite obtener la lista con pares Bloque-EspacioLibre.
+	 * @return
+	 * 		Lista con los pares Bloque-EspacioLibre.
+	 */
+	public final List<NodoListaEspacioLibre> getEspacioLibrePorBloque() {
 		return espacioLibrePorBloque;
 	}
 

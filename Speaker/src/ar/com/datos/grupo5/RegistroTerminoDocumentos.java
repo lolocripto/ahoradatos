@@ -23,16 +23,32 @@ public class RegistroTerminoDocumentos implements Registro {
 	 */
 	private Long moreBytes;
 	
+	/**
+	 * Contiene todos los pares de frecuencia y documentos.
+	 */
 	private Collection<ParFrecuenciaDocumento> datosDocumentos;
 	
+	/**
+	 * Contiene la cantidad de documentos de la lista invertida.
+	 */
 	private int	cantidadDocumentos;
 	
+	/**
+	 * El id del termino de la lista. 
+	 */
 	private int idTermino;
 	
+	/**
+	 * Contiene la cantidad de documentos leidos del bloque.
+	 */
 	private int cantidadDocumentosLeidos;
 	
-	@SuppressWarnings("unused")
-	private void setCantidadDocumentosLeidos(int cantDocumentosLeidos){
+	/**
+	 * Perminte setear la cantidad de documentos leidos.
+	 * @param cantDocumentosLeidos
+	 * 			La cantidad de documentos leidos.
+	 */
+	private final void setCantidadDocumentosLeidos(final int cantDocumentosLeidos) {
 		this.cantidadDocumentosLeidos = cantDocumentosLeidos;
 	}
 	
@@ -56,32 +72,35 @@ public class RegistroTerminoDocumentos implements Registro {
 	/**
 	 * Método para cargar el idTermino.
 	 * 
-	 * @param idT_ermino
+	 * @param idTerminoExt
 	 *            El offset a cargar.
 	 */
-	public final void setIdTermino(final int id_Termino) {
-		this.idTermino = id_Termino;
+	public final void setIdTermino(final int idTerminoExt) {
+		this.idTermino = idTerminoExt;
 		
 		// Acá considero el tamaño de las listas tanto de 
-		this.moreBytes = (long) this.datosDocumentos.size()*Constantes.SIZE_OF_LONG*2
-				+ Constantes.SIZE_OF_INT*2;
+		this.moreBytes = (long) this.datosDocumentos.size() 
+				* Constantes.SIZE_OF_LONG * 2 
+				+ Constantes.SIZE_OF_INT * 2;
 	}
 	
 	
 	/**
 	 * Método para cargar la lista invertida.
 	 * 
-	 * @param offset
-	 *            El offset a cargar.
+	 * @param listasDatosDocumentos
+	 *            Una colleccion.
 	 */
-	public final void setDatosDocumentos(final Collection<ParFrecuenciaDocumento> listasDatosDocumentos) {
+	public final void setDatosDocumentos(final 
+			Collection<ParFrecuenciaDocumento> listasDatosDocumentos) {
 		this.datosDocumentos = listasDatosDocumentos;
 		
 		this.cantidadDocumentos = listasDatosDocumentos.size();
 			
 		// Acá considero el tamaño de las listas tanto de 
-		this.moreBytes = (long) listasDatosDocumentos.size()*Constantes.SIZE_OF_LONG*2
-				+ Constantes.SIZE_OF_INT*2;
+		this.moreBytes = (long) listasDatosDocumentos.size() 
+				* Constantes.SIZE_OF_LONG * 2
+				+ Constantes.SIZE_OF_INT * 2;
 	}
 	
 	/**
@@ -116,20 +135,24 @@ public class RegistroTerminoDocumentos implements Registro {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
 		
-		//Intento pasar la información contenida en el registro a una tira de bytes
+		//Intento pasar la información contenida en el 
+		//registro a una tira de bytes
 		try {
 			
 			//Convertir la cantidad de documentos
 			
 			byte[] cantidadDocumentosBytes = Conversiones.intToArrayByte(this.cantidadDocumentos);
 			byte[] idTerminoByte = Conversiones.intToArrayByte(this.idTermino);
-			long longDatosFrecuencia = this.datosDocumentos.size()*2*Constantes.SIZE_OF_LONG;
+			long longDatosFrecuencia = this.datosDocumentos.size() * 2 
+						* Constantes.SIZE_OF_LONG;
 			
-			if (moreBytes == (cantidadDocumentosBytes.length + longDatosFrecuencia)) {
+			if (moreBytes == (cantidadDocumentosBytes.length 
+					+ longDatosFrecuencia)) {
 				
-				dos.write(idTerminoByte,0,idTerminoByte.length);
+				dos.write(idTerminoByte, 0, idTerminoByte.length);
 				moreBytes -= idTerminoByte.length;
-				dos.write(cantidadDocumentosBytes, 0, cantidadDocumentosBytes.length);
+				dos.write(cantidadDocumentosBytes, 0, 
+						cantidadDocumentosBytes.length);
 				moreBytes -= cantidadDocumentosBytes.length;
 				
 				//for para recorrer todo el SortedMap
@@ -154,11 +177,11 @@ public class RegistroTerminoDocumentos implements Registro {
 	}
 	
 	/**
-	 * Método que llena los atributos a partir de lo contenido en el buffer
+	 * Método que llena los atributos a partir de lo contenido en el buffer.
 	 * @param buffer Cadena de Bytes leida en el archivo de bloques
 	 * @param offset id del termino que se busca.
 	 */
-	public void setBytes(byte[] buffer, Long offset) {
+	public final void setBytes(final byte[] buffer, final Long offset) {
 		// TODO Ver el tamaño de cantidadDocumentos en todos lados
 		byte[] idTerminoByte = new byte[Constantes.SIZE_OF_INT];
 		byte[] cantidadDocumentosByte = new byte[Constantes.SIZE_OF_INT];
@@ -166,10 +189,19 @@ public class RegistroTerminoDocumentos implements Registro {
 		byte[] offsetDocumentoByte = new byte[Constantes.SIZE_OF_LONG];
 		int offsetByte = 0;
 		ParFrecuenciaDocumento parFD = null;
-		//byte[] idTerminoByte = new byte[Constantes.SIZE_OF_INT];
+		
+		
+		//TODO: Arreglar esto
+		/*
+		ByteArrayInputStream bis = new ByteArrayInputStream(datosLeidosPorBloque);  
+		DataInputStream dis = new DataInputStream(bis);
+		*/
+		
+		
 		
 		//Obtengo el dato del id_termino 
-		System.arraycopy(buffer, offset.intValue(), idTerminoByte, 0, Constantes.SIZE_OF_LONG);
+		System.arraycopy(buffer, offset.intValue(), idTerminoByte, 0, 
+				Constantes.SIZE_OF_LONG);
 		this.idTermino = Conversiones.arrayByteToInt(idTerminoByte);
 		
 		offsetByte = offset.intValue() + Constantes.SIZE_OF_LONG;
@@ -211,15 +243,32 @@ public class RegistroTerminoDocumentos implements Registro {
 		}
 	}
 	
-	public int getCantidadDocumentos(){
+	/**
+	 * Permite obtener la cantidad de documentos para el idTermino.
+	 * @return
+	 * 		La cantidad de documentos para el termino
+	 */
+	public final int getCantidadDocumentos() {
 		return this.cantidadDocumentos;
 	}
 
-	public int getCantidadDocumentosLeidos(){
+	/**
+	 * Permite obtener la cantidad de documentos leidos de archivo.
+	 * @return
+	 * 		La cantidad de documentos leidos
+	 */
+	public final int getCantidadDocumentosLeidos() {
 		return this.cantidadDocumentosLeidos;
 	}
 
-	public boolean incompleto(){
+	/**
+	 * Permite saber si no se leyeron todos los elementos de 
+	 * frecuencia-documentos.
+	 * @return
+	 * 		True si se leyeron todos los elementos, False si
+	 * faltan elementos.
+	 */
+	public final boolean incompleto() {
 		return (this.cantidadDocumentos > this.cantidadDocumentosLeidos);
 	}
 }
