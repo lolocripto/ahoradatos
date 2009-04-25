@@ -1,6 +1,6 @@
 package ar.com.datos.grupo5.btree;
 
-import ar.com.datos.grupo5.interfaces.Registro;
+import ar.com.datos.grupo5.registros.RegistroNodo;
 
 /**
  * 
@@ -17,7 +17,7 @@ public interface BTree {
 	 * @return El registro buscado o el siguiente inmediatamente mayor en el
 	 *         caso del b+, b#.
 	 */
-	Registro buscar(final Clave clave);
+	RegistroNodo buscar(final Clave clave);
 	
 	/**
 	 * Inserta un registro en el Arbol.
@@ -26,18 +26,18 @@ public interface BTree {
 	 *            El registro para insertar.
 	 * @return true si lo inserta.
 	 */
-	boolean insertar(final Registro registro);
+	boolean insertar(final RegistroNodo registro);
 	
 	/**
 	 * true si lo modifica.
 	 * @param registro El registro que se quiere modificar.
 	 * @return true si lo modifica.
 	 */
-	boolean modificar(final Registro registro);
+	boolean modificar(final RegistroNodo registro);
 	
 	/**
 	 * @return El registro siguiente. Null si no existe siguiente.
 	 */
-	Registro siguiente();
+	RegistroNodo siguiente();
 	
 }
