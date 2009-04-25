@@ -69,6 +69,63 @@ public class Nodo {
 	 */
 	private Nodo nodoPadre;
 	
+	/**********************
+	 * Metodos
+	 **********************/
+	
+	/**
+	 * Agrega un nodo a la lista de nodos.
+	 * @param nodo El nodo a insertar.
+	 */
+	public final void insertarNodo(final Nodo nodo) {
+		this.nodos.add(nodo);
+	}
+
+	/**
+	 * Verifica la existencia de una clave.
+	 * @param clave .
+	 * @return true si la clave existe.
+	 */
+	public final boolean existeClave(final Clave clave) {
+		return this.registros.contains(clave);
+	}
+	
+	/**
+	 * Busca una clave. Sirve para algo??
+	 * 
+	 * @param clave
+	 *            .
+	 * @return El indice en el array en donde esta el registro que contiene la
+	 *         clave.
+	 *         -1 - si no se encuentra la clave.
+	 */
+	public final int buscarRegistro(final Clave clave) {
+
+		//FIXME: ver si esto funciona. 
+		return registros.indexOf(clave);
+		
+		/*int pos = -1;
+		boolean encontrado = false;
+		
+		for (RegistroNodo reg : this.registros) {
+			pos++;
+			if (reg.getClaveNodo().equals(clave)) {
+				encontrado = true;
+				break; 
+			}
+		}
+		
+		return encontrado?pos:-1;*/
+	}
+	
+	/**
+	 * Agrega un nodo.
+	 * @param registro El reistro para insertar.
+	 */
+	public final void insertarRegistro(final RegistroNodo registro) {
+		registros.add(registro);
+	}
+	
 	/**************************
 	 * Getters and Setters
 	 **************************/
@@ -99,38 +156,6 @@ public class Nodo {
 	 */
 	public final boolean isEsHoja() {
 		return esHoja;
-	}
-	
-	/**
-	 * Verifica la existencia de una clave.
-	 * @param clave .
-	 * @return true si la clave existe.
-	 */
-	public final boolean existeClave(final Clave clave) {
-		return this.registros.contains(clave);
-	}
-	
-	/**
-	 * Busca una clave. Sirve para algo??
-	 * @param clave .
-	 * @return la clave buscada.
-	 */
-	public final Clave buscarClave(final Clave clave) {
-
-		for (RegistroNodo reg : this.registros) {
-			if (reg.getClaveNodo().equals(clave)) {
-				return reg.getClaveNodo();
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Agrega un nodo.
-	 * @param registro El nodo para insertar.
-	 */
-	public final void insertarRegistro(final RegistroNodo registro) {
-		registros.add(registro);
 	}
 
 	/**
@@ -182,11 +207,4 @@ public class Nodo {
 		this.esHoja = hoja;
 	}
 	
-	/**
-	 * Agrega un nodo a la lista de nodos.
-	 * @param nodo El nodo a insertar.
-	 */
-	public final void insertarNodo(final Nodo nodo) {
-		this.nodos.add(nodo);
-	}
 }
