@@ -3,6 +3,8 @@
  */
 package ar.com.datos.grupo5.btree;
 
+import java.util.ArrayList;
+
 import ar.com.datos.grupo5.registros.RegistroNodo;
 
 /**
@@ -36,9 +38,17 @@ public final class BAsterisk implements BTree {
 
 		Nodo nodoAux = nodoRaiz;
 		int resultado = 0;
+		int posReg = 0;
 		
 		while (nodoAux != null) {
 			//resultado = nodoAux.get
+			//Busco la clave en el nodo.
+			posReg = nodoAux.buscarRegistro(clave);
+			if (posReg != -1) {
+				
+			} else {
+				
+			}
 		}
 		
 		return null;

@@ -24,12 +24,12 @@ public class Nodo {
 	
 	/**
 	 * Constructor.
-	 * @param nodoPadre Nodo padre.
+	 * @param nodo Nodo padre.
 	 */
-	public Nodo(final Nodo nodoPadre) {
+	public Nodo(final Nodo nodo) {
 		
 		this.nodoSiguiente = null;
-		this.nodoPadre = nodoPadre;
+		this.nodoPadre = nodo;
 		this.registros = new ArrayList<RegistroNodo>();
 		this.nodos = new ArrayList<Nodo>();
 	}
@@ -207,4 +207,17 @@ public class Nodo {
 		this.esHoja = hoja;
 	}
 	
+	/**
+	 * @return El primer registro del nodo.
+	 */
+	public final RegistroNodo getPrimerRegistro() {
+		return this.registros.get(0);
+	}
+	
+	/**
+	 * @return El ultimo registro del nodo.
+	 */
+	public final RegistroNodo getUltimoRegistro() {
+		return this.registros.get(registros.size() - 1);
+	}
 }
