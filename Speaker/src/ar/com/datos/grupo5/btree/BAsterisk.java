@@ -6,10 +6,14 @@ package ar.com.datos.grupo5.btree;
 import ar.com.datos.grupo5.registros.RegistroNodo;
 
 /**
- * @author cristian
- *
+ * Clase que implementa el nodo de los árboles B*
+ * @author Led Zeppelin
  */
 public final class BAsterisk implements BTree {
+	/**
+	 * Nodo
+	 */
+	private Nodo nodo;
 
 	/**
 	 * @see ar.com.datos.grupo5.btree.BTree#buscar(ar.com.datos.grupo5.btree.Clave)
@@ -42,6 +46,20 @@ public final class BAsterisk implements BTree {
 	public RegistroNodo siguiente() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/**
+	 * @param nodo the nodo to set
+	 */
+	public void setNodo(final Nodo nodo) {
+		this.nodo = nodo;
+	}
+
+	/**
+	 * @return the nodo
+	 */
+	public Nodo getNodo() {
+		return nodo;
 	}
 
 }
