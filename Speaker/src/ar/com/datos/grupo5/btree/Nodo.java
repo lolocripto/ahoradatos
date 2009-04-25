@@ -96,26 +96,40 @@ public class Nodo {
 	 * @param clave
 	 *            .
 	 * @return El indice en el array en donde esta el registro que contiene la
-	 *         clave.
-	 *         -1 - si no se encuentra la clave.
+	 *         clave o del primer elemento que es mayor a la clave.
 	 */
 	public final int buscarRegistro(final Clave clave) {
 
-		//FIXME: ver si esto funciona(deberia). 
-		return registros.indexOf(clave);
-		
-		/*int pos = -1;
-		boolean encontrado = false;
+		int pos = -1;
+		int resultado = 0;
+		// Si la clave es menor a la primera, no está.
+		if (registros.get(registros.size() - 1)
+				.getClaveNodo().compareTo(clave) == 1) {
+			return -1;
+		}
+
+		// Si la clave es mayor a la ultima, no está.
+		if (registros.get(registros.size() - 1)
+				.getClaveNodo().compareTo(clave) == 1) {
+			return -2;
+		}
 		
 		for (RegistroNodo reg : this.registros) {
 			pos++;
-			if (reg.getClaveNodo().equals(clave)) {
-				encontrado = true;
-				break; 
+			
+			resultado = reg.getClaveNodo().compareTo(clave);
+			switch (resultado) {
+				//Si es igual o mayor, devuelvo el indice.
+				case 0:
+				case 1:
+					return pos;
+				//Sigo buscando;
+				default:
+					break;
 			}
 		}
 		
-		return encontrado?pos:-1;*/
+		return pos;
 	}
 	
 	/**

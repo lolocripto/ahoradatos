@@ -41,15 +41,32 @@ public final class BAsterisk implements BTree {
 		Nodo nodoAux = nodoRaiz;
 		int resultado = 0;
 		int posReg = 0;
+		RegistroNodo registro = null;
 		
 		while (nodoAux != null) {
 			//resultado = nodoAux.get
+			
 			//Busco la clave en el nodo.
 			posReg = nodoAux.buscarRegistro(clave);
-			if (posReg != -1) {
-				
-			} else {
-				
+			
+			if (posReg != -1) { //Lo encontré.
+				return nodoAux.getRegistros().get(posReg);
+			} else { //No lo encontré.
+				registro = nodoAux.getRegistros().get(posReg);
+				switch (registro.getClaveNodo().compareTo(clave)) {
+				case 0:
+					
+					break;
+				case 1:
+					
+					break;
+				case -1:
+					
+					break;
+				default:
+					
+					break;
+				}
 			}
 		}
 		
