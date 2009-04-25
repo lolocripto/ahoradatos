@@ -85,13 +85,13 @@ public class RegistroTerminoDocumentos implements Registro {
 	 * @param idTerminoExt
 	 *            El offset a cargar.
 	 */
-	public final void setIdTermino(final int idTerminoExt) {
+	public final void setIdTermino(final Long idTerminoExt) {
 		this.idTermino = idTerminoExt;
 		
 		// Acá considero el tamaño de las listas tanto de 
 		this.moreBytes = (long) this.datosDocumentos.size() 
 				* Constantes.SIZE_OF_LONG * 2 
-				+ Constantes.SIZE_OF_INT * 2;
+				+ Constantes.SIZE_OF_INT + Constantes.SIZE_OF_LONG;
 	}
 	
 	
@@ -110,7 +110,7 @@ public class RegistroTerminoDocumentos implements Registro {
 		// Acá considero el tamaño de las listas tanto de 
 		this.moreBytes = (long) listasDatosDocumentos.size() 
 				* Constantes.SIZE_OF_LONG * 2
-				+ Constantes.SIZE_OF_INT * 2;
+				+ Constantes.SIZE_OF_INT + Constantes.SIZE_OF_LONG;
 	}
 	
 	/**

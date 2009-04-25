@@ -5,12 +5,14 @@ import java.io.DataInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 //import java.lang.System;
+import java.util.Collection;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
 
+import ar.com.datos.grupo5.utils.Conversiones;
 import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 
 /**
@@ -49,7 +51,7 @@ public class ListasInvertidas {
 	 * Archivo que contendrá las palabras y que será manejado por el
 	 * diccionario.
 	 */
-	private Archivo archivo;
+	private ArchivoBloques archivo;
 	
 	/**
 	 * Lista con los espacios libres.
@@ -145,9 +147,6 @@ public class ListasInvertidas {
 					}
 				}
 
-		} catch (UnImplementedMethodException e) {
-			logger.error("Error: " + e.getMessage());
-			return null;
 		} catch (IOException e) {
 			logger.error("Error: " + e.getMessage());
 			return null;
@@ -157,20 +156,86 @@ public class ListasInvertidas {
 		return reg;
 	}
 	
+	private byte[] armarDatosControlBloque(final Long datosDeControl, final byte[] datos, final int nroBloque) {
+		
+		byte[] bytesDeControl;
+		
+		try {
+			bytesDeControl = Conversiones.longToArrayByte(datos.length
+					+ Constantes.SIZE_OF_INDEX_BLOCK);
+		} catch (Exception e) {
+			logger.error("Error: " + e.getMessage());
+		}		
+		return datos;
+	}
 	/**
 	 * Metodo para agregar una palabra al diccionario.
 	 * 
-	 * @param palabra
-	 *            La palabra que se quiere agregar al diccionario.
-	 * @param offset
-	 *            Es la posición de la palabra dentro del archivo de audio.
-	 * @return retorna TRUE si pudo agregr la palabra, o FALSE en caso
-	 *         contrario.
+	 * @param idTerminoExt
+	 *            Id del termino global del cual se va a insertar la 
+	 *            lista invertida.
+	 * @param listaExt
+	 *            Es la lista que contiene las frecuencias del termino
+	 *            en los documentos asociados.
+	 * @return retorna TRUE si pudo agregar la lista invertida, 
+	 * 			o FALSE en caso contrario.
 	 */
-	public final boolean agregar(final String palabra, final Long offset) {
+	public final boolean agregar(final Long idTerminoExt, final Collection<ParFrecuenciaDocumento> listaExt) {
+		
+		/* Variable para saber si tengo uno o mas bloque por escribir */
+		boolean masRegistros = false;
+		
+		/* Total de bloques a escribir */
+		int		totalBloques = 1;
+		
+		/* Tamaño total de los datos de control */
+		int 	tamanioDatosControl = Constantes.SIZE_OF_LONG
+				+ (Constantes.SIZE_OF_SHORT * 2);
+		/* Registro que contiene las frecuencias y los documentos */
+		RegistroTerminoDocumentos reg = new RegistroTerminoDocumentos();
+		
+		
+		reg.setIdTermino(idTerminoExt);
+		reg.setDatosDocumentos(listaExt);
+		
+		byte[] bytes = reg.getBytes();
+		int tamanioRegistro = bytes.length;
+		
+		//Tamaño disponible en el bloque
+		int bytesDisponibles = Constantes.SIZE_OF_INDEX_BLOCK - tamanioDatosControl;
+		
+		/* Valido que la cantidad de información a insertar entre 
+		 * en un bloque */
+		masRegistros = (tamanioRegistro > bytesDisponibles);
+
+		byte[] bytesAEscribir;
+		
+		/* Genero todos los registros*/
+		if (masRegistros) {
+			//Calculo el total de bloques
+			totalBloques = tamanioRegistro / bytesDisponibles;
+			if ((tamanioRegistro % bytesDisponibles) > 0) {
+				totalBloques++;
+			}
+			
+			/* Armo los bloques que serán escritos */
+			for(int i = 0; i < totalBloques-1; i++){
+				//Esta mal el file.length(); Arma la estructura de control del bloque
+				bytesAEscribir = armarDatosControlBloque(/*file.length()+*/(long) tamanioDatosControl,bytes,i);
+				//insertarBloqueBajoPolitica(bytesAEscribir);
+			}
+		}
+		
+		//Defino el dato de control
+		//bytesDeControl = Conversiones.longToArrayByte(0L);
+		
+		//Genero el ultimo o unico bloque
+		bytesAEscribir = this.armarDatosControlBloque((long) Constantes.SIZE_OF_INDEX_BLOCK,bytes,totalBloques-1);
+		
+		//Datos del Registro
+		//file.write(bytesAEscribir, (int)(offset + (totalBloques-1)*Constantes.SIZE_OF_INDEX_BLOCK) , Constantes.SIZE_OF_INDEX_BLOCK);
+
 		/*
-		 * 
-		 */
 		RegistroDiccionario reg = new RegistroDiccionario();
 		
 		reg.setOffset(offset);
@@ -180,10 +245,11 @@ public class ListasInvertidas {
 			return true;
 		} catch (Exception e) {
 			return false;
-		}		
+		}	
+		*/
+		return true;
 	}
 
-	
 	/**
 	 * Constructor de la clase.
 	 *
@@ -250,8 +316,6 @@ public class ListasInvertidas {
 			
 			
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (UnImplementedMethodException e) {
 			e.printStackTrace();
 		}
 		
