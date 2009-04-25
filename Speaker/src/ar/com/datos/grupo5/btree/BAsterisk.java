@@ -22,6 +22,60 @@ public final class BAsterisk implements BTree {
 	private Nodo nodoRaiz;
 
 	/**
+	 * Buscar recursivo.
+	 * @param clave
+	 * @param nodo
+	 * @return
+	 */
+	public RegistroNodo buscarRec(final Clave clave, Nodo nodo) {
+		
+		Nodo nodoAux = nodo;
+		RegistroNodo registro = null;
+		
+		if (nodo == null) {
+			nodoAux = nodoRaiz;
+		}
+		
+		int posReg = nodoAux.buscarRegistro(clave);
+		switch (posReg) {
+		case -1: //La clave es menor al primero, voy por la izquierda.
+			
+			if (!nodoAux.isEsHoja()) {
+				buscarRec(clave, nodoAux.getNodos().get(0));
+			} else {
+				registro = nodoAux.getPrimerRegistro();
+			}
+			break;
+			
+		case -2:
+			if (!nodoAux.isEsHoja()) {
+				buscarRec(clave, nodoAux.getNodos().get(
+						nodoAux.getNodos().size()));
+			} else {
+				nodoAux.getUltimoRegistro();
+			}
+			break;
+			
+		default:
+			//Lo que encontre el igual.
+			if (nodoAux.getRegistros().get(posReg).getClaveNodo()
+					.equals(clave)) {
+				
+				registro = nodoAux.getRegistros().get(posReg);
+			} else { // Es mayor
+				if (!nodoAux.isEsHoja()) {
+					buscarRec(clave, nodoAux);
+				} else {
+					registro = nodoAux.getRegistros().get(posReg);
+				}
+			}
+			break;
+		}
+		
+		return registro;
+	}
+	
+	/**
 	 * Busca un registro.
 	 * 
 	 * @param clave
@@ -30,7 +84,8 @@ public final class BAsterisk implements BTree {
 	 */
 	public RegistroNodo buscar(final Clave clave) {
 		
-		//TODO CORREGIR ESTE METODO
+		//FIXME: Testear!!!!!!!!!
+		
 		if (nodoRaiz == null) {
 			return null;
 		}
@@ -81,7 +136,7 @@ public final class BAsterisk implements BTree {
 			}
 		}
 		
-		return null;
+		return registro;
 	}
 
 	/**
