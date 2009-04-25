@@ -11,7 +11,7 @@ public class Clave implements Comparable<Clave> {
 	/**
 	 * La clave.
 	 */
-	private String clave;
+	private String claveStr;
 		
 	/**
 	 * Para comparar las claves.
@@ -20,21 +20,21 @@ public class Clave implements Comparable<Clave> {
 	 */
 	public final int compareTo(final Clave clave) {
 		
-		return this.clave.compareTo(clave.getClave());
+		return this.claveStr.compareTo(clave.getClave());
 	}
 
 	/**
 	 * @return the clave
 	 */
 	public final String getClave() {
-		return clave;
+		return claveStr;
 	}
 
 	/**
 	 * @param clave the clave to set
 	 */
 	public final void setClave(final String clave) {
-		this.clave = clave;
+		this.claveStr = clave;
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class Clave implements Comparable<Clave> {
 		
 		if (clave instanceof String) {
 			String c = (String) clave;
-			return c.equals(this.clave);
+			return c.equals(this.claveStr);
 		}
 		
 		return false;

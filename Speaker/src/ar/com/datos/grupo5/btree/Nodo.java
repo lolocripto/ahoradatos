@@ -44,7 +44,7 @@ public class Nodo {
 	private Vector < Comparable<Object> > claves;
 	
 	/**
-	 * Lista de nodos. 
+	 * Lista de registros.
 	 */
 	private Vector < Registro > registros;
 	
@@ -65,24 +65,10 @@ public class Nodo {
 	}
 
 	/**
-	 * @param espacioTotal the espacioTotal to set
-	 */
-	public final void setEspacioTotal(final int espacioTotal) {
-		this.espacioTotal = espacioTotal;
-	}
-
-	/**
 	 * @return the espacioOcupado
 	 */
 	public final int getEspacioOcupado() {
 		return espacioOcupado;
-	}
-
-	/**
-	 * @param espacioOcupado the espacioOcupado to set
-	 */
-	public final void setEspacioOcupado(final int espacioOcupado) {
-		this.espacioOcupado = espacioOcupado;
 	}
 
 	/**
@@ -91,26 +77,12 @@ public class Nodo {
 	public final Nodo getSiguiente() {
 		return siguiente;
 	}
-
-	/**
-	 * @param siguiente the siguiente to set
-	 */
-	public final void setSiguiente(final Nodo siguiente) {
-		this.siguiente = siguiente;
-	}
 	
 	/**
 	 * @return the esHoja
 	 */
 	public final boolean isEsHoja() {
 		return esHoja;
-	}
-
-	/**
-	 * @param esHoja the esHoja to set
-	 */
-	public final void setEsHoja(final boolean esHoja) {
-		this.esHoja = esHoja;
 	}
 	
 	/**
@@ -146,7 +118,8 @@ public class Nodo {
 	 * @param clave .
 	 * @return la clave buscada.
 	 */
-	public final Comparable<Object> buscarClave(final Comparable<Object> clave) {
+	public final Comparable<Object> buscarClave(
+			final Comparable<Object> clave) {
 		
 		for (Comparable<Object> c : this.claves) {
 			if (c.equals(clave)) {
@@ -172,10 +145,66 @@ public class Nodo {
 	}
 
 	/**
-	 * @param padre the padre to set
+	 * @param nodoPadre the padre to set
 	 */
-	public final void setPadre(final Nodo padre) {
-		this.padre = padre;
+	public final void setPadre(final Nodo nodoPadre) {
+		this.padre = nodoPadre;
+	}
+
+	/**
+	 * @return the claves
+	 */
+	public final Vector<Comparable<Object>> getClaves() {
+		return claves;
+	}
+
+	/**
+	 * @param claves the claves to set
+	 */
+	public final void setClaves(Vector<Comparable<Object>> claves) {
+		this.claves = claves;
+	}
+
+	/**
+	 * @return the registros
+	 */
+	public final Vector<Registro> getRegistros() {
+		return registros;
+	}
+
+	/**
+	 * @param registros the registros to set
+	 */
+	public final void setRegistros(final Vector<Registro> registros) {
+		this.registros = registros;
+	}
+
+	/**
+	 * @param espacioTotal the espacioTotal to set
+	 */
+	public final void setEspacioTotal(final int espacioTotal) {
+		this.espacioTotal = espacioTotal;
+	}
+
+	/**
+	 * @param espacioOcupado the espacioOcupado to set
+	 */
+	public final void setEspacioOcupado(final int espacioOcupado) {
+		this.espacioOcupado = espacioOcupado;
+	}
+
+	/**
+	 * @param siguiente the siguiente to set
+	 */
+	public final void setSiguiente(final Nodo siguiente) {
+		this.siguiente = siguiente;
+	}
+
+	/**
+	 * @param esHoja the esHoja to set
+	 */
+	public final void setEsHoja(final boolean esHoja) {
+		this.esHoja = esHoja;
 	}
 	
 }
