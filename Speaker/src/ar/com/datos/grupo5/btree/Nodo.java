@@ -138,7 +138,9 @@ public class Nodo {
 	 * @param registro El reistro para insertar.
 	 */
 	public final void insertarRegistro(final RegistroNodo registro) {
-		registros.add(registro);
+		int pos = this.buscarRegistro(registro.getClaveNodo());
+		this.registros.add(pos, registro);
+			
 	}
 	
 	/**************************
@@ -246,7 +248,7 @@ public class Nodo {
 	/**
 	 * @param nodos the nodos to set
 	 */
-	public final void setNodos(ArrayList<Nodo> nodos) {
+	public final void setNodos(final ArrayList<Nodo> nodos) {
 		this.nodos = nodos;
 	}
 }

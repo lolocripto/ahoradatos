@@ -144,6 +144,12 @@ public final class BAsterisk implements BTree {
 	 */
 	public boolean insertar(final RegistroNodo registro) {
 		// TODO Auto-generated method stub
+		if(this.nodoRaiz == null) {
+			this.nodoRaiz = new Nodo();
+			this.nodoRaiz.insertarRegistro(registro);
+			this.nodoRaiz.setEsHoja(true);
+			
+		}
 		return false;
 	}
 
