@@ -19,6 +19,7 @@ public class Nodo {
 		this.nodoSiguiente = null;
 		this.nodoPadre = null;
 		this.registros = new ArrayList<RegistroNodo>();
+		this.nodos = new ArrayList<Nodo>();
 	}
 	
 	/**
@@ -30,6 +31,7 @@ public class Nodo {
 		this.nodoSiguiente = null;
 		this.nodoPadre = nodoPadre;
 		this.registros = new ArrayList<RegistroNodo>();
+		this.nodos = new ArrayList<Nodo>();
 	}
 	
 	/**
@@ -51,6 +53,11 @@ public class Nodo {
 	 * Si el nodo es hoja o no.
 	 */
 	private boolean esHoja = false;
+	
+	/**
+	 * Lista de nodos.
+	 */
+	private ArrayList<Nodo> nodos;
 	
 	/**
 	 * Lista de registros.
@@ -109,10 +116,10 @@ public class Nodo {
 	 * @return la clave buscada.
 	 */
 	public final Clave buscarClave(final Clave clave) {
-		Clave c = this.registros.get(0).getClaveNodo();
-		for (int i = 0; i < this.registros.size(); i++) {
-			if ((c.equals(clave)) && (i > 0)) {
-				return c;
+
+		for (RegistroNodo reg : this.registros) {
+			if (reg.getClaveNodo().equals(clave)) {
+				return reg.getClaveNodo();
 			}
 		}
 		return null;
@@ -175,4 +182,11 @@ public class Nodo {
 		this.esHoja = hoja;
 	}
 	
+	/**
+	 * Agrega un nodo a la lista de nodos.
+	 * @param nodo El nodo a insertar.
+	 */
+	public final void insertarNodo(final Nodo nodo) {
+		this.nodos.add(nodo);
+	}
 }

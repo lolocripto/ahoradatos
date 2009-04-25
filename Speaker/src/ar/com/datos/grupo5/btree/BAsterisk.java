@@ -34,6 +34,7 @@ public final class BAsterisk implements BTree {
 			return null;
 		}
 
+		Nodo nodoAux = nodoRaiz;
 		
 		return null;
 	}

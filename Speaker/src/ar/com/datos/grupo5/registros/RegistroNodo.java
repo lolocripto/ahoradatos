@@ -32,16 +32,6 @@ public class RegistroNodo implements Registro {
 	private Clave claveNodo;
 	
 	/**
-	 * Nodo al que apunta por la izquierda.
-	 */
-	private Nodo nodoIzquierdo;
-	
-	/**
-	 * Nodo al que apunta por la derecha.
-	 */
-	private Nodo nodoDerecho;
-	
-	/**
 	 * En este caso se devuelve de una vez todos los bytes. Devuelvo true la
 	 * primera vez y pongo en false, despues cuando se pregunta nuevamente
 	 * devuelvo false, pero pongo en true para que el registro pueda ser usado
@@ -104,32 +94,4 @@ public class RegistroNodo implements Registro {
 		return claveNodo;
 	}
 
-	/**
-	 * @return the nodoIzquierdo
-	 */
-	public final Nodo getNodoIzquierdo() {
-		return nodoIzquierdo;
-	}
-
-	/**
-	 * @param nodo the nodoIzquierdo to set
-	 */
-	public final void setNodoIzquierdo(final Nodo nodo) {
-		this.nodoIzquierdo = nodo;
-	}
-
-	/**
-	 * @return the nodoDerecho
-	 */
-	public final Nodo getNodoDerecho() {
-		return nodoDerecho;
-	}
-
-	/**
-	 * @param nodo the nodoDerecho to set
-	 */
-	public final void setNodoDerecho(final Nodo nodo) {
-		this.nodoDerecho = nodo;
-	}
-	
 }
