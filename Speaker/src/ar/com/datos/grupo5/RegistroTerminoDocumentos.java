@@ -3,9 +3,13 @@ package ar.com.datos.grupo5;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+
+import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.interfaces.Registro;
 import ar.com.datos.grupo5.utils.Conversiones;
@@ -18,6 +22,11 @@ import ar.com.datos.grupo5.utils.Conversiones;
  */
 public class RegistroTerminoDocumentos implements Registro {
 	
+	/**
+	 * Logger.
+	 */
+	private static Logger logger  = Logger.getLogger(ListasInvertidas.class);
+
 	/**
 	 * Cuantos bytes puedo pasar.
 	 */
@@ -36,7 +45,7 @@ public class RegistroTerminoDocumentos implements Registro {
 	/**
 	 * El id del termino de la lista. 
 	 */
-	private int idTermino;
+	private long idTermino;
 	
 	/**
 	 * Contiene la cantidad de documentos leidos del bloque.
@@ -48,7 +57,8 @@ public class RegistroTerminoDocumentos implements Registro {
 	 * @param cantDocumentosLeidos
 	 * 			La cantidad de documentos leidos.
 	 */
-	private final void setCantidadDocumentosLeidos(final int cantDocumentosLeidos) {
+	@SuppressWarnings("unused")
+	private void setCantidadDocumentosLeidos(final int cantDocumentosLeidos) {
 		this.cantidadDocumentosLeidos = cantDocumentosLeidos;
 	}
 	
@@ -142,7 +152,7 @@ public class RegistroTerminoDocumentos implements Registro {
 			//Convertir la cantidad de documentos
 			
 			byte[] cantidadDocumentosBytes = Conversiones.intToArrayByte(this.cantidadDocumentos);
-			byte[] idTerminoByte = Conversiones.intToArrayByte(this.idTermino);
+			byte[] idTerminoByte = Conversiones.longToArrayByte(this.idTermino);
 			long longDatosFrecuencia = this.datosDocumentos.size() * 2 
 						* Constantes.SIZE_OF_LONG;
 			
@@ -152,18 +162,21 @@ public class RegistroTerminoDocumentos implements Registro {
 				dos.write(idTerminoByte, 0, idTerminoByte.length);
 				moreBytes -= idTerminoByte.length;
 				dos.write(cantidadDocumentosBytes, 0, 
-						cantidadDocumentosBytes.length);
+							cantidadDocumentosBytes.length);
 				moreBytes -= cantidadDocumentosBytes.length;
 				
 				//for para recorrer todo el SortedMap
-				for( Iterator<ParFrecuenciaDocumento> it = this.datosDocumentos.iterator(); it.hasNext();) { 
-					ParFrecuenciaDocumento frecuenciaDocumento = (ParFrecuenciaDocumento)it.next();
+				Iterator<ParFrecuenciaDocumento> it;
+				for (it = this.datosDocumentos.iterator(); it.hasNext(); it.next()) { 
+					ParFrecuenciaDocumento frecuenciaDocumento;
+					frecuenciaDocumento = (ParFrecuenciaDocumento)it.next();
 					byte[] frecuenciaBytes = Conversiones.longToArrayByte(frecuenciaDocumento.getFrecuencia());
 					byte[] offsetDocumentoBytes = Conversiones.longToArrayByte(frecuenciaDocumento.getOffsetDocumento());
 	
 					dos.write(frecuenciaBytes, 0, frecuenciaBytes.length);
 					moreBytes -= frecuenciaBytes.length;
-					dos.write(offsetDocumentoBytes, 0, offsetDocumentoBytes.length);
+					dos.write(offsetDocumentoBytes, 0, 
+								offsetDocumentoBytes.length);
 					moreBytes -= offsetDocumentoBytes.length;				
 				}
 				
@@ -183,64 +196,76 @@ public class RegistroTerminoDocumentos implements Registro {
 	 */
 	public final void setBytes(final byte[] buffer, final Long offset) {
 		// TODO Ver el tamaño de cantidadDocumentos en todos lados
-		byte[] idTerminoByte = new byte[Constantes.SIZE_OF_INT];
-		byte[] cantidadDocumentosByte = new byte[Constantes.SIZE_OF_INT];
-		byte[] frecuenciaByte = new byte[Constantes.SIZE_OF_LONG];
-		byte[] offsetDocumentoByte = new byte[Constantes.SIZE_OF_LONG];
 		int offsetByte = 0;
 		ParFrecuenciaDocumento parFD = null;
 		
-		
-		//TODO: Arreglar esto
-		/*
-		ByteArrayInputStream bis = new ByteArrayInputStream(datosLeidosPorBloque);  
+		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
 		DataInputStream dis = new DataInputStream(bis);
-		*/
 		
-		
-		
-		//Obtengo el dato del id_termino 
-		System.arraycopy(buffer, offset.intValue(), idTerminoByte, 0, 
-				Constantes.SIZE_OF_LONG);
-		this.idTermino = Conversiones.arrayByteToInt(idTerminoByte);
-		
-		offsetByte = offset.intValue() + Constantes.SIZE_OF_LONG;
-		System.arraycopy(buffer, offsetByte, cantidadDocumentosByte, 0, Constantes.SIZE_OF_INT );
-		
-		this.cantidadDocumentos = Conversiones.arrayByteToInt(cantidadDocumentosByte);
-		offsetByte += Constantes.SIZE_OF_INT;
-		while(this.cantidadDocumentos > this.cantidadDocumentosLeidos && offsetByte < Constantes.SIZE_OF_INDEX_BLOCK) {
-			/* recorro la cadena de bytes y genero los pares frecuencia, Documento */
-			parFD = new ParFrecuenciaDocumento();
-			System.arraycopy(buffer, offsetByte, frecuenciaByte, 0, Constantes.SIZE_OF_LONG);
-			parFD.setFrecuencia(Conversiones.arrayByteToLong(frecuenciaByte));
-			offsetByte += Constantes.SIZE_OF_LONG;
-			System.arraycopy(buffer, offsetByte, offsetDocumentoByte, 0, Constantes.SIZE_OF_LONG);
-			parFD.setOffsetDocumento(Conversiones.arrayByteToLong(offsetDocumentoByte));
-			offsetByte += Constantes.SIZE_OF_LONG;
-			this.datosDocumentos.add(parFD);
-			this.cantidadDocumentosLeidos++;
-		}
-		//System.arraycopy(buffer, Constantes.SIZE_OF_LONG+Constantes.SIZE_OF_SHORT, datoEspacioOcupado, 0, Constantes.SIZE_OF_SHORT);
+		try {
+			
+				//Obtengo el dato del id_termino 
+				this.idTermino = dis.readLong();
+				offsetByte = offset.intValue() + Constantes.SIZE_OF_LONG;
+				this.cantidadDocumentos = dis.readInt();
+				offsetByte += Constantes.SIZE_OF_INT;
+				
+				while (this.cantidadDocumentos > this.cantidadDocumentosLeidos 
+						&& offsetByte < Constantes.SIZE_OF_INDEX_BLOCK) {
+					/* recorro la cadena de bytes y genero los 
+					 * pares frecuencia, Documento */
+					parFD = new ParFrecuenciaDocumento();
+					//Leo la frecuencia
+					parFD.setFrecuencia(dis.readLong());
+					offsetByte += Constantes.SIZE_OF_LONG;
+					
+					//Leo el offset a documentos
+					parFD.setOffsetDocumento(dis.readLong());
+					offsetByte += Constantes.SIZE_OF_LONG;
+					
+					//Agrego el par a la coleccion
+					this.datosDocumentos.add(parFD);
+					this.cantidadDocumentosLeidos++;
+				}
+			
+			} catch (Exception e) {
+				logger.error("Error: " + e.getMessage());
+			}		
 	}
 
-	public void setMoreBytes(byte[] buffer, int offset) {
-		byte[] frecuenciaByte = new byte[Constantes.SIZE_OF_LONG];
-		byte[] offsetDocumentoByte = new byte[Constantes.SIZE_OF_LONG];
+	/**
+	 * En el caso de ocupar varios bloques esta función agrega mas datos
+	 * al registro a partir de los datos de otros bloques.
+	 * @param buffer
+	 * 			Datos leidos de un bloque que no es el primero.
+	 * @param offset
+	 * 			Offset dentro de les array de byte donde empiezan
+	 * 			los datos.
+	 */
+	public final void setMoreBytes(final byte[] buffer, final int offset) {
+
 		ParFrecuenciaDocumento parFD = null;
+		int offsetDatos = offset;
 		
-		while(this.cantidadDocumentos > this.cantidadDocumentosLeidos && offset < Constantes.SIZE_OF_INDEX_BLOCK) {
-			/* recorro la cadena de bytes y genero los pares frecuencia, Documento */
-			parFD = new ParFrecuenciaDocumento();
-			System.arraycopy(buffer, offset, frecuenciaByte, 0, Constantes.SIZE_OF_LONG);
-			parFD.setFrecuencia(Conversiones.arrayByteToLong(frecuenciaByte));
-			offset += Constantes.SIZE_OF_LONG;
-			System.arraycopy(buffer, offset, offsetDocumentoByte, 0, Constantes.SIZE_OF_LONG);
-			parFD.setOffsetDocumento(Conversiones.arrayByteToLong(offsetDocumentoByte));
-			offset += Constantes.SIZE_OF_LONG;
-			this.datosDocumentos.add(parFD);
-			this.cantidadDocumentosLeidos++;
-		}
+		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
+		DataInputStream dis = new DataInputStream(bis);
+		
+		try {
+			while (this.cantidadDocumentos > this.cantidadDocumentosLeidos
+					&& offsetDatos < Constantes.SIZE_OF_INDEX_BLOCK) {
+				/* recorro la cadena de bytes y genero los 
+				 * pares frecuencia, Documento */
+				parFD = new ParFrecuenciaDocumento();
+				parFD.setFrecuencia(dis.readLong());
+				offsetDatos += Constantes.SIZE_OF_LONG;
+				parFD.setOffsetDocumento(dis.readLong());
+				offsetDatos += Constantes.SIZE_OF_LONG;
+				this.datosDocumentos.add(parFD);
+				this.cantidadDocumentosLeidos++;
+			}
+		} catch (Exception e) {
+			logger.error("Error: " + e.getMessage());
+		}		
 	}
 	
 	/**
