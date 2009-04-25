@@ -4,7 +4,10 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+import ar.com.datos.grupo5.archivos.Archivo;
+import ar.com.datos.grupo5.archivos.Secuencial;
 import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
+import ar.com.datos.grupo5.registros.RegistroDiccionario;
 
 /**
  * Clase que permite manipular el diccionario.
@@ -31,7 +34,7 @@ public class Diccionario {
 	 * @param modo
 	 *            El modo en el cual se debe abrir el archivo.
 	 * @return true si pudo abrir el archivo.
-	 * @see ar.com.datos.grupo5.interfaces.Archivo#cargar()
+	 * @see ar.ar.com.datos.grupo5.archivos.Archivo#cargar()
 	 */
 	public final boolean abrir(final String archivo, final String modo)
 			throws FileNotFoundException {
@@ -42,7 +45,7 @@ public class Diccionario {
 	 * Método que cierra el diccionario.
 	 * 
 	 * @throws IOException
-	 * @see ar.com.datos.grupo5.interfaces.Archivo#cerrar()
+	 * @see ar.ar.com.datos.grupo5.archivos.Archivo#cerrar()
 	 */
 	public final void cerrar() throws IOException {
 		this.archivo.cerrar();

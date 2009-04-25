@@ -1,19 +1,19 @@
 package ar.com.datos.grupo5;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-//import java.lang.System;
+import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.List;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
 
+import ar.com.datos.grupo5.archivos.ArchivoBloques;
+import ar.com.datos.grupo5.registros.RegistroTerminoDocumentos;
 import ar.com.datos.grupo5.utils.Conversiones;
-import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 
 /**
  * Clase que administra la inserción, modificación y busqueda de las listas
@@ -74,7 +74,7 @@ public class ListasInvertidas {
 	 * @return true si pudo abrir el archivo.
 	 * @throws FileNotFoundException
 	 * 		El archivo no fue encontrado.
-	 * @see ar.com.datos.grupo5.interfaces.Archivo#cargar()
+	 * @see ar.ar.com.datos.grupo5.archivos.Archivo#cargar()
 	 */
 	public final boolean abrir(final String archivoNombre, final String modo)
 			throws FileNotFoundException {
@@ -86,7 +86,7 @@ public class ListasInvertidas {
 	 * 
 	 * @throws IOException
 	 * 			Puede ocurrir un error al cerrarse el archivo
-	 * @see ar.com.datos.grupo5.interfaces.Archivo#cerrar()
+	 * @see ar.ar.com.datos.grupo5.archivos.Archivo#cerrar()
 	 */
 	public final void cerrar() throws IOException {
 		this.archivo.cerrar();
@@ -219,10 +219,13 @@ public class ListasInvertidas {
 			}
 			
 			/* Armo los bloques que serán escritos */
-			for(int i = 0; i < totalBloques-1; i++){
-				//Esta mal el file.length(); Arma la estructura de control del bloque
-				bytesAEscribir = armarDatosControlBloque(/*file.length()+*/(long) tamanioDatosControl,bytes,i);
-				//insertarBloqueBajoPolitica(bytesAEscribir);
+			for (int i = 0; i < totalBloques - 1; i++) {
+				// Esta mal el file.length(); Arma la estructura de control del
+				// bloque
+				bytesAEscribir = armarDatosControlBloque(
+						/* file.length()+ */(long) tamanioDatosControl, bytes,
+						i);
+				// insertarBloqueBajoPolitica(bytesAEscribir);
 			}
 		}
 		

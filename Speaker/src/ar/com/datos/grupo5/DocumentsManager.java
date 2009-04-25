@@ -4,17 +4,17 @@
 package ar.com.datos.grupo5;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
+
+import ar.com.datos.grupo5.archivos.Archivo;
+import ar.com.datos.grupo5.archivos.Directo;
+import ar.com.datos.grupo5.registros.RegistroDocumento;
 
 
 /**
@@ -61,7 +61,7 @@ public class DocumentsManager {
 	/**
 	 * Método que cierra el diccionario.
 	 * 
-	 * @see ar.com.datos.grupo5.interfaces.Archivo#cerrar()
+	 * @see ar.ar.com.datos.grupo5.archivos.Archivo#cerrar()
 	 */
 	public final void cerrar() throws IOException {
 		this.archivo.cerrar();

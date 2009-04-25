@@ -10,7 +10,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.InputStream;
 
+import ar.com.datos.grupo5.archivos.Archivo;
+import ar.com.datos.grupo5.archivos.Directo;
 import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
+import ar.com.datos.grupo5.registros.RegistroAudio;
 
 
 
@@ -46,7 +49,7 @@ public class AudioFileManager {
 	/**
 	 * Método que cierra el diccionario.
 	 * 
-	 * @see ar.com.datos.grupo5.interfaces.Archivo#cerrar()
+	 * @see ar.ar.com.datos.grupo5.archivos.Archivo#cerrar()
 	 */
 	public final void cerrar() throws IOException {
 		this.archivo.cerrar();
