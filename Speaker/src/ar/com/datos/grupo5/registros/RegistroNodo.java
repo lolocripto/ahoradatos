@@ -1,22 +1,11 @@
 
 package ar.com.datos.grupo5.registros;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 
-import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.ListasInvertidas;
-import ar.com.datos.grupo5.ParFrecuenciaDocumento;
 import ar.com.datos.grupo5.btree.Clave;
 import ar.com.datos.grupo5.interfaces.Registro;
-import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
  * Esta clase implementa el registro para los nodos de árboles.

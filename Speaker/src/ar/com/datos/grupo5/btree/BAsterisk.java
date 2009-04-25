@@ -6,13 +6,13 @@ package ar.com.datos.grupo5.btree;
 import ar.com.datos.grupo5.registros.RegistroNodo;
 
 /**
- * Clase que implementa el nodo de los árboles B*
+ * Clase que implementa el nodo de los árboles B*.
  * @author Led Zeppelin
  */
 public final class BAsterisk implements BTree {
 	
 	/**
-	 * Nodo
+	 * Nodo.
 	 */
 	private Nodo nodo;
 

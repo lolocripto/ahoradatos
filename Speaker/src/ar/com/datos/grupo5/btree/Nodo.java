@@ -15,7 +15,21 @@ public class Nodo {
 	 * Constructor.
 	 */
 	public Nodo() {
-		super();
+		nodoIzquierdo = null;
+		nodoDerecho = null;
+		siguiente = null;
+		padre = null;
+	}
+	
+	/**
+	 * Constructor.
+	 * @param nodoPadre Nodo padre.
+	 */
+	public Nodo(final Nodo nodoPadre) {
+		nodoIzquierdo = null;
+		nodoDerecho = null;
+		siguiente = null;
+		padre = nodoPadre;
 	}
 	
 	/**
@@ -36,7 +50,7 @@ public class Nodo {
 	/**
 	 * Si el nodo es hoja o no.
 	 */
-	private boolean esHoja;
+	private boolean esHoja = false;
 
 	/**
 	 * Lista de claves.
@@ -47,6 +61,16 @@ public class Nodo {
 	 * Lista de registros.
 	 */
 	private Vector < Registro > registros;
+	
+	/**
+	 * Nodo al que apunta a la izquierda.
+	 */
+	private Nodo nodoIzquierdo;
+	
+	/**
+	 * Nodo al que apunta a la derecha.
+	 */
+	private Nodo nodoDerecho;
 	
 	/**
 	 * El nodo padre.
