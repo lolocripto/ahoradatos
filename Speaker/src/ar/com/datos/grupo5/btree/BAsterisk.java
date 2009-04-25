@@ -10,6 +10,7 @@ import ar.com.datos.grupo5.registros.RegistroNodo;
  * @author Led Zeppelin
  */
 public final class BAsterisk implements BTree {
+	
 	/**
 	 * Nodo
 	 */
