@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
+import ar.com.datos.grupo5.registros.RegistroDiccionario;
 import ar.com.datos.parser.ITextInput;
 import ar.com.datos.parser.TextInterpreter;
 import ar.com.datos.reproduccionaudio.exception.SimpleAudioPlayerException;
