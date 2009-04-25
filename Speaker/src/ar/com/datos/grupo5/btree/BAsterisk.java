@@ -52,7 +52,7 @@ public final class BAsterisk implements BTree {
 				buscarRec(clave, nodoAux.getNodos().get(
 						nodoAux.getNodos().size()));
 			} else {
-				nodoAux.getUltimoRegistro();
+				registro = nodoAux.getUltimoRegistro();
 			}
 			break;
 			
@@ -139,6 +139,61 @@ public final class BAsterisk implements BTree {
 		return registro;
 	}
 
+	/**
+	 * Devuelve el nodo en el cual podria insertarse o encontrarse un registro.
+	 * 
+	 * @param clave .
+	 * @return El nodo buscado.
+	 */
+	public final Nodo buscarNodo(final Clave clave) {
+		
+		if (nodoRaiz == null) {
+			return null;
+		}
+		
+		Nodo nodoAux = nodoRaiz;
+		int posReg = 0;
+		
+		while (nodoAux != null) {
+			
+			//Busco la clave en el nodo.
+			posReg = nodoAux.buscarRegistro(clave);
+			
+			switch (posReg) {
+			case -1: //La clave es menor al primero, voy por la izquierda.
+				if (!nodoAux.isEsHoja()) {
+					nodoAux = nodoAux.getNodos().get(0);
+				} else {
+					return nodoAux;
+				}
+				break;
+				
+			case -2: //La clave es mayor al ultimo, voy por la derecha.
+				if (!nodoAux.isEsHoja()) {
+					nodoAux = nodoAux.getNodos().get(nodoAux.getNodos().size());
+				} else {
+					return nodoAux;
+				}
+				break;
+				
+			default: //Encontré la clave que buscaba o una mayor.
+				//Veo si lo que recupere el igual o mayor.
+				if (nodoAux.getRegistros().get(posReg).getClaveNodo().equals(
+						clave)) {
+					
+					return nodoAux;
+				} else { // Es mayor.
+					if (!nodoAux.isEsHoja()) {
+						nodoAux = nodoAux.getNodos().get(posReg);
+					} else {
+						return nodoAux;
+					}
+				}
+			}
+		}
+		return nodoAux;
+	}
+	
 	/**
 	 * @see ar.com.datos.grupo5.btree.BTree#insertar(ar.com.datos.grupo5.interfaces.Registro)
 	 */
