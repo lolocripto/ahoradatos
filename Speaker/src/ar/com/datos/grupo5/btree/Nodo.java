@@ -3,6 +3,7 @@ package ar.com.datos.grupo5.btree;
 import java.util.Vector;
 
 import ar.com.datos.grupo5.interfaces.Registro;
+import ar.com.datos.grupo5.registros.RegistroNodo;
 
 /**
  * Representa el nodo de arbol b.
@@ -51,16 +52,11 @@ public class Nodo {
 	 * Si el nodo es hoja o no.
 	 */
 	private boolean esHoja = false;
-
-	/**
-	 * Lista de claves.
-	 */
-	private Vector < Comparable<Object> > claves;
 	
 	/**
 	 * Lista de registros.
 	 */
-	private Vector < Registro > registros;
+	private Vector < RegistroNodo > registros;
 	
 	/**
 	 * Nodo al que apunta a la izquierda.
@@ -110,31 +106,12 @@ public class Nodo {
 	}
 	
 	/**
-	 * Inserta una clave.
-	 * @param clave la clave a insertar.
-	 * @return false si no pudo insertar o la clave ya existia.
-	 */
-	public final boolean insertarClave(final Comparable<Object> clave) {
-		
-		return claves.add(clave);
-	}
-	
-	/**
-	 * Elimina una clave.
-	 * @param clave La clave a eliminar.
-	 * @return true si pudo eliminar la clave.
-	 */
-	public final boolean eliminarClave(final Comparable<Object> clave) {
-		return claves.remove(clave);
-	}
-	
-	/**
 	 * Verifica la existencia de una clave.
 	 * @param clave .
 	 * @return true si la clave existe.
 	 */
-	public final boolean existeClave(final Comparable<Object> clave) {
-		return this.claves.contains(clave);
+	public final boolean existeClave(final Clave clave) {
+		return this.registros.contains(clave);
 	}
 	
 	/**
@@ -142,11 +119,10 @@ public class Nodo {
 	 * @param clave .
 	 * @return la clave buscada.
 	 */
-	public final Comparable<Object> buscarClave(
-			final Comparable<Object> clave) {
-		
-		for (Comparable<Object> c : this.claves) {
-			if (c.equals(clave)) {
+	public final Clave buscarClave(final Clave clave) {
+		Clave c = this.registros.get(0).getClaveNodo();
+		for (int i = 0; i < this.registros.size(); i++) {
+			if ((c.equals(clave)) && (i > 0)) {
 				return c;
 			}
 		}
@@ -157,7 +133,7 @@ public class Nodo {
 	 * Agrega un nodo.
 	 * @param registro El nodo para insertar.
 	 */
-	public final void insertarRegistro(final Registro registro) {
+	public final void insertarRegistro(final RegistroNodo registro) {
 		registros.add(registro);
 	}
 
@@ -176,16 +152,9 @@ public class Nodo {
 	}
 
 	/**
-	 * @return the claves
-	 */
-	public final Vector<Comparable<Object>> getClaves() {
-		return claves;
-	}
-
-	/**
 	 * @return the registros
 	 */
-	public final Vector<Registro> getRegistros() {
+	public final Vector<RegistroNodo> getRegistros() {
 		return registros;
 	}
 

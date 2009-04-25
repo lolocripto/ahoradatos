@@ -78,5 +78,19 @@ public class RegistroNodo implements Registro {
 	public final void setMoreBytes(final byte[] buffer, final int offset) {
 		//TODO Hacer este método!!!!!!!!!		
 	}
+
+	/**
+	 * @param claveNodo the claveNodo to set
+	 */
+	public final void setClaveNodo(final Clave claveNodo) {
+		this.claveNodo = claveNodo;
+	}
+
+	/**
+	 * @return the claveNodo
+	 */
+	public final Clave getClaveNodo() {
+		return claveNodo;
+	}
 	
 }
