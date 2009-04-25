@@ -1,8 +1,7 @@
 package ar.com.datos.grupo5.btree;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
-import ar.com.datos.grupo5.interfaces.Registro;
 import ar.com.datos.grupo5.registros.RegistroNodo;
 
 /**
@@ -16,10 +15,12 @@ public class Nodo {
 	 * Constructor.
 	 */
 	public Nodo() {
-		nodoIzquierdo = null;
-		nodoDerecho = null;
-		siguiente = null;
-		padre = null;
+		
+		this.nodoIzquierdo = null;
+		this.nodoDerecho = null;
+		this.nodoSiguiente = null;
+		this.nodoPadre = null;
+		this.registros = new ArrayList<RegistroNodo>();
 	}
 	
 	/**
@@ -27,10 +28,12 @@ public class Nodo {
 	 * @param nodoPadre Nodo padre.
 	 */
 	public Nodo(final Nodo nodoPadre) {
-		nodoIzquierdo = null;
-		nodoDerecho = null;
-		siguiente = null;
-		padre = nodoPadre;
+		
+		this.nodoIzquierdo = null;
+		this.nodoDerecho = null;
+		this.nodoSiguiente = null;
+		this.nodoPadre = nodoPadre;
+		this.registros = new ArrayList<RegistroNodo>();
 	}
 	
 	/**
@@ -46,7 +49,7 @@ public class Nodo {
 	/**
 	 * Puntero al nodo siguiente para recorrer como lista.
 	 */
-	private Nodo siguiente;
+	private Nodo nodoSiguiente;
 	
 	/**
 	 * Si el nodo es hoja o no.
@@ -56,7 +59,7 @@ public class Nodo {
 	/**
 	 * Lista de registros.
 	 */
-	private Vector < RegistroNodo > registros;
+	private ArrayList< RegistroNodo > registros;
 	
 	/**
 	 * Nodo al que apunta a la izquierda.
@@ -71,7 +74,7 @@ public class Nodo {
 	/**
 	 * El nodo padre.
 	 */
-	private Nodo padre;
+	private Nodo nodoPadre;
 	
 	/**************************
 	 * Getters and Setters
@@ -95,7 +98,7 @@ public class Nodo {
 	 * @return the siguiente
 	 */
 	public final Nodo getSiguiente() {
-		return siguiente;
+		return nodoSiguiente;
 	}
 	
 	/**
@@ -140,20 +143,20 @@ public class Nodo {
 	 * @return the padre
 	 */
 	public final Nodo getPadre() {
-		return padre;
+		return nodoPadre;
 	}
 
 	/**
-	 * @param nodoPadre the padre to set
+	 * @param nodo the padre to set
 	 */
-	public final void setPadre(final Nodo nodoPadre) {
-		this.padre = nodoPadre;
+	public final void setPadre(final Nodo nodo) {
+		this.nodoPadre = nodo;
 	}
 
 	/**
 	 * @return the registros
 	 */
-	public final Vector<RegistroNodo> getRegistros() {
+	public final ArrayList<RegistroNodo> getRegistros() {
 		return registros;
 	}
 
@@ -172,10 +175,10 @@ public class Nodo {
 	}
 
 	/**
-	 * @param nodoSiguiente the siguiente to set
+	 * @param nodo the siguiente to set.
 	 */
-	public final void setSiguiente(final Nodo nodoSiguiente) {
-		this.siguiente = nodoSiguiente;
+	public final void setSiguiente(final Nodo nodo) {
+		this.nodoSiguiente = nodo;
 	}
 
 	/**
