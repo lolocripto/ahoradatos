@@ -97,6 +97,7 @@ public class Nodo {
 	 *            .
 	 * @return El indice en el array en donde esta el registro que contiene la
 	 *         clave o del primer elemento que es mayor a la clave.
+	 *         El metodo que lo llama, deberia 
 	 */
 	public final int buscarRegistro(final Clave clave) {
 
@@ -233,5 +234,19 @@ public class Nodo {
 	 */
 	public final RegistroNodo getUltimoRegistro() {
 		return this.registros.get(registros.size() - 1);
+	}
+
+	/**
+	 * @return the nodos
+	 */
+	public final ArrayList<Nodo> getNodos() {
+		return nodos;
+	}
+
+	/**
+	 * @param nodos the nodos to set
+	 */
+	public final void setNodos(ArrayList<Nodo> nodos) {
+		this.nodos = nodos;
 	}
 }

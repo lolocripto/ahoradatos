@@ -31,13 +31,12 @@ public final class BAsterisk implements BTree {
 	 * @return El registro buscado o el siguiente inmediatamente mayor.
 	 */
 	public RegistroNodo buscar(final Clave clave) {
-		//TODO CORREGIR ESTE METODO
-		RegistroNodo nodo = new RegistroNodo();
 		
+		//TODO CORREGIR ESTE METODO
 		if (nodoRaiz == null) {
 			return null;
 		}
-		 nodo = this.nodoRaiz.buscarRegistro(clave);
+		
 		Nodo nodoAux = nodoRaiz;
 		int resultado = 0;
 		int posReg = 0;
@@ -50,18 +49,18 @@ public final class BAsterisk implements BTree {
 			posReg = nodoAux.buscarRegistro(clave);
 			
 			if (posReg != -1) { //Lo encontré.
+				
 				return nodoAux.getRegistros().get(posReg);
+				
 			} else { //No lo encontré.
+				
 				registro = nodoAux.getRegistros().get(posReg);
 				switch (registro.getClaveNodo().compareTo(clave)) {
-				case 0:
-					
+				case -1: //Si la clave es menor al primero.
+					nodoAux = nodoAux.getNodos().get(0);
 					break;
-				case 1:
-					
-					break;
-				case -1:
-					
+				case -2: //Si la clave es mayor al ultimo registro.
+					nodoAux = nodoAux.getNodos().get(nodoAux.getNodos().size());
 					break;
 				default:
 					
