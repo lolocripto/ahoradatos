@@ -101,7 +101,7 @@ public class Nodo {
 	 */
 	public final int buscarRegistro(final Clave clave) {
 
-		//FIXME: ver si esto funciona. 
+		//FIXME: ver si esto funciona(deberia). 
 		return registros.indexOf(clave);
 		
 		/*int pos = -1;
