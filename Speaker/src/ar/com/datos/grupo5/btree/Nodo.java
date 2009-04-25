@@ -216,5 +216,33 @@ public class Nodo {
 	public final void setEsHoja(final boolean hoja) {
 		this.esHoja = hoja;
 	}
+
+	/**
+	 * @return the nodoIzquierdo
+	 */
+	public final Nodo getNodoIzquierdo() {
+		return nodoIzquierdo;
+	}
+
+	/**
+	 * @param nodo the nodoIzquierdo to set
+	 */
+	public final void setNodoIzquierdo(final Nodo nodo) {
+		this.nodoIzquierdo = nodo;
+	}
+
+	/**
+	 * @return the nodoDerecho
+	 */
+	public final Nodo getNodoDerecho() {
+		return nodoDerecho;
+	}
+
+	/**
+	 * @param nodo the nodoDerecho to set
+	 */
+	public final void setNodoDerecho(final Nodo nodo) {
+		this.nodoDerecho = nodo;
+	}
 	
 }
