@@ -223,21 +223,24 @@ public class Nodo {
 	 * @return .
 	 */
 	public final boolean pasarRegistro(final RegistroNodo registro) {
-		// FIXME Hacer los métodos para saber si hay lugar en los nodos!!
+		// FIXME Hacer los metodos para saber si hay lugar en los nodos!!
 		if (this.nodoSiguiente == null) {
 			if (this.nodoAnterior == null) {
 				// Es el unico nodo -> Raiz SOLA!!!!!
 				return false;
 			}
-			if (this.nodoAnterior.ocupar(registro.getBytes().length)) {
+			if (this.nodoAnterior.ocupar(this.getPrimerRegistro().getBytes().length)) {
+				RegistroNodo reg_aux;
+				
 				this.nodoAnterior.insertarRegistro(this.getPrimerRegistro());
-				//Modificar la clave del padre
+				//Modificar la clave del padre del anterior
 			}
 		}
 		else {
-			if (this.nodoSiguiente.ocupar(registro.getBytes().length)) {
+			if (this.nodoSiguiente.ocupar(this.getPrimerRegistro().getBytes().length)) {
+				RegistroNodo reg_aux;
 				this.nodoSiguiente.insertarRegistro(this.getUltimoRegistro());
-			//Modificar la clave del padre	
+			//Modificar la clave del padre del siguiente	
 			}
 		}
 		return false;
@@ -394,10 +397,10 @@ public class Nodo {
 	 * @param siguiente es el nodo con el cual lo tengo que tratar para dividir.
 	 * @return the nodos
 	 */
-	public final Nodo splitNodo(final boolean siguiente) {
+	public final Nodo split(final boolean siguiente) {
 		Nodo nodo = new Nodo();
 		// FIXME Hacer el metodo
-		if (this.nodoPadre == null) {
+		if (this.nodoPadre == null){
 			//Es la raiz!!!!!!
 			// Partir en 2! Si, se me canta. Y que?
 			Nodo nodo_aux = new Nodo();
