@@ -48,25 +48,25 @@ public final class Main {
 			Clave clave = new Clave();
 			RegistroNodo reg = new RegistroNodo();
 			
-			clave.setClave("Hola");
+			clave.setClave("1");
 			reg.setClave(clave);
 			tree.insertar(reg);
 			
 			clave = new Clave();
 			reg = new RegistroNodo();
-			clave.setClave("como");
+			clave.setClave("2");
 			reg.setClave(clave);
 			tree.insertar(reg);
 			
 			clave = new Clave();
 			reg = new RegistroNodo();
-			clave.setClave("estas");
+			clave.setClave("3");
 			reg.setClave(clave);
 			tree.insertar(reg);
 			
 			clave = new Clave();
 			reg = new RegistroNodo();
-			clave.setClave("hippie");
+			clave.setClave("4");
 			reg.setClave(clave);
 			tree.insertar(reg);
 					

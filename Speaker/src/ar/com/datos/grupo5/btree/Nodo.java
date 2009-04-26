@@ -92,13 +92,12 @@ public class Nodo {
 	}
 	
 	/**
-	 * Busca una clave. Sirve para algo??
+	 * Busca una clave en el nodo.
 	 * 
 	 * @param clave
 	 *            .
 	 * @return El indice en el array en donde esta el registro que contiene la
-	 *         clave o del primer elemento que es mayor a la clave.
-	 *         El metodo que lo llama, deberia 
+	 *         clave o del primer elemento que es mayor a la clave. 
 	 */
 	public final int buscarRegistro(final Clave clave) {
 
@@ -110,17 +109,17 @@ public class Nodo {
 		}
 		
 		// Si la clave es menor a la primera, no está.
-		if (registros.get(0)
-				.getClave().compareTo(clave) == 1) {
+		if (clave.compareTo(registros.get(0).getClave()) < 0) {
 			return -1;
 		}
 
 		// Si la clave es mayor a la ultima, no está.
-		if (registros.get(registros.size() - 1)
-				.getClave().compareTo(clave) == 1) {
+		if (clave.compareTo(registros.get(registros.size() - 1)
+				.getClave()) > 0) {
 			return -2;
 		}
 		
+		//Recorro los nodos en busca de la clave.
 		for (RegistroNodo reg : this.registros) {
 			pos++;
 			
@@ -144,8 +143,21 @@ public class Nodo {
 	 * @param registro El reistro para insertar.
 	 */
 	public final void insertarRegistro(final RegistroNodo registro) {
+		
+		//Obtengo la posicion en donde debo insertarlo.
 		int pos = this.buscarRegistro(registro.getClave());
-		this.registros.add(pos, registro);
+		switch (pos) {
+		case -1:
+			this.registros.add(0, registro);
+			break;
+		case -2:
+			this.registros.add(registros.size(), registro);
+			break;
+
+		default:
+			this.registros.add(pos, registro);
+			break;
+		}
 			
 	}
 	
