@@ -11,6 +11,11 @@ import ar.com.datos.grupo5.registros.RegistroNodo;
  *
  */
 public class Nodo {
+
+	/**
+	 * Para indicar que la clave es mayor que la ultima del nodo.
+	 */
+	private static final double FACTOR_CARGA = 0.66;
 	
 	/**
 	 * Para indicar que la clave es mayor que la ultima del nodo.
@@ -48,6 +53,12 @@ public class Nodo {
 		this.nodos = new ArrayList<Nodo>();
 		this.espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
 	}
+
+	
+	/**
+	 * Espacio en el nodo.
+	 */
+	private int minIndiceCarga;
 	
 	/**
 	 * Espacio en el nodo.
@@ -167,29 +178,31 @@ public class Nodo {
 		int pos = this.buscarRegistro(registro.getClave());
 		switch (pos) {
 		case MENOR:
-			if(this.ocupar(registro.getBytes().length))
+			if (this.ocupar(registro.getBytes().length)) {
 				this.registros.add(0, registro);
+				
+			}
 			else
 				//error
 				break;
 			break;
 		case MAYOR:
 			// FIXME Cuando esta lleno, revienta -> pasar al hno
-			if(this.ocupar(registro.getBytes().length))
+			if (this.ocupar(registro.getBytes().length))
 				this.registros.add(registros.size(), registro);
 			else
-				//error
+				//FIXME, si no pudo pasarlo, ver otras opciones.
+				this.pasarRegistro(registro);
 				break;
 			break;
 		default:
-			if(this.ocupar(registro.getBytes().length))
+			if (this.ocupar(registro.getBytes().length))
 				this.registros.add(pos, registro);
 			else
 				//error
 				break;
 			break;
 		}
-			
 	}
 	
 	/**
@@ -208,20 +221,25 @@ public class Nodo {
 	
 	/**
 	 * @param registro the registro to set
-	 * @param siguiente Es para saber si es el anterior o el siguiente.
 	 * @return .
 	 */
-	public final boolean pasarRegistro(final RegistroNodo registro,
-			final boolean siguiente) {
+	public final boolean pasarRegistro(final RegistroNodo registro) {
 		// FIXME Hacer los métodos para saber si hay lugar en los nodos!!
+		boolean siguiente = (this.nodoSiguiente == null);
 		if(siguiente == false){
-			// Pasar al hno Anterior
-			// Ver que no esté lleno, sumandole al espacio ocupado, el espacio
-			// del registro.
+			if(this.nodoAnterior == null)
+				// Es el unico nodo -> Raiz SOLA!!!!!
+				return false;
+			if(this.nodoAnterior.ocupar(registro.getBytes().length)) {
+				this.nodoAnterior.insertarRegistro(this.getPrimerRegistro());
+				//Modificar la clave del padre
+			}
 		}
 		else{
-			// Pasar al hermano siguiente
-
+			if(this.nodoSiguiente.ocupar(registro.getBytes().length)) {
+				this.nodoSiguiente.insertarRegistro(this.getUltimoRegistro());
+			//Modificar la clave del padre	
+			}
 		}
 		return false;
 	}
@@ -306,11 +324,20 @@ public class Nodo {
 	}
 
 	/**
+	 * @return si pudo ocupar el nodo, o no le alcanzo el espacio libre
+	 */
+	public final boolean tieneCargaMinima() {
+		if ((this.espacioOcupado / this.espacioTotal) > FACTOR_CARGA)
+			return true;
+		return false;
+	}
+	
+	/**
 	 * @param espacio the espacioOcupado to set
 	 * @return si pudo ocupar el nodo, o no le alcanzo el espacio libre
 	 */
 	public final boolean ocupar(final int espacio) {
-		if((this.espacioOcupado + espacio)> this.espacioTotal )
+		if ((this.espacioOcupado + espacio) > this.espacioTotal )
 			return false;
 		this.espacioOcupado += espacio;
 		return true;
