@@ -163,19 +163,30 @@ public class Nodo {
 	 * @param registro El reistro para insertar.
 	 */
 	public final void insertarRegistro(final RegistroNodo registro) {
-		
 		//Obtengo la posicion en donde debo insertarlo.
 		int pos = this.buscarRegistro(registro.getClave());
 		switch (pos) {
 		case MENOR:
-			this.registros.add(0, registro);
+			if(this.ocupar(registro.getBytes().length))
+				this.registros.add(0, registro);
+			else
+				//error
+				break;
 			break;
 		case MAYOR:
 			// FIXME Cuando esta lleno, revienta -> pasar al hno
-			this.registros.add(registros.size(), registro);
+			if(this.ocupar(registro.getBytes().length))
+				this.registros.add(registros.size(), registro);
+			else
+				//error
+				break;
 			break;
 		default:
-			this.registros.add(pos, registro);
+			if(this.ocupar(registro.getBytes().length))
+				this.registros.add(pos, registro);
+			else
+				//error
+				break;
 			break;
 		}
 			
@@ -294,6 +305,17 @@ public class Nodo {
 		this.espacioOcupado = espacio;
 	}
 
+	/**
+	 * @param espacio the espacioOcupado to set
+	 * @return si pudo ocupar el nodo, o no le alcanzo el espacio libre
+	 */
+	public final boolean ocupar(final int espacio) {
+		if((this.espacioOcupado + espacio)> this.espacioTotal )
+			return false;
+		this.espacioOcupado += espacio;
+		return true;
+	}
+	
 	/**
 	 * @param nodo the siguiente to set.
 	 */
