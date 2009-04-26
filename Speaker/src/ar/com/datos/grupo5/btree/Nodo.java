@@ -251,4 +251,16 @@ public class Nodo {
 	public final void setNodos(final ArrayList<Nodo> nodos) {
 		this.nodos = nodos;
 	}
+	
+	/**
+	 * @param registro the registro to set
+	 */
+	public final boolean setRegistro(final RegistroNodo registro) {
+		int pos = this.buscarRegistro(registro.getClaveNodo());
+		if (pos >= 0) {
+			this.registros.set(pos, registro);
+			return true;
+		}
+		return false;
+	}
 }

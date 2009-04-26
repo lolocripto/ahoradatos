@@ -174,14 +174,7 @@ public final class BAsterisk implements BTree {
 	 */
 	public boolean modificar(final RegistroNodo registro) {
 		// TODO Auto-generated method stub
-		RegistroNodo reg_aux = this.buscar(registro.getClaveNodo());
-		
-		if (reg_aux == null)
-			return false;
-		else {
-			reg_aux = registro;
-		}
-		return true;
+		return false;
 	}
 
 	/**
