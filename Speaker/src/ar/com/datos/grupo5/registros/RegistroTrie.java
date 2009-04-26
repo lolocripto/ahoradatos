@@ -9,7 +9,7 @@ import ar.com.datos.grupo5.utils.Conversiones;
 
 import ar.com.datos.grupo5.interfaces.Registro;
 
-public class RegistroTrie implements Registro {
+public class RegistroTrie extends RegistroNodo {
 	/**
 	 * Nivel del trie.
 	 */
