@@ -46,7 +46,6 @@ public final class BStar implements BTree {
 		switch (posReg) {
 		case -1:
 		case -2:
-			//TODO Hay que seguir buscando.
 			return null;
 		default:
 			if (nodo.getRegistros().get(posReg).getClave().equals(clave)) {
