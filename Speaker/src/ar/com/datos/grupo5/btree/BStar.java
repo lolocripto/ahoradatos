@@ -191,15 +191,14 @@ public final class BStar implements BTree {
 			//Creo la raiz e inserto el registro.
 			this.nodoRaiz = new Nodo();
 			this.nodoRaiz.insertarRegistro(registro);
-			this.nodoActual = this.nodoRaiz;
 			this.nodos.add(nodoRaiz);
-			nodoRaiz.insertarRegistro(registro);
 			return true;
 		}
 		
 		//Busco en donde insertar.
 		Nodo nodo = this.buscarNodo(registro.getClave());
 		nodo.insertarRegistro(registro);
+		this.nodoActual = nodo;
 		return true;
 	}
 
