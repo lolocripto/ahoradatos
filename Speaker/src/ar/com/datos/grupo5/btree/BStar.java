@@ -29,61 +29,7 @@ public final class BStar implements BTree {
 	public BStar() {
 		nodoActual = null;
 		nodoRaiz = null;
-	}
-
-	/**
-	 * Buscar recursivo.
-	 * @param clave .
-	 * @param nodo .
-	 * @return .
-	 */
-	public RegistroNodo buscarRec(final Clave clave, final Nodo nodo) {
-		
-		Nodo nodoAux = nodo;
-		RegistroNodo registro = null;
-		
-		if (nodo == null) {
-			nodoAux = nodoRaiz;
-		}
-		
-		int posReg = nodoAux.buscarRegistro(clave);
-		switch (posReg) {
-		case -1: //La clave es menor al primero, voy por la izquierda.
-			
-			if (!nodoAux.isEsHoja()) {
-				buscarRec(clave, nodoAux.getNodos().get(0));
-			} else {
-				registro = nodoAux.getPrimerRegistro();
-			}
-			break;
-			
-		case -2:
-			if (!nodoAux.isEsHoja()) {
-				buscarRec(clave, nodoAux.getNodos().get(
-						nodoAux.getNodos().size()));
-			} else {
-				registro = nodoAux.getUltimoRegistro();
-			}
-			break;
-			
-		default:
-			//Lo que encontre el igual.
-			if (nodoAux.getRegistros().get(posReg).getClave()
-					.equals(clave)) {
-				
-				registro = nodoAux.getRegistros().get(posReg);
-			} else { // Es mayor
-				if (!nodoAux.isEsHoja()) {
-					buscarRec(clave, nodoAux);
-				} else {
-					registro = nodoAux.getRegistros().get(posReg);
-				}
-			}
-			break;
-		}
-		
-		return registro;
-	}
+	}	
 	
 	/**
 	 * Busca un registro.
@@ -93,19 +39,15 @@ public final class BStar implements BTree {
 	 * @return El registro buscado o el siguiente inmediatamente mayor.
 	 */
 	public RegistroNodo buscar(final Clave clave) {
-		
-		//FIXME: Testear!!!!!!!!!
+		//FIXME: Revisar.
 		Nodo nodo = buscarNodo(clave);
 		
 		int posReg = nodo.buscarRegistro(clave); 
 		switch (posReg) {
 		case -1:
-			//return null;
-			//return nodo.getPrimerRegistro();
 		case -2:
+			//TODO Hay que seguir buscando.
 			return null;
-			//return nodo.getUltimoRegistro();
-			
 		default:
 			if (nodo.getRegistros().get(posReg).getClave().equals(clave)) {
 				return nodo.getRegistros().get(posReg);
