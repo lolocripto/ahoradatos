@@ -90,7 +90,8 @@ public final class BStar implements BTree {
 			switch (posReg) {
 			case MENOR: //La clave es menor al primero, voy por la izquierda.
 				if (!nodoAux.isEsHoja()) {
-					nodoAux = nodoAux.getNodos().get(0);
+					//FIXME
+					//nodoAux = nodoAux.getNodos().get(0);
 				} else {
 					return nodoAux;
 				}
@@ -98,7 +99,8 @@ public final class BStar implements BTree {
 				
 			case MAYOR: //La clave es mayor al ultimo, voy por la derecha.
 				if (!nodoAux.isEsHoja()) {
-					nodoAux = nodoAux.getNodos().get(nodoAux.getNodos().size());
+					//FIXME
+					//nodoAux = nodoAux.getNodos().get(nodoAux.getNodos().size());
 				} else {
 					return nodoAux;
 				}
@@ -112,7 +114,8 @@ public final class BStar implements BTree {
 					return nodoAux;
 				} else { // Es mayor.
 					if (!nodoAux.isEsHoja()) {
-						nodoAux = nodoAux.getNodos().get(posReg);
+						//FIXME
+						//nodoAux = nodoAux.getNodos().get(posReg);
 					} else {
 						return nodoAux;
 					}

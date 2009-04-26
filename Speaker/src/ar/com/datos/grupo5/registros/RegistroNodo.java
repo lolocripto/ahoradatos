@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.ListasInvertidas;
 import ar.com.datos.grupo5.btree.Clave;
+import ar.com.datos.grupo5.btree.Nodo;
 import ar.com.datos.grupo5.interfaces.Registro;
 
 /**
@@ -29,6 +30,16 @@ public class RegistroNodo implements Registro {
 	 * Es la clave del nodo.
 	 */
 	private Clave claveNodo;
+	
+	/**
+	 * El numero de bloque al que apunta a la izquierda.
+	 */
+	private Integer nroBloqueIzquierdo;
+	
+	/**
+	 * El numero de bloque al que apunta a la izquierda.
+	 */
+	private Integer nroBloqueDerecha;
 	
 	/**
 	 * En este caso se devuelve de una vez todos los bytes. Devuelvo true la
@@ -91,6 +102,34 @@ public class RegistroNodo implements Registro {
 	 */
 	public final Clave getClave() {
 		return claveNodo;
+	}
+
+	/**
+	 * @return the nroBloqueIzquierdo
+	 */
+	public final Integer getNroBloqueIzquierdo() {
+		return nroBloqueIzquierdo;
+	}
+
+	/**
+	 * @param nroBloqueIzquierdo the nroBloqueIzquierdo to set
+	 */
+	public final void setNroBloqueIzquierdo(Integer nroBloqueIzquierdo) {
+		this.nroBloqueIzquierdo = nroBloqueIzquierdo;
+	}
+
+	/**
+	 * @return the nroBloqueDerecha
+	 */
+	public final Integer getNroBloqueDerecha() {
+		return nroBloqueDerecha;
+	}
+
+	/**
+	 * @param nroBloqueDerecha the nroBloqueDerecha to set
+	 */
+	public final void setNroBloqueDerecha(Integer nroBloqueDerecha) {
+		this.nroBloqueDerecha = nroBloqueDerecha;
 	}
 
 }

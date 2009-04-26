@@ -28,34 +28,6 @@ public class Nodo {
 	private static final int MENOR = -1;
 	
 	/**
-	 * Constructor.
-	 */
-	public Nodo() {
-		
-		this.nodoSiguiente = null;
-		this.nodoAnterior = null;
-		this.nodoPadre = null;
-		this.registros = new ArrayList<RegistroNodo>();
-		this.nodos = new ArrayList<Nodo>();
-		this.espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
-	}
-	
-	/**
-	 * Constructor.
-	 * @param nodo Nodo padre.
-	 */
-	public Nodo(final Nodo nodo) {
-		
-		this.nodoSiguiente = null;
-		this.nodoAnterior = null;
-		this.nodoPadre = nodo;
-		this.registros = new ArrayList<RegistroNodo>();
-		this.nodos = new ArrayList<Nodo>();
-		this.espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
-	}
-
-	
-	/**
 	 * Espacio en el nodo.
 	 */
 	private int minIndiceCarga;
@@ -86,11 +58,6 @@ public class Nodo {
 	private boolean esHoja = false;
 	
 	/**
-	 * Lista de nodos.
-	 */
-	private ArrayList<Nodo> nodos;
-	
-	/**
 	 * Lista de registros.
 	 */
 	private ArrayList< RegistroNodo > registros;
@@ -99,18 +66,35 @@ public class Nodo {
 	 * El nodo padre.
 	 */
 	private Nodo nodoPadre;
+
+	/**
+	 * Constructor.
+	 */
+	public Nodo() {
+		
+		this.nodoSiguiente = null;
+		this.nodoAnterior = null;
+		this.nodoPadre = null;
+		this.registros = new ArrayList<RegistroNodo>();
+		this.espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
+	}
+	
+	/**
+	 * Constructor.
+	 * @param nodo Nodo padre.
+	 */
+	public Nodo(final Nodo nodo) {
+		
+		this.nodoSiguiente = null;
+		this.nodoAnterior = null;
+		this.nodoPadre = nodo;
+		this.registros = new ArrayList<RegistroNodo>();
+		this.espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
+	}	
 	
 	/**********************
 	 * Metodos
 	 **********************/
-	
-	/**
-	 * Agrega un nodo a la lista de nodos.
-	 * @param nodo El nodo a insertar.
-	 */
-	public final void insertarNodo(final Nodo nodo) {
-		this.nodos.add(nodo);
-	}
 
 	/**
 	 * Verifica la existencia de una clave.
@@ -229,18 +213,19 @@ public class Nodo {
 				// Es el unico nodo -> Raiz SOLA!!!!!
 				return false;
 			}
-			if (this.nodoAnterior.ocupar(this.getPrimerRegistro().getBytes().length)) {
-				RegistroNodo reg_aux;
-				
+			if (this.nodoAnterior
+					.ocupar(this.getPrimerRegistro().getBytes().length)) {
+				RegistroNodo regAux;
+
 				this.nodoAnterior.insertarRegistro(this.getPrimerRegistro());
-				//Modificar la clave del padre del anterior
+				// Modificar la clave del padre del anterior
 			}
-		}
-		else {
-			if (this.nodoSiguiente.ocupar(this.getPrimerRegistro().getBytes().length)) {
-				RegistroNodo reg_aux;
+		} else {
+			if (this.nodoSiguiente
+					.ocupar(this.getPrimerRegistro().getBytes().length)) {
+				RegistroNodo regAux;
 				this.nodoSiguiente.insertarRegistro(this.getUltimoRegistro());
-			//Modificar la clave del padre del siguiente	
+				// Modificar la clave del padre del siguiente
 			}
 		}
 		return false;
@@ -256,6 +241,64 @@ public class Nodo {
 		for (RegistroNodo reg : registros) {
 			System.out.println("==== " + reg.getClave().getClave());
 		}
+	}
+	
+	/**
+	 * @param siguiente es el nodo con el cual lo tengo que tratar para dividir.
+	 * @return the nodos
+	 */
+	public final Nodo split(final boolean siguiente) {
+		Nodo nodo = new Nodo();
+		// FIXME Hacer el metodo
+		if (this.nodoPadre == null) {
+			//Es la raiz!!!!!!
+			// Partir en 2! Si, se me canta. Y que?
+			Nodo nodoAux = new Nodo();
+			this.nodoPadre = nodoAux;
+			// Buscar el registro que asegura 66%
+			
+			// Llenar nodo hno
+			this.nodoSiguiente = nodo;
+			nodo.nodoAnterior = this;
+			nodo.nodoPadre = nodoAux;
+			
+			//nodo_aux.insertarNodo(this);
+			//nodo_aux.insertarNodo(nodo);
+			
+		}
+		if (siguiente) {
+			//Junto con el siguiente
+			
+			//Busco posicion donde tengo que partir el nodo
+			//contabilizando bytes
+		} else {
+			//Junto con el anterior
+			
+		}
+		//Luego ver si tengo que generar el padre!!!!	
+		return nodo;
+	}
+	
+	/**
+	 * @return si pudo ocupar el nodo, o no le alcanzo el espacio libre
+	 */
+	public final boolean tieneCargaMinima() {
+		if ((this.espacioOcupado / this.espacioTotal) > FACTOR_CARGA) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * @param espacio the espacioOcupado to set
+	 * @return si pudo ocupar el nodo, o no le alcanzo el espacio libre
+	 */
+	public final boolean ocupar(final int espacio) {
+		if ((this.espacioOcupado + espacio) > this.espacioTotal) {
+			return false;
+		}
+		this.espacioOcupado += espacio;
+		return true;
 	}
 	
 	/**************************
@@ -324,26 +367,6 @@ public class Nodo {
 	public final void setEspacioOcupado(final int espacio) {
 		this.espacioOcupado = espacio;
 	}
-
-	/**
-	 * @return si pudo ocupar el nodo, o no le alcanzo el espacio libre
-	 */
-	public final boolean tieneCargaMinima() {
-		if ((this.espacioOcupado / this.espacioTotal) > FACTOR_CARGA)
-			return true;
-		return false;
-	}
-	
-	/**
-	 * @param espacio the espacioOcupado to set
-	 * @return si pudo ocupar el nodo, o no le alcanzo el espacio libre
-	 */
-	public final boolean ocupar(final int espacio) {
-		if ((this.espacioOcupado + espacio) > this.espacioTotal )
-			return false;
-		this.espacioOcupado += espacio;
-		return true;
-	}
 	
 	/**
 	 * @param nodo the siguiente to set.
@@ -377,55 +400,5 @@ public class Nodo {
 	 */
 	public final RegistroNodo getUltimoRegistro() {
 		return this.registros.get(registros.size() - 1);
-	}
-
-	/**
-	 * @return the nodos
-	 */
-	public final ArrayList<Nodo> getNodos() {
-		return nodos;
-	}
-
-	/**
-	 * @param nodos the nodos to set
-	 */
-	/*public final void setNodos(final ArrayList<Nodo> nodos) {
-		this.nodos = nodos;
-	}*/
-	
-	/**
-	 * @param siguiente es el nodo con el cual lo tengo que tratar para dividir.
-	 * @return the nodos
-	 */
-	public final Nodo split(final boolean siguiente) {
-		Nodo nodo = new Nodo();
-		// FIXME Hacer el metodo
-		if (this.nodoPadre == null){
-			//Es la raiz!!!!!!
-			// Partir en 2! Si, se me canta. Y que?
-			Nodo nodo_aux = new Nodo();
-			this.nodoPadre = nodo_aux;
-			// Buscar el registro que asegura 66%
-			
-			// Llenar nodo hno
-			this.nodoSiguiente = nodo;
-			nodo.nodoAnterior = this;
-			nodo.nodoPadre = nodo_aux;
-			
-			nodo_aux.insertarNodo(this);
-			nodo_aux.insertarNodo(nodo);
-			
-		}
-		if (siguiente) {
-			//Junto con el siguiente
-			
-			//Busco posicion donde tengo que partir el nodo
-			//contabilizando bytes
-		} else {
-			//Junto con el anterior
-			
-		}
-		//Luego ver si tengo que generar el padre!!!!	
-		return nodo;
 	}
 }
