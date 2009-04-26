@@ -181,26 +181,25 @@ public class Nodo {
 			if (this.ocupar(registro.getBytes().length)) {
 				this.registros.add(0, registro);
 				
-			}
-			else
+			} else {
 				//error
-				break;
+			}
 			break;
 		case MAYOR:
 			// FIXME Cuando esta lleno, revienta -> pasar al hno
-			if (this.ocupar(registro.getBytes().length))
+			if (this.ocupar(registro.getBytes().length)) {
 				this.registros.add(registros.size(), registro);
-			else
+			} else {
 				//FIXME, si no pudo pasarlo, ver otras opciones.
 				this.pasarRegistro(registro);
-				break;
+			}
 			break;
 		default:
-			if (this.ocupar(registro.getBytes().length))
+			if (this.ocupar(registro.getBytes().length)) {
 				this.registros.add(pos, registro);
-			else
+			} else {
 				//error
-				break;
+			}
 			break;
 		}
 	}
@@ -225,18 +224,18 @@ public class Nodo {
 	 */
 	public final boolean pasarRegistro(final RegistroNodo registro) {
 		// FIXME Hacer los métodos para saber si hay lugar en los nodos!!
-		boolean siguiente = (this.nodoSiguiente == null);
-		if(siguiente == false){
-			if(this.nodoAnterior == null)
+		if (this.nodoSiguiente == null) {
+			if (this.nodoAnterior == null) {
 				// Es el unico nodo -> Raiz SOLA!!!!!
 				return false;
-			if(this.nodoAnterior.ocupar(registro.getBytes().length)) {
+			}
+			if (this.nodoAnterior.ocupar(registro.getBytes().length)) {
 				this.nodoAnterior.insertarRegistro(this.getPrimerRegistro());
 				//Modificar la clave del padre
 			}
 		}
-		else{
-			if(this.nodoSiguiente.ocupar(registro.getBytes().length)) {
+		else {
+			if (this.nodoSiguiente.ocupar(registro.getBytes().length)) {
 				this.nodoSiguiente.insertarRegistro(this.getUltimoRegistro());
 			//Modificar la clave del padre	
 			}
@@ -392,13 +391,13 @@ public class Nodo {
 	}*/
 	
 	/**
-	 * @param lugar es el nodo con el cual lo tengo que tratar para dividir.
+	 * @param siguiente es el nodo con el cual lo tengo que tratar para dividir.
 	 * @return the nodos
 	 */
-	public final Nodo splitNodo(final boolean lugar) {
+	public final Nodo splitNodo(final boolean siguiente) {
 		Nodo nodo = new Nodo();
 		// FIXME Hacer el metodo
-		if(this.nodoPadre == null){
+		if (this.nodoPadre == null) {
 			//Es la raiz!!!!!!
 			// Partir en 2! Si, se me canta. Y que?
 			Nodo nodo_aux = new Nodo();
@@ -414,13 +413,12 @@ public class Nodo {
 			nodo_aux.insertarNodo(nodo);
 			
 		}
-		if(lugar == true){
+		if (siguiente) {
 			//Junto con el siguiente
 			
 			//Busco posicion donde tengo que partir el nodo
 			//contabilizando bytes
-		}
-		else{
+		} else {
 			//Junto con el anterior
 			
 		}
