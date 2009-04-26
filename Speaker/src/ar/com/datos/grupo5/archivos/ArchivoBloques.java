@@ -82,7 +82,7 @@ public class ArchivoBloques extends Directo {
 	 * @throws IOException
 	 *             Excepcion de extrada/salida.
 	 */
-	public void insertar(final byte[] bytes, final Long offset) throws IOException {
+	public void escribirBloque(final byte[] bytes, final Long offset) throws IOException {
 		// Me posiciono al comienzo del bloque.
 		file.seek(offset * tamanio);
 		file.write(bytes, 0, tamanio);

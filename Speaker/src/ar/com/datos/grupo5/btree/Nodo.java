@@ -219,13 +219,16 @@ public class Nodo {
 
 				this.nodoAnterior.insertarRegistro(this.getPrimerRegistro());
 				// Modificar la clave del padre del anterior
+				return true;
 			}
 		} else {
 			if (this.nodoSiguiente
 					.ocupar(this.getPrimerRegistro().getBytes().length)) {
 				RegistroNodo regAux;
+				
 				this.nodoSiguiente.insertarRegistro(this.getUltimoRegistro());
 				// Modificar la clave del padre del siguiente
+				return true;
 			}
 		}
 		return false;
@@ -262,8 +265,6 @@ public class Nodo {
 			nodo.nodoAnterior = this;
 			nodo.nodoPadre = nodoAux;
 			
-			//nodo_aux.insertarNodo(this);
-			//nodo_aux.insertarNodo(nodo);
 			
 		}
 		if (siguiente) {
