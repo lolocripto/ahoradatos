@@ -12,6 +12,16 @@ import ar.com.datos.grupo5.registros.RegistroNodo;
 public class Nodo {
 	
 	/**
+	 * Para indicar que la clave es mayor que la ultima del nodo.
+	 */
+	private static final int MAYOR = -2;
+	
+	/**
+	 * Para indicar que la clave es menor que la primera del nodo.
+	 */
+	private static final int MENOR = -1;
+	
+	/**
 	 * Constructor.
 	 */
 	public Nodo() {
@@ -119,13 +129,13 @@ public class Nodo {
 		
 		// Si la clave es menor a la primera, no estï¿½.
 		if (clave.compareTo(registros.get(0).getClave()) < 0) {
-			return -1;
+			return MENOR;
 		}
 
 		// Si la clave es mayor a la ultima, no estï¿½.
 		if (clave.compareTo(registros.get(registros.size() - 1)
 				.getClave()) > 0) {
-			return -2;
+			return MAYOR;
 		}
 		
 		//Recorro los nodos en busca de la clave.
@@ -156,10 +166,10 @@ public class Nodo {
 		//Obtengo la posicion en donde debo insertarlo.
 		int pos = this.buscarRegistro(registro.getClave());
 		switch (pos) {
-		case -1:
+		case MENOR:
 			this.registros.add(0, registro);
 			break;
-		case -2:
+		case MAYOR:
 			// FIXME Cuando esta lleno, revienta -> pasar al hno
 			this.registros.add(registros.size(), registro);
 			break;
@@ -186,19 +196,18 @@ public class Nodo {
 	
 	/**
 	 * @param registro the registro to set
+	 * @param lugar .
 	 * @return .
 	 */
-	public final boolean PasarRegistro(final RegistroNodo registro, 
+	public final boolean pasarRegistro(final RegistroNodo registro,
 			final boolean lugar) {
-		// FIXME Hacer los mï¿½todos para saber si hay lugar en los nodos!!
-		if(lugar == false){
+		// FIXME Hacer los métodos para saber si hay lugar en los nodos!!
+		if (!lugar) {
 			// Pasar al hno Anterior
-			
-		}
-		else{
+
+		} else {
 			// Pasar al hermano siguiente
-			
-			
+
 		}
 		return false;
 	}

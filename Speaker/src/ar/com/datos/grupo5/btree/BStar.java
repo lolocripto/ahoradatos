@@ -3,8 +3,6 @@
  */
 package ar.com.datos.grupo5.btree;
 
-import java.util.ArrayList;
-
 import ar.com.datos.grupo5.registros.RegistroNodo;
 
 /**
@@ -29,7 +27,17 @@ public final class BStar implements BTree {
 	public BStar() {
 		nodoActual = null;
 		nodoRaiz = null;
-	}	
+	}
+	
+	/**
+	 * Para indicar que la clave es mayor que la ultima del nodo.
+	 */
+	private static final int MAYOR = -2;
+	
+	/**
+	 * Para indicar que la clave es menor que la primera del nodo.
+	 */
+	private static final int MENOR = -1;
 	
 	/**
 	 * Busca un registro.
@@ -40,12 +48,15 @@ public final class BStar implements BTree {
 	 */
 	public RegistroNodo buscar(final Clave clave) {
 		//FIXME: Revisar.
+		
+		//Obtengo el nodo en el que podria estar la clave.
 		Nodo nodo = buscarNodo(clave);
 		
-		int posReg = nodo.buscarRegistro(clave); 
+		//Verifico si la clave está.
+		int posReg = nodo.buscarRegistro(clave);
 		switch (posReg) {
-		case -1:
-		case -2:
+		case MENOR:
+		case MAYOR:
 			return null;
 		default:
 			if (nodo.getRegistros().get(posReg).getClave().equals(clave)) {
@@ -62,7 +73,7 @@ public final class BStar implements BTree {
 	 * @param clave .
 	 * @return El nodo buscado.
 	 */
-	public Nodo buscarNodo(final Clave clave) {
+	private Nodo buscarNodo(final Clave clave) {
 		
 		if (nodoRaiz == null) {
 			return null;
@@ -77,7 +88,7 @@ public final class BStar implements BTree {
 			posReg = nodoAux.buscarRegistro(clave);
 			
 			switch (posReg) {
-			case -1: //La clave es menor al primero, voy por la izquierda.
+			case MENOR: //La clave es menor al primero, voy por la izquierda.
 				if (!nodoAux.isEsHoja()) {
 					nodoAux = nodoAux.getNodos().get(0);
 				} else {
@@ -85,7 +96,7 @@ public final class BStar implements BTree {
 				}
 				break;
 				
-			case -2: //La clave es mayor al ultimo, voy por la derecha.
+			case MAYOR: //La clave es mayor al ultimo, voy por la derecha.
 				if (!nodoAux.isEsHoja()) {
 					nodoAux = nodoAux.getNodos().get(nodoAux.getNodos().size());
 				} else {
@@ -119,7 +130,6 @@ public final class BStar implements BTree {
 	 * @return true si lo inserta.
 	 */
 	public boolean insertar(final RegistroNodo registro) {
-		// TODO Terminar de implementar.
 		
 		if (this.nodoRaiz == null) {
 			
@@ -130,7 +140,7 @@ public final class BStar implements BTree {
 			this.nodoRaiz.insertarRegistro(registro);
 			return true;
 		}
-		
+		// TODO Terminar de implementar.
 		//Busco en donde insertar.
 		Nodo nodo = this.buscarNodo(registro.getClave());
 		nodo.insertarRegistro(registro);
@@ -152,7 +162,7 @@ public final class BStar implements BTree {
 	 * @return El registro siguiente. Null si no existe siguiente.
 	 */
 	public RegistroNodo siguiente() {
-		// TODO Auto-generated method stub
+		//En b* no hay siguiente.
 		return null;
 	}
 
