@@ -17,6 +17,7 @@ public class Nodo {
 	public Nodo() {
 		
 		this.nodoSiguiente = null;
+		this.nodoAnterior = null;
 		this.nodoPadre = null;
 		this.registros = new ArrayList<RegistroNodo>();
 		this.nodos = new ArrayList<Nodo>();
@@ -29,6 +30,7 @@ public class Nodo {
 	public Nodo(final Nodo nodo) {
 		
 		this.nodoSiguiente = null;
+		this.nodoAnterior = null;
 		this.nodoPadre = nodo;
 		this.registros = new ArrayList<RegistroNodo>();
 		this.nodos = new ArrayList<Nodo>();
@@ -48,6 +50,11 @@ public class Nodo {
 	 * Puntero al nodo siguiente para recorrer como lista.
 	 */
 	private Nodo nodoSiguiente;
+
+	/**
+	 * Puntero al nodo anterior para pasarse registros como lista.
+	 */
+	private Nodo nodoAnterior;
 	
 	/**
 	 * Si el nodo es hoja o no.
@@ -151,6 +158,7 @@ public class Nodo {
 			this.registros.add(0, registro);
 			break;
 		case -2:
+			// FIXME Cuando esta lleno, revienta -> pasar al hno
 			this.registros.add(registros.size(), registro);
 			break;
 		default:
@@ -169,6 +177,26 @@ public class Nodo {
 		if (pos >= 0) {
 			this.registros.set(pos, registro);
 			return true;
+		}
+		return false;
+	}
+
+	
+	/**
+	 * @param registro the registro to set
+	 * @return .
+	 */
+	public final boolean PasarRegistro(final RegistroNodo registro, 
+			final boolean lugar) {
+		// FIXME Hacer los métodos para saber si hay lugar en los nodos!!
+		if(lugar == false){
+			// Pasar al hno Anterior
+			
+		}
+		else{
+			// Pasar al hermano siguiente
+			
+			
 		}
 		return false;
 	}
@@ -260,6 +288,12 @@ public class Nodo {
 	}
 
 	/**
+	 * @param nodo the anterior to set.
+	 */
+	public final void setAnterior(final Nodo nodo) {
+		this.nodoAnterior = nodo;
+	}
+	/**
 	 * @param hoja the esHoja to set
 	 */
 	public final void setEsHoja(final boolean hoja) {
@@ -302,6 +336,7 @@ public class Nodo {
 		
 		if(this.nodoPadre == null){
 			//Es la raiz!!!!!!
+			// Partir en 2 o en 3 y uno de los otros es nuevo raiz
 			
 		}
 		if(this.nodoSiguiente != null){
