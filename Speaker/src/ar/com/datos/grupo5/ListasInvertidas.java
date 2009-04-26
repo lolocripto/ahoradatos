@@ -194,7 +194,6 @@ public class ListasInvertidas {
 		/* Registro que contiene las frecuencias y los documentos */
 		RegistroTerminoDocumentos reg = new RegistroTerminoDocumentos();
 		
-		
 		reg.setIdTermino(idTerminoExt);
 		reg.setDatosDocumentos(listaExt);
 		
@@ -227,6 +226,16 @@ public class ListasInvertidas {
 						i);
 				// insertarBloqueBajoPolitica(bytesAEscribir);
 			}
+		} else {
+			//Es un solo registro por lo tanto puedo insertarlo en un bloque con algún espacio libre
+			NodoListaEspacioLibre nodo; 
+			nodo = this.espacioLibrePorBloque.get(0);
+			
+			//si entra lo agrego en este punto, sino lo agrego como un bloque nuevo
+			if (nodo.getEspacio() > tamanioRegistro) {
+				
+			}
+			
 		}
 		
 		//Defino el dato de control
@@ -305,7 +314,7 @@ public class ListasInvertidas {
 				
 				d.read(control, 0, 1);
 				String claveDatoControl = new String(control);
-				if (claveDatoControl.compareTo("Control") == 0) {
+				if (claveDatoControl.compareTo("C") == 0) {
 					this.setCantidadBloques(dis.readInt());
 					this.setNroBloqueLista(dis.readInt());
 					levantarListaAMemoria();
