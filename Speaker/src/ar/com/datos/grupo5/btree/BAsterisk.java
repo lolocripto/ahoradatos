@@ -168,9 +168,11 @@ public final class BAsterisk implements BTree {
 		if(this.nodoRaiz == null) {
 			this.nodoRaiz = new Nodo();
 			this.nodoRaiz.insertarRegistro(registro);
+			this.nodoActual = this.nodoRaiz;
 		}
-		
-		return false;
+		Nodo nodo = this.buscarNodo(registro.getClaveNodo());
+		nodo.insertarRegistro(registro);
+		return true;
 	}
 
 	/**
