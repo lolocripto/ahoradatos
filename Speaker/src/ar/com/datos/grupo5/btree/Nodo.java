@@ -87,6 +87,7 @@ public class Nodo {
 	 * @return true si la clave existe.
 	 */
 	public final boolean existeClave(final Clave clave) {
+		//FIXME: Esto es cualquiera!!!!!!!
 		return this.registros.contains(clave);
 	}
 	
@@ -141,6 +142,30 @@ public class Nodo {
 		int pos = this.buscarRegistro(registro.getClaveNodo());
 		this.registros.add(pos, registro);
 			
+	}
+	
+	/**
+	 * @param registro the registro to set
+	 * @return .
+	 */
+	public final boolean setRegistro(final RegistroNodo registro) {
+		int pos = this.buscarRegistro(registro.getClaveNodo());
+		if (pos >= 0) {
+			this.registros.set(pos, registro);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Para testear.
+	 */
+	public final void listar() {
+		
+		System.out.println("Contenido del nodo:");
+		for (RegistroNodo reg : registros) {
+			System.out.println("==== " + reg.getClaveNodo().getClave());
+		}
 	}
 	
 	/**************************
@@ -248,19 +273,7 @@ public class Nodo {
 	/**
 	 * @param nodos the nodos to set
 	 */
-	public final void setNodos(final ArrayList<Nodo> nodos) {
+	/*public final void setNodos(final ArrayList<Nodo> nodos) {
 		this.nodos = nodos;
-	}
-	
-	/**
-	 * @param registro the registro to set
-	 */
-	public final boolean setRegistro(final RegistroNodo registro) {
-		int pos = this.buscarRegistro(registro.getClaveNodo());
-		if (pos >= 0) {
-			this.registros.set(pos, registro);
-			return true;
-		}
-		return false;
-	}
+	}*/
 }
