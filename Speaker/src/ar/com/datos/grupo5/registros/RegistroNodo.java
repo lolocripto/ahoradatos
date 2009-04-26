@@ -39,7 +39,7 @@ public class RegistroNodo implements Registro {
 	 * 
 	 * @return true si hay mas bytes para pedir con getBytes.
 	 */
-	public final boolean hasMoreBytes() {
+	public boolean hasMoreBytes() {
 		
 		if (moreBytes > 0) {
 			return true;
@@ -52,7 +52,7 @@ public class RegistroNodo implements Registro {
 	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
 	 * @return los bytes que representan al registro.
 	 */
-	public final byte[] getBytes() {
+	public byte[] getBytes() {
 		//TODO Hacer este método!!!!!!
 		byte[] arraybytes = null;
 		return arraybytes;
@@ -63,7 +63,7 @@ public class RegistroNodo implements Registro {
 	 * @param buffer Cadena de Bytes leida en el archivo de bloques
 	 * @param offset id del termino que se busca.
 	 */
-	public final void setBytes(final byte[] buffer, final Long offset) {
+	public void setBytes(final byte[] buffer, final Long offset) {
 	// TODO Hacer este método!!!!	
 	}
 
