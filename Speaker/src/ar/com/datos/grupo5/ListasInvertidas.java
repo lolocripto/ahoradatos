@@ -2,7 +2,9 @@ package ar.com.datos.grupo5;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +17,7 @@ import ar.com.datos.grupo5.archivos.ArchivoBloques;
 import ar.com.datos.grupo5.registros.RegistroTerminoDocumentos;
 import ar.com.datos.grupo5.utils.Conversiones;
 
+//TODO: Excepciones, falta tirar las excepciones
 /**
  * Clase que administra la inserción, modificación y busqueda de las listas
  * invertidas en un archivo por bloques.
@@ -156,18 +159,33 @@ public class ListasInvertidas {
 		return reg;
 	}
 	
-	private byte[] armarDatosControlBloque(final Long datosDeControl, final byte[] datos, final int nroBloque) {
+	/**
+	 * Arma los datos del bloque con los parametros que recibe
+	 * @param nroSiguienteBloque Numero del siguiente bloque
+	 * @param datos Datos perteneciente al bloque
+	 * @param primerRegistro Es el offset a partir de los datos de 
+	 * 			control donde empieza el primer registro
+	 * @param espacioOcupado Es el espacio ocupado del bloque 
+	 * @return
+	 * 		Devuelve los datos en un arreglo de Bytes.
+	 */
+	private byte[] armarDatosBloque(final Long nroSiguienteBloque, final byte[] datos, final short primerRegistro, final short espacioOcupado) {
 		
-		byte[] bytesDeControl;
-		
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+		DataOutputStream dos = new DataOutputStream(bos);
+				
 		try {
-			bytesDeControl = Conversiones.longToArrayByte(datos.length
-					+ Constantes.SIZE_OF_INDEX_BLOCK);
+			dos.writeLong(nroSiguienteBloque);
+			dos.writeShort(primerRegistro);
+			dos.writeShort(espacioOcupado);
+			dos.write(datos);
 		} catch (Exception e) {
 			logger.error("Error: " + e.getMessage());
 		}		
-		return datos;
+		return bos.toByteArray();
 	}
+	
+	
 	/**
 	 * Metodo para agregar una palabra al diccionario.
 	 * 
@@ -209,7 +227,7 @@ public class ListasInvertidas {
 
 		byte[] bytesAEscribir;
 		
-		/* Genero todos los registros*/
+		/* Genero todos los registros */
 		if (masRegistros) {
 			//Calculo el total de bloques
 			totalBloques = tamanioRegistro / bytesDisponibles;
@@ -217,32 +235,64 @@ public class ListasInvertidas {
 				totalBloques++;
 			}
 			
-			/* Armo los bloques que serán escritos */
-			for (int i = 0; i < totalBloques - 1; i++) {
-				// Esta mal el file.length(); Arma la estructura de control del
-				// bloque
-				bytesAEscribir = armarDatosControlBloque(
-						/* file.length()+ */(long) tamanioDatosControl, bytes,
-						i);
-				// insertarBloqueBajoPolitica(bytesAEscribir);
+			/* Armo los bloques que serán escritos al final del archivo */
+			for (int i = 0; i < totalBloques; i++) {
+				//TODO: Tengo que definir bytes, tengo que cortarlo
+				//TODO: Actualizar la lista de espacios libres con lo que queda de este bloque				
+				bytesAEscribir = armarDatosBloque((long) this.cantidadBloques+2, bytes, (short) 0, (short) (tamanioDatosControl + bytes.length));
+				try {
+					this.archivo.insertar(bytesAEscribir, (long) this.cantidadBloques+1);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				this.cantidadBloques++;
 			}
 		} else {
 			//Es un solo registro por lo tanto puedo insertarlo en un bloque con algún espacio libre
-			NodoListaEspacioLibre nodo; 
-			nodo = this.espacioLibrePorBloque.get(0);
-			
-			//si entra lo agrego en este punto, sino lo agrego como un bloque nuevo
-			if (nodo.getEspacio() > tamanioRegistro) {
+			if (!this.espacioLibrePorBloque.isEmpty()) {
+				NodoListaEspacioLibre nodo; 
+				nodo = this.espacioLibrePorBloque.get(0);
 				
+				//si entra lo agrego en este punto, sino lo agrego como un bloque nuevo
+				if (nodo.getEspacio() > tamanioRegistro) {
+					//TODO: Tengo que definir bytes, tengo que cortarlo
+					/* agrego el registro en el bloque
+					 * 1)Leo el bloque que tiene el espacio libre
+					 * 2)Leo los datos de control y me quedo con espacioOcupado
+					 * 3)me paro al final ( espacioOcupado ) y escribo en ese lugar
+					 * 4)Para escribir me aseguro que entra y deja 20% del bloque libre.
+					 * 5)Actualizo el elemento dentro de la lista de espacio libre en los bloques.
+					 */
+					
+				} else {
+					//TODO: Tengo que definir bytes, tengo que cortarlo
+					//TODO: Actualizar la lista de espacios libres con lo que queda de este bloque
+					bytesAEscribir = armarDatosBloque((long) 0, bytes, (short) 0, (short) (tamanioDatosControl + bytes.length));
+					try {
+						this.archivo.insertar(bytesAEscribir, (long) this.cantidadBloques+1);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					this.cantidadBloques++;
+				}
+			} else {
+				//Inserto un registro nuevo
+				//TODO: Tengo que definir bytes, tengo que cortarlo
+				//TODO: Actualizar la lista de espacios libres con lo que queda de este bloque
+				bytesAEscribir = armarDatosBloque((long) 0, bytes, (short) 0, (short) (tamanioDatosControl + bytes.length));
+				try {
+					this.archivo.insertar(bytesAEscribir, (long) this.cantidadBloques+1);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				this.cantidadBloques++;
 			}
+			
 			
 		}
 		
 		//Defino el dato de control
 		//bytesDeControl = Conversiones.longToArrayByte(0L);
-		
-		//Genero el ultimo o unico bloque
-		bytesAEscribir = this.armarDatosControlBloque((long) Constantes.SIZE_OF_INDEX_BLOCK,bytes,totalBloques-1);
 		
 		//Datos del Registro
 		//file.write(bytesAEscribir, (int)(offset + (totalBloques-1)*Constantes.SIZE_OF_INDEX_BLOCK) , Constantes.SIZE_OF_INDEX_BLOCK);
