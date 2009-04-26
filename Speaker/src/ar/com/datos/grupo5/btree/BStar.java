@@ -6,7 +6,7 @@ package ar.com.datos.grupo5.btree;
 import ar.com.datos.grupo5.registros.RegistroNodo;
 
 /**
- * Clase que implementa el nodo de los árboles B*.
+ * Clase que implementa árboles B*.
  * @author Led Zeppelin
  */
 public final class BStar implements BTree {
@@ -20,6 +20,14 @@ public final class BStar implements BTree {
 	 * Nodo Raiz.
 	 */
 	private Nodo nodoRaiz;
+	
+	/**
+	 * Constructor.
+	 */
+	public BStar() {
+		nodoActual = null;
+		nodoRaiz = null;
+	}
 
 	/**
 	 * Buscar recursivo.
@@ -111,7 +119,7 @@ public final class BStar implements BTree {
 	 * @param clave .
 	 * @return El nodo buscado.
 	 */
-	public final Nodo buscarNodo(final Clave clave) {
+	public Nodo buscarNodo(final Clave clave) {
 		
 		if (nodoRaiz == null) {
 			return null;
@@ -161,22 +169,31 @@ public final class BStar implements BTree {
 	}
 	
 	/**
-	 * @see ar.com.datos.grupo5.btree.BTree#insertar(ar.com.datos.grupo5.interfaces.Registro)
+	 * Inserta un registro en el Arbol.
+	 * 
+	 * @param registro
+	 *            El registro para insertar.
+	 * @return true si lo inserta.
 	 */
 	public boolean insertar(final RegistroNodo registro) {
-		// TODO Auto-generated method stub
-		if(this.nodoRaiz == null) {
+		// TODO Terminar de implementar.
+		
+		if (this.nodoRaiz == null) {
+			
 			this.nodoRaiz = new Nodo();
 			this.nodoRaiz.insertarRegistro(registro);
 			this.nodoActual = this.nodoRaiz;
 		}
+		
 		Nodo nodo = this.buscarNodo(registro.getClaveNodo());
 		nodo.insertarRegistro(registro);
 		return true;
 	}
 
 	/**
-	 * @see ar.com.datos.grupo5.btree.BTree#modificar(ar.com.datos.grupo5.interfaces.Registro)
+	 * true si lo modifica.
+	 * @param registro El registro que se quiere modificar.
+	 * @return true si lo modifica.
 	 */
 	public boolean modificar(final RegistroNodo registro) {
 		// TODO Auto-generated method stub
@@ -184,7 +201,7 @@ public final class BStar implements BTree {
 	}
 
 	/**
-	 * @see ar.com.datos.grupo5.btree.BTree#siguiente()
+	 * @return El registro siguiente. Null si no existe siguiente.
 	 */
 	public RegistroNodo siguiente() {
 		// TODO Auto-generated method stub
