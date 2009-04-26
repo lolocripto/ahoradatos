@@ -84,7 +84,7 @@ public class ArchivoBloques extends Directo {
 	 */
 	public void insertar(final byte[] bytes, final Long offset) throws IOException {
 		// Me posiciono al comienzo del bloque.
-		file.seek(offset * Constantes.SIZE_OF_INDEX_BLOCK);
-		file.write(bytes, 0, Constantes.SIZE_OF_INDEX_BLOCK);
+		file.seek(offset * tamanio);
+		file.write(bytes, 0, tamanio);
 	}
 }

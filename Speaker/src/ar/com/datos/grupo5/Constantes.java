@@ -72,6 +72,11 @@ public final class Constantes {
 	 */
 	public static final String ABRIR_PARA_LECTURA_ESCRITURA = "rw";
 		
+	/**
+     * Tamaño en bytes del char.
+	 */
+	public static final int SIZE_OF_CHAR = Character.SIZE / SIZE_OF_BYTE;
+	
     /**
      * Tamaño en bytes del long.
 	 */

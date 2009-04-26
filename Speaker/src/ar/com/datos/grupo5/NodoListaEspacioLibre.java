@@ -31,6 +31,12 @@ public class NodoListaEspacioLibre {
 	private int moreBytes;
 	
 	/**
+	 * El tamaño que ocupa en archivo.
+	 */
+	private int tamanioNodo = Constantes.SIZE_OF_INT + Constantes.SIZE_OF_SHORT;
+	
+	
+	/**
 	 * Permite obtener el espacio libre para el bloque asociado.
 	 * @return
 	 * 		El espacio libre del bloque.
@@ -120,6 +126,20 @@ public class NodoListaEspacioLibre {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * @param tamanioNodo the tamanioNodo to set
+	 */
+	public void setSize(int tamanioNodo) {
+		this.tamanioNodo = tamanioNodo;
+	}
+
+	/**
+	 * @return the tamanioNodo
+	 */
+	public int getSize() {
+		return tamanioNodo;
 	}
 
 }

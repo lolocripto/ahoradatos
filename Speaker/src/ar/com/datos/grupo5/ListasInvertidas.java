@@ -79,7 +79,7 @@ public class ListasInvertidas {
 	public final boolean abrir(final String archivoNombre, final String modo)
 			throws FileNotFoundException {
 		if (!this.archivo.abrir(archivoNombre, modo)){
-			logger.debug("No se pudo abrir archivo de listas invertidas.");
+			logger.error("No se pudo abrir archivo de listas invertidas.");
 			return false;
 		}
 		return this.validarEncabezado();
@@ -371,7 +371,7 @@ public class ListasInvertidas {
 	private boolean validarEncabezado() {
 		//TODO: Implementar
 		// CantidadBloques|offset Lista de lugares libres
-		logger.debug("Intento validar el encabezado.");
+		logger.error("Intento validar el encabezado.");
 		return leerEncabezadoArchivo();
 	}
 	
@@ -384,7 +384,7 @@ public class ListasInvertidas {
 		byte[] datosControlArchivo = null;
 		char control;
 
-		logger.debug("Empiezo a leer el encabezado.");
+		logger.error("Empiezo a leer el encabezado.");
 		try {
 			//TODO: Implementar
 			//Leo el primer bloque
@@ -393,28 +393,28 @@ public class ListasInvertidas {
 			//TODO: Este if debería ser una Exception
 			if (datosControlArchivo.length > 0) {
 				
-				logger.debug("Hay datos en el encabezado.");
+				logger.error("Hay datos en el encabezado.");
 				
 				ByteArrayInputStream bis 
 				  = new ByteArrayInputStream(datosControlArchivo);  
 				DataInputStream dis = new DataInputStream(bis);
 				
-				logger.debug("Leo el char de control.");
+				logger.error("Leo el char de control.");
 				control = dis.readChar();
 				if (control == 'C') {
-					logger.debug("Es bloque de control.");
+					logger.error("Es bloque de control.");
 					this.setCantidadBloques(dis.readInt());
 					this.setNroBloqueLista(dis.readInt());
-					logger.debug("Lei cantidad de bloques y bloque en que " +
+					logger.error("Lei cantidad de bloques y bloque en que " +
 							"esta la lista de espacios libres.");
 					return levantarListaAMemoria();
 				} else {
-					logger.debug("El encabezado esta corrupto.");
+					logger.error("El encabezado esta corrupto.");
 					return escribirEncabezadoArchivo();
 				}
 					
 			} else {
-				logger.debug("No hay datos en el encabezado.");
+				logger.error("No hay datos en el encabezado.");
 				return escribirEncabezadoArchivo();
 			}
 			
@@ -432,8 +432,7 @@ public class ListasInvertidas {
 	 * 		False si no lo puede escribir.
 	 */
 	private boolean escribirEncabezadoArchivo() {
-		//TODO: Implementar
-		logger.debug("Voy a escribir el encabezado del archivo de bloques.");
+		logger.error("Voy a escribir el encabezado del archivo de bloques.");
 		
 		byte[] encabezadoBytes = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
 		
@@ -445,18 +444,79 @@ public class ListasInvertidas {
 			dos.writeChar('C');
 			dos.writeInt(this.cantidadBloques);
 			dos.writeInt(2);
-			logger.debug("Defini los datos del encabezado.");
+			logger.error("Defini los datos del encabezado.");
 			System.arraycopy(bos.toByteArray(), 0, encabezadoBytes, 0, bos.toByteArray().length);
 
 			this.archivo.insertar(encabezadoBytes, 0L);
-			logger.debug("Escribi los datos del encabezado.");
+			logger.error("Escribi los datos del encabezado.");
 			return true;
 		} catch (IOException e) {
-			logger.debug("Error al definir los datos del encabezad o al insertar el encabezado.");
+			logger.error("Error al definir los datos del encabezad o al insertar el encabezado.");
 			e.printStackTrace();
 			return false;
 		}
 	}
+	
+	/**
+	 * Escribe la lista de espacios libres al archivo de bloques.
+	 * @return
+	 * 		True si la logra escribir y False si no puede escribirla.
+	 */
+	private boolean escribirListaAArchivo() {
+
+		byte[] ListaEspaciosLibresBytes = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
+		boolean masBloques;
+		
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+		DataOutputStream dos = new DataOutputStream(bos);
+		
+		int tamanioTotalLista = this.espacioLibrePorBloque.size() * (Constantes.SIZE_OF_SHORT + Constantes.SIZE_OF_INT);
+		int tamanioTotalDisponibleXBloque = Constantes.BUFFER_LECTURA_TEXT_INPUT - (Constantes.SIZE_OF_INT * 2 + Constantes.SIZE_OF_CHAR);
+		int totalBloques = 0;
+		
+		//Miro si tengo que generar mas bloques
+		masBloques = (tamanioTotalLista > tamanioTotalDisponibleXBloque);
+		
+		if (masBloques) {
+			
+			//Calculo la cantidad de bloques
+			totalBloques = tamanioTotalLista / tamanioTotalDisponibleXBloque;
+			if ((tamanioTotalLista % tamanioTotalDisponibleXBloque) > 0) {
+				totalBloques++;
+			}
+			
+			/* Armo los bloques que serán escritos al final del archivo 
+			 * pero el ultimo lo escribo a parte ya que el 
+			 * "siguiente" es distinto*/
+			for (int i = 0; i < totalBloques-1; i++) {
+
+				//Armo el bloque para la lista
+				
+				
+			//	ListaEspaciosLibresBytes = armarDatosBloque((long) this.cantidadBloques+2, ListaEspaciosLibresBytes, (short) 0, (short) (tamanioDatosControl + bytes.length));
+				try {
+					this.archivo.insertar(ListaEspaciosLibresBytes, (long) this.cantidadBloques+1);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				this.cantidadBloques++;
+				
+			}
+			/*
+			//TODO: Tengo que definir bytes, tengo que cortarlo
+			bytesAEscribir = armarDatosBloque(0L, bytes, (short) (tamanioDatosControl + bytes.length), (short) (tamanioDatosControl + bytes.length));
+			try {
+				this.archivo.insertar(bytesAEscribir, (long) this.cantidadBloques+1);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			*/
+			
+		}
+		
+		return true;
+	}
+	
 	/**
 	 * Levanta la lista de espacios libres a memoria.
 	 * @return
@@ -464,7 +524,45 @@ public class ListasInvertidas {
 	 * 			lista de espacio Libres. False si no lo logra.
 	 */
 	private boolean levantarListaAMemoria() {
-		logger.debug("Voy a levantar la lista de espacios a memoria.");
+		
+		logger.error("Voy a levantar la lista de espacios a memoria.");
+		
+		char Tipo;
+		int siguienteBloque;
+		int	cantidadElementos;
+		NodoListaEspacioLibre nodo;
+		try {
+			this.datosLeidosPorBloque = this.archivo.leerBloque( (long) this.nroBloqueLista);
+			ByteArrayInputStream bis = new ByteArrayInputStream(this.datosLeidosPorBloque);  
+			DataInputStream dis = new DataInputStream(bis);
+
+			Tipo = dis.readChar();
+			if (Tipo != 'C') {
+				escribirListaAArchivo();
+				return false;
+			}
+			
+			siguienteBloque = dis.readInt();
+			
+			//Leo la lista, 
+			//cantidadElementos de la lista
+			
+			cantidadElementos = dis.readInt();
+			
+			int i = 0;
+			
+			while (i < cantidadElementos) {
+				nodo = new NodoListaEspacioLibre();
+				nodo.setEspacio(dis.readShort());
+				nodo.setNroBloque(dis.readInt());
+				i++;
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
 		return true;
 	}
 	
