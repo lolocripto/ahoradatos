@@ -45,12 +45,12 @@ public class Nodo {
 	/**
 	 * Puntero al nodo siguiente para recorrer como lista.
 	 */
-	private Nodo nodoSiguiente;
+	private Integer nroBloqueSiguiente;
 
 	/**
 	 * Puntero al nodo anterior para pasarse registros como lista.
 	 */
-	private Nodo nodoAnterior;
+	private Integer nroBloqueAnterior;
 	
 	/**
 	 * Si el nodo es hoja o no.
@@ -72,11 +72,11 @@ public class Nodo {
 	 */
 	public Nodo() {
 		
-		this.nodoSiguiente = null;
-		this.nodoAnterior = null;
-		this.nodoPadre = null;
-		this.registros = new ArrayList<RegistroNodo>();
-		this.espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
+		nroBloqueSiguiente = null;
+		nroBloqueAnterior = null;
+		nodoPadre = null;
+		registros = new ArrayList<RegistroNodo>();
+		espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
 	}
 	
 	/**
@@ -85,11 +85,11 @@ public class Nodo {
 	 */
 	public Nodo(final Nodo nodo) {
 		
-		this.nodoSiguiente = null;
-		this.nodoAnterior = null;
-		this.nodoPadre = nodo;
-		this.registros = new ArrayList<RegistroNodo>();
-		this.espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
+		nroBloqueSiguiente = null;
+		nroBloqueAnterior = null;
+		nodoPadre = nodo;
+		registros = new ArrayList<RegistroNodo>();
+		espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
 	}	
 	
 	/**********************
@@ -208,29 +208,30 @@ public class Nodo {
 	 */
 	public final boolean pasarRegistro(final RegistroNodo registro) {
 		// FIXME Hacer los metodos para saber si hay lugar en los nodos!!
-		if (this.nodoSiguiente == null) {
-			if (this.nodoAnterior == null) {
+		/*if (nodoSiguiente == null) {
+			if (nodoAnterior == null) {
 				// Es el unico nodo -> Raiz SOLA!!!!!
 				return false;
 			}
-			if (this.nodoAnterior
-					.ocupar(this.getPrimerRegistro().getBytes().length)) {
+			if (nodoAnterior
+					.ocupar(getPrimerRegistro().getBytes().length)) {
 				RegistroNodo regAux;
 
-				this.nodoAnterior.insertarRegistro(this.getPrimerRegistro());
+				nodoAnterior.insertarRegistro(getPrimerRegistro());
 				// Modificar la clave del padre del anterior
 				return true;
 			}
 		} else {
-			if (this.nodoSiguiente
+			if (nodoSiguiente
 					.ocupar(this.getPrimerRegistro().getBytes().length)) {
 				RegistroNodo regAux;
 				
 				this.nodoSiguiente.insertarRegistro(this.getUltimoRegistro());
+
 				// Modificar la clave del padre del siguiente
 				return true;
 			}
-		}
+		}*/
 		return false;
 	}
 	
@@ -261,8 +262,9 @@ public class Nodo {
 			// Buscar el registro que asegura 66%
 			
 			// Llenar nodo hno
-			this.nodoSiguiente = nodo;
-			nodo.nodoAnterior = this;
+			//FIXME
+			//this.nodoSiguiente = nodo;
+			//nodo.nodoAnterior = this;
 			nodo.nodoPadre = nodoAux;
 			
 			
@@ -319,13 +321,6 @@ public class Nodo {
 	public final int getEspacioOcupado() {
 		return espacioOcupado;
 	}
-
-	/**
-	 * @return the siguiente
-	 */
-	public final Nodo getSiguiente() {
-		return nodoSiguiente;
-	}
 	
 	/**
 	 * @return the esHoja
@@ -370,19 +365,6 @@ public class Nodo {
 	}
 	
 	/**
-	 * @param nodo the siguiente to set.
-	 */
-	public final void setSiguiente(final Nodo nodo) {
-		this.nodoSiguiente = nodo;
-	}
-
-	/**
-	 * @param nodo the anterior to set.
-	 */
-	public final void setAnterior(final Nodo nodo) {
-		this.nodoAnterior = nodo;
-	}
-	/**
 	 * @param hoja the esHoja to set
 	 */
 	public final void setEsHoja(final boolean hoja) {
@@ -401,5 +383,33 @@ public class Nodo {
 	 */
 	public final RegistroNodo getUltimoRegistro() {
 		return this.registros.get(registros.size() - 1);
+	}
+
+	/**
+	 * @return the nroBloqueSiguiente
+	 */
+	public final Integer getNroBloqueSiguiente() {
+		return nroBloqueSiguiente;
+	}
+
+	/**
+	 * @param nroBloque the nroBloqueSiguiente to set
+	 */
+	public final void setNroBloqueSiguiente(final Integer nroBloque) {
+		this.nroBloqueSiguiente = nroBloque;
+	}
+
+	/**
+	 * @return the nroBloqueAnterior
+	 */
+	public final Integer getNroBloqueAnterior() {
+		return nroBloqueAnterior;
+	}
+
+	/**
+	 * @param nroBloque the nroBloqueAnterior to set
+	 */
+	public final void setNroBloqueAnterior(final Integer nroBloque) {
+		this.nroBloqueAnterior = nroBloque;
 	}
 }

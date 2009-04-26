@@ -75,14 +75,16 @@ public class ArchivoBloques extends Directo {
 	 * Metodo para Insertar la cadena en el archivo en el que se está
 	 * trabajando.
 	 * 
-	 * @param registro
+	 * @param bytes
 	 *            Es el registro que se va a agregar al archivo.
 	 * @param offset
 	 *            Es la posición en donde comienza el bloque a modificar.
 	 * @throws IOException
 	 *             Excepcion de extrada/salida.
 	 */
-	public void escribirBloque(final byte[] bytes, final Long offset) throws IOException {
+	public void escribirBloque(final byte[] bytes, final Long offset)
+			throws IOException {
+
 		// Me posiciono al comienzo del bloque.
 		file.seek(offset * tamanio);
 		file.write(bytes, 0, tamanio);

@@ -3,6 +3,13 @@
  */
 package ar.com.datos.grupo5.btree;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.apache.log4j.Logger;
+
+import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.archivos.ArchivoBloques;
 import ar.com.datos.grupo5.registros.RegistroNodo;
 
 /**
@@ -10,6 +17,16 @@ import ar.com.datos.grupo5.registros.RegistroNodo;
  * @author Led Zeppelin
  */
 public final class BStar implements BTree {
+
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOG = Logger.getLogger(BStar.class);
+	
+	/**
+	 * archivo para el arbol.
+	 */
+	private ArchivoBloques archivo;
 	
 	/**
 	 * Nodo Actual.
@@ -27,6 +44,7 @@ public final class BStar implements BTree {
 	public BStar() {
 		nodoActual = null;
 		nodoRaiz = null;
+		archivo = new ArchivoBloques();
 	}
 	
 	/**
@@ -49,11 +67,29 @@ public final class BStar implements BTree {
 	public RegistroNodo buscar(final Clave clave) {
 		//FIXME: Revisar.
 		
+		//Abro el archivo.
+		try {
+			archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
+					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+		} catch (FileNotFoundException e) {
+			LOG.error("Error: " + e.getMessage(), e);
+			e.printStackTrace();
+		}
+		
 		//Obtengo el nodo en el que podria estar la clave.
 		Nodo nodo = buscarNodo(clave);
 		
 		//Verifico si la clave está.
 		int posReg = nodo.buscarRegistro(clave);
+		
+		//Cierro el archivo.
+		try {
+			archivo.cerrar();
+		} catch (IOException e) {
+			LOG.error("", e);
+			e.printStackTrace();
+		}
+		
 		switch (posReg) {
 		case MENOR:
 		case MAYOR:
@@ -140,6 +176,8 @@ public final class BStar implements BTree {
 			this.nodoRaiz = new Nodo();
 			//El primero es hoja al pricipio.
 			nodoRaiz.setEsHoja(true);
+			registro.setNroBloqueDerecha(null);
+			registro.setNroBloqueIzquierdo(null);
 			this.nodoRaiz.insertarRegistro(registro);
 			return true;
 		}

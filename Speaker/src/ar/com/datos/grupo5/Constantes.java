@@ -157,7 +157,15 @@ public final class Constantes {
 	/**
 	 * Archivo que usa ListasInvertidas para guardar las listas invertidas.
 	 */
-	public static final String ARCHIVO_LISTAS_INVERTIDAS = getXML("ARCHIVO_LISTAS_INVERTIDAS");	
+	public static final String ARCHIVO_LISTAS_INVERTIDAS = 
+		getXML("ARCHIVO_LISTAS_INVERTIDAS");	
+	
+	/**
+	 * Archivo para el arbol BStar.
+	 */
+	public static final String ARCHIVO_ARBOL_BSTAR = 
+		getXML("ARCHIVO_ARBOL_BSTAR");
+	
 	/**
 	 * Lee delarchivo de configuracion.
 	 * 
