@@ -103,8 +103,10 @@ public class Nodo {
 	 * 
 	 * @param clave
 	 *            .
-	 * @return El indice en el array en donde esta el registro que contiene la
-	 *         clave o del primer elemento que es mayor a la clave. 
+	 * @return * El indice en el array en donde esta el registro que contiene la
+	 *         clave o del primer elemento que es mayor a la clave.
+	 *         * -1 si la clave es menor a la clave del primer registro.
+	 *         * -2 si la clave es mayor a la clave del ultimo registro.
 	 */
 	public final int buscarRegistro(final Clave clave) {
 
@@ -115,12 +117,12 @@ public class Nodo {
 			return 0;
 		}
 		
-		// Si la clave es menor a la primera, no está.
+		// Si la clave es menor a la primera, no estï¿½.
 		if (clave.compareTo(registros.get(0).getClave()) < 0) {
 			return -1;
 		}
 
-		// Si la clave es mayor a la ultima, no está.
+		// Si la clave es mayor a la ultima, no estï¿½.
 		if (clave.compareTo(registros.get(registros.size() - 1)
 				.getClave()) > 0) {
 			return -2;
@@ -188,7 +190,7 @@ public class Nodo {
 	 */
 	public final boolean PasarRegistro(final RegistroNodo registro, 
 			final boolean lugar) {
-		// FIXME Hacer los métodos para saber si hay lugar en los nodos!!
+		// FIXME Hacer los mï¿½todos para saber si hay lugar en los nodos!!
 		if(lugar == false){
 			// Pasar al hno Anterior
 			
@@ -334,20 +336,19 @@ public class Nodo {
 	public final Nodo splitNodo() {
 		Nodo nodo = new Nodo();
 		
-		if(this.nodoPadre == null){
-			//Es la raiz!!!!!!
+		if (this.nodoPadre == null) {
+			// Es la raiz!!!!!!
 			// Partir en 2 o en 3 y uno de los otros es nuevo raiz
-			
+
 		}
-		if(this.nodoSiguiente != null){
-			//Junto con el siguiente
-			
-			//Busco posición donde tengo que partir el nodo
-			//contabilizando bytes
-		}
-		else{
-			//Junto con el anterior
-			
+		if (this.nodoSiguiente != null) {
+			// Junto con el siguiente
+
+			// Busco posiciï¿½n donde tengo que partir el nodo
+			// contabilizando bytes
+		} else {
+			// Junto con el anterior
+
 		}
 		//Luego ver si tengo que generar el padre!!!!	
 		return nodo;
