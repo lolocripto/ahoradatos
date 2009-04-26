@@ -28,6 +28,7 @@ public final class TestRam {
 		// TODO Auto-generated method stub
 		ListasInvertidas listasI = new ListasInvertidas();
 		
+		System.out.println((Integer.SIZE + Short.SIZE)/8);
 		/*
 		 * Abro el archivo para la carga y consulta del diccionario
 		 */

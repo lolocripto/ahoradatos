@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -471,7 +472,7 @@ public class ListasInvertidas {
 		try {
 			dos.writeChar('C');
 			dos.writeInt(this.cantidadBloques);
-			dos.writeInt(2);
+			dos.writeInt(1);
 			logger.error("Defini los datos del encabezado.");
 			System.arraycopy(bos.toByteArray(), 0, encabezadoBytes, 0, bos.toByteArray().length);
 
@@ -495,53 +496,88 @@ public class ListasInvertidas {
 		byte[] ListaEspaciosLibresBytes = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
 		boolean masBloques;
 
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		DataOutputStream dos = new DataOutputStream(bos);
+		int tamanioDatosControl = Constantes.SIZE_OF_INT * 2 + Constantes.SIZE_OF_CHAR;
+		int tamanioTotalDisponibleXBloque = Constantes.BUFFER_LECTURA_TEXT_INPUT - (tamanioDatosControl);
+		//Division Entera
+		int maxCantidadNodosPorBloque = tamanioTotalDisponibleXBloque/tamanioDatosControl;
+		
+		int cantidadElementosFaltantes = this.espacioLibrePorBloque.size(); 
+		
+		int bloqueActual = this.nroBloqueLista;
+		int bloqueSiguiente = this.nroBloqueLista;
 
-		int tamanioTotalLista = this.espacioLibrePorBloque.size()
-				* (Constantes.SIZE_OF_SHORT + Constantes.SIZE_OF_INT);
-		int tamanioTotalDisponibleXBloque = Constantes.BUFFER_LECTURA_TEXT_INPUT
-				- (Constantes.SIZE_OF_INT * 2 + Constantes.SIZE_OF_CHAR);
-		int totalBloques = 0;
+		NodoListaEspacioLibre nodoLibre;
 		
-		//Miro si tengo que generar mas bloques
-		masBloques = (tamanioTotalLista > tamanioTotalDisponibleXBloque);
-		
-		if (masBloques) {
+		Iterator<NodoListaEspacioLibre> it = this.espacioLibrePorBloque.iterator();
+		//Obtengo el Siguiente del bloque
+		try {
+		while ( it.hasNext() && cantidadElementosFaltantes > 0) {
 			
-			//Calculo la cantidad de bloques
-			totalBloques = tamanioTotalLista / tamanioTotalDisponibleXBloque;
-			if ((tamanioTotalLista % tamanioTotalDisponibleXBloque) > 0) {
-				totalBloques++;
+			//Leo el bloque
+		    byte[] bloqueLista = this.archivo.leerBloque((long) bloqueActual);
+			ByteArrayInputStream bis = new ByteArrayInputStream(bloqueLista);  
+			DataInputStream dis = new DataInputStream(bis);
+			
+			//Es un bloque de control?
+			if (dis.readChar() != 'C') {
+				return false;
 			}
-			
-			/* Armo los bloques que serán escritos al final del archivo 
-			 * pero el ultimo lo escribo a parte ya que el 
-			 * "siguiente" es distinto*/
-			for (int i = 0; i < totalBloques-1; i++) {
 
-				//Armo el bloque para la lista
-				
-				
-			//	ListaEspaciosLibresBytes = armarDatosBloque((long) this.cantidadBloques+2, ListaEspaciosLibresBytes, (short) 0, (short) (tamanioDatosControl + bytes.length));
-				try {
-					this.archivo.insertar(ListaEspaciosLibresBytes, (long) this.cantidadBloques+1);
-				} catch (IOException e) {
-					e.printStackTrace();
+			bloqueSiguiente = dis.readInt();
+			bis.close();
+			
+			nodoLibre = it.next();
+			
+			//Empiezo a preparar el nuevo bloque
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+			DataOutputStream dos = new DataOutputStream(bos);
+			
+			//Escribo datos de control
+			dos.writeChar('C');
+			
+			
+			if (cantidadElementosFaltantes < maxCantidadNodosPorBloque) {
+				//Escribo parte de un bloque
+				dos.writeInt(0);
+				dos.writeInt(cantidadElementosFaltantes);
+				for (int i = 0; i < cantidadElementosFaltantes && it.hasNext(); i++) {
+					dos.writeShort(nodoLibre.getEspacio());
+					dos.writeInt(nodoLibre.getNroBloque());
+					nodoLibre = it.next();
 				}
-				this.cantidadBloques++;
+				cantidadElementosFaltantes -= cantidadElementosFaltantes;
+				this.archivo.insertar(bos.toByteArray(), (long) bloqueActual);
+			} else {
+				//Escribo un bloque completo
+				/* 
+				 * Si es cero entonces pongo el nuevo bloque que voy a crear. 
+				 * Como sé que voy a crear un nuevo bloque aumento al 
+				 * cantidad de bloques en el archivo
+				 */
+
+				if (bloqueSiguiente == 0) {
+					bloqueSiguiente = this.cantidadBloques + 1;
+					this.cantidadBloques++;
+				}
 				
+				dos.writeInt(bloqueSiguiente);
+				dos.writeInt(maxCantidadNodosPorBloque);
+				
+				for (int i = 0; i < maxCantidadNodosPorBloque && it.hasNext(); i++) {
+					dos.writeShort(nodoLibre.getEspacio());
+					dos.writeInt(nodoLibre.getNroBloque());
+					nodoLibre = it.next();
+				}
+				cantidadElementosFaltantes -= maxCantidadNodosPorBloque;
+				this.archivo.insertar(bos.toByteArray(), (long) bloqueActual);
+				bloqueActual = bloqueSiguiente;
 			}
-			/*
-			//TODO: Tengo que definir bytes, tengo que cortarlo
-			bytesAEscribir = armarDatosBloque(0L, bytes, (short) (tamanioDatosControl + bytes.length), (short) (tamanioDatosControl + bytes.length));
-			try {
-				this.archivo.insertar(bytesAEscribir, (long) this.cantidadBloques+1);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			*/
-			
+			//Insertar el registro
+			bos.reset();
+		}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		return true;
