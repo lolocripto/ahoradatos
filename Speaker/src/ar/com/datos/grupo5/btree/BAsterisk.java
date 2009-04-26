@@ -23,11 +23,11 @@ public final class BAsterisk implements BTree {
 
 	/**
 	 * Buscar recursivo.
-	 * @param clave
-	 * @param nodo
-	 * @return
+	 * @param clave .
+	 * @param nodo .
+	 * @return .
 	 */
-	public RegistroNodo buscarRec(final Clave clave, Nodo nodo) {
+	public RegistroNodo buscarRec(final Clave clave, final Nodo nodo) {
 		
 		Nodo nodoAux = nodo;
 		RegistroNodo registro = null;
@@ -90,15 +90,19 @@ public final class BAsterisk implements BTree {
 		int posReg = nodo.buscarRegistro(clave); 
 		switch (posReg) {
 		case -1:
-			return nodo.getPrimerRegistro();
-
+			//return null;
+			//return nodo.getPrimerRegistro();
 		case -2:
-			return nodo.getUltimoRegistro();
+			return null;
+			//return nodo.getUltimoRegistro();
 			
 		default:
-			
-			return nodo.getRegistros().get(posReg);
-		} 
+			if (nodo.getRegistros().get(posReg).getClaveNodo().equals(clave)) {
+				return nodo.getRegistros().get(posReg);
+			} else {
+				return null;
+			}
+		}
 	}
 
 	/**
