@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.ListasInvertidas;
 import ar.com.datos.grupo5.btree.Clave;
-import ar.com.datos.grupo5.btree.Nodo;
 import ar.com.datos.grupo5.interfaces.Registro;
 
 /**
