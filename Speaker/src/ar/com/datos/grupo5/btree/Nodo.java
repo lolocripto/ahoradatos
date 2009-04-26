@@ -2,6 +2,7 @@ package ar.com.datos.grupo5.btree;
 
 import java.util.ArrayList;
 
+import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.registros.RegistroNodo;
 
 /**
@@ -31,6 +32,7 @@ public class Nodo {
 		this.nodoPadre = null;
 		this.registros = new ArrayList<RegistroNodo>();
 		this.nodos = new ArrayList<Nodo>();
+		this.espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
 	}
 	
 	/**
@@ -44,6 +46,7 @@ public class Nodo {
 		this.nodoPadre = nodo;
 		this.registros = new ArrayList<RegistroNodo>();
 		this.nodos = new ArrayList<Nodo>();
+		this.espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
 	}
 	
 	/**
@@ -113,10 +116,8 @@ public class Nodo {
 	 * 
 	 * @param clave
 	 *            .
-	 * @return * El indice en el array en donde esta el registro que contiene la
-	 *         clave o del primer elemento que es mayor a la clave.
-	 *         * -1 si la clave es menor a la clave del primer registro.
-	 *         * -2 si la clave es mayor a la clave del ultimo registro.
+	 * @return El indice en el array en donde esta el registro que contiene la
+	 *         clave o del primer elemento que es mayor a la clave. 
 	 */
 	public final int buscarRegistro(final Clave clave) {
 
@@ -127,12 +128,12 @@ public class Nodo {
 			return 0;
 		}
 		
-		// Si la clave es menor a la primera, no est�.
+		// Si la clave es menor a la primera, no está.
 		if (clave.compareTo(registros.get(0).getClave()) < 0) {
 			return MENOR;
 		}
 
-		// Si la clave es mayor a la ultima, no est�.
+		// Si la clave es mayor a la ultima, no está.
 		if (clave.compareTo(registros.get(registros.size() - 1)
 				.getClave()) > 0) {
 			return MAYOR;
@@ -196,16 +197,18 @@ public class Nodo {
 	
 	/**
 	 * @param registro the registro to set
-	 * @param lugar .
+	 * @param siguiente Es para saber si es el anterior o el siguiente.
 	 * @return .
 	 */
 	public final boolean pasarRegistro(final RegistroNodo registro,
-			final boolean lugar) {
-		// FIXME Hacer los m�todos para saber si hay lugar en los nodos!!
-		if (!lugar) {
+			final boolean siguiente) {
+		// FIXME Hacer los métodos para saber si hay lugar en los nodos!!
+		if(siguiente == false){
 			// Pasar al hno Anterior
-
-		} else {
+			// Ver que no esté lleno, sumandole al espacio ocupado, el espacio
+			// del registro.
+		}
+		else{
 			// Pasar al hermano siguiente
 
 		}
@@ -340,24 +343,37 @@ public class Nodo {
 	}*/
 	
 	/**
+	 * @param lugar es el nodo con el cual lo tengo que tratar para dividir.
 	 * @return the nodos
 	 */
-	public final Nodo splitNodo() {
+	public final Nodo splitNodo(final boolean lugar) {
 		Nodo nodo = new Nodo();
-		
-		if (this.nodoPadre == null) {
-			// Es la raiz!!!!!!
-			// Partir en 2 o en 3 y uno de los otros es nuevo raiz
-
+		// FIXME Hacer el metodo
+		if(this.nodoPadre == null){
+			//Es la raiz!!!!!!
+			// Partir en 2! Si, se me canta. Y que?
+			Nodo nodo_aux = new Nodo();
+			this.nodoPadre = nodo_aux;
+			// Buscar el registro que asegura 66%
+			
+			// Llenar nodo hno
+			this.nodoSiguiente = nodo;
+			nodo.nodoAnterior = this;
+			nodo.nodoPadre = nodo_aux;
+			
+			nodo_aux.insertarNodo(this);
+			nodo_aux.insertarNodo(nodo);
+			
 		}
-		if (this.nodoSiguiente != null) {
-			// Junto con el siguiente
-
-			// Busco posici�n donde tengo que partir el nodo
-			// contabilizando bytes
-		} else {
-			// Junto con el anterior
-
+		if(lugar == true){
+			//Junto con el siguiente
+			
+			//Busco posicion donde tengo que partir el nodo
+			//contabilizando bytes
+		}
+		else{
+			//Junto con el anterior
+			
 		}
 		//Luego ver si tengo que generar el padre!!!!	
 		return nodo;
