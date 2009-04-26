@@ -1,9 +1,10 @@
-package ar.com.datos.grupo5;
+package ar.com.datos.grupo5.registros;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.utils.Conversiones;
 
 import ar.com.datos.grupo5.interfaces.Registro;
