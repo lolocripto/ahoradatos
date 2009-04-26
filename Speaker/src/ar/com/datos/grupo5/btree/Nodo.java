@@ -294,4 +294,28 @@ public class Nodo {
 	/*public final void setNodos(final ArrayList<Nodo> nodos) {
 		this.nodos = nodos;
 	}*/
+	
+	/**
+	 * @return the nodos
+	 */
+	public final Nodo splitNodo() {
+		Nodo nodo = new Nodo();
+		
+		if(this.nodoPadre == null){
+			//Es la raiz!!!!!!
+			
+		}
+		if(this.nodoSiguiente != null){
+			//Junto con el siguiente
+			
+			//Busco posición donde tengo que partir el nodo
+			//contabilizando bytes
+		}
+		else{
+			//Junto con el anterior
+			
+		}
+		//Luego ver si tengo que generar el padre!!!!	
+		return nodo;
+	}
 }
