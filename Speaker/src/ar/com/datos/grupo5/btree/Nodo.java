@@ -104,22 +104,27 @@ public class Nodo {
 
 		int pos = -1;
 		int resultado = 0;
+		
+		if (registros.size() == 0) {
+			return 0;
+		}
+		
 		// Si la clave es menor a la primera, no está.
-		if (registros.get(registros.size() - 1)
-				.getClaveNodo().compareTo(clave) == 1) {
+		if (registros.get(0)
+				.getClave().compareTo(clave) == 1) {
 			return -1;
 		}
 
 		// Si la clave es mayor a la ultima, no está.
 		if (registros.get(registros.size() - 1)
-				.getClaveNodo().compareTo(clave) == 1) {
+				.getClave().compareTo(clave) == 1) {
 			return -2;
 		}
 		
 		for (RegistroNodo reg : this.registros) {
 			pos++;
 			
-			resultado = reg.getClaveNodo().compareTo(clave);
+			resultado = reg.getClave().compareTo(clave);
 			switch (resultado) {
 				//Si es igual o mayor, devuelvo el indice.
 				case 0:
@@ -139,7 +144,7 @@ public class Nodo {
 	 * @param registro El reistro para insertar.
 	 */
 	public final void insertarRegistro(final RegistroNodo registro) {
-		int pos = this.buscarRegistro(registro.getClaveNodo());
+		int pos = this.buscarRegistro(registro.getClave());
 		this.registros.add(pos, registro);
 			
 	}
@@ -149,7 +154,7 @@ public class Nodo {
 	 * @return .
 	 */
 	public final boolean setRegistro(final RegistroNodo registro) {
-		int pos = this.buscarRegistro(registro.getClaveNodo());
+		int pos = this.buscarRegistro(registro.getClave());
 		if (pos >= 0) {
 			this.registros.set(pos, registro);
 			return true;
@@ -162,9 +167,10 @@ public class Nodo {
 	 */
 	public final void listar() {
 		
+		System.out.println();
 		System.out.println("Contenido del nodo:");
 		for (RegistroNodo reg : registros) {
-			System.out.println("==== " + reg.getClaveNodo().getClave());
+			System.out.println("==== " + reg.getClave().getClave());
 		}
 	}
 	

@@ -3,6 +3,8 @@
  */
 package ar.com.datos.grupo5.btree;
 
+import java.util.ArrayList;
+
 import ar.com.datos.grupo5.registros.RegistroNodo;
 
 /**
@@ -22,11 +24,17 @@ public final class BStar implements BTree {
 	private Nodo nodoRaiz;
 	
 	/**
+	 * Lista de nodos.
+	 */
+	private ArrayList<Nodo> nodos;
+	
+	/**
 	 * Constructor.
 	 */
 	public BStar() {
 		nodoActual = null;
 		nodoRaiz = null;
+		nodos = new ArrayList<Nodo>();
 	}
 
 	/**
@@ -66,7 +74,7 @@ public final class BStar implements BTree {
 			
 		default:
 			//Lo que encontre el igual.
-			if (nodoAux.getRegistros().get(posReg).getClaveNodo()
+			if (nodoAux.getRegistros().get(posReg).getClave()
 					.equals(clave)) {
 				
 				registro = nodoAux.getRegistros().get(posReg);
@@ -105,7 +113,7 @@ public final class BStar implements BTree {
 			//return nodo.getUltimoRegistro();
 			
 		default:
-			if (nodo.getRegistros().get(posReg).getClaveNodo().equals(clave)) {
+			if (nodo.getRegistros().get(posReg).getClave().equals(clave)) {
 				return nodo.getRegistros().get(posReg);
 			} else {
 				return null;
@@ -152,7 +160,7 @@ public final class BStar implements BTree {
 				
 			default: //Encontré la clave que buscaba o una mayor.
 				//Veo si lo que recupere el igual o mayor.
-				if (nodoAux.getRegistros().get(posReg).getClaveNodo().equals(
+				if (nodoAux.getRegistros().get(posReg).getClave().equals(
 						clave)) {
 					
 					return nodoAux;
@@ -180,12 +188,17 @@ public final class BStar implements BTree {
 		
 		if (this.nodoRaiz == null) {
 			
+			//Creo la raiz e inserto el registro.
 			this.nodoRaiz = new Nodo();
 			this.nodoRaiz.insertarRegistro(registro);
 			this.nodoActual = this.nodoRaiz;
+			this.nodos.add(nodoRaiz);
+			nodoRaiz.insertarRegistro(registro);
+			return true;
 		}
 		
-		Nodo nodo = this.buscarNodo(registro.getClaveNodo());
+		//Busco en donde insertar.
+		Nodo nodo = this.buscarNodo(registro.getClave());
 		nodo.insertarRegistro(registro);
 		return true;
 	}
@@ -206,6 +219,16 @@ public final class BStar implements BTree {
 	public RegistroNodo siguiente() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/**
+	 * 
+	 */
+	public void listar() {
+		
+		for (Nodo nodo : nodos) {
+			nodo.listar();
+		}
 	}
 
 }

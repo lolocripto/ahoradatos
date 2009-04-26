@@ -83,14 +83,14 @@ public class RegistroNodo implements Registro {
 	/**
 	 * @param clave the clave to set
 	 */
-	public final void setClaveNodo(final Clave clave) {
+	public final void setClave(final Clave clave) {
 		this.claveNodo = clave;
 	}
 
 	/**
 	 * @return the claveNodo
 	 */
-	public final Clave getClaveNodo() {
+	public final Clave getClave() {
 		return claveNodo;
 	}
 
