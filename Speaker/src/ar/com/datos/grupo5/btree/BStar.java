@@ -190,6 +190,8 @@ public final class BStar implements BTree {
 			
 			//Creo la raiz e inserto el registro.
 			this.nodoRaiz = new Nodo();
+			//El primero es hoja al pricipio.
+			nodoRaiz.setEsHoja(true);
 			this.nodoRaiz.insertarRegistro(registro);
 			this.nodos.add(nodoRaiz);
 			return true;
@@ -221,7 +223,7 @@ public final class BStar implements BTree {
 	}
 
 	/**
-	 * 
+	 * Para testear.
 	 */
 	public void listar() {
 		
