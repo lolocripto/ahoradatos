@@ -24,17 +24,11 @@ public final class BStar implements BTree {
 	private Nodo nodoRaiz;
 	
 	/**
-	 * Lista de nodos.
-	 */
-	private ArrayList<Nodo> nodos;
-	
-	/**
 	 * Constructor.
 	 */
 	public BStar() {
 		nodoActual = null;
 		nodoRaiz = null;
-		nodos = new ArrayList<Nodo>();
 	}
 
 	/**
@@ -193,7 +187,6 @@ public final class BStar implements BTree {
 			//El primero es hoja al pricipio.
 			nodoRaiz.setEsHoja(true);
 			this.nodoRaiz.insertarRegistro(registro);
-			this.nodos.add(nodoRaiz);
 			return true;
 		}
 		
@@ -227,9 +220,7 @@ public final class BStar implements BTree {
 	 */
 	public void listar() {
 		
-		for (Nodo nodo : nodos) {
-			nodo.listar();
-		}
+		nodoActual.listar();
 	}
 
 }

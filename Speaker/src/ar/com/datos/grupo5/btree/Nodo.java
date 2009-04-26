@@ -153,7 +153,6 @@ public class Nodo {
 		case -2:
 			this.registros.add(registros.size(), registro);
 			break;
-
 		default:
 			this.registros.add(pos, registro);
 			break;
