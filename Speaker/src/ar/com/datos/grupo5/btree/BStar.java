@@ -43,8 +43,27 @@ public final class BStar implements BTree {
 	 */
 	public BStar() {
 		nodoActual = null;
-		nodoRaiz = null;
 		archivo = new ArchivoBloques();
+		nodoRaiz = null;
+		
+		//TODO ver caso en que el archivo esta vacio.
+		try {
+			archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
+					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			
+			byte[] nodoLeido = archivo.leerBloque(0L);
+			if (nodoLeido != null && nodoLeido.length > 0) {
+				nodoRaiz = new Nodo();
+				nodoRaiz.setBytes(nodoLeido);
+			}
+			
+		} catch (FileNotFoundException e) {
+			LOG.error("Error: " + e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			LOG.error("Error: " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -115,50 +134,76 @@ public final class BStar implements BTree {
 			return null;
 		}
 		
-		Nodo nodoAux = nodoRaiz;
+		Nodo nodoAux = null;
+		nodoActual = nodoRaiz;
 		int posReg = 0;
+		int nroBloque = 0;
 		
-		while (nodoAux != null) {
+		while (nodoActual != null) {
 			
 			//Busco la clave en el nodo.
-			posReg = nodoAux.buscarRegistro(clave);
+			posReg = nodoActual.buscarRegistro(clave);
 			
 			switch (posReg) {
 			case MENOR: //La clave es menor al primero, voy por la izquierda.
-				if (!nodoAux.isEsHoja()) {
-					//FIXME
-					//nodoAux = nodoAux.getNodos().get(0);
+				if (!nodoActual.isEsHoja()) {
+
+					nroBloque = nodoActual.getRegistros().get(0)
+							.getNroBloqueIzquierdo();
+					nodoAux = new Nodo();
+					try {
+						nodoAux.setBytes(archivo.leerBloque((long) nroBloque));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					nodoActual = nodoAux;
 				} else {
-					return nodoAux;
+					return nodoActual;
 				}
 				break;
 				
 			case MAYOR: //La clave es mayor al ultimo, voy por la derecha.
-				if (!nodoAux.isEsHoja()) {
-					//FIXME
-					//nodoAux = nodoAux.getNodos().get(nodoAux.getNodos().size());
+				if (!nodoActual.isEsHoja()) {
+					nroBloque = nodoActual.getRegistros().get(
+							nodoActual.getRegistros().size() - 1)
+							.getNroBloqueIzquierdo();
+					nodoAux = new Nodo();
+					try {
+						nodoAux.setBytes(archivo.leerBloque((long) nroBloque));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					nodoActual = nodoAux;
 				} else {
-					return nodoAux;
+					return nodoActual;
 				}
 				break;
 				
 			default: //Encontré la clave que buscaba o una mayor.
 				//Veo si lo que recupere el igual o mayor.
-				if (nodoAux.getRegistros().get(posReg).getClave().equals(
+				if (nodoActual.getRegistros().get(posReg).getClave().equals(
 						clave)) {
 					
-					return nodoAux;
+					return nodoActual;
 				} else { // Es mayor.
-					if (!nodoAux.isEsHoja()) {
-						//FIXME
-						//nodoAux = nodoAux.getNodos().get(posReg);
+					if (!nodoActual.isEsHoja()) {
+						nroBloque = nodoActual.getRegistros().get(posReg)
+								.getNroBloqueIzquierdo();
+						nodoAux = new Nodo();
+						try {
+							nodoAux.setBytes(archivo
+									.leerBloque((long) nroBloque));
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						nodoActual = nodoAux;
 					} else {
-						return nodoAux;
+						return nodoActual;
 					}
 				}
 			}
 		}
-		return nodoAux;
+		return nodoActual;
 	}
 	
 	/**

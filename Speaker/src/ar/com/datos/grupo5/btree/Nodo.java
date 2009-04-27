@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import ar.com.datos.grupo5.Constantes;
-import ar.com.datos.grupo5.interfaces.Registro;
 import ar.com.datos.grupo5.registros.RegistroNodo;
 import ar.com.datos.grupo5.utils.Conversiones;
 
@@ -361,7 +360,7 @@ public class Nodo {
 		DataInputStream dos = new DataInputStream(bis);
 		int bloqueAnt = 0, result = 0;
 		int cantidad = 0;
-		int off = 0;
+		int offset = 0;
 		byte[] datos = new byte[Constantes.SIZE_OF_INT];
 		RegistroNodo reg = null;
 		registros = new ArrayList<RegistroNodo>();
@@ -382,7 +381,7 @@ public class Nodo {
 				cantidad = dos.readInt();
 				
 				datos = new byte[cantidad];
-				result = dos.read(datos, off, cantidad);
+				result = dos.read(datos, offset, cantidad);
 				reg = new RegistroNodo();
 				reg.setBytes(datos, bloqueAnt);
 				bloqueAnt = reg.getNroBloqueIzquierdo();
