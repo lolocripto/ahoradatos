@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 import ar.com.datos.grupo5.registros.RegistroNodo;
 import ar.com.datos.grupo5.utils.Conversiones;
 
@@ -36,7 +37,7 @@ public class Nodo {
 	/**
 	 * Espacio en el nodo.
 	 */
-	private static int minIndiceCarga;
+	private int minIndiceCarga;
 	
 	/**
 	 * Espacio en el nodo.
@@ -77,7 +78,9 @@ public class Nodo {
 		//nroBloqueAnterior = null;
 		nroBloquePadre = null;
 		registros = new ArrayList<RegistroNodo>();
+		minIndiceCarga = -1;
 		espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
+		espacioOcupado = 0;
 	}
 	
 	/**
@@ -176,7 +179,7 @@ public class Nodo {
 				this.registros.add(registros.size(), registro);
 			} else {
 				//FIXME, si no pudo pasarlo, ver otras opciones.
-				this.pasarRegistro(registro);
+				//this.pasarRegistro(registro);
 			}
 			break;
 		default:
@@ -207,9 +210,11 @@ public class Nodo {
 	 * @param registro the registro to set
 	 * @return .
 	 */
-	public final boolean pasarRegistro(final RegistroNodo registro) {
-		// FIXME Hacer los metodos para saber si hay lugar en los nodos!!
-		/*if (nodoSiguiente == null) {
+	public final boolean pasarRegistro(final RegistroNodo registro)
+	throws UnImplementedMethodException {
+		throw new UnImplementedMethodException("Funcionalidad no implementada.");
+		/*
+		if (nodoSiguiente == null) {
 			if (nodoAnterior == null) {
 				// Es el unico nodo -> Raiz SOLA!!!!!
 				return false;
@@ -232,8 +237,9 @@ public class Nodo {
 				// Modificar la clave del padre del siguiente
 				return true;
 			}
-		}*/
+		}
 		return false;
+		*/
 	}
 	
 	/**
@@ -255,21 +261,21 @@ public class Nodo {
 	public final Nodo split(final boolean siguiente) {
 		Nodo nodo = new Nodo();
 		// FIXME Hacer el metodo
-		/*if (this.nodoPadre == null) {
+		if (this.getNroBloquePadre() == null) {
 			//Es la raiz!!!!!!
 			// Partir en 2! Si, se me canta. Y que?
 			Nodo nodoAux = new Nodo();
-			this.nodoPadre = nodoAux;
+			this.setNroBloquePadre(nodoAux.getNroBloque());
 			// Buscar el registro que asegura 66%
 			
 			// Llenar nodo hno
 			//FIXME
 			//this.nodoSiguiente = nodo;
 			//nodo.nodoAnterior = this;
-			nodo.nodoPadre = nodoAux;
+			nodo.setNroBloquePadre(nodoAux.getNroBloque());
 			
 			
-		}*/
+		}
 		if (siguiente) {
 			//Junto con el siguiente
 			
@@ -374,7 +380,7 @@ public class Nodo {
 			// Leo el primer dato del primer registro,que el numero de bloque
 			// izquierdo al que apunta.
 			bloqueAnt = dos.readInt();
-			
+			ocupar(4 * Constantes.SIZE_OF_INT);
 			while (result > 0) {
 				
 				//Lea la cantidad de bytes que ocupa el registro.
@@ -387,7 +393,9 @@ public class Nodo {
 				bloqueAnt = reg.getNroBloqueDerecho();
 				//Los agrego a la lista.
 				registros.add(reg);
-
+				ocupar(cantidad);
+				if(this.tieneCargaMinima() && (minIndiceCarga < 0))
+					minIndiceCarga = this.registros.size() -1;
 			}
 			
 		} catch (Exception e) {
