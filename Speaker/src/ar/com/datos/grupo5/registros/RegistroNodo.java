@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.ListasInvertidas;
 import ar.com.datos.grupo5.btree.Clave;
-import ar.com.datos.grupo5.interfaces.Registro;
 import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
@@ -19,17 +18,12 @@ import ar.com.datos.grupo5.utils.Conversiones;
  * @see ar.com.datos.grupo5.interfaces.Registro
  * @author LedZeppeling
  */
-public class RegistroNodo implements Registro {
+public class RegistroNodo {
 	
 	/**
 	 * Logger.
 	 */
 	private static Logger logger  = Logger.getLogger(ListasInvertidas.class);
-
-	/**
-	 * Cuantos bytes puedo pasar.
-	 */
-	private Long moreBytes = 1L;
 	
 	/**
 	 * Es la clave del nodo.
@@ -47,23 +41,6 @@ public class RegistroNodo implements Registro {
 	private Integer nroBloqueDerecha;
 	
 	/**
-	 * En este caso se devuelve de una vez todos los bytes. Devuelvo true la
-	 * primera vez y pongo en false, despues cuando se pregunta nuevamente
-	 * devuelvo false, pero pongo en true para que el registro pueda ser usado
-	 * denuevo.
-	 * 
-	 * @return true si hay mas bytes para pedir con getBytes.
-	 */
-	public boolean hasMoreBytes() {
-		
-		if (moreBytes > 0) {
-			return true;
-		}
-		moreBytes = 0L;
-		return false;
-	}
-	
-	/**
 	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
 	 * @return los bytes que representan al registro.
 	 */
@@ -72,12 +49,16 @@ public class RegistroNodo implements Registro {
 		DataOutputStream dos = new DataOutputStream(bos);
 		try {
 			// FIXME me parece que así se complica lo de las longitudes
+			int longitud =  2 * Constantes.SIZE_OF_INT + 
+			claveNodo.getBytes().length;
 			byte[] longDatoBytes = Conversiones.
 			intToArrayByte(claveNodo.getBytes().length);
 			byte[] bloqueAnt = Conversiones.intToArrayByte(nroBloqueIzquierdo);
 			byte[] bloquePos = Conversiones.intToArrayByte(nroBloqueDerecha);
-
+			byte[] longDato = Conversiones.intToArrayByte(longitud);
+			
 			dos.write(bloqueAnt, 0, bloqueAnt.length);
+			dos.write(longDato, 0, longDato.length);
 			dos.write(longDatoBytes, 0, longDatoBytes.length);
 			dos.write(claveNodo.getBytes(), 0, claveNodo.getBytes().length);
 			dos.write(bloquePos, 0, bloquePos.length);
@@ -93,22 +74,8 @@ public class RegistroNodo implements Registro {
 	 * @param buffer Cadena de Bytes leida en el archivo de bloques
 	 * @param offset id del termino que se busca.
 	 */
-	public void setBytes(final byte[] buffer, final Long offset) {
+	public void setBytes(final byte[] buffer, final int offset) {
 		//TODO HACERLO YA!!!!!!!!!!
-	}
-
-	/**
-	 * En el caso de ocupar varios bloques esta función agrega mas datos
-	 * al registro a partir de los datos de otros bloques.
-	 * @param buffer
-	 * 			Datos leidos de un bloque que no es el primero.
-	 * @param offset
-	 * 			Offset dentro de les array de byte donde empiezan
-	 * 			los datos.
-	 */
-	public final void setMoreBytes(final byte[] buffer, final int offset) {
-		//TODO Hacer este método!!!!!!!!!
-		moreBytes = 1L;
 	}
 
 	/**
@@ -135,7 +102,7 @@ public class RegistroNodo implements Registro {
 	/**
 	 * @param nroBloqueIzquierdo the nroBloqueIzquierdo to set
 	 */
-	public final void setNroBloqueIzquierdo(Integer nroBloqueIzquierdo) {
+	public final void setNroBloqueIzquierdo(final Integer nroBloqueIzquierdo) {
 		this.nroBloqueIzquierdo = nroBloqueIzquierdo;
 	}
 
@@ -149,7 +116,7 @@ public class RegistroNodo implements Registro {
 	/**
 	 * @param nroBloqueDerecha the nroBloqueDerecha to set
 	 */
-	public final void setNroBloqueDerecha(Integer nroBloqueDerecha) {
+	public final void setNroBloqueDerecha(final Integer nroBloqueDerecha) {
 		this.nroBloqueDerecha = nroBloqueDerecha;
 	}
 
