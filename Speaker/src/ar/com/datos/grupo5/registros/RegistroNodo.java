@@ -40,13 +40,13 @@ public class RegistroNodo {
 	/**
 	 * El numero de bloque al que apunta a la izquierda.
 	 */
-	private Integer nroBloqueDerecha;
+	private Integer nroBloqueDerecho;
 	
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
 	 * @return los bytes que representan al registro.
 	 */
-	public final byte[] getBytes() {
+	public byte[] getBytes() {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
 		try {
@@ -56,7 +56,7 @@ public class RegistroNodo {
 			byte[] longDatoBytes = Conversiones.
 			intToArrayByte(claveNodo.getBytes().length);
 			byte[] bloqueAnt = Conversiones.intToArrayByte(nroBloqueIzquierdo);
-			byte[] bloquePos = Conversiones.intToArrayByte(nroBloqueDerecha);
+			byte[] bloquePos = Conversiones.intToArrayByte(nroBloqueDerecho);
 			byte[] longDato = Conversiones.intToArrayByte(longitud);
 			
 			dos.write(bloqueAnt, 0, bloqueAnt.length);
@@ -76,7 +76,7 @@ public class RegistroNodo {
 	 * @param buffer Cadena de Bytes leida en el archivo de bloques
 	 * @param bloqueAnt nro de bloque anterior.
 	 */
-	public final void setBytes(final byte[] buffer, final int bloqueAnt) {
+	public void setBytes(final byte[] buffer, final int bloqueAnt) {
 		//TODO TESTEARLO YA!!!!!!!!!!
 		//Leo el numero de bloque Anterior.
 		setNroBloqueIzquierdo(bloqueAnt);
@@ -93,7 +93,7 @@ public class RegistroNodo {
 			dos.read(datos, 0, longdato);
 			claveNodo.setBytes(datos);
 			//Leo el numero de bloque posterior.
-			setNroBloqueDerecha(dos.readInt());
+			setNroBloqueDerecho(dos.readInt());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -130,15 +130,15 @@ public class RegistroNodo {
 	/**
 	 * @return the nroBloqueDerecha
 	 */
-	public final Integer getNroBloqueDerecha() {
-		return nroBloqueDerecha;
+	public final Integer getNroBloqueDerecho() {
+		return nroBloqueDerecho;
 	}
 
 	/**
 	 * @param nroBloqueDerecha the nroBloqueDerecha to set
 	 */
-	public final void setNroBloqueDerecha(final Integer nroBloqueDerecha) {
-		this.nroBloqueDerecha = nroBloqueDerecha;
+	public final void setNroBloqueDerecho(final Integer nroBloqueDerecha) {
+		this.nroBloqueDerecho = nroBloqueDerecha;
 	}
 
 }

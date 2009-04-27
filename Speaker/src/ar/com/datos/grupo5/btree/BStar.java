@@ -221,7 +221,7 @@ public final class BStar implements BTree {
 			this.nodoRaiz = new Nodo();
 			//El primero es hoja al pricipio.
 			nodoRaiz.setEsHoja(true);
-			registro.setNroBloqueDerecha(null);
+			registro.setNroBloqueDerecho(null);
 			registro.setNroBloqueIzquierdo(null);
 			this.nodoRaiz.insertarRegistro(registro);
 			return true;

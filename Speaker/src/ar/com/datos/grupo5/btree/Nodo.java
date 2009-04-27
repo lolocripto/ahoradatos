@@ -384,7 +384,7 @@ public class Nodo {
 				result = dos.read(datos, offset, cantidad);
 				reg = new RegistroNodo();
 				reg.setBytes(datos, bloqueAnt);
-				bloqueAnt = reg.getNroBloqueIzquierdo();
+				bloqueAnt = reg.getNroBloqueDerecho();
 				//Los agrego a la lista.
 				registros.add(reg);
 
