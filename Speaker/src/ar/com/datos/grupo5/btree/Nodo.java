@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.interfaces.Registro;
 import ar.com.datos.grupo5.registros.RegistroNodo;
-import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
  * Representa el nodo de arbol b.
@@ -70,7 +69,7 @@ public class Nodo implements Registro {
 	/**
 	 * El nodo padre.
 	 */
-	private Nodo nodoPadre;
+	private Integer nroBloquePadre;
 
 	/**
 	 * Constructor.
@@ -79,7 +78,7 @@ public class Nodo implements Registro {
 		
 		nroBloqueSiguiente = null;
 		nroBloqueAnterior = null;
-		nodoPadre = null;
+		nroBloquePadre = null;
 		registros = new ArrayList<RegistroNodo>();
 		espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
 	}
@@ -88,14 +87,14 @@ public class Nodo implements Registro {
 	 * Constructor.
 	 * @param nodo Nodo padre.
 	 */
-	public Nodo(final Nodo nodo) {
+	/*public Nodo(final Nodo nodo) {
 		
 		nroBloqueSiguiente = null;
 		nroBloqueAnterior = null;
-		nodoPadre = nodo;
+		nroBloquePadre = nodo;
 		registros = new ArrayList<RegistroNodo>();
 		espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
-	}	
+	}	*/
 	
 	/**********************
 	 * Metodos
@@ -259,7 +258,7 @@ public class Nodo implements Registro {
 	public final Nodo split(final boolean siguiente) {
 		Nodo nodo = new Nodo();
 		// FIXME Hacer el metodo
-		if (this.nodoPadre == null) {
+		/*if (this.nodoPadre == null) {
 			//Es la raiz!!!!!!
 			// Partir en 2! Si, se me canta. Y que?
 			Nodo nodoAux = new Nodo();
@@ -273,7 +272,7 @@ public class Nodo implements Registro {
 			nodo.nodoPadre = nodoAux;
 			
 			
-		}
+		}*/
 		if (siguiente) {
 			//Junto con el siguiente
 			
@@ -332,20 +331,6 @@ public class Nodo implements Registro {
 	 */
 	public final boolean isEsHoja() {
 		return esHoja;
-	}
-
-	/**
-	 * @return the padre
-	 */
-	public final Nodo getPadre() {
-		return nodoPadre;
-	}
-
-	/**
-	 * @param nodo the padre to set
-	 */
-	public final void setPadre(final Nodo nodo) {
-		this.nodoPadre = nodo;
 	}
 
 	/**
@@ -429,18 +414,20 @@ public class Nodo implements Registro {
 		
 		try {
 			
+			
+			
 			byte[] regBytes = null;
+			int offset = 0;
+			//Serializo todos los registros.
 			for (RegistroNodo registro : registros) {
-				regBytes = registro.getBytes(); 
-				dos.write(regBytes, 4, regBytes.length);
+				regBytes = registro.getBytes();
+				// El primer registro lo grabo completo, despues no grabo el
+				// puntero al bloque de la izquierda para no repetir.
+				dos.write(regBytes, offset, regBytes.length);
+				if (offset == 0) {
+					offset += 4;
+				}
 			}
-			//moreBytes -= contenidoByte.length;
-			
-			//dos.write(longNombreDocumentoBytes, 0,
-			//		longNombreDocumentoBytes.length);
-			
-			//moreBytes -= longNombreDocumentoBytes.length;
-			//dos.write(nombreDocumentoByte, 0, nombreDocumentoByte.length);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -463,5 +450,19 @@ public class Nodo implements Registro {
 	public void setBytes(byte[] buffer, Long offset) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	/**
+	 * @return the nroBloquePadre
+	 */
+	public final Integer getNroBloquePadre() {
+		return nroBloquePadre;
+	}
+
+	/**
+	 * @param nroBloquePadre the nroBloquePadre to set
+	 */
+	public final void setNroBloquePadre(Integer nroBloquePadre) {
+		this.nroBloquePadre = nroBloquePadre;
 	}
 }
