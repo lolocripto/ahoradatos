@@ -89,7 +89,7 @@ public final class TestRam {
 		
 		logger.debug("Abrio el archivo de listas invertidas");
 		
-		RegistroTerminoDocumentos rtd = listasI.leerLista(1, nroBloque);
+		RegistroTerminoDocumentos rtd = listasI.leerLista(1, (int) nroBloque);
 		
 		System.out.println("Cantidad documentos: " + rtd.getCantidadDocumentos());
 		System.out.println("Id del termino: " + rtd.getIdTermino());
