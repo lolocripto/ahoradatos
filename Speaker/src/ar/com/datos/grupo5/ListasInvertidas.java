@@ -47,7 +47,7 @@ public class ListasInvertidas {
 	/**
 	 * Nro de bloque donde empieza la lista invertida del termino.
 	 */
-	private int nroBloque;
+	private long nroBloque;
 	
 	/**
 	 * Archivo que contendrá las palabras y que será manejado por el
@@ -59,12 +59,25 @@ public class ListasInvertidas {
 	 * Lista con los espacios libres.
 	 */
 	private ArrayList<NodoListaEspacioLibre> espacioLibrePorBloque;
-	//TODO: Separar la implementacion de la lista de espacioLibrePorbloque en otra clase
+	//TODO: Separar la implementacion de la lista de 
+	//espacioLibrePorbloque en otra clase
 	
 	/**
 	 * Numero del bloque donde empieza la lista de espacio libre.
 	 */
 	private int nroBloqueLista;
+	
+	/**
+	 * El indice dentro del arrayList espacioLibrePorBloque del 
+	 * último accedido.
+	 */
+	private int index;
+	
+	/**
+	 * Factor de carga que limita la carga de los bloques para 
+	 * poder agrandar los registros que contiene. 
+	 */
+	private Float factorCarga;
 	
 	/**
 	 * Metodo para cargar el diccionario, accediendo al archivo.
@@ -111,11 +124,11 @@ public class ListasInvertidas {
 	 * @return null si no encuentra la lista, si no devuelve el registro.
 	 */
 	public final RegistroTerminoDocumentos leerLista(final long idTerminoExt, 
-			final int nroBloqueExt) {
+			final long nroBloqueExt) {
 		
 		RegistroTerminoDocumentos reg = new RegistroTerminoDocumentos();
 		this.nroBloque = nroBloqueExt;
-		int siguiente = this.nroBloque;
+		long siguiente = this.nroBloque;
 		short primerRegistro;
 		short espacioOcupado;
 		short cantBloquesLeidos = 0;
@@ -131,7 +144,7 @@ public class ListasInvertidas {
 						= new ByteArrayInputStream(datosLeidosPorBloque);  
 					DataInputStream dis = new DataInputStream(bis);
 					
-					siguiente = dis.readInt();
+					siguiente = dis.readLong();
 					primerRegistro = dis.readShort();
 					espacioOcupado = dis.readShort();
 					
@@ -217,9 +230,7 @@ public class ListasInvertidas {
 				nodo = this.espacioLibrePorBloque.get(index);
 				nodo.setEspacio(espacio);
 			break;
-		}
-		//TODO: Ordenar lista de espacios libres
-		
+		}	
 	}
 	
 	
@@ -280,7 +291,7 @@ public class ListasInvertidas {
 				//TODO: Actualizar la lista de espacios libres con lo que queda de este bloque				
 				bytesAEscribir = armarDatosBloque((long) this.cantidadBloques+2, bytes, (short) 0, (short) (tamanioDatosControl + bytes.length));
 				try {
-					this.archivo.escribirBloque(bytesAEscribir, this.cantidadBloques+1);
+					this.archivo.escribirBloque(bytesAEscribir, (long) this.cantidadBloques+1);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -290,7 +301,7 @@ public class ListasInvertidas {
 			//TODO: Tengo que definir bytes, tengo que cortarlo
 			bytesAEscribir = armarDatosBloque(0L, bytes, (short) (tamanioDatosControl + bytes.length), (short) (tamanioDatosControl + bytes.length));
 			try {
-				this.archivo.escribirBloque(bytesAEscribir, this.cantidadBloques+1);
+				this.archivo.escribirBloque(bytesAEscribir, (long) this.cantidadBloques+1);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -298,49 +309,70 @@ public class ListasInvertidas {
 			this.actualizarListaEspacioLibre(-1, cantidadBloques, (short) (Constantes.SIZE_OF_INDEX_BLOCK-bytesAEscribir.length));
 		} else {
 			//Es un solo registro por lo tanto puedo insertarlo en un bloque con algún espacio libre
-			if (!this.espacioLibrePorBloque.isEmpty()) {
-				NodoListaEspacioLibre nodo; 
-				nodo = this.espacioLibrePorBloque.get(0);
+			int bloqueAInsertar = this.buscarEspacio((short) tamanioRegistro);
 				
 				//si entra lo agrego en este punto, sino lo agrego como un bloque nuevo
-				if (nodo.getEspacio() > tamanioRegistro) {
-					//TODO: Tengo que definir bytes, tengo que cortarlo
-					/* agrego el registro en el bloque
-					 * 1)Leo el bloque que tiene el espacio libre
-					 * 2)Leo los datos de control y me quedo con espacioOcupado
-					 * 3)me paro al final ( espacioOcupado ) y escribo en ese lugar
-					 * 4)Para escribir me aseguro que entra y deja 20% del bloque libre.
-					 * 5)Actualizo el elemento dentro de la lista de espacio libre en los bloques.
-					 */
-					//this.actualizarListaEspacioLibre();
-				} else {
-					//TODO: Tengo que definir bytes, tengo que cortarlo
-					//TODO: Actualizar la lista de espacios libres con lo que queda de este bloque
-					bytesAEscribir = armarDatosBloque((long) 0, bytes, (short) 0, (short) (tamanioDatosControl + bytes.length));
-					try {
-						this.archivo.escribirBloque(bytesAEscribir, this.cantidadBloques+1);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					this.cantidadBloques++;
-					//this.actualizarListaEspacioLibre();
+			if (bloqueAInsertar != -1) {
+				//TODO: Tengo que definir bytes, tengo que cortarlo
+				/* agrego el registro en el bloque
+				 * 1)Leo el bloque que tiene el espacio libre
+				 * 2)Leo los datos de control y me quedo con espacioOcupado
+				 * 3)me paro al final ( espacioOcupado ) y escribo en ese lugar
+				 * 4)Para escribir me aseguro que entra y deja 20% del bloque libre.
+				 * 5)Actualizo el elemento dentro de la lista de espacio libre en los bloques.
+				 */
+				byte[] bytesTemporales;
+				try {
+					// Tengo el bloque al que voy a modificar.
+					bytesTemporales = this.archivo.leerBloque((long) bloqueAInsertar);
+					
+					ByteArrayInputStream bis 
+					  = new ByteArrayInputStream(bytesTemporales);  
+					DataInputStream dis = new DataInputStream(bis);
+					
+					Long siguiente = dis.readLong();
+					short primerRegistro = dis.readShort();
+					short espacioOcupado = dis.readShort();
+					
+					short tamanioControl = Constantes.SIZE_OF_SHORT * 2 + Constantes.SIZE_OF_INT;
+					
+					
+					
+					byte[] datos = new byte[espacioOcupado - tamanioControl + bytes.length];
+					
+					System.arraycopy(bytesTemporales, tamanioControl, datos, 
+							0, espacioOcupado - tamanioControl);
+					
+					System.arraycopy(bytes, 0, datos, 
+							espacioOcupado-tamanioControl, bytes.length);
+					
+					bytesTemporales = this.armarDatosBloque(siguiente, datos, primerRegistro, (short) (tamanioControl + datos.length));
+					
+					this.archivo.escribirBloque(bytesTemporales, (long) bloqueAInsertar);
+					
+					this.actualizarEspacio((short) (tamanioControl+datos.length));
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return false;
 				}
+				//this.actualizarListaEspacioLibre();
 			} else {
 				//Inserto un registro nuevo
-				//TODO: Tengo que definir bytes, tengo que cortarlo
-				//TODO: Actualizar la lista de espacios libres con lo 
-				//que queda de este bloque
-				bytesAEscribir = armarDatosBloque((long) 0, bytes, (short) 0, (short) (tamanioDatosControl + bytes.length));
+				byte[] bytesTemporales;
+				bytesAEscribir = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
+				bytesTemporales = armarDatosBloque((long) 0, bytes, (short) 0, (short) (tamanioDatosControl + bytes.length));
+				System.arraycopy(bytesTemporales, 0, bytesAEscribir, 
+						0, bytesTemporales.length);
 				try {
-					this.archivo.escribirBloque(bytesAEscribir, this.cantidadBloques+1);
+					this.archivo.escribirBloque(bytesAEscribir, (long) this.cantidadBloques);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				this.actualizarListaEspacioLibre(-1, this.cantidadBloques, (short) (Constantes.SIZE_OF_INDEX_BLOCK - (tamanioDatosControl + bytes.length)));
 				this.cantidadBloques++;
-				//this.actualizarListaEspacioLibre();
 			}
-			
-			
 		}
 		
 		//Defino el dato de control
@@ -376,6 +408,8 @@ public class ListasInvertidas {
 		this.nroBloqueLista = 1;
 		this.offsetLista = 0;
 		this.espacioLibrePorBloque = new ArrayList<NodoListaEspacioLibre>();
+		this.factorCarga = Constantes.FACTOR_CARGA_BLOQUES;
+		this.index = 0;
 	}
 	
 	/**
@@ -401,7 +435,7 @@ public class ListasInvertidas {
 		logger.debug("Empiezo a leer el encabezado.");
 		try {
 			//Leo el primer bloque
-			datosControlArchivo = this.archivo.leerBloque(0);
+			datosControlArchivo = this.archivo.leerBloque(0L);
 			
 			//TODO: Este if debería ser una Exception
 			if (datosControlArchivo.length > 0) {
@@ -464,7 +498,7 @@ public class ListasInvertidas {
 			System.arraycopy(bos.toByteArray(), 0, encabezadoBytes, 
 							0, bos.toByteArray().length);
 
-			this.archivo.escribirBloque(encabezadoBytes, 0);
+			this.archivo.escribirBloque(encabezadoBytes, 0L);
 			logger.debug("Escribi los datos del encabezado.");
 			
 			return true;
@@ -486,13 +520,10 @@ public class ListasInvertidas {
 
 		byte[] ListaEspaciosLibresBytes = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
 
-		int tamanioDatosControl = Constantes.SIZE_OF_INT * 2
-				+ Constantes.SIZE_OF_CHAR;
-		int tamanioTotalDisponibleXBloque = Constantes.SIZE_OF_INDEX_BLOCK
-				- (tamanioDatosControl);
-		// Division Entera
-		int maxCantidadNodosPorBloque = tamanioTotalDisponibleXBloque
-				/ tamanioDatosControl;
+		int tamanioDatosControl = Constantes.SIZE_OF_INT * 2 + Constantes.SIZE_OF_CHAR;
+		int tamanioTotalDisponibleXBloque = Constantes.SIZE_OF_INDEX_BLOCK - (tamanioDatosControl);
+		//Division Entera
+		int maxCantidadNodosPorBloque = tamanioTotalDisponibleXBloque/tamanioDatosControl;
 		
 		int cantidadElementosFaltantes = this.espacioLibrePorBloque.size(); 
 		
@@ -501,14 +532,13 @@ public class ListasInvertidas {
 
 		NodoListaEspacioLibre nodoLibre;
 		
-		Iterator<NodoListaEspacioLibre> it = this.espacioLibrePorBloque
-				.iterator();
+		Iterator<NodoListaEspacioLibre> it = this.espacioLibrePorBloque.iterator();
 		//Obtengo el Siguiente del bloque
 		try {
-		while (it.hasNext() && cantidadElementosFaltantes > 0) {
+		while ( it.hasNext() && cantidadElementosFaltantes > 0) {
 			
 			//Leo el bloque
-		    byte[] bloqueLista = this.archivo.leerBloque(bloqueActual);
+		    byte[] bloqueLista = this.archivo.leerBloque((long) bloqueActual);
 			ByteArrayInputStream bis = new ByteArrayInputStream(bloqueLista);  
 			DataInputStream dis = new DataInputStream(bis);
 			
@@ -534,8 +564,7 @@ public class ListasInvertidas {
 				//Escribo parte de un bloque
 				dos.writeInt(0);
 				dos.writeInt(cantidadElementosFaltantes);
-				for (int i = 0; i < cantidadElementosFaltantes
-							&& it.hasNext(); i++) {
+				for (int i = 0; i < cantidadElementosFaltantes && it.hasNext(); i++) {
 					dos.writeShort(nodoLibre.getEspacio());
 					dos.writeInt(nodoLibre.getNroBloque());
 					nodoLibre = it.next();
@@ -544,11 +573,8 @@ public class ListasInvertidas {
 				dos.writeInt(nodoLibre.getNroBloque());
 				cantidadElementosFaltantes -= cantidadElementosFaltantes;
 				bos.flush();
-				System.arraycopy(bos.toByteArray(), 0,
-							ListaEspaciosLibresBytes, 0,
-							bos.toByteArray().length);
-					this.archivo.escribirBloque(ListaEspaciosLibresBytes,
-							 bloqueActual);
+				System.arraycopy(bos.toByteArray(), 0, ListaEspaciosLibresBytes, 0, bos.toByteArray().length);
+				this.archivo.escribirBloque(ListaEspaciosLibresBytes, (long) bloqueActual);
 			} else {
 				//Escribo un bloque completo
 				/* 
@@ -567,19 +593,15 @@ public class ListasInvertidas {
 				dos.writeInt(bloqueSiguiente);
 				dos.writeInt(maxCantidadNodosPorBloque);
 				
-				for (int i = 0; i < maxCantidadNodosPorBloque
-							&& it.hasNext(); i++) {
+				for (int i = 0; i < maxCantidadNodosPorBloque && it.hasNext(); i++) {
 					dos.writeShort(nodoLibre.getEspacio());
 					dos.writeInt(nodoLibre.getNroBloque());
 					nodoLibre = it.next();
 				}
 				cantidadElementosFaltantes -= maxCantidadNodosPorBloque;
 				bos.flush();
-				System.arraycopy(bos.toByteArray(), 0,
-							ListaEspaciosLibresBytes, 0,
-							bos.toByteArray().length);
-				this.archivo.escribirBloque(ListaEspaciosLibresBytes,
-							bloqueActual);
+				System.arraycopy(bos.toByteArray(), 0, ListaEspaciosLibresBytes, 0, bos.toByteArray().length);
+				this.archivo.escribirBloque(ListaEspaciosLibresBytes, (long) bloqueActual);
 				bloqueActual = bloqueSiguiente;
 			}
 			//Insertar el registro
@@ -607,7 +629,7 @@ public class ListasInvertidas {
 		NodoListaEspacioLibre nodo;
 		try {
 			this.datosLeidosPorBloque = this.archivo
-					.leerBloque(this.nroBloqueLista);
+					.leerBloque((long) this.nroBloqueLista);
 			ByteArrayInputStream bis = new ByteArrayInputStream(
 					this.datosLeidosPorBloque);
 			DataInputStream dis = new DataInputStream(bis);
@@ -628,7 +650,7 @@ public class ListasInvertidas {
 					this.espacioLibrePorBloque.add(nodo);					
 				}
 				this.datosLeidosPorBloque = this.archivo.
-								leerBloque(siguienteBloque);
+								leerBloque((long) siguienteBloque);
 				
 				bis = new ByteArrayInputStream(
 								this.datosLeidosPorBloque);
@@ -796,7 +818,7 @@ public class ListasInvertidas {
 	 * @return
 	 * 			True si logre inicializar el bloque.
 	 */
-	private boolean inicializarListaEspaciosLibre(final int bloqueLista) {
+	private boolean inicializarListaEspaciosLibre(final long bloqueLista) {
 		byte[] datos = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
@@ -811,7 +833,50 @@ public class ListasInvertidas {
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
-		}
+		}	
+	}
+	
+	/**
+	 * Busca el primer bloque que contiene el espacio suficiente para 
+	 * almacenar el elemento teniendo en cuenta el factor de carga.
+	 * @param espacioNecesario Espacio necesario para poder guardar el elemento.
+	 * @return
+	 * 		Devuelve el numero de bloque en el cual puedo insertar
+	 * 		el elemento. Si no encuentra un lugar devuelve -1. 
+	 */
+	private int buscarEspacio(final Short espacioNecesario) {
+		NodoListaEspacioLibre nodo;
+		Iterator<NodoListaEspacioLibre> it = this.espacioLibrePorBloque.iterator();
 		
+		this.index = -1;
+		Short espacioLibreTotal = (short) (espacioNecesario + (Constantes.SIZE_OF_INDEX_BLOCK * this.factorCarga));
+		
+		while (it.hasNext()) {
+			nodo = it.next();
+			this.index++;
+			if (nodo.getEspacio() >= espacioLibreTotal) {
+				return nodo.getNroBloque();
+			}
+		}
+		return -1;
+	}
+	
+	/**
+	 * Actualiza el espacio del ultimo elemento accedido 
+	 * por buscarEspacio.
+	 * @param espacioActual Espacio que queda en el bloque.
+	 */
+	private void actualizarEspacio(final Short espacioActual) {
+		NodoListaEspacioLibre nodo;
+		
+		nodo = this.espacioLibrePorBloque.get(this.index);
+		
+		nodo.setEspacio(espacioActual);
+		
+		//this.espacioLibrePorBloque.add(this.index, nodo);
+	}
+	
+	public final long getBloqueInsertado() {
+		return this.nroBloque;
 	}
 }

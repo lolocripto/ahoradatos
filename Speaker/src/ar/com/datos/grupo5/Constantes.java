@@ -167,6 +167,11 @@ public final class Constantes {
 		getXML("ARCHIVO_ARBOL_BSTAR");
 	
 	/**
+	 * Archivo para el arbol BStar.
+	 */
+	public static final Float FACTOR_CARGA_BLOQUES = Float.parseFloat(
+		getXML("FACTOR_CARGA_BLOQUES"));
+	/**
 	 * Lee delarchivo de configuracion.
 	 * 
 	 * @param nombre clave para recuperar el valor.

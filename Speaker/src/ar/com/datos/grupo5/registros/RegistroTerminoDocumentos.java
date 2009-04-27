@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -55,6 +56,13 @@ public class RegistroTerminoDocumentos implements Registro {
 	 */
 	private int cantidadDocumentosLeidos;
 	
+	public RegistroTerminoDocumentos() {
+		this.cantidadDocumentos = 0;
+		this.cantidadDocumentosLeidos = 0;
+		this.datosDocumentos = new ArrayList<ParFrecuenciaDocumento>();
+		this.idTermino = 0L;
+		this.moreBytes = 0L;
+	}
 	/**
 	 * Perminte setear la cantidad de documentos leidos.
 	 * @param cantDocumentosLeidos
@@ -92,11 +100,19 @@ public class RegistroTerminoDocumentos implements Registro {
 		this.idTermino = idTerminoExt;
 		
 		// Acá considero el tamaño de las listas tanto de 
-		this.moreBytes = (long) this.datosDocumentos.size() 
+		this.moreBytes = new Long(this.datosDocumentos.size() 
 				* Constantes.SIZE_OF_LONG * 2 
-				+ Constantes.SIZE_OF_INT + Constantes.SIZE_OF_LONG;
+				+ Constantes.SIZE_OF_INT + Constantes.SIZE_OF_LONG);
 	}
 	
+	/**
+	 * Método para obtener el idTermino del registro.
+	 * @return
+	 * 		el idTermino
+	 */
+	public final long getIdTermino() {
+		return idTermino;
+	}
 	
 	/**
 	 * Método para cargar la lista invertida.
@@ -159,7 +175,7 @@ public class RegistroTerminoDocumentos implements Registro {
 			long longDatosFrecuencia = this.datosDocumentos.size() * 2 
 						* Constantes.SIZE_OF_LONG;
 			
-			if (moreBytes == (cantidadDocumentosBytes.length 
+			if (moreBytes == (cantidadDocumentosBytes.length + idTerminoByte.length
 					+ longDatosFrecuencia)) {
 				
 				dos.write(idTerminoByte, 0, idTerminoByte.length);
@@ -169,9 +185,9 @@ public class RegistroTerminoDocumentos implements Registro {
 				moreBytes -= cantidadDocumentosBytes.length;
 				
 				//for para recorrer todo el SortedMap
-				Iterator<ParFrecuenciaDocumento> it;
-				for (it = this.datosDocumentos.iterator(); it.hasNext(); it.next()) { 
-					ParFrecuenciaDocumento frecuenciaDocumento;
+				Iterator<ParFrecuenciaDocumento> it = this.datosDocumentos.iterator();
+				ParFrecuenciaDocumento frecuenciaDocumento;
+				while (it.hasNext()) {
 					frecuenciaDocumento = (ParFrecuenciaDocumento)it.next();
 					byte[] frecuenciaBytes = Conversiones.longToArrayByte(frecuenciaDocumento.getFrecuencia());
 					byte[] offsetDocumentoBytes = Conversiones.longToArrayByte(frecuenciaDocumento.getOffsetDocumento());
@@ -181,8 +197,8 @@ public class RegistroTerminoDocumentos implements Registro {
 					dos.write(offsetDocumentoBytes, 0, 
 								offsetDocumentoBytes.length);
 					moreBytes -= offsetDocumentoBytes.length;				
+	
 				}
-				
 			}
 			
 		} catch (IOException e) {
