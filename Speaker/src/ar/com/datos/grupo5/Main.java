@@ -6,11 +6,6 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-import ar.com.datos.grupo5.btree.BStar;
-import ar.com.datos.grupo5.btree.BTree;
-import ar.com.datos.grupo5.btree.Clave;
-import ar.com.datos.grupo5.registros.RegistroNodo;
-
 /**
  * Esta clase es de ejemplo.
  */

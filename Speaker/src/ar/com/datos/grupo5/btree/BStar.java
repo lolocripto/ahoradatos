@@ -46,7 +46,6 @@ public final class BStar implements BTree {
 		archivo = new ArchivoBloques();
 		nodoRaiz = null;
 		
-		//TODO ver caso en que el archivo esta vacio.
 		try {
 			archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
@@ -224,6 +223,12 @@ public final class BStar implements BTree {
 			registro.setNroBloqueDerecho(null);
 			registro.setNroBloqueIzquierdo(null);
 			this.nodoRaiz.insertarRegistro(registro);
+			try {
+				archivo.escribirBloque(nodoRaiz.getBytes(), 0L);
+			} catch (IOException e) {
+				LOG.error("Error: " + e.getMessage());
+				e.printStackTrace();
+			}
 			return true;
 		}
 		// TODO Terminar de implementar.
