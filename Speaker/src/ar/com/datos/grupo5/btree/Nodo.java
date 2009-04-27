@@ -364,6 +364,7 @@ public class Nodo {
 		int off = 0;
 		byte[] datos = new byte[Constantes.SIZE_OF_INT];
 		RegistroNodo reg = null;
+		registros = new ArrayList<RegistroNodo>();
 		
 		try {
 			//Leo el numero de bloque.
@@ -374,16 +375,20 @@ public class Nodo {
 			// Leo el primer dato del primer registro,que el numero de bloque
 			// izquierdo al que apunta.
 			bloqueAnt = dos.readInt();
-			//Lea la cantidad de bytes que ocupa el registro.
-			cantidad = dos.readInt();
 			
 			while (result > 0) {
+				
+				//Lea la cantidad de bytes que ocupa el registro.
+				cantidad = dos.readInt();
 				
 				datos = new byte[cantidad];
 				result = dos.read(datos, off, cantidad);
 				reg = new RegistroNodo();
 				reg.setBytes(datos, bloqueAnt);
-				bloqueAnt = dos.readInt();
+				
+				//Los agrego a la lista.
+				registros.add(reg);
+
 			}
 			
 		} catch (Exception e) {
