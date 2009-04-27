@@ -82,5 +82,6 @@ public interface IunidadDeHabla {
 	 */
 	void setEquivalenteFonetico(String equivalenteFonetico);
 	
+	public boolean equals(Object o);
 
 }

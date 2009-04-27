@@ -61,10 +61,10 @@ public class Palabra implements IunidadDeHabla {
 	 * 
 	 * @return siempre 0;
 	 */
-	public final int hashCode(){
-		
+	public final int hashCode() {
+
 		return 0;
-		
+
 	}
 	
 	/**
@@ -118,5 +118,17 @@ public class Palabra implements IunidadDeHabla {
 	public void say() {
 		
     }
+	/**
+	 * @override
+	 * @param o.
+	 * @return true si tienen el mismo equivalente fonetico.
+	 */
+	public final boolean equals(final Object o) {
+		String s1 = this.getEquivalenteFonetico();
+		String s2 =(((Palabra) (o)).getEquivalenteFonetico()).toString();
+		if (s1.compareTo(s2) == 0 )
+		  return true;
+	return false;   
+	}
 
 }
