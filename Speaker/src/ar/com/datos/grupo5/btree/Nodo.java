@@ -1,16 +1,21 @@
 package ar.com.datos.grupo5.btree;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.interfaces.Registro;
 import ar.com.datos.grupo5.registros.RegistroNodo;
+import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
  * Representa el nodo de arbol b.
  * @author LedZeppeling
  *
  */
-public class Nodo {
+public class Nodo implements Registro {
 
 	/**
 	 * Para indicar que la clave es mayor que la ultima del nodo.
@@ -30,7 +35,7 @@ public class Nodo {
 	/**
 	 * Espacio en el nodo.
 	 */
-	private int minIndiceCarga;
+	private static int minIndiceCarga;
 	
 	/**
 	 * Espacio en el nodo.
@@ -411,5 +416,52 @@ public class Nodo {
 	 */
 	public final void setNroBloqueAnterior(final Integer nroBloque) {
 		this.nroBloqueAnterior = nroBloque;
+	}
+
+	/**
+	 * Para serializar.
+	 * @return bytes[]
+	 */
+	public byte[] getBytes() {
+		
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+		DataOutputStream dos = new DataOutputStream(bos);
+		
+		try {
+			
+			byte[] regBytes = null;
+			for (RegistroNodo registro : registros) {
+				regBytes = registro.getBytes(); 
+				dos.write(regBytes, 4, regBytes.length);
+			}
+			//moreBytes -= contenidoByte.length;
+			
+			//dos.write(longNombreDocumentoBytes, 0,
+			//		longNombreDocumentoBytes.length);
+			
+			//moreBytes -= longNombreDocumentoBytes.length;
+			//dos.write(nombreDocumentoByte, 0, nombreDocumentoByte.length);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return bos.toByteArray();
+	}
+
+	/**
+	 * 
+	 */
+	public boolean hasMoreBytes() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/**
+	 * 
+	 */
+	public void setBytes(byte[] buffer, Long offset) {
+		// TODO Auto-generated method stub
+		
 	}
 }
