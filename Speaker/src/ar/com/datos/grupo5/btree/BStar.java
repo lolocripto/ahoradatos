@@ -50,7 +50,7 @@ public final class BStar implements BTree {
 			archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 			
-			byte[] nodoLeido = archivo.leerBloque(0L);
+			byte[] nodoLeido = archivo.leerBloque(0);
 			if (nodoLeido != null && nodoLeido.length > 0) {
 				nodoRaiz = new Nodo();
 				nodoRaiz.setBytes(nodoLeido);
@@ -151,7 +151,7 @@ public final class BStar implements BTree {
 							.getNroBloqueIzquierdo();
 					nodoAux = new Nodo();
 					try {
-						nodoAux.setBytes(archivo.leerBloque((long) nroBloque));
+						nodoAux.setBytes(archivo.leerBloque(nroBloque));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -168,7 +168,7 @@ public final class BStar implements BTree {
 							.getNroBloqueIzquierdo();
 					nodoAux = new Nodo();
 					try {
-						nodoAux.setBytes(archivo.leerBloque((long) nroBloque));
+						nodoAux.setBytes(archivo.leerBloque(nroBloque));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -191,7 +191,7 @@ public final class BStar implements BTree {
 						nodoAux = new Nodo();
 						try {
 							nodoAux.setBytes(archivo
-									.leerBloque((long) nroBloque));
+									.leerBloque(nroBloque));
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -214,17 +214,22 @@ public final class BStar implements BTree {
 	 */
 	public boolean insertar(final RegistroNodo registro) {
 		
+		//FIXME: Arreglar esto!!!!!
+		registro.setNroBloqueDerecho(-1);
+		registro.setNroBloqueIzquierdo(-1);
 		if (this.nodoRaiz == null) {
 			
 			//Creo la raiz e inserto el registro.
 			this.nodoRaiz = new Nodo();
 			//El primero es hoja al pricipio.
 			nodoRaiz.setEsHoja(true);
-			registro.setNroBloqueDerecho(null);
-			registro.setNroBloqueIzquierdo(null);
+			nodoRaiz.setNroBloque(0);
+			nodoRaiz.setNroBloquePadre(-1);
+			registro.setNroBloqueDerecho(-1);
+			registro.setNroBloqueIzquierdo(-1);
 			this.nodoRaiz.insertarRegistro(registro);
 			try {
-				archivo.escribirBloque(nodoRaiz.getBytes(), 0L);
+				archivo.escribirBloque(nodoRaiz.getBytes(), 0);
 			} catch (IOException e) {
 				LOG.error("Error: " + e.getMessage());
 				e.printStackTrace();

@@ -47,7 +47,7 @@ public class ListasInvertidas {
 	/**
 	 * Nro de bloque donde empieza la lista invertida del termino.
 	 */
-	private long nroBloque;
+	private int nroBloque;
 	
 	/**
 	 * Archivo que contendrá las palabras y que será manejado por el
@@ -111,11 +111,11 @@ public class ListasInvertidas {
 	 * @return null si no encuentra la lista, si no devuelve el registro.
 	 */
 	public final RegistroTerminoDocumentos leerLista(final long idTerminoExt, 
-			final long nroBloqueExt) {
+			final int nroBloqueExt) {
 		
 		RegistroTerminoDocumentos reg = new RegistroTerminoDocumentos();
 		this.nroBloque = nroBloqueExt;
-		long siguiente = this.nroBloque;
+		int siguiente = this.nroBloque;
 		short primerRegistro;
 		short espacioOcupado;
 		short cantBloquesLeidos = 0;
@@ -131,7 +131,7 @@ public class ListasInvertidas {
 						= new ByteArrayInputStream(datosLeidosPorBloque);  
 					DataInputStream dis = new DataInputStream(bis);
 					
-					siguiente = dis.readLong();
+					siguiente = dis.readInt();
 					primerRegistro = dis.readShort();
 					espacioOcupado = dis.readShort();
 					
@@ -280,7 +280,7 @@ public class ListasInvertidas {
 				//TODO: Actualizar la lista de espacios libres con lo que queda de este bloque				
 				bytesAEscribir = armarDatosBloque((long) this.cantidadBloques+2, bytes, (short) 0, (short) (tamanioDatosControl + bytes.length));
 				try {
-					this.archivo.escribirBloque(bytesAEscribir, (long) this.cantidadBloques+1);
+					this.archivo.escribirBloque(bytesAEscribir, this.cantidadBloques+1);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -290,7 +290,7 @@ public class ListasInvertidas {
 			//TODO: Tengo que definir bytes, tengo que cortarlo
 			bytesAEscribir = armarDatosBloque(0L, bytes, (short) (tamanioDatosControl + bytes.length), (short) (tamanioDatosControl + bytes.length));
 			try {
-				this.archivo.escribirBloque(bytesAEscribir, (long) this.cantidadBloques+1);
+				this.archivo.escribirBloque(bytesAEscribir, this.cantidadBloques+1);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -318,7 +318,7 @@ public class ListasInvertidas {
 					//TODO: Actualizar la lista de espacios libres con lo que queda de este bloque
 					bytesAEscribir = armarDatosBloque((long) 0, bytes, (short) 0, (short) (tamanioDatosControl + bytes.length));
 					try {
-						this.archivo.escribirBloque(bytesAEscribir, (long) this.cantidadBloques+1);
+						this.archivo.escribirBloque(bytesAEscribir, this.cantidadBloques+1);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -332,7 +332,7 @@ public class ListasInvertidas {
 				//que queda de este bloque
 				bytesAEscribir = armarDatosBloque((long) 0, bytes, (short) 0, (short) (tamanioDatosControl + bytes.length));
 				try {
-					this.archivo.escribirBloque(bytesAEscribir, (long) this.cantidadBloques+1);
+					this.archivo.escribirBloque(bytesAEscribir, this.cantidadBloques+1);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -401,7 +401,7 @@ public class ListasInvertidas {
 		logger.debug("Empiezo a leer el encabezado.");
 		try {
 			//Leo el primer bloque
-			datosControlArchivo = this.archivo.leerBloque(0L);
+			datosControlArchivo = this.archivo.leerBloque(0);
 			
 			//TODO: Este if debería ser una Exception
 			if (datosControlArchivo.length > 0) {
@@ -464,7 +464,7 @@ public class ListasInvertidas {
 			System.arraycopy(bos.toByteArray(), 0, encabezadoBytes, 
 							0, bos.toByteArray().length);
 
-			this.archivo.escribirBloque(encabezadoBytes, 0L);
+			this.archivo.escribirBloque(encabezadoBytes, 0);
 			logger.debug("Escribi los datos del encabezado.");
 			
 			return true;
@@ -486,10 +486,13 @@ public class ListasInvertidas {
 
 		byte[] ListaEspaciosLibresBytes = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
 
-		int tamanioDatosControl = Constantes.SIZE_OF_INT * 2 + Constantes.SIZE_OF_CHAR;
-		int tamanioTotalDisponibleXBloque = Constantes.SIZE_OF_INDEX_BLOCK - (tamanioDatosControl);
-		//Division Entera
-		int maxCantidadNodosPorBloque = tamanioTotalDisponibleXBloque/tamanioDatosControl;
+		int tamanioDatosControl = Constantes.SIZE_OF_INT * 2
+				+ Constantes.SIZE_OF_CHAR;
+		int tamanioTotalDisponibleXBloque = Constantes.SIZE_OF_INDEX_BLOCK
+				- (tamanioDatosControl);
+		// Division Entera
+		int maxCantidadNodosPorBloque = tamanioTotalDisponibleXBloque
+				/ tamanioDatosControl;
 		
 		int cantidadElementosFaltantes = this.espacioLibrePorBloque.size(); 
 		
@@ -498,13 +501,14 @@ public class ListasInvertidas {
 
 		NodoListaEspacioLibre nodoLibre;
 		
-		Iterator<NodoListaEspacioLibre> it = this.espacioLibrePorBloque.iterator();
+		Iterator<NodoListaEspacioLibre> it = this.espacioLibrePorBloque
+				.iterator();
 		//Obtengo el Siguiente del bloque
 		try {
-		while ( it.hasNext() && cantidadElementosFaltantes > 0) {
+		while (it.hasNext() && cantidadElementosFaltantes > 0) {
 			
 			//Leo el bloque
-		    byte[] bloqueLista = this.archivo.leerBloque((long) bloqueActual);
+		    byte[] bloqueLista = this.archivo.leerBloque(bloqueActual);
 			ByteArrayInputStream bis = new ByteArrayInputStream(bloqueLista);  
 			DataInputStream dis = new DataInputStream(bis);
 			
@@ -530,7 +534,8 @@ public class ListasInvertidas {
 				//Escribo parte de un bloque
 				dos.writeInt(0);
 				dos.writeInt(cantidadElementosFaltantes);
-				for (int i = 0; i < cantidadElementosFaltantes && it.hasNext(); i++) {
+				for (int i = 0; i < cantidadElementosFaltantes
+							&& it.hasNext(); i++) {
 					dos.writeShort(nodoLibre.getEspacio());
 					dos.writeInt(nodoLibre.getNroBloque());
 					nodoLibre = it.next();
@@ -539,8 +544,11 @@ public class ListasInvertidas {
 				dos.writeInt(nodoLibre.getNroBloque());
 				cantidadElementosFaltantes -= cantidadElementosFaltantes;
 				bos.flush();
-				System.arraycopy(bos.toByteArray(), 0, ListaEspaciosLibresBytes, 0, bos.toByteArray().length);
-				this.archivo.escribirBloque(ListaEspaciosLibresBytes, (long) bloqueActual);
+				System.arraycopy(bos.toByteArray(), 0,
+							ListaEspaciosLibresBytes, 0,
+							bos.toByteArray().length);
+					this.archivo.escribirBloque(ListaEspaciosLibresBytes,
+							 bloqueActual);
 			} else {
 				//Escribo un bloque completo
 				/* 
@@ -559,15 +567,19 @@ public class ListasInvertidas {
 				dos.writeInt(bloqueSiguiente);
 				dos.writeInt(maxCantidadNodosPorBloque);
 				
-				for (int i = 0; i < maxCantidadNodosPorBloque && it.hasNext(); i++) {
+				for (int i = 0; i < maxCantidadNodosPorBloque
+							&& it.hasNext(); i++) {
 					dos.writeShort(nodoLibre.getEspacio());
 					dos.writeInt(nodoLibre.getNroBloque());
 					nodoLibre = it.next();
 				}
 				cantidadElementosFaltantes -= maxCantidadNodosPorBloque;
 				bos.flush();
-				System.arraycopy(bos.toByteArray(), 0, ListaEspaciosLibresBytes, 0, bos.toByteArray().length);
-				this.archivo.escribirBloque(ListaEspaciosLibresBytes, (long) bloqueActual);
+				System.arraycopy(bos.toByteArray(), 0,
+							ListaEspaciosLibresBytes, 0,
+							bos.toByteArray().length);
+				this.archivo.escribirBloque(ListaEspaciosLibresBytes,
+							bloqueActual);
 				bloqueActual = bloqueSiguiente;
 			}
 			//Insertar el registro
@@ -595,7 +607,7 @@ public class ListasInvertidas {
 		NodoListaEspacioLibre nodo;
 		try {
 			this.datosLeidosPorBloque = this.archivo
-					.leerBloque((long) this.nroBloqueLista);
+					.leerBloque(this.nroBloqueLista);
 			ByteArrayInputStream bis = new ByteArrayInputStream(
 					this.datosLeidosPorBloque);
 			DataInputStream dis = new DataInputStream(bis);
@@ -616,7 +628,7 @@ public class ListasInvertidas {
 					this.espacioLibrePorBloque.add(nodo);					
 				}
 				this.datosLeidosPorBloque = this.archivo.
-								leerBloque((long) siguienteBloque);
+								leerBloque(siguienteBloque);
 				
 				bis = new ByteArrayInputStream(
 								this.datosLeidosPorBloque);
@@ -784,7 +796,7 @@ public class ListasInvertidas {
 	 * @return
 	 * 			True si logre inicializar el bloque.
 	 */
-	private boolean inicializarListaEspaciosLibre(final long bloqueLista) {
+	private boolean inicializarListaEspaciosLibre(final int bloqueLista) {
 		byte[] datos = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);

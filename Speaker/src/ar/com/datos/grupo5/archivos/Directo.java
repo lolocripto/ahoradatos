@@ -42,7 +42,7 @@ public class Directo extends Archivo {
 	 * @throws UnImplementedMetodException .
 	 * @see Archivo#leerBloque(Long)
 	 */
-	public byte[] leerBloque(final Long offset)
+	public byte[] leerBloque(final int offset)
 			throws UnImplementedMethodException, IOException {
 
 		throw new UnImplementedMethodException(

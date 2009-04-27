@@ -237,6 +237,6 @@ public abstract class Archivo {
 	 *        Retorna el registro que se encuentra en la posición offset.
 	 * @throws IOException .
 	 */
-	public abstract byte[] leerBloque(final Long offset) throws IOException,
+	public abstract byte[] leerBloque(final int offset) throws IOException,
 	UnImplementedMethodException;
 }

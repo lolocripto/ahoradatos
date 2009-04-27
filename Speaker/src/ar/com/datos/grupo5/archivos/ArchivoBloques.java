@@ -24,18 +24,6 @@ public class ArchivoBloques extends Directo {
 	private static int  tamanio = Constantes.SIZE_OF_INDEX_BLOCK;
 
 	/**
-	 * Offset del ultimo registro insertado.
-	 */
-	private long offset = 0L;
-
-	/**
-	 * @return El offset del ultimo registro insertado.
-	 */
-	public final long getOffset() {
-		return offset;
-	}
-
-	/**
 	 * @see Archivo#primero()
 	 */
 	@Override
@@ -61,7 +49,12 @@ public class ArchivoBloques extends Directo {
 	 * @throws IOException .
 	 */
 	@Override
-	public final byte[] leerBloque(final Long offset) throws IOException {
+	public final byte[] leerBloque(final int offset) throws IOException {
+
+		//Si esta vacio no devualvo nada.
+		if (file.length() == 0) {
+			return null;
+		}
 		
 		byte[] bufferDato = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
 		file.seek(offset * Constantes.SIZE_OF_INDEX_BLOCK);
@@ -77,16 +70,27 @@ public class ArchivoBloques extends Directo {
 	 * 
 	 * @param bytes
 	 *            Es el registro que se va a agregar al archivo.
-	 * @param offset
+	 * @param nroBloque
 	 *            Es la posición en donde comienza el bloque a modificar.
 	 * @throws IOException
 	 *             Excepcion de extrada/salida.
 	 */
-	public void escribirBloque(final byte[] bytes, final Long offset)
+	public void escribirBloque(final byte[] bytes, final int nroBloque)
 			throws IOException {
 
 		// Me posiciono al comienzo del bloque.
-		file.seek(offset * tamanio);
-		file.write(bytes, 0, tamanio);
+		if (file.length() <= (nroBloque * tamanio)) {
+			file.seek(file.length());
+		} else {
+			file.seek(nroBloque * tamanio);
+		}
+		if (tamanio != (nroBloque * tamanio)) {
+			file.write(bytes, 0, bytes.length);
+			byte[] bytesAux = new byte[tamanio - (nroBloque * tamanio)];
+			file.write(bytesAux);
+		} else {
+			file.write(bytes, 0, tamanio);
+		}
+		
 	}
 }
