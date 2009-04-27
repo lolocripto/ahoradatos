@@ -1,6 +1,8 @@
 package ar.com.datos.grupo5.btree;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,13 +10,14 @@ import java.util.ArrayList;
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.interfaces.Registro;
 import ar.com.datos.grupo5.registros.RegistroNodo;
+import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
  * Representa el nodo de arbol b.
  * @author LedZeppeling
  *
  */
-public class Nodo implements Registro {
+public class Nodo {
 
 	/**
 	 * Para indicar que la clave es mayor que la ultima del nodo.
@@ -303,6 +306,91 @@ public class Nodo implements Registro {
 		return true;
 	}
 	
+	/**
+	 * Para serializar.
+	 * @return bytes[]
+	 */
+	public byte[] getBytes() {
+		
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+		DataOutputStream dos = new DataOutputStream(bos);
+		
+		try {			
+			
+			byte[] longDatos = Conversiones.intToArrayByte(this.nroBloque);
+			dos.write(longDatos, 0, longDatos.length);
+			longDatos = Conversiones.intToArrayByte(this.nroBloquePadre);
+			dos.write(longDatos, 0, longDatos.length);
+			longDatos = Conversiones.intToArrayByte(this.espacioOcupado);
+			dos.write(longDatos, 0, longDatos.length);
+			
+			byte[] regBytes = null;
+			int offset = 0;
+			//Serializo todos los registros.
+			for (RegistroNodo registro : registros) {
+				regBytes = registro.getBytes();
+				// El primer registro lo grabo completo, despues no grabo el
+				// puntero al bloque de la izquierda para no repetir.
+				dos.write(regBytes, offset, regBytes.length);
+				if (offset == 0) {
+					offset += 4;
+				}
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return bos.toByteArray();
+	}
+
+	/**
+	 * 
+	 */
+	public boolean hasMoreBytes() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/**
+	 * 
+	 */
+	public void setBytes(byte[] buffer) {
+		
+		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
+		DataInputStream dos = new DataInputStream(bis);
+		int bloqueAnt = 0, result = 0;
+		int cantidad = 0;
+		int off = 0;
+		byte[] datos = new byte[Constantes.SIZE_OF_INT];
+		RegistroNodo reg = null;
+		
+		try {
+			//Leo el numero de bloque.
+			nroBloque = dos.readInt();
+			nroBloquePadre = dos.readInt();
+			espacioOcupado = dos.readInt();
+			
+			// Leo el primer dato del primer registro,que el numero de bloque
+			// izquierdo al que apunta.
+			bloqueAnt = dos.readInt();
+			//Lea la cantidad de bytes que ocupa el registro.
+			cantidad = dos.readInt();
+			
+			while (result > 0) {
+				
+				datos = new byte[cantidad];
+				result = dos.read(datos, off, cantidad);
+				reg = new RegistroNodo();
+				reg.setBytes(datos, bloqueAnt);
+				bloqueAnt = dos.readInt();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**************************
 	 * Getters and Setters
 	 **************************/
@@ -369,56 +457,7 @@ public class Nodo implements Registro {
 	public final RegistroNodo getUltimoRegistro() {
 		return this.registros.get(registros.size() - 1);
 	}
-
-	/**
-	 * Para serializar.
-	 * @return bytes[]
-	 */
-	public byte[] getBytes() {
-		
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
-		DataOutputStream dos = new DataOutputStream(bos);
-		
-		try {
-			
-			
-			
-			byte[] regBytes = null;
-			int offset = 0;
-			//Serializo todos los registros.
-			for (RegistroNodo registro : registros) {
-				regBytes = registro.getBytes();
-				// El primer registro lo grabo completo, despues no grabo el
-				// puntero al bloque de la izquierda para no repetir.
-				dos.write(regBytes, offset, regBytes.length);
-				if (offset == 0) {
-					offset += 4;
-				}
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return bos.toByteArray();
-	}
-
-	/**
-	 * 
-	 */
-	public boolean hasMoreBytes() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/**
-	 * 
-	 */
-	public void setBytes(byte[] buffer, Long offset) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	/**
 	 * @return the nroBloquePadre
 	 */
