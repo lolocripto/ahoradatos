@@ -47,8 +47,9 @@ public final class BStar implements BTree {
 		nodoRaiz = null;
 		
 		try {
-			archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
-					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			//archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
+			//		Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			archivo.crear(Constantes.ARCHIVO_ARBOL_BSTAR);
 			
 			byte[] nodoLeido = archivo.leerBloque(0);
 			if (nodoLeido != null && nodoLeido.length > 0) {
@@ -180,6 +181,9 @@ public final class BStar implements BTree {
 				
 			default: //Encontré la clave que buscaba o una mayor.
 				//Veo si lo que recupere el igual o mayor.
+				if (nodoActual.getRegistros().size() == 0) {
+					return nodoActual;
+				}
 				if (nodoActual.getRegistros().get(posReg).getClave().equals(
 						clave)) {
 					
