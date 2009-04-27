@@ -1,5 +1,12 @@
 package ar.com.datos.grupo5.btree;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
+import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.utils.Conversiones;
+
 
 /**
  * Clave de un registro.
@@ -59,6 +66,35 @@ public class Clave implements Comparable<Clave> {
 	 */
 	public final int hashCode() {
 		return 0;
+	}
+	
+	/**
+	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
+	 * @return los bytes que representan a la clave.
+	 */
+	public byte[] getBytes() {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+		DataOutputStream dos = new DataOutputStream(bos);
+		try {
+			byte[] datosByte = claveStr.getBytes();
+			byte[] longDatoBytes = Conversiones.intToArrayByte(datosByte.length);
+
+			dos.write(longDatoBytes, 0, longDatoBytes.length);
+			dos.write(datosByte, 0, datosByte.length);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return bos.toByteArray();
+	}
+	
+	/**
+	 * Método que llena los atributos a partir de lo contenido en el buffer.
+	 * @param buffer Cadena de Bytes leida en el archivo de bloques.
+	 */
+	public void setBytes(final byte[] buffer) {
+	// TODO verificar este método!!!!
+		this.setClave(new String(buffer));
 	}
 
 }

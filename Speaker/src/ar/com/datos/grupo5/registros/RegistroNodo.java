@@ -1,12 +1,17 @@
 
 package ar.com.datos.grupo5.registros;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 
+import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.ListasInvertidas;
 import ar.com.datos.grupo5.btree.Clave;
-import ar.com.datos.grupo5.btree.Nodo;
 import ar.com.datos.grupo5.interfaces.Registro;
+import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
  * Esta clase implementa el registro para los nodos de árboles.
@@ -24,7 +29,7 @@ public class RegistroNodo implements Registro {
 	/**
 	 * Cuantos bytes puedo pasar.
 	 */
-	private Long moreBytes;
+	private Long moreBytes = 1L;
 	
 	/**
 	 * Es la clave del nodo.
@@ -54,7 +59,7 @@ public class RegistroNodo implements Registro {
 		if (moreBytes > 0) {
 			return true;
 		}
-		
+		moreBytes = 0L;
 		return false;
 	}
 	
@@ -63,9 +68,24 @@ public class RegistroNodo implements Registro {
 	 * @return los bytes que representan al registro.
 	 */
 	public byte[] getBytes() {
-		//TODO Hacer este método!!!!!!
-		byte[] arraybytes = null;
-		return arraybytes;
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+		DataOutputStream dos = new DataOutputStream(bos);
+		try {
+			// FIXME me parece que así se complica lo de las longitudes
+			byte[] longDatoBytes = Conversiones.
+			intToArrayByte(claveNodo.getBytes().length);
+			byte[] bloqueAnt = Conversiones.intToArrayByte(nroBloqueIzquierdo);
+			byte[] bloquePos = Conversiones.intToArrayByte(nroBloqueDerecha);
+
+			dos.write(bloqueAnt, 0, bloqueAnt.length);
+			dos.write(longDatoBytes, 0, longDatoBytes.length);
+			dos.write(claveNodo.getBytes(), 0, claveNodo.getBytes().length);
+			dos.write(bloquePos, 0, bloquePos.length);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return bos.toByteArray();
 	}
 	
 	/**
@@ -74,7 +94,7 @@ public class RegistroNodo implements Registro {
 	 * @param offset id del termino que se busca.
 	 */
 	public void setBytes(final byte[] buffer, final Long offset) {
-	// TODO Hacer este método!!!!	
+		//TODO HACERLO YA!!!!!!!!!!
 	}
 
 	/**
@@ -87,7 +107,8 @@ public class RegistroNodo implements Registro {
 	 * 			los datos.
 	 */
 	public final void setMoreBytes(final byte[] buffer, final int offset) {
-		//TODO Hacer este método!!!!!!!!!		
+		//TODO Hacer este método!!!!!!!!!
+		moreBytes = 1L;
 	}
 
 	/**
