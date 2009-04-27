@@ -1,6 +1,9 @@
 package ar.com.datos.grupo5;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -27,8 +30,19 @@ public final class TestRam {
 	public static void main(final String[] args) {
 		// TODO Auto-generated method stub
 		ListasInvertidas listasI = new ListasInvertidas();
+		ArrayList<NodoListaEspacioLibre> lista = new ArrayList<NodoListaEspacioLibre>();
 		
-		System.out.println((Integer.SIZE + Short.SIZE)/8);
+		NodoListaEspacioLibre nodo;
+		
+		for (int i = 0; i < 408; i++) {
+		nodo = new NodoListaEspacioLibre();
+		nodo.setEspacio((short) (25 + i));
+		nodo.setNroBloque(2 + i);
+		lista.add(nodo);
+		}
+		
+		//listasI.setEspacioLibrePorBloque(lista);
+		
 		/*
 		 * Abro el archivo para la carga y consulta del diccionario
 		 */
@@ -39,6 +53,14 @@ public final class TestRam {
 			logger.debug("No se pudo abrir el diccionario.");
 		}
 
-		logger.debug("Abrio el archivo Diccionario");
+		try {
+			listasI.cerrar();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.debug("Error al intentar cerrar el archivo.");
+		}
+		
+		logger.debug("Abrio el archivo de listas invertidas");
 	}
 }

@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
+import ar.com.datos.grupo5.btree.Clave;
 import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
@@ -13,17 +14,17 @@ import ar.com.datos.grupo5.utils.Conversiones;
  * @author Led Zeppelin
  *
  */
-public class NodoListaEspacioLibre {
+public class NodoListaEspacioLibre implements Comparable<NodoListaEspacioLibre>{
 
 	/**
 	 * Contiene el espacio libre dentro del bloque asociado.
 	 */
-	private short espacio;
+	private Short espacio;
 	
 	/**
 	 * Contiene el número del bloque que tiene espacio libre.
 	 */
-	private int nroBloque;
+	private Integer nroBloque;
 	
 	/**
 	 *  Permite saber si hay mas bytes para copiar.
@@ -74,12 +75,29 @@ public class NodoListaEspacioLibre {
 		this.moreBytes = Constantes.SIZE_OF_INT + Constantes.SIZE_OF_SHORT;
 	}
 
-	/*
-	public final boolean equals(final NodoListaEspacioLibre n1) {
-		return (this.espacio == n1.getEspacio() 
-					&& this.nroBloque == n1.getNroBloque());
+	/**
+	 * Determina cuando nodo es igual a otro.
+	 * @param nodo .
+	 * @return true si son iguales.
+	 */
+	@Override
+	public final boolean equals(final Object nodo) {
+		
+		if (nodo instanceof NodoListaEspacioLibre) {
+			NodoListaEspacioLibre c = (NodoListaEspacioLibre) nodo;
+			return ( (c.getEspacio() == this.espacio) && (c.getNroBloque() == this.nroBloque) );
+		}
+		
+		return false;
 	}
-	*/
+	
+	/**
+	 * Para el equals.
+	 * @return al hash code.
+	 */
+	public final int hashCode() {
+		return 0;
+	}
 	
 	/**
 	 * Este método convierte el objeto en una tira de bytes.
@@ -140,6 +158,16 @@ public class NodoListaEspacioLibre {
 	 */
 	public int getSize() {
 		return tamanioNodo;
+	}
+
+	/**
+	 * Para comparar los nodos.
+	 * @param nodo nodo a comparar.
+	 * @return 0, 1, -1.
+	 */
+	public int compareTo(NodoListaEspacioLibre nodo) {
+		
+		return this.espacio.compareTo(nodo.getEspacio());
 	}
 
 }
