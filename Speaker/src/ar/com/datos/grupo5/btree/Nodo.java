@@ -338,7 +338,7 @@ public class Nodo {
 				// puntero al bloque de la izquierda para no repetir.
 				dos.write(regBytes, offset, regBytes.length);
 				if (offset == 0) {
-					offset += 4;
+					offset += Constantes.SIZE_OF_INT;
 				}
 			}
 
