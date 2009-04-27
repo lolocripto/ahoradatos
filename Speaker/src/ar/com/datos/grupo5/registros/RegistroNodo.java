@@ -1,7 +1,9 @@
 
 package ar.com.datos.grupo5.registros;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -44,13 +46,13 @@ public class RegistroNodo {
 	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
 	 * @return los bytes que representan al registro.
 	 */
-	public byte[] getBytes() {
+	public final byte[] getBytes() {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
 		try {
-			// FIXME me parece que así se complica lo de las longitudes
-			int longitud =  2 * Constantes.SIZE_OF_INT + 
-			claveNodo.getBytes().length;
+			// TODO TESTEARME!!!!!!!!!
+			int longitud =  2 * Constantes.SIZE_OF_INT 
+			+ claveNodo.getBytes().length;
 			byte[] longDatoBytes = Conversiones.
 			intToArrayByte(claveNodo.getBytes().length);
 			byte[] bloqueAnt = Conversiones.intToArrayByte(nroBloqueIzquierdo);
@@ -72,10 +74,29 @@ public class RegistroNodo {
 	/**
 	 * Método que llena los atributos a partir de lo contenido en el buffer.
 	 * @param buffer Cadena de Bytes leida en el archivo de bloques
-	 * @param offset id del termino que se busca.
+	 * @param bloqueAnt nro de bloque anterior.
 	 */
-	public void setBytes(final byte[] buffer, final int offset) {
-		//TODO HACERLO YA!!!!!!!!!!
+	public final void setBytes(final byte[] buffer, final int bloqueAnt) {
+		//TODO TESTEARLO YA!!!!!!!!!!
+		//Leo el numero de bloque Anterior.
+		setNroBloqueIzquierdo(bloqueAnt);
+		
+		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
+		DataInputStream dos = new DataInputStream(bis);
+		byte[] datos = new byte[Constantes.SIZE_OF_INT];
+		
+		try {
+			//Leo la longitud de la clave
+			int longdato = dos.readInt();
+			datos = new byte[longdato];
+			//Leo la clave
+			dos.read(datos, 0, longdato);
+			claveNodo.setBytes(datos);
+			//Leo el numero de bloque posterior.
+			setNroBloqueDerecha(dos.readInt());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
