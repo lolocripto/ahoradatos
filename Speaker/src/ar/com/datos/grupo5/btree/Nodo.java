@@ -47,15 +47,10 @@ public class Nodo implements Registro {
 	private int espacioOcupado;
 	
 	/**
-	 * Puntero al nodo siguiente para recorrer como lista.
+	 * Nro de bloque.
 	 */
-	private Integer nroBloqueSiguiente;
-
-	/**
-	 * Puntero al nodo anterior para pasarse registros como lista.
-	 */
-	private Integer nroBloqueAnterior;
-	
+	private Integer nroBloque;
+		
 	/**
 	 * Si el nodo es hoja o no.
 	 */
@@ -76,8 +71,8 @@ public class Nodo implements Registro {
 	 */
 	public Nodo() {
 		
-		nroBloqueSiguiente = null;
-		nroBloqueAnterior = null;
+		//nroBloqueSiguiente = null;
+		//nroBloqueAnterior = null;
 		nroBloquePadre = null;
 		registros = new ArrayList<RegistroNodo>();
 		espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
@@ -376,34 +371,6 @@ public class Nodo implements Registro {
 	}
 
 	/**
-	 * @return the nroBloqueSiguiente
-	 */
-	public final Integer getNroBloqueSiguiente() {
-		return nroBloqueSiguiente;
-	}
-
-	/**
-	 * @param nroBloque the nroBloqueSiguiente to set
-	 */
-	public final void setNroBloqueSiguiente(final Integer nroBloque) {
-		this.nroBloqueSiguiente = nroBloque;
-	}
-
-	/**
-	 * @return the nroBloqueAnterior
-	 */
-	public final Integer getNroBloqueAnterior() {
-		return nroBloqueAnterior;
-	}
-
-	/**
-	 * @param nroBloque the nroBloqueAnterior to set
-	 */
-	public final void setNroBloqueAnterior(final Integer nroBloque) {
-		this.nroBloqueAnterior = nroBloque;
-	}
-
-	/**
 	 * Para serializar.
 	 * @return bytes[]
 	 */
@@ -464,5 +431,19 @@ public class Nodo implements Registro {
 	 */
 	public final void setNroBloquePadre(Integer nroBloquePadre) {
 		this.nroBloquePadre = nroBloquePadre;
+	}
+
+	/**
+	 * @return the nroBloque
+	 */
+	public final Integer getNroBloque() {
+		return nroBloque;
+	}
+
+	/**
+	 * @param nroBloque the nroBloque to set
+	 */
+	public final void setNroBloque(Integer nroBloque) {
+		this.nroBloque = nroBloque;
 	}
 }
