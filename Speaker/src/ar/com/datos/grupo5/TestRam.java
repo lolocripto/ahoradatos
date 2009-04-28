@@ -38,6 +38,7 @@ public final class TestRam {
 		/*
 		 * Abro el archivo para la carga y consulta del diccionario
 		 */
+		
 		try {
 			listasI.abrir(Constantes.ARCHIVO_LISTAS_INVERTIDAS,
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
@@ -50,9 +51,10 @@ public final class TestRam {
 		/*
 		 * Agrego una lista invertida.
 		 */
+		
 		ParFrecuenciaDocumento nodo;
 		
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 300; i++) {
 			nodo = new ParFrecuenciaDocumento();
 			nodo.setFrecuencia((long) (20+i));
 			nodo.setOffsetDocumento((long) (2+i));
@@ -74,12 +76,19 @@ public final class TestRam {
 		}
 		
 		logger.debug("Cerre el archivo");
-
-		System.exit(0);
+		
 		
 		/*
 		 * Abro el archivo para la carga y consulta del diccionario
 		 */
+		
+		System.out.println(Constantes.SIZE_OF_LONG);
+		System.out.println(Constantes.SIZE_OF_TRIE);
+		System.out.println(Constantes.SIZE_OF_SHORT);
+		System.out.println(Constantes.SIZE_OF_CHAR);
+		System.out.println(Constantes.SIZE_OF_INT);
+		System.exit(0);
+		
 		try {
 			listasI.abrir(Constantes.ARCHIVO_LISTAS_INVERTIDAS,
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
@@ -88,12 +97,11 @@ public final class TestRam {
 		}
 		
 		logger.debug("Abrio el archivo de listas invertidas");
-		
+		//int nroBloque = 2; 
 		RegistroTerminoDocumentos rtd = listasI.leerLista(1, (int) nroBloque);
 		
 		System.out.println("Cantidad documentos: " + rtd.getCantidadDocumentos());
 		System.out.println("Id del termino: " + rtd.getIdTermino());
-//		System.out.println("Cantidad documentos: " + rtd.getCantidadDocumentos());
 		
 		logger.debug("Lei la lista invertida");
 		
