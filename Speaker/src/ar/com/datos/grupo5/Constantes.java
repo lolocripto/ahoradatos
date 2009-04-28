@@ -34,6 +34,7 @@ public final class Constantes {
 	 */
 	public static final int SIZE_OF_TRIE = Integer
 	.parseInt(getXML("SIZE_OF_TRIE"));	
+
 	/**
 	 * 
 	 */
@@ -47,7 +48,7 @@ public final class Constantes {
 	/**
 	 * 
 	 */
-    private static Element raiz; 
+	private static Element raiz; 
 	
 	/**
 	 * Tamaño del buffer de lectura.
@@ -73,12 +74,12 @@ public final class Constantes {
 	public static final String ABRIR_PARA_LECTURA_ESCRITURA = "rw";
 		
 	/**
-     * Tamaño en bytes del char.
+         * Tamaño en bytes del char.
 	 */
 	public static final int SIZE_OF_CHAR = Character.SIZE / SIZE_OF_BYTE;
 	
-    /**
-     * Tamaño en bytes del long.
+    	/**
+	* Tamaño en bytes del long.
 	 */
 	public static final int SIZE_OF_LONG = Long.SIZE / SIZE_OF_BYTE;
 	
@@ -88,7 +89,7 @@ public final class Constantes {
 	public static final int SIZE_OF_INT = Integer.SIZE / SIZE_OF_BYTE;
 	
 	/**
-     * Tamaño en bytes del short.
+         * Tamaño en bytes del short.
 	 */
 	public static final int SIZE_OF_SHORT = Short.SIZE / SIZE_OF_BYTE;
 	
@@ -161,6 +162,13 @@ public final class Constantes {
 		getXML("ARCHIVO_LISTAS_INVERTIDAS");	
 	
 	/**
+	 * Archivo que usa ListasInvertidas para guardar las listas invertidas.
+	 */
+	public static final String ARCHIVO_TERMINOS_GLOBALES = 
+		getXML("ARCHIVO_TERMINOS_GLOBALES");
+	
+	
+	/**
 	 * Archivo para el arbol BStar.
 	 */
 	public static final String ARCHIVO_ARBOL_BSTAR = 
@@ -171,6 +179,7 @@ public final class Constantes {
 	 */
 	public static final Float FACTOR_CARGA_BLOQUES = Float.parseFloat(
 		getXML("FACTOR_CARGA_BLOQUES"));
+
 	/**
 	 * Lee delarchivo de configuracion.
 	 * 
