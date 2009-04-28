@@ -2,7 +2,9 @@ package ar.com.datos.grupo5;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.UnidadesDeExpresion.Palabra;
@@ -19,6 +21,7 @@ public class TestStopWords {
 	 * @param args
 	 */
 
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 		String cadenaTexto = new String("Organización de Datos, entrega numero dos, viene jodida la mano che, si no nos ponemos las pilas esto explota");
 		ITextInput tratadorDeTexto = new TextInterpreter();
@@ -28,11 +31,12 @@ public class TestStopWords {
 			ParserStopWords parser = new ParserStopWords();
 			Collection<IunidadDeHabla> filtradas = parser
 					.filtroStopWords(palabras);
+			Collections.sort((List<IunidadDeHabla>) filtradas ) ;
 			Iterator<IunidadDeHabla> iterador = filtradas.iterator();
 			while (iterador.hasNext()) {
 				IunidadDeHabla unidad = iterador.next();
 				String lapalabra = unidad.getEquivalenteFonetico();
-				System.out.print("sw= " + lapalabra + "\n");
+				System.out.println(lapalabra);
 			}
 
 		} catch (Exception e) {
