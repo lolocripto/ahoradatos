@@ -275,6 +275,8 @@ public class ListasInvertidas {
 
 		byte[] bytesAEscribir;
 		
+		this.nroBloque = this.cantidadBloques;
+		
 		/* Genero todos los registros */
 		if (masRegistros) {
 			//Calculo el total de bloques
