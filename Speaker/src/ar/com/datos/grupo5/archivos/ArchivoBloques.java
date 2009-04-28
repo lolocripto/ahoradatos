@@ -84,9 +84,9 @@ public class ArchivoBloques extends Directo {
 		} else {
 			file.seek(nroBloque * tamanio);
 		}
-		if (tamanio != (nroBloque * tamanio)) {
+		if (tamanio > (bytes.length)) {
 			file.write(bytes, 0, bytes.length);
-			byte[] bytesAux = new byte[tamanio - (nroBloque * tamanio)];
+			byte[] bytesAux = new byte[tamanio - (bytes.length)];
 			file.write(bytesAux);
 		} else {
 			file.write(bytes, 0, tamanio);
