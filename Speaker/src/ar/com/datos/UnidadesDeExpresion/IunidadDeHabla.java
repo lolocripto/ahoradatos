@@ -5,7 +5,7 @@ package ar.com.datos.UnidadesDeExpresion;
  * 
  * @author LedZeppelin
  */
-public interface IunidadDeHabla {
+public interface IunidadDeHabla extends Comparable{
 	
 	/**
 	 * Este método permite obtener la cadena a la que hace referencia el objeto.
@@ -81,7 +81,18 @@ public interface IunidadDeHabla {
 	 *            String equivalente
 	 */
 	void setEquivalenteFonetico(String equivalenteFonetico);
+	/**
+	 * Redefinicion de equals para busquedas.
+	 * @param o Objeto a chequear su igualdad.
+	 * @return true si son iguales.
+	 */ 
+	boolean equals(Object o);
 	
-	public boolean equals(Object o);
+	/**
+	 * Redefinicion de Compare para ordenacion.
+	 * @param o Objeto a comparar
+	 * @return -1 
+	 */
+	int compareTo(Object o); 
 
 }

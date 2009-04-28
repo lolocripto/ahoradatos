@@ -135,5 +135,15 @@ public class Palabra implements IunidadDeHabla {
 		  return true;
 	return false;   
 	}
+    /**
+     * Compara el equivalente fonetico de la palabra.
+     * @param o Objeto a comparar
+     * @return int >0 si el equivalente Fonetico de o es menor 
+     *  <0 si es mayor y  0 si son iguales.
+     */
+	public final int compareTo(final Object o) {
+		String eqiu = ((Palabra) o).getEquivalenteFonetico();
+		return this.getEquivalenteFonetico().compareTo(eqiu);
+	}
 
 }

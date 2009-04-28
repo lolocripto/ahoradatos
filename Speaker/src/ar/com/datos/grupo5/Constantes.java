@@ -10,6 +10,7 @@ import org.jdom.input.SAXBuilder;
 
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.UnidadesDeExpresion.Palabra;
+import ar.com.datos.parser.PalabrasFactory;
 
 /**
  * Constantes de la aplicacion.
@@ -195,7 +196,6 @@ public final class Constantes {
 	 * @return El valor leido.
 	 */
 	public static String getXML(final String nombre) {
-
 		if ((builder == null) || (doc == null)) {
 			try {
 				builder = new SAXBuilder(false);
@@ -225,13 +225,11 @@ public final class Constantes {
 			}
 		List<Element> lista = raiz.getChildren("palabra");
 		Iterator<Element> it = lista.iterator();
-		
 		ArrayList<IunidadDeHabla> listaFinal = new ArrayList<IunidadDeHabla>();
-		
-		while (it.hasNext()){
-			listaFinal.add(new Palabra (it.next().getText()));
+		while (it.hasNext()) {
+			listaFinal.add(PalabrasFactory.getPalabra(it.next().getText()));
 		}
-		return listaFinal;
+			return listaFinal;
 	}
 	
 	public static final List<IunidadDeHabla> LISTA_STOP_WORDS = stopWords();

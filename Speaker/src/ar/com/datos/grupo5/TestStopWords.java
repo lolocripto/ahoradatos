@@ -29,20 +29,21 @@ public class TestStopWords {
 		ITextInput tratadorDeTexto = new TextInterpreter();
 		Collection<IunidadDeHabla> palabras = new ArrayList();
 		
-		Iterator<String> it = Constantes.LISTA_STOP_WORDS.iterator();
+		Iterator<IunidadDeHabla> it = Constantes.LISTA_STOP_WORDS.iterator();
 		
-		while (it.hasNext()) {
-			String e = it.next();
+		System.out.println("yuhuuu:  ");
+		
+		 while (it.hasNext()) {
+			String e = it.next().getTextoEscrito();
 			System.out.println(e);
 		}
-		
-/*		
+			
 		try {
-			palabras = tratadorDeTexto.modoCarga(cadenaTexto, false);
+			Collection<IunidadDeHabla> texto = tratadorDeTexto.modoCarga(cadenaTexto, false);
 			ParserStopWords parser = new ParserStopWords();
 			Collection<IunidadDeHabla> filtradas = parser
-					.filtroStopWords(palabras);
-//			Collections.sort((List<IunidadDeHabla>) filtradas ) ;
+					.filtroStopWords(texto);
+			Collections.sort((List<IunidadDeHabla>) filtradas);
 			Iterator<IunidadDeHabla> iterador = filtradas.iterator();
 			while (iterador.hasNext()) {
 				IunidadDeHabla unidad = iterador.next();
@@ -55,7 +56,7 @@ public class TestStopWords {
 			e.printStackTrace();
 		}
 		// TODO Auto-generated method stub
-*/
+
 	}
 
 }
