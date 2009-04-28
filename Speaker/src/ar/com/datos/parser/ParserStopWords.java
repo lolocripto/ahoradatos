@@ -8,7 +8,9 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.Constantes;
@@ -30,12 +32,13 @@ public class ParserStopWords {
 	 */
 
 	public final Collection<IunidadDeHabla> filtroStopWords(final Collection<IunidadDeHabla> palabras) {
-	    StopWords = this.CargaStopWords();
+	    StopWords = Constantes.LISTA_STOP_WORDS;
 	    Collection<IunidadDeHabla> auxpalabras = palabras;
 	    auxpalabras.removeAll(StopWords);
 	    return auxpalabras;
-	  
+	    
 	}
+	
 	
 	/**
 	 * Indica si la palabra pertenece a la lista de stop words.
@@ -44,35 +47,6 @@ public class ParserStopWords {
 	 */
 	private boolean IsStopWord(IunidadDeHabla palabra){
 		return false;
-	}
-	/** 
-	 * Metodo que levanta el archivo de stop words en una colleccion.
-	 * @return
-	 */
-	private Collection<IunidadDeHabla> CargaStopWords(){
-		Collection<IunidadDeHabla> ListaStopWord = new ArrayList<IunidadDeHabla>();
-		File archivo = new File("stop_words");
-		FileInputStream fis;
-		try {
-			fis = new FileInputStream(archivo);
-			InputStreamReader isr = new InputStreamReader(fis,
-					Constantes.DEFAULT_TEXT_INPUT_CHARSET);
-			BufferedReader buffer = new BufferedReader(isr);
-			 String stopwords =  buffer.readLine();
-			 String listastop[] = stopwords.split("\\s");
-			 for (int i = 0; i < listastop.length; i++){
-				 ListaStopWord.add(PalabrasFactory.getPalabra(listastop[i]));
-			 }
-			 				 
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 return ListaStopWord;
-		
 	}
 
 }

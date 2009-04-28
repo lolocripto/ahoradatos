@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.jdom.Element;
+
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.UnidadesDeExpresion.Palabra;
 import ar.com.datos.parser.ITextInput;
@@ -26,12 +28,21 @@ public class TestStopWords {
 		String cadenaTexto = new String("Organización de Datos, entrega numero dos, viene jodida la mano che, si no nos ponemos las pilas esto explota");
 		ITextInput tratadorDeTexto = new TextInterpreter();
 		Collection<IunidadDeHabla> palabras = new ArrayList();
+		
+		Iterator<String> it = Constantes.LISTA_STOP_WORDS.iterator();
+		
+		while (it.hasNext()) {
+			String e = it.next();
+			System.out.println(e);
+		}
+		
+/*		
 		try {
 			palabras = tratadorDeTexto.modoCarga(cadenaTexto, false);
 			ParserStopWords parser = new ParserStopWords();
 			Collection<IunidadDeHabla> filtradas = parser
 					.filtroStopWords(palabras);
-			Collections.sort((List<IunidadDeHabla>) filtradas ) ;
+//			Collections.sort((List<IunidadDeHabla>) filtradas ) ;
 			Iterator<IunidadDeHabla> iterador = filtradas.iterator();
 			while (iterador.hasNext()) {
 				IunidadDeHabla unidad = iterador.next();
@@ -44,7 +55,7 @@ public class TestStopWords {
 			e.printStackTrace();
 		}
 		// TODO Auto-generated method stub
-
+*/
 	}
 
 }

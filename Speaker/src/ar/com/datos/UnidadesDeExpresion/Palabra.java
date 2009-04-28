@@ -41,6 +41,11 @@ public class Palabra implements IunidadDeHabla {
 		this.palabraEscrita = palabraEscrita;
 		this.equivalenteFonetico = equivalenteFonetico;
 	}
+	
+	public Palabra(String soloPalabra){
+		this.palabraEscrita=soloPalabra;
+		this.pronunciable=true;
+	}
  
 	/**
 	 * @return El string con la palabra. 

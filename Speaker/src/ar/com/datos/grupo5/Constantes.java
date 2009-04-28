@@ -1,14 +1,22 @@
 package ar.com.datos.grupo5;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+
+import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.UnidadesDeExpresion.Palabra;
 
 /**
  * Constantes de la aplicacion.
  * @author LedZeppeling
  *
  */
+@SuppressWarnings("unchecked")
 public final class Constantes {
 	
 	/**
@@ -203,4 +211,29 @@ public final class Constantes {
 		return e.getTextTrim();
 
 	}
+	
+	
+	private static List<IunidadDeHabla> stopWords() {
+
+			try {
+				builder = new SAXBuilder(false);
+				doc = builder.build("StopWords.xml");
+				raiz = doc.getRootElement();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		List<Element> lista = raiz.getChildren("palabra");
+		Iterator<Element> it = lista.iterator();
+		
+		ArrayList<IunidadDeHabla> listaFinal = new ArrayList<IunidadDeHabla>();
+		
+		while (it.hasNext()){
+			listaFinal.add(new Palabra (it.next().getText()));
+		}
+		return listaFinal;
+	}
+	
+	public static final List<IunidadDeHabla> LISTA_STOP_WORDS = stopWords();
+	
 }
