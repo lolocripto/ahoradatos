@@ -22,20 +22,17 @@ import ar.com.datos.grupo5.Constantes;
 
 public class ParserStopWords {
 
+	Collection<IunidadDeHabla> StopWords ;
 	/**
 	 * Metodo que falta hacer el javadoc je.
 	 * @param palabras
 	 * @return Collection
 	 */
+
 	public final Collection<IunidadDeHabla> filtroStopWords(final Collection<IunidadDeHabla> palabras) {
-	    Collection<IunidadDeHabla> StopWords = this.CargaStopWords();
+	    StopWords = this.CargaStopWords();
 	    Collection<IunidadDeHabla> auxpalabras = palabras;
-	    Iterator<IunidadDeHabla> iterador = StopWords.iterator();
-	    while (iterador.hasNext()) {
-	    	IunidadDeHabla unidad = iterador.next();
-		    System.out.println(unidad.getTextoEscrito());
-		    System.out.println(auxpalabras.contains(unidad));	
-	    }
+	    auxpalabras.removeAll(StopWords);
 	    return auxpalabras;
 	  
 	}
@@ -45,7 +42,7 @@ public class ParserStopWords {
 	 * @param palabra
 	 * @return
 	 */
-	private boolean IsStopWord(String palabra){
+	private boolean IsStopWord(IunidadDeHabla palabra){
 		return false;
 	}
 	/** 
@@ -53,7 +50,7 @@ public class ParserStopWords {
 	 * @return
 	 */
 	private Collection<IunidadDeHabla> CargaStopWords(){
-		 Collection<IunidadDeHabla> ListaStopWord = new ArrayList<IunidadDeHabla>();
+		Collection<IunidadDeHabla> ListaStopWord = new ArrayList<IunidadDeHabla>();
 		File archivo = new File("stop_words");
 		FileInputStream fis;
 		try {

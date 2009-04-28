@@ -227,7 +227,6 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 
 		String[] listaPalabras;
 		int sigPalabra = 0;
-
 		if (!PatternRecognizer.esLineaVacia(lineaSimple)) {
 			listaPalabras = PatternRecognizer.procesarLinea(lineaSimple);
 			while (sigPalabra < listaPalabras.length) {
