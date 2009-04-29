@@ -89,7 +89,13 @@ public class RegistroTerminoGlobal implements Registro {
 		this.longDato = (short) dato.length();
 		this.moreBytes = (long) (this.longDato + Constantes.SIZE_OF_INT); 
 	}
-	
+	/**
+	 * 
+	 * @return dato.
+	 */
+	public final String getDato(){
+		return this.dato;
+	}
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Registro#getLongDatos()
 	 * @return Devuelve la longitud del dato almacenado.
@@ -110,5 +116,6 @@ public class RegistroTerminoGlobal implements Registro {
 		this.longDato = (short) buffer.length;
 		dato = new String(buffer);
 	}
+	
 
 }
