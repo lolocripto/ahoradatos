@@ -5,32 +5,34 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.interfaces.Registro;
 import ar.com.datos.grupo5.utils.Conversiones;
-import ar.com.datos.grupo5.Constantes;
 
+//TODO: Ver comentarios, JAVADOC
 /**
- * Esta clase implementa el registro para el termino global.
+ * Esta Clase implementa la interfaz del registro para audio.
  * 
  * @see ar.com.datos.grupo5.interfaces.Registro
  * @author LedZeppeling
  */
 public class RegistroTerminoGlobal implements Registro {
-	
+
 	/**
 	 * Cuantos bytes puedo pasar.
 	 */
-	private Long moreBytes;
+	private long moreBytes;
 	
 	/**
-	 * Offset.
+	 * 
 	 */
-	private Long offset;
+	private short longDato;
 	
 	/**
-	 * El dato que se guarda.
+	 * 
 	 */
 	private String dato;
+
 	
 	/**
 	 * En este caso se devuelve de una vez todos los bytes. Devuelvo true la
@@ -45,7 +47,6 @@ public class RegistroTerminoGlobal implements Registro {
 		if (moreBytes > 0) {
 			return true;
 		}
-		
 		return false;
 	}
 	
@@ -54,24 +55,23 @@ public class RegistroTerminoGlobal implements Registro {
 	 * @return los bytes que representan al registro.
 	 */
 	public final byte[] getBytes() {
-
+		
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
+		
 		try {
-			int longDatosAdic = Constantes.SIZE_OF_INT
-					+ Constantes.SIZE_OF_LONG;
+			
+			int longDatosAdic = Constantes.SIZE_OF_SHORT;
+			
 			byte[] datosByte = dato.getBytes();
 			
-			if (moreBytes == (datosByte.length + longDatosAdic)) {
-				byte[] longDatoBytes = Conversiones
-						.intToArrayByte(datosByte.length);
-				byte[] offsetBytes = Conversiones.longToArrayByte(offset);
+			if (moreBytes == (dato.length() + longDatosAdic)) {
+				byte[] longDatoBytes = Conversiones.shortToArrayByte(longDato);
 
-				dos.write(offsetBytes, 0, offsetBytes.length);
 				dos.write(longDatoBytes, 0, longDatoBytes.length);
-				moreBytes -= offsetBytes.length;
 				moreBytes -= longDatoBytes.length;
 			}
+			
 			dos.write(datosByte, 0, datosByte.length);
 			moreBytes -= datosByte.length;
 		} catch (IOException e) {
@@ -80,55 +80,24 @@ public class RegistroTerminoGlobal implements Registro {
 		
 		return bos.toByteArray();
 	}
+
+	/**
+	 * @param datos the dato to set
+	 */
+	public final void setDato(final String termino) {
+	 	this.dato = termino;
+		this.longDato = (short) dato.length();
+		this.moreBytes = (long) (this.longDato + Constantes.SIZE_OF_INT); 
+	}
 	
 	/**
-	 * Método que llena el registro con la información del buffer.
+	 * @see ar.com.datos.grupo5.interfaces.Registro#getLongDatos()
+	 * @return Devuelve la longitud del dato almacenado.
 	 */
-	public void llenar() {
-		// TODO Llenar este método
+	public final short getLongDatos() {
+		return longDato;
 	}
-	
-	/**
-	 * Método que devuelve el offset.
-	 * 
-	 * @return El offset en el archivo de audio.
-	 */
-	public final Long getOffset() {
-		return offset;
-	}
-
-	/**
-	 * Método para cargar el offset.
-	 * 
-	 * @param offset
-	 *            El offset a cargar.
-	 */
-	public final void setOffset(final Long offset) {
-		this.offset = offset;
-	}
-
-	/**
-	 * Método para devolver el dato.
-	 * 
-	 * @return El dato.
-	 */
-	public final String getDato() {
-		return dato;
-	}
-
-	/**
-	 * Método para cargar el dato.
-	 * 
-	 * @param dato
-	 *            El dato a setear.
-	 */
-	public final void setDato(final String dato) {
-		this.dato = dato;
-		// Acá considero el tamaño (int) y el offset (long).
-		this.moreBytes = (long) dato.getBytes().length + Constantes.SIZE_OF_INT
-				+ Constantes.SIZE_OF_LONG;
-	}
-	 
+		
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Registro#setBytes(byte[], Long)
 	 * @param buffer
@@ -137,6 +106,9 @@ public class RegistroTerminoGlobal implements Registro {
 	 *            El offset en el que se encuentra el dato de audio asociado.
 	 */
 	public final void setBytes(final byte[] buffer, final Long offset) {
-		this.setDato(new String(buffer));
+
+		this.longDato = (short) buffer.length;
+		dato = new String(buffer);
 	}
+
 }
