@@ -56,6 +56,9 @@ public class RegistroTerminoDocumentos implements Registro {
 	 */
 	private int cantidadDocumentosLeidos;
 	
+	/**
+	 * Constructor de la clase.
+	 */
 	public RegistroTerminoDocumentos() {
 		this.cantidadDocumentos = 0;
 		this.cantidadDocumentosLeidos = 0;
