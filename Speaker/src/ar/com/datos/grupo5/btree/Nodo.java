@@ -290,12 +290,17 @@ public class Nodo {
 		
 		try {			
 			
-			byte[] longDatos = Conversiones.intToArrayByte(this.nroBloque);
+			byte[] longDatos = Conversiones.intToArrayByte(nroBloque);
+			//Nro de bloque
 			dos.write(longDatos, 0, longDatos.length);
-			longDatos = Conversiones.intToArrayByte(this.nroBloquePadre);
+			longDatos = Conversiones.intToArrayByte(nroBloquePadre);
+			//Nro de bloque del padre
 			dos.write(longDatos, 0, longDatos.length);
-			longDatos = Conversiones.intToArrayByte(this.espacioOcupado);
+			longDatos = Conversiones.intToArrayByte(espacioOcupado);
+			//Espacio ocupado del nodo.
 			dos.write(longDatos, 0, longDatos.length);
+			//Cantidad de registros.
+			//longDatos = Conversiones.intToArrayByte(registros.size());
 			
 			byte[] regBytes = null;
 			int offset = 0;
@@ -333,7 +338,7 @@ public class Nodo {
 		
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
 		DataInputStream dos = new DataInputStream(bis);
-		int bloqueAnt = 0, result = 0;
+		int bloqueAnt = 0, result = 1;
 		int cantidad = 0;
 		int offset = 0;
 		byte[] datos = new byte[Constantes.SIZE_OF_INT];
@@ -346,7 +351,7 @@ public class Nodo {
 			nroBloquePadre = dos.readInt();
 			espacioOcupado = dos.readInt();
 			
-			// Leo el primer dato del primer registro,que el numero de bloque
+			// Leo el primer dato del primer registro,que es el numero de bloque
 			// izquierdo al que apunta.
 			bloqueAnt = dos.readInt();
 			ocupar(4 * Constantes.SIZE_OF_INT);

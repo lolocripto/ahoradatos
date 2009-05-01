@@ -51,19 +51,17 @@ public class RegistroNodo {
 		DataOutputStream dos = new DataOutputStream(bos);
 		try {
 			// TODO TESTEARME!!!!!!!!!
-			int longitud =  2 * Constantes.SIZE_OF_INT 
-			+ claveNodo.getBytes().length;
-			byte[] longDatoBytes = Conversiones.
-			intToArrayByte(claveNodo.getBytes().length);
-			byte[] bloqueAnt = Conversiones.intToArrayByte(nroBloqueIzquierdo);
-			byte[] bloquePos = Conversiones.intToArrayByte(nroBloqueDerecho);
-			byte[] longDato = Conversiones.intToArrayByte(longitud);
+			byte[] claveBytes = claveNodo.getClave().getBytes();
+			byte[] longClave = Conversiones
+					.intToArrayByte(claveBytes.length);
+			int longitud = 2 * Constantes.SIZE_OF_INT
+					+ longClave.length;
 			
-			dos.write(bloqueAnt, 0, bloqueAnt.length);
-			dos.write(longDato, 0, longDato.length);
-			dos.write(longDatoBytes, 0, longDatoBytes.length);
-			dos.write(claveNodo.getBytes(), 0, claveNodo.getBytes().length);
-			dos.write(bloquePos, 0, bloquePos.length);
+			dos.write(Conversiones.intToArrayByte(nroBloqueIzquierdo));
+			dos.write(Conversiones.intToArrayByte(longitud));
+			dos.write(longClave);
+			dos.write(claveBytes);
+			dos.write(Conversiones.intToArrayByte(nroBloqueDerecho));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -91,7 +89,7 @@ public class RegistroNodo {
 			datos = new byte[longdato];
 			//Leo la clave
 			dos.read(datos, 0, longdato);
-			claveNodo.setBytes(datos);
+			claveNodo = new Clave(new String(datos));
 			//Leo el numero de bloque posterior.
 			setNroBloqueDerecho(dos.readInt());
 		} catch (Exception e) {

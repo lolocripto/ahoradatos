@@ -47,21 +47,16 @@ public final class BStar implements BTree {
 		nodoRaiz = null;
 		
 		try {
-			//archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
-			//		Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-			archivo.crear(Constantes.ARCHIVO_ARBOL_BSTAR);
-			
-			byte[] nodoLeido = archivo.leerBloque(0);
-			if (nodoLeido != null && nodoLeido.length > 0) {
-				nodoRaiz = new Nodo();
-				nodoRaiz.setBytes(nodoLeido);
+			if (abrirArchivos()) {
+				
+				byte[] nodoLeido = archivo.leerBloque(0);
+				if (nodoLeido != null && nodoLeido.length > 0) {
+					nodoRaiz = new Nodo();
+					nodoRaiz.setBytes(nodoLeido);
+				}
 			}
-			
-		} catch (FileNotFoundException e) {
-			LOG.error("Error: " + e.getMessage());
-			e.printStackTrace();
 		} catch (IOException e) {
-			LOG.error("Error: " + e.getMessage());
+			LOG.error("", e);
 			e.printStackTrace();
 		}
 	}
@@ -101,13 +96,7 @@ public final class BStar implements BTree {
 		//Verifico si la clave está.
 		int posReg = nodo.buscarRegistro(clave);
 		
-		//Cierro el archivo.
-		try {
-			archivo.cerrar();
-		} catch (IOException e) {
-			LOG.error("", e);
-			e.printStackTrace();
-		}
+		cerrarArchivos();
 		
 		switch (posReg) {
 		case MENOR:
@@ -221,19 +210,20 @@ public final class BStar implements BTree {
 		//FIXME: Arreglar esto!!!!!
 		registro.setNroBloqueDerecho(-1);
 		registro.setNroBloqueIzquierdo(-1);
-		if (this.nodoRaiz == null) {
+		if (nodoRaiz == null) {
 			
 			//Creo la raiz e inserto el registro.
-			this.nodoRaiz = new Nodo();
+			nodoRaiz = new Nodo();
 			//El primero es hoja al pricipio.
 			nodoRaiz.setEsHoja(true);
 			nodoRaiz.setNroBloque(0);
 			nodoRaiz.setNroBloquePadre(-1);
 			registro.setNroBloqueDerecho(-1);
 			registro.setNroBloqueIzquierdo(-1);
-			this.nodoRaiz.insertarRegistro(registro);
+			nodoRaiz.insertarRegistro(registro);
 			try {
-				archivo.escribirBloque(nodoRaiz.getBytes(), 0);
+				archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
+						.getNroBloque());
 			} catch (IOException e) {
 				LOG.error("Error: " + e.getMessage());
 				e.printStackTrace();
@@ -242,9 +232,9 @@ public final class BStar implements BTree {
 		}
 		// TODO Terminar de implementar.
 		//Busco en donde insertar.
-		Nodo nodo = this.buscarNodo(registro.getClave());
+		Nodo nodo = buscarNodo(registro.getClave());
 		nodo.insertarRegistro(registro);
-		this.nodoActual = nodo;
+		nodoActual = nodo;
 		return true;
 	}
 
@@ -271,7 +261,50 @@ public final class BStar implements BTree {
 	 */
 	public void listar() {
 		
+		try {
+			archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
+					Constantes.ABRIR_PARA_LECTURA);
+			nodoActual.setBytes(archivo.leerBloque(0));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		nodoActual.listar();
 	}
 
+	/**
+	 * 
+	 * @return si exito true.
+	 */
+	private boolean abrirArchivos() {
+		
+		try {
+			//archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
+			//		Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			archivo.crear(Constantes.ARCHIVO_ARBOL_BSTAR);
+			
+			return true;
+			
+		} catch (FileNotFoundException e) {
+			LOG.error("Error: " + e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	/**
+	 * 
+	 * @return si exito true.
+	 */
+	private boolean cerrarArchivos() {
+		
+		try {
+			archivo.cerrar();
+			return true;
+		} catch (IOException e) {
+			LOG.error("", e);
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

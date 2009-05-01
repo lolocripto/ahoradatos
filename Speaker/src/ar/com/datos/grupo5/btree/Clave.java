@@ -1,13 +1,5 @@
 package ar.com.datos.grupo5.btree;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
-import ar.com.datos.grupo5.Constantes;
-import ar.com.datos.grupo5.utils.Conversiones;
-
-
 /**
  * Clave de un registro.
  * @author cristian
@@ -19,7 +11,21 @@ public class Clave implements Comparable<Clave> {
 	 * La clave.
 	 */
 	private String claveStr;
-		
+	
+	/**
+	 * Constructor vacio..
+	 */
+	public Clave() {
+		super();
+	}
+	
+	/**
+	 * Constructor con la clave.
+	 * @param clave La clave.
+	 */
+	public Clave(final String clave) {
+		claveStr = clave;
+	}
 	/**
 	 * Para comparar las claves.
 	 * @param clave la clave a comparar.
@@ -72,7 +78,7 @@ public class Clave implements Comparable<Clave> {
 	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
 	 * @return los bytes que representan a la clave.
 	 */
-	public byte[] getBytes() {
+	/*public byte[] getBytes() {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
 		try {
@@ -86,15 +92,15 @@ public class Clave implements Comparable<Clave> {
 		}
 		
 		return bos.toByteArray();
-	}
+	}*/
 	
 	/**
 	 * Método que llena los atributos a partir de lo contenido en el buffer.
 	 * @param buffer Cadena de Bytes leida en el archivo de bloques.
 	 */
-	public void setBytes(final byte[] buffer) {
+	/*public void setBytes(final byte[] buffer) {
 	// TODO verificar este método!!!!
 		this.setClave(new String(buffer));
-	}
+	}*/
 
 }
