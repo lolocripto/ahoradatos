@@ -221,7 +221,7 @@ public class RegistroTerminoDocumentos implements Registro {
 		int offsetByte = 0;
 		ParFrecuenciaDocumento parFD = null;
 		
-		ByteArrayInputStream bis = new ByteArrayInputStream(buffer,offset.intValue(),Constantes.SIZE_OF_INDEX_BLOCK);  
+		ByteArrayInputStream bis = new ByteArrayInputStream(buffer,offset.intValue(),buffer.length - offset.intValue());  
 		DataInputStream dis = new DataInputStream(bis);
 		
 		try {

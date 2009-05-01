@@ -911,6 +911,7 @@ public class ListasInvertidas {
 		byte[] datos;
 		short espacioDisponible = (short) (Constantes.SIZE_OF_LIST_BLOCK - datosControl);
 		int offsetEscritura = 0;
+		
 		//Leo las listas que le siguen en el mismo bloque.
 		RegistroTerminoDocumentos regLista;
 		ArrayList<RegistroTerminoDocumentos> listas;
@@ -918,6 +919,9 @@ public class ListasInvertidas {
 		
 		listas = leerListasPorBloque(offsetListaSiguiente);
 		
+		Long cantidadEscritaEnBuffer = 0L;
+		/* El control esta dado por el numero de termino y la cantidad de documentos */
+		int tamanioControlRegistro = Constantes.SIZE_OF_LONG + Constantes.SIZE_OF_INT;
 		
 		byte[] datosNuevo = regActualizado.getBytes();
 		byte[] datosAnteriores = new byte[this.offsetLista - datosControl + datosNuevo.length];
@@ -934,17 +938,22 @@ public class ListasInvertidas {
 			//TODO: la proxima vez que llame tengo que pasarle como comienzo el offset del primerRegistro.
 			try {
 				dos.write(datosAnteriores, 0, datosAnteriores.length);
+				cantidadEscritaEnBuffer += datosAnteriores.length;
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			it = listas.iterator();
+			
+			//Para cada insercion tengo que validar que los datos de cotnrol
 			while (it.hasNext()) {
 				//Mientras tenga listas en el vector de listas las agrego
-				
 				regLista = it.next();
 				datosNuevo = regLista.getBytes();
-				dos.write(datosNuevo,0,datosNuevo.length);
+				if (tamanioControlRegistro <= (Constantes.SIZE_OF_LIST_BLOCK - cantidadEscritaEnBuffer)) {
+					dos.write(datosNuevo,0,datosNuevo.length);
+					cantidadEscritaEnBuffer += datosNuevo.length;
+				}
 			}
 			
 			datos = bos.toByteArray();

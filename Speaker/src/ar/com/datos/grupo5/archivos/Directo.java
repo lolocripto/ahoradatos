@@ -129,29 +129,4 @@ public class Directo extends Archivo {
         reg.setBytes(bufferDato, (long) longitud);
 		return reg;
 	}
-
-	/**
-	 * Método para recuperar un registro de un archivo Directo.
-	 * @param offset
-	 *              La posición en la cual empieza el registro buscado.
-	 * @return 
-	 *        Retorna el registro que se encuentra en la posición offset.
-	 * @throws IOException .
-	 */
-	public Registro leerTermino(final Long offset) throws IOException {
-		Registro reg = null;
-		int longitud = 0;
-		
-		file.seek(offset);
-		byte[] bufferShort = new byte[Constantes.SIZE_OF_SHORT];
-        byte[] bufferDato = null;
-        file.read(bufferShort, 0, Constantes.SIZE_OF_SHORT);
-        longitud = Conversiones.arrayByteToShort(bufferShort);
-        bufferDato = new byte[longitud];
-        
-        file.read(bufferDato, 0, longitud);
-        reg = new RegistroTerminoGlobal();
-        reg.setBytes(bufferDato, (long) longitud);
-		return reg;
-	}
 }

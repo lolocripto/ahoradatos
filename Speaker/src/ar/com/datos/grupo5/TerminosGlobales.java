@@ -6,8 +6,7 @@ package ar.com.datos.grupo5;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import ar.com.datos.grupo5.archivos.Archivo;
-import ar.com.datos.grupo5.archivos.Directo;
+import ar.com.datos.grupo5.archivos.ArchivoDeTerminos;
 import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 import ar.com.datos.grupo5.registros.RegistroTerminoGlobal;
 
@@ -22,14 +21,14 @@ public class TerminosGlobales {
 	/**
 	 * Objeto que maneja las operaciones sobre archivos.
 	 */
-	private Directo archivo;
+	private ArchivoDeTerminos archivo;
 	
 	/**
 	 * Constructor de la clase AudioFileManager.
 	 *
 	 */
 	public TerminosGlobales() {
-		this.archivo = new Directo();
+		this.archivo = new ArchivoDeTerminos();
 	}
 	
 	/**
@@ -79,7 +78,7 @@ public class TerminosGlobales {
 		
 		RegistroTerminoGlobal reg = new RegistroTerminoGlobal();
 		try {
-			reg = (RegistroTerminoGlobal) this.archivo.leerTermino(offset);
+			reg = (RegistroTerminoGlobal) this.archivo.leer(offset);
 		} catch (IOException e) {
 			return null;
 		}
