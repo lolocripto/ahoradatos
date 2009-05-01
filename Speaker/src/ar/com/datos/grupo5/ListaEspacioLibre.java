@@ -153,5 +153,14 @@ public class ListaEspacioLibre {
 	public final Iterator<NodoListaEspacioLibre> obtenerIterador() {
 		return this.espacioLibrePorBloque.iterator();
 	}
-	
+
+	/**
+	 * Busca el elemento con numero de bloque igual a nroBloqueExt
+	 * @param nroBloqueExt Numero de bloque que quiero.
+	 * @return
+	 * 		True si lo encuentra, false sino lo encuentra.
+	 */
+	public boolean buscarBloque(int nroBloqueExt) {
+		return true;
+	}
 }

@@ -1,4 +1,4 @@
-package ar.com.datos.grupo5;
+package ar.com.datos.tests;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -7,6 +7,9 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 
+import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.ListasInvertidas;
+import ar.com.datos.grupo5.ParFrecuenciaDocumento;
 import ar.com.datos.grupo5.registros.RegistroTerminoDocumentos;
 
 /**

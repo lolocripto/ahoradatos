@@ -22,7 +22,7 @@ public class TerminosGlobales {
 	/**
 	 * Objeto que maneja las operaciones sobre archivos.
 	 */
-	private Archivo archivo;
+	private Directo archivo;
 	
 	/**
 	 * Constructor de la clase AudioFileManager.
@@ -79,10 +79,8 @@ public class TerminosGlobales {
 		
 		RegistroTerminoGlobal reg = new RegistroTerminoGlobal();
 		try {
-			reg = (RegistroTerminoGlobal) this.archivo.leer(offset);
+			reg = (RegistroTerminoGlobal) this.archivo.leerTermino(offset);
 		} catch (IOException e) {
-			return null;
-		} catch (UnImplementedMethodException e1) {
 			return null;
 		}
 		

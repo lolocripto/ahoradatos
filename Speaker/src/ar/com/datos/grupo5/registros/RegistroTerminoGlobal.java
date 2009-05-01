@@ -86,8 +86,8 @@ public class RegistroTerminoGlobal implements Registro {
 	 */
 	public final void setDato(final String termino) {
 	 	this.dato = termino;
-		this.longDato = (short) dato.length();
-		this.moreBytes = (long) (this.longDato + Constantes.SIZE_OF_INT); 
+		this.longDato = (short) dato.getBytes().length;
+		this.moreBytes = (long) (this.longDato + Constantes.SIZE_OF_SHORT); 
 	}
 	/**
 	 * 

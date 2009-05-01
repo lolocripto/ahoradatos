@@ -318,4 +318,12 @@ public class RegistroTerminoDocumentos implements Registro {
 	public final boolean incompleto() {
 		return (this.cantidadDocumentos > this.cantidadDocumentosLeidos);
 	}
+	
+	/**
+	 * Obtiene el tamaño del registro.
+	 * @return el tamaño del registro
+	 */
+	public final Short getTamanio() {
+		return (short) (this.getBytes().length);
+	}
 }

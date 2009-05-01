@@ -1,4 +1,4 @@
-package ar.com.datos.grupo5;
+package ar.com.datos.tests;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,6 +10,7 @@ import org.jdom.Element;
 
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.UnidadesDeExpresion.Palabra;
+import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.parser.ITextInput;
 import ar.com.datos.parser.ParserStopWords;
 import ar.com.datos.parser.TextInterpreter;
