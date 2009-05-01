@@ -122,7 +122,7 @@ public class ListaEspacioLibre {
 		Iterator<NodoListaEspacioLibre> it = this.espacioLibrePorBloque.iterator();
 		
 		this.index = -1;
-		Short espacioLibreTotal = (short) (espacioNecesario + (Constantes.SIZE_OF_INDEX_BLOCK * this.factorCarga));
+		Short espacioLibreTotal = (short) (espacioNecesario + (Constantes.SIZE_OF_LIST_BLOCK * this.factorCarga));
 		
 		while (it.hasNext()) {
 			nodo = it.next();

@@ -176,6 +176,11 @@ public final class Constantes {
 	public static final String ARCHIVO_TERMINOS_GLOBALES = 
 		getXML("ARCHIVO_TERMINOS_GLOBALES");
 	
+	/**
+	 * Tamaño para los bloques del archivo de listas invertidas.
+	 */
+	public static final int SIZE_OF_LIST_BLOCK = Integer.parseInt(
+			getXML("SIZE_OF_LIST_BLOCK"));
 	
 	/**
 	 * Archivo para el arbol BStar.

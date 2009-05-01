@@ -43,7 +43,7 @@ public final class BStar implements BTree {
 	 */
 	public BStar() {
 		nodoActual = null;
-		archivo = new ArchivoBloques();
+		archivo = new ArchivoBloques(Constantes.SIZE_OF_INDEX_BLOCK);
 		nodoRaiz = null;
 		
 		try {

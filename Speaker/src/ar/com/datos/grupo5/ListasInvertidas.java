@@ -178,7 +178,7 @@ public class ListasInvertidas {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
 				
-		int bytesDisponibles = Constantes.SIZE_OF_INDEX_BLOCK - (Constantes.SIZE_OF_LONG + Constantes.SIZE_OF_SHORT * 2); 
+		int bytesDisponibles = Constantes.SIZE_OF_LIST_BLOCK - (Constantes.SIZE_OF_LONG + Constantes.SIZE_OF_SHORT * 2); 
 		try {
 			dos.writeLong(nroSiguienteBloque);
 			dos.writeShort(primerRegistro);
@@ -186,7 +186,7 @@ public class ListasInvertidas {
 //			dos.write(datos);
 			if ((datos.length - offset) > bytesDisponibles) {
 				//Copio desde el offset el tamanio del bloque
-				dos.writeShort(Constantes.SIZE_OF_INDEX_BLOCK);
+				dos.writeShort(Constantes.SIZE_OF_LIST_BLOCK);
 				dos.write(datos , offset, bytesDisponibles );
 			} else {
 				dos.writeShort(datos.length - offset + Constantes.SIZE_OF_LONG + Constantes.SIZE_OF_SHORT * 2);
@@ -232,7 +232,7 @@ public class ListasInvertidas {
 		int tamanioRegistro = bytes.length;
 		
 		//Tamaño disponible en el bloque
-		int bytesDisponibles = Constantes.SIZE_OF_INDEX_BLOCK - tamanioDatosControl;
+		int bytesDisponibles = Constantes.SIZE_OF_LIST_BLOCK - tamanioDatosControl;
 		
 		/* Valido que la cantidad de información a insertar entre 
 		 * en un bloque */
@@ -274,7 +274,7 @@ public class ListasInvertidas {
 				e.printStackTrace();
 			}
 			
-			this.espacioLibre.actualizarListaEspacioLibre(-1, cantidadBloques, (short) (Constantes.SIZE_OF_INDEX_BLOCK-bytesAEscribir.length));
+			this.espacioLibre.actualizarListaEspacioLibre(-1, cantidadBloques, (short) (Constantes.SIZE_OF_LIST_BLOCK-bytesAEscribir.length));
 		} else {
 			//Es un solo registro por lo tanto puedo insertarlo en un bloque con algún espacio libre
 			int bloqueAInsertar = this.espacioLibre.buscarEspacio((short) tamanioRegistro);
@@ -331,7 +331,7 @@ public class ListasInvertidas {
 			} else {
 				//Inserto un registro nuevo
 				byte[] bytesTemporales;
-				bytesAEscribir = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
+				bytesAEscribir = new byte[Constantes.SIZE_OF_LIST_BLOCK];
 				bytesTemporales = armarDatosBloque((long) 0, bytes, (short) 0, (short) (tamanioDatosControl + bytes.length),0);
 				System.arraycopy(bytesTemporales, 0, bytesAEscribir, 
 						0, bytesTemporales.length);
@@ -340,7 +340,7 @@ public class ListasInvertidas {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				this.espacioLibre.actualizarListaEspacioLibre(-1, this.cantidadBloques, (short) (Constantes.SIZE_OF_INDEX_BLOCK - (tamanioDatosControl + bytes.length)));
+				this.espacioLibre.actualizarListaEspacioLibre(-1, this.cantidadBloques, (short) (Constantes.SIZE_OF_LIST_BLOCK - (tamanioDatosControl + bytes.length)));
 				this.cantidadBloques++;
 			}
 		}
@@ -353,7 +353,7 @@ public class ListasInvertidas {
 	 *
 	 */
 	public ListasInvertidas() {
-		this.archivo = new ArchivoBloques();
+		this.archivo = new ArchivoBloques(Constantes.SIZE_OF_LIST_BLOCK);
 		this.cantidadBloques = 2;
 		this.datosLeidosPorBloque = null;
 		this.nroBloque = 0;
@@ -432,7 +432,7 @@ public class ListasInvertidas {
 	private boolean escribirEncabezadoArchivo() {
 		logger.debug("Voy a escribir el encabezado del archivo de bloques.");
 		
-		byte[] encabezadoBytes = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
+		byte[] encabezadoBytes = new byte[Constantes.SIZE_OF_LIST_BLOCK];
 		
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
@@ -468,10 +468,10 @@ public class ListasInvertidas {
 	 */
 	private boolean escribirListaAArchivo() {
 
-		byte[] ListaEspaciosLibresBytes = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
+		byte[] ListaEspaciosLibresBytes = new byte[Constantes.SIZE_OF_LIST_BLOCK];
 
 		int tamanioDatosControl = Constantes.SIZE_OF_INT * 2 + Constantes.SIZE_OF_CHAR;
-		int tamanioTotalDisponibleXBloque = Constantes.SIZE_OF_INDEX_BLOCK - (tamanioDatosControl);
+		int tamanioTotalDisponibleXBloque = Constantes.SIZE_OF_LIST_BLOCK - (tamanioDatosControl);
 		//Division Entera
 		int maxCantidadNodosPorBloque = tamanioTotalDisponibleXBloque/tamanioDatosControl;
 		
@@ -751,7 +751,7 @@ public class ListasInvertidas {
 	 * 			True si logre inicializar el bloque.
 	 */
 	private boolean inicializarListaEspaciosLibre(final int bloqueLista) {
-		byte[] datos = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
+		byte[] datos = new byte[Constantes.SIZE_OF_LIST_BLOCK];
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
 		try {
@@ -871,8 +871,8 @@ public class ListasInvertidas {
 	 *                   c) Tope de busqueda es el espacioOcupado.
 	 *                   d) Puede extenderse el bloque a uno nuevo.
 	 */
-	private Long actualizarCaso1(final Long siguiente, final Short espacioOcupado, 
-					final Short primerRegistro, final RegistroTerminoDocumentos regActualizado,
+	private Long actualizarCaso1(final Long siguienteExt, final Short espacioOcupadoExt, 
+					final Short primerRegistroExt, final RegistroTerminoDocumentos regActualizado,
 					final Short offsetListaSiguiente, final int nroBloqueExt) {
 		/*
 		 * Datos que tengo:
@@ -893,21 +893,23 @@ public class ListasInvertidas {
 		Short espacioOcupadoNewConDatosControl = (short) (longitudNuevoRegistro + this.offsetLista);
 		
 		/* El tamaño final me exige crear otro bloque */
-		boolean masBloques = espacioOcupadoNewConDatosControl > Constantes.SIZE_OF_INDEX_BLOCK;
+		boolean masBloques = espacioOcupadoNewConDatosControl > Constantes.SIZE_OF_LIST_BLOCK;
 		
 		int datosControl = Constantes.SIZE_OF_SHORT * 2 + Constantes.SIZE_OF_LONG;
 		
-		int bytesDisponibles = Constantes.SIZE_OF_INDEX_BLOCK - (datosControl);
+		int bytesDisponibles = Constantes.SIZE_OF_LIST_BLOCK - (datosControl);
 		
 		short espacioOcupadoNew = (short) (espacioOcupadoNewConDatosControl - datosControl);
 		
 		int totalBloques = 0;
 		
 		//TODO: Lo nuevo es a partir de aquí
-		
+		Long siguiente = siguienteExt;
+		Short primerRegistro = primerRegistroExt;
+		Short espacioOcupado = espacioOcupadoExt;
 		byte[] siguienteBloque;
 		byte[] datos;
-		short espacioDisponible = (short) (Constantes.SIZE_OF_INDEX_BLOCK - datosControl);
+		short espacioDisponible = (short) (Constantes.SIZE_OF_LIST_BLOCK - datosControl);
 		int offsetEscritura = 0;
 		//Leo las listas que le siguen en el mismo bloque.
 		RegistroTerminoDocumentos regLista;
@@ -925,10 +927,17 @@ public class ListasInvertidas {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		DataOutputStream dos = new DataOutputStream(bos);
 		
+		try {
+			
 		while (siguiente != 0) {
 			//Hay un bloque que le sigue por lo tanto tengo que actualizarlo
 			//TODO: la proxima vez que llame tengo que pasarle como comienzo el offset del primerRegistro.
-			dos.write(datosAnteriores, 0, datosAnteriores.length);
+			try {
+				dos.write(datosAnteriores, 0, datosAnteriores.length);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			it = listas.iterator();
 			while (it.hasNext()) {
 				//Mientras tenga listas en el vector de listas las agrego
@@ -956,59 +965,15 @@ public class ListasInvertidas {
 			siguiente = dis.readLong();
 			primerRegistro = dis.readShort(); 
 			espacioOcupado = dis.readShort();
-			
+				
 			//Definir el nuevo offset
 			listas = leerListasPorBloque((short) primerRegistro);
 			primerRegistro = (short) (datos.length - espacioDisponible);
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		byte[] bytesAEscribir;
-		if (masBloques) {
-			/* Cuento cuantos bloques nuevos y hago un for */
-			//Calculo el total de bloques
-			//int offsetEscritura = 0;
-			totalBloques = espacioOcupadoNew / bytesDisponibles;
-			if ((espacioOcupadoNew % bytesDisponibles) > 0) {
-				totalBloques++;
-			}
-			
-			/* Armo los bloques que serán escritos al final del archivo 
-			 * pero el ultimo lo escribo a parte ya que el 
-			 * "siguiente" es distinto*/
-			for (int i = 0; i < totalBloques-1; i++) {
-
-			//bytesAEscribir = armarDatosBloque((long) this.cantidadBloques + 1, , (short) 0, (short) (tamanioDatosControl + bytes.length),offsetEscritura);
-				try {
-					this.archivo.escribirBloque(bytesAEscribir,  this.cantidadBloques);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				this.cantidadBloques++;
-				offsetEscritura += bytesDisponibles;
-			}
-
-			//bytesAEscribir = armarDatosBloque(0L, bytes, (short) (tamanioDatosControl + bytes.length), (short) (tamanioDatosControl + bytes.length),offsetEscritura);
-			try {
-				this.archivo.escribirBloque(bytesAEscribir, this.cantidadBloques);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-			this.espacioLibre.actualizarListaEspacioLibre(-1, cantidadBloques, (short) (Constantes.SIZE_OF_INDEX_BLOCK-bytesAEscribir.length));
-			
-		} else {
-			/* Solo actualizo el bloque */
-			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
 		return 0L;
 	}
 	
@@ -1022,7 +987,7 @@ public class ListasInvertidas {
 		RegistroTerminoDocumentos reg;
 		long siguiente = this.nroBloque;
 		short primerRegistro;
-		short espacioOcupado = (short) Constantes.SIZE_OF_INDEX_BLOCK;
+		short espacioOcupado = (short) Constantes.SIZE_OF_LIST_BLOCK;
 		short cantBloquesLeidos = 0;
 		ArrayList<RegistroTerminoDocumentos> listas = new ArrayList<RegistroTerminoDocumentos>();
 		Short offsetSiguienteLista = new Short(comienzo);

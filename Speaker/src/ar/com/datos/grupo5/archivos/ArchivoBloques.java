@@ -21,8 +21,15 @@ public class ArchivoBloques extends Directo {
 	/**
 	 * Tamanio del Bloque en disco.
 	 */
-	private static int  tamanio = Constantes.SIZE_OF_INDEX_BLOCK;
+	private static int  tamanio;
 
+	/**
+	 * Constructor de la clase.
+	 * @param tamanioBloque
+	 */
+	public ArchivoBloques(final int tamanioBloque) {
+		tamanio = tamanioBloque;
+	}
 	/**
 	 * @see Archivo#primero()
 	 */
@@ -55,12 +62,16 @@ public class ArchivoBloques extends Directo {
 		if (file.length() == 0) {
 			return null;
 		}
-		
+		/*
 		byte[] bufferDato = new byte[Constantes.SIZE_OF_INDEX_BLOCK];
 		file.seek(offset * Constantes.SIZE_OF_INDEX_BLOCK);
 
         file.read(bufferDato, 0, Constantes.SIZE_OF_INDEX_BLOCK);
+		 */
+		byte[] bufferDato = new byte[tamanio];
+		file.seek(offset * tamanio);
 
+        file.read(bufferDato, 0, tamanio);
 		return bufferDato;
 	}
 	

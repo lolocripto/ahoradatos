@@ -22,6 +22,9 @@
 	<!--Tamanio del orden del Trie-->
 	<SIZE_OF_TRIE>4</SIZE_OF_TRIE>
 		
+	<!--Tamanio del Bloque del archivo de listas invertidas-->
+	<SIZE_OF_LIST_BLOCK>2048</SIZE_OF_LIST_BLOCK>
+	
 	<ARCHIVO_DICCIONARIO>./diccionario.data</ARCHIVO_DICCIONARIO>
 
 	<ARCHIVO_AUDIO>./audio.data</ARCHIVO_AUDIO>
