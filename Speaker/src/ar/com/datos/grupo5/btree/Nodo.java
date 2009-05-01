@@ -160,36 +160,26 @@ public class Nodo {
 	/**
 	 * Agrega un nodo.
 	 * @param registro El reistro para insertar.
+	 * @return El resultado de la insercion.
 	 */
-	public final void insertarRegistro(final RegistroNodo registro) {
+	public final boolean insertarRegistro(final RegistroNodo registro) {
 		//Obtengo la posicion en donde debo insertarlo.
+		if (!this.ocupar(registro.getBytes().length)) {
+			return false;
+		}
 		int pos = this.buscarRegistro(registro.getClave());
 		switch (pos) {
 		case MENOR:
-			if (this.ocupar(registro.getBytes().length)) {
 				this.registros.add(0, registro);
-				
-			} else {
-				//error
-			}
 			break;
 		case MAYOR:
-			// FIXME Cuando esta lleno, revienta -> pasar al hno
-			if (this.ocupar(registro.getBytes().length)) {
 				this.registros.add(registros.size(), registro);
-			} else {
-				//FIXME, si no pudo pasarlo, ver otras opciones.
-				//this.pasarRegistro(registro);
-			}
 			break;
 		default:
-			if (this.ocupar(registro.getBytes().length)) {
 				this.registros.add(pos, registro);
-			} else {
-				//error
-			}
 			break;
 		}
+		return true;
 	}
 	
 	/**
@@ -210,36 +200,14 @@ public class Nodo {
 	 * @param registro the registro to set
 	 * @return .
 	 */
-	public final boolean pasarRegistro(final RegistroNodo registro)
-	throws UnImplementedMethodException {
-		throw new UnImplementedMethodException("Funcionalidad no implementada.");
-		/*
-		if (nodoSiguiente == null) {
-			if (nodoAnterior == null) {
+	public final boolean pasarRegistro(final RegistroNodo registro) {
+		// FIXME
+		//TODO Solo aplica para los nodos hoja
+		if (this.nroBloquePadre == null) {
 				// Es el unico nodo -> Raiz SOLA!!!!!
 				return false;
-			}
-			if (nodoAnterior
-					.ocupar(getPrimerRegistro().getBytes().length)) {
-				RegistroNodo regAux;
-
-				nodoAnterior.insertarRegistro(getPrimerRegistro());
-				// Modificar la clave del padre del anterior
-				return true;
-			}
-		} else {
-			if (nodoSiguiente
-					.ocupar(this.getPrimerRegistro().getBytes().length)) {
-				RegistroNodo regAux;
-				
-				this.nodoSiguiente.insertarRegistro(this.getUltimoRegistro());
-
-				// Modificar la clave del padre del siguiente
-				return true;
-			}
-		}
+			} 
 		return false;
-		*/
 	}
 	
 	/**
@@ -315,7 +283,7 @@ public class Nodo {
 	 * Para serializar.
 	 * @return bytes[]
 	 */
-	public byte[] getBytes() {
+	public final byte[] getBytes() {
 		
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
@@ -352,15 +320,16 @@ public class Nodo {
 	/**
 	 * 
 	 */
-	public boolean hasMoreBytes() {
+	public final boolean hasMoreBytes() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	/**
 	 * 
+	 * @param buffer el nodo, pero expresado como cadena de bytes.
 	 */
-	public void setBytes(byte[] buffer) {
+	public final void setBytes(final byte[] buffer) {
 		
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
 		DataInputStream dos = new DataInputStream(bis);
@@ -394,8 +363,9 @@ public class Nodo {
 				//Los agrego a la lista.
 				registros.add(reg);
 				ocupar(cantidad);
-				if(this.tieneCargaMinima() && (minIndiceCarga < 0))
-					minIndiceCarga = this.registros.size() -1;
+				if (this.tieneCargaMinima() && (minIndiceCarga < 0)) {
+					minIndiceCarga = this.registros.size() - 1;
+				}
 			}
 			
 		} catch (Exception e) {

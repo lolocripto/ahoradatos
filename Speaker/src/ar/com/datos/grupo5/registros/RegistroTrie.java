@@ -7,8 +7,6 @@ import java.io.IOException;
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.utils.Conversiones;
 
-import ar.com.datos.grupo5.interfaces.Registro;
-
 public class RegistroTrie extends RegistroNodo {
 	/**
 	 * Nivel del trie.
