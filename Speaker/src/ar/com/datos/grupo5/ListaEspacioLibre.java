@@ -119,10 +119,12 @@ public class ListaEspacioLibre {
 	 */
 	public final int buscarEspacio(final Short espacioNecesario) {
 		NodoListaEspacioLibre nodo;
-		Iterator<NodoListaEspacioLibre> it = this.espacioLibrePorBloque.iterator();
+		Iterator<NodoListaEspacioLibre> it;
+		it = this.espacioLibrePorBloque.iterator();
 		
 		this.index = -1;
-		Short espacioLibreTotal = (short) (espacioNecesario + (Constantes.SIZE_OF_LIST_BLOCK * this.factorCarga));
+		Short espacioLibreTotal = (short) (espacioNecesario 
+				+ (Constantes.SIZE_OF_LIST_BLOCK * this.factorCarga));
 		
 		while (it.hasNext()) {
 			nodo = it.next();
@@ -150,17 +152,34 @@ public class ListaEspacioLibre {
 		//this.espacioLibrePorBloque.add(this.index, nodo);
 	}
 	
+	/**
+	 * Obtiene un iterador de la lista.
+	 * @return
+	 * 		Iterador de la lista de espacios Libres
+	 */
 	public final Iterator<NodoListaEspacioLibre> obtenerIterador() {
 		return this.espacioLibrePorBloque.iterator();
 	}
 
 	/**
-	 * Busca el elemento con numero de bloque igual a nroBloqueExt
+	 * Busca el elemento con numero de bloque igual a nroBloqueExt.
 	 * @param nroBloqueExt Numero de bloque que quiero.
 	 * @return
 	 * 		True si lo encuentra, false sino lo encuentra.
 	 */
-	public boolean buscarBloque(int nroBloqueExt) {
-		return true;
+	public final boolean buscarBloque(final int nroBloqueExt) {
+		Iterator<NodoListaEspacioLibre> it;
+		NodoListaEspacioLibre nodo;
+		int indexAux = 0;
+		it = this.espacioLibrePorBloque.iterator();
+		while (it.hasNext()) {
+			nodo = it.next();
+			if (nodo.getNroBloque() == nroBloqueExt) {
+				this.index = indexAux;
+				return true;
+			}
+			indexAux++;
+		}
+		return false;
 	}
 }

@@ -57,6 +57,11 @@ public class RegistroTerminoDocumentos implements Registro {
 	private int cantidadDocumentosLeidos;
 	
 	/**
+	 * Tamanio de la zona de control.
+	 */
+	private int tamanioControl;
+	
+	/**
 	 * Constructor de la clase.
 	 */
 	public RegistroTerminoDocumentos() {
@@ -65,6 +70,7 @@ public class RegistroTerminoDocumentos implements Registro {
 		this.datosDocumentos = new ArrayList<ParFrecuenciaDocumento>();
 		this.idTermino = 0L;
 		this.moreBytes = 0L;
+		this.tamanioControl = Constantes.SIZE_OF_LONG + Constantes.SIZE_OF_INT;
 	}
 	/**
 	 * Perminte setear la cantidad de documentos leidos.
@@ -351,11 +357,29 @@ public class RegistroTerminoDocumentos implements Registro {
 	}
 	
 	/**
-	 * Obtiene el tamaño del registro.
-	 * @return el tamaño del registro
+	 * Obtiene el tamaño del nodo de la lista.
+	 * @return el tamaño del nodo de la lista.
 	 */
 	public final Short getTamanioNodo() {
 		ParFrecuenciaDocumento pFD = new ParFrecuenciaDocumento();
 		return (short) (pFD.getTamanio());
+	}
+	/**
+	 * Permite establecer el tamaño de los datos de control.
+	 * @param tamanioControlExt
+	 * 			Tamaño que tiene los datos de control
+	 */
+	@SuppressWarnings("unused")
+	private void setTamanioControl(final int tamanioControlExt) {
+		this.tamanioControl = tamanioControlExt;
+	}
+	
+	/**
+	 * Permite obtener el tamaño de los datos de control.
+	 * @return
+	 * 		El tamaño de los datos de control.
+	 */
+	public final int getTamanioControl() {
+		return tamanioControl;
 	}
 }
