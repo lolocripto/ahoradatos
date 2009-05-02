@@ -66,8 +66,6 @@ public class Nodo {
 	 */
 	public Nodo() {
 		
-		//nroBloqueSiguiente = null;
-		//nroBloqueAnterior = null;
 		nroBloquePadre = null;
 		registros = new ArrayList<RegistroNodo>();
 		minIndiceCarga = -1;

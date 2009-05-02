@@ -73,13 +73,7 @@ public final class BStar implements BTree {
 		//FIXME: Revisar.
 		
 		//Abro el archivo.
-		try {
-			archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
-					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-		} catch (FileNotFoundException e) {
-			LOG.error("Error: " + e.getMessage(), e);
-			e.printStackTrace();
-		}
+		abrirArchivos();
 		
 		//Obtengo el nodo en el que podria estar la clave.
 		Nodo nodo = buscarNodo(clave);
@@ -294,7 +288,11 @@ public final class BStar implements BTree {
 		try {
 			archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
 					Constantes.ABRIR_PARA_LECTURA);
-			nodoActual.setBytes(archivo.leerBloque(0));
+			if (nodoActual == null) {
+				nodoActual = new Nodo();
+				nodoActual.setBytes(archivo.leerBloque(0));
+				nodoRaiz = nodoActual;
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -341,9 +339,9 @@ public final class BStar implements BTree {
 	private boolean abrirArchivos() {
 		
 		try {
-			//archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
-			//		Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-			archivo.crear(Constantes.ARCHIVO_ARBOL_BSTAR);
+			archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
+					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			//archivo.crear(Constantes.ARCHIVO_ARBOL_BSTAR);
 			
 			return true;
 			
