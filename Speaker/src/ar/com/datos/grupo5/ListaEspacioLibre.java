@@ -50,7 +50,7 @@ public class ListaEspacioLibre {
 	 * @param espacio
 	 * 			Espacio libre que tiene el bloque.
 	 */
-	public final void actualizarListaEspacioLibre(final int index, final int nroBloqueExt, final short espacio) {
+	public final void actualizarListaEspacioLibre(final int nroBloqueExt, final short espacio) {
 		NodoListaEspacioLibre nodo;
 		switch(index) {
 			case -1:

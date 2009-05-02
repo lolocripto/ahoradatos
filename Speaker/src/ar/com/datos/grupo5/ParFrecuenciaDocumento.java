@@ -63,4 +63,8 @@ public class ParFrecuenciaDocumento {
 		this.frecuencia = 0L;
 		this.offsetDocumento = 0L;
 	}
+	
+	public int getTamanio() {
+		return Constantes.SIZE_OF_LONG * 2;
+	}
 }

@@ -166,7 +166,7 @@ public class RegistroTerminoDocumentos implements Registro {
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
-		
+		long cantidadByte = 0;
 		//Intento pasar la información contenida en el 
 		//registro a una tira de bytes
 		try {
@@ -183,9 +183,11 @@ public class RegistroTerminoDocumentos implements Registro {
 				
 				dos.write(idTerminoByte, 0, idTerminoByte.length);
 				moreBytes -= idTerminoByte.length;
+				cantidadByte += idTerminoByte.length;
 				dos.write(cantidadDocumentosBytes, 0, 
 							cantidadDocumentosBytes.length);
 				moreBytes -= cantidadDocumentosBytes.length;
+				cantidadByte += cantidadDocumentosBytes.length;
 				
 				//for para recorrer todo el SortedMap
 				Iterator<ParFrecuenciaDocumento> it = this.datosDocumentos.iterator();
@@ -197,13 +199,15 @@ public class RegistroTerminoDocumentos implements Registro {
 	
 					dos.write(frecuenciaBytes, 0, frecuenciaBytes.length);
 					moreBytes -= frecuenciaBytes.length;
+					cantidadByte += frecuenciaBytes.length;
 					dos.write(offsetDocumentoBytes, 0, 
 								offsetDocumentoBytes.length);
-					moreBytes -= offsetDocumentoBytes.length;				
+					moreBytes -= offsetDocumentoBytes.length;
+					cantidadByte += offsetDocumentoBytes.length;
 	
 				}
 			}
-			
+			this.moreBytes = cantidadByte;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -225,15 +229,27 @@ public class RegistroTerminoDocumentos implements Registro {
 		DataInputStream dis = new DataInputStream(bis);
 		
 		try {
-			
+				/* 
+				 * El idTermino y la cantidad de Documentos SEGURO esta porque asi se guarda
+				 * no pueden estar separados porque sino no tengo información suficiente para
+				 * levantar la lista.
+				 */
 				//Obtengo el dato del id_termino 
 				this.idTermino = dis.readLong();
-				offsetByte = offset.intValue() + Constantes.SIZE_OF_LONG;
+				offsetByte = Constantes.SIZE_OF_LONG;
+				//Obtengo el dato de la cantidad de documentos
 				this.cantidadDocumentos = dis.readInt();
 				offsetByte += Constantes.SIZE_OF_INT;
 				
+				/* 
+				 * Condiciones para seguir levantando nodos
+				 * 1) cantidad de nodos sea mayor que la cantidad de nodos leidos 
+				 * 2) el offsetByte no supere el largo del bloque
+				 * 3) la cantidad de espacio que queda en el bloque sea mayor a la de un nodo
+				 */
 				while (this.cantidadDocumentos > this.cantidadDocumentosLeidos 
-						&& offsetByte < Constantes.SIZE_OF_INDEX_BLOCK) {
+						&& offsetByte < Constantes.SIZE_OF_LIST_BLOCK &&
+						(Constantes.SIZE_OF_LIST_BLOCK - offsetByte) > this.getTamanioNodo()) {
 					/* recorro la cadena de bytes y genero los 
 					 * pares frecuencia, Documento */
 					parFD = new ParFrecuenciaDocumento();
@@ -249,7 +265,7 @@ public class RegistroTerminoDocumentos implements Registro {
 					this.datosDocumentos.add(parFD);
 					this.cantidadDocumentosLeidos++;
 				}
-			
+			this.moreBytes = (long) offsetByte;
 			} catch (Exception e) {
 				logger.error("Error: " + e.getMessage());
 			}		
@@ -273,8 +289,15 @@ public class RegistroTerminoDocumentos implements Registro {
 		DataInputStream dis = new DataInputStream(bis);
 		
 		try {
+			/* 
+			 * Condiciones para seguir levantando nodos
+			 * 1) cantidad de nodos sea mayor que la cantidad de nodos leidos 
+			 * 2) el offsetByte no supere el largo del bloque
+			 * 3) la cantidad de espacio que queda en el bloque sea mayor a la de un nodo
+			 */			
 			while (this.cantidadDocumentos > this.cantidadDocumentosLeidos
-					&& offsetDatos < Constantes.SIZE_OF_INDEX_BLOCK) {
+					&& offsetDatos < Constantes.SIZE_OF_LIST_BLOCK &&
+					(Constantes.SIZE_OF_LIST_BLOCK - offsetDatos) > this.getTamanioNodo()) {
 				/* recorro la cadena de bytes y genero los 
 				 * pares frecuencia, Documento */
 				parFD = new ParFrecuenciaDocumento();
@@ -325,5 +348,14 @@ public class RegistroTerminoDocumentos implements Registro {
 	 */
 	public final Short getTamanio() {
 		return (short) (this.getBytes().length);
+	}
+	
+	/**
+	 * Obtiene el tamaño del registro.
+	 * @return el tamaño del registro
+	 */
+	public final Short getTamanioNodo() {
+		ParFrecuenciaDocumento pFD = new ParFrecuenciaDocumento();
+		return (short) (pFD.getTamanio());
 	}
 }
