@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.archivos.ArchivoBloques;
 import ar.com.datos.grupo5.registros.RegistroNodo;
+import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
  * Clase que implementa árboles B*.
@@ -27,7 +28,7 @@ public final class BStar implements BTree {
 	/**
 	 * Ultimo Bloque - Para saber donde escribir en el archivo.
 	 */
-	private int ultimoBloque;	
+	private int ultimoBloque;
 	
 	/**
 	 * archivo para el arbol.
@@ -55,7 +56,10 @@ public final class BStar implements BTree {
 		try {
 			if (abrirArchivos()) {
 				
-				byte[] nodoLeido = archivo.leerBloque(0);
+				cargarDatosAdministrativos();
+				byte[] nodoLeido = archivo
+						.leerBloque(Constantes.NRO_BLOQUE_RAIZ);
+				
 				if (nodoLeido != null && nodoLeido.length > 0) {
 					nodoRaiz = new Nodo();
 					nodoRaiz.setBytes(nodoLeido);
@@ -67,6 +71,45 @@ public final class BStar implements BTree {
 		}
 	}
 	
+	/**
+	 * Carga los datos administrativos del arbol que se guardan en el primer
+	 * bloque del archivo.
+	 */
+	private void cargarDatosAdministrativos() {
+		
+		try {
+			
+			byte[] datos = archivo.leerBloque(Constantes.NRO_BLOQUE_ADMIN);
+			if (datos != null && datos.length >= 4) {
+				ultimoBloque = Conversiones.arrayByteToInt(datos);
+			} else {
+				ultimoBloque = Constantes.NRO_BLOQUE_ADMIN;
+			}
+			
+		} catch (IOException e) {
+			LOG.error("Error: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Guarda los datos administrativos del arbol en el archivo.
+	 */
+	private void guardarDatosAdministrativos() {
+		
+		byte[] datos = new byte[Constantes.SIZE_OF_INT];
+		
+		//Guardo el nro del ultimo bloque escrito.
+		datos = Conversiones.intToArrayByte(ultimoBloque);
+		
+		try {
+			archivo.escribirBloque(datos, Constantes.NRO_BLOQUE_ADMIN);
+		} catch (IOException e) {
+			LOG.error("Error: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Busca un registro.
 	 * 
@@ -207,11 +250,17 @@ public final class BStar implements BTree {
 			nodoRaiz = new Nodo();
 			//El primero es hoja al pricipio.
 			nodoRaiz.setEsHoja(true);
-			nodoRaiz.setNroBloque(0);
+			nodoRaiz.setNroBloque(Constantes.NRO_BLOQUE_RAIZ);
 			nodoRaiz.setNroBloquePadre(-1);
 			registro.setNroBloqueDerecho(-1);
 			registro.setNroBloqueIzquierdo(-1);
 			nodoRaiz.insertarRegistro(registro);
+			ultimoBloque = Constantes.NRO_BLOQUE_RAIZ;
+			
+			//FIXME: guardo en disco los datos administrativos
+			// ver si se puede sacarlo de aca, habria que hacerlo cada tanto.
+			guardarDatosAdministrativos();
+			
 			try {
 				archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
 						.getNroBloque());
@@ -235,6 +284,10 @@ public final class BStar implements BTree {
 					// Splitear nodo
 					ArrayList<Nodo> nodos = nodo.splitRaiz();
 					nodoRaiz = nodos.get(nodos.size() - 1);
+					nodos.get(0).setNroBloque(ultimoBloque + 1);
+					nodo.setNroBloque(ultimoBloque + 2);
+					ultimoBloque += 2;
+					
 					// TODO Que escriba los 3 nodos a disco!!!
 					
 				} else {
@@ -295,16 +348,19 @@ public final class BStar implements BTree {
 		try {
 			archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
 					Constantes.ABRIR_PARA_LECTURA);
-			if (nodoActual == null) {
+			
+			for (int i = Constantes.NRO_BLOQUE_RAIZ; i <= ultimoBloque; i++) {
+				
 				nodoActual = new Nodo();
-				nodoActual.setBytes(archivo.leerBloque(0));
-				nodoRaiz = nodoActual;
+				nodoActual.setBytes(archivo.leerBloque(i));
+				nodoActual.listar();
+				
 			}
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		nodoActual.listar();
 	}
 
 	/**
@@ -331,7 +387,7 @@ public final class BStar implements BTree {
 				break;
 			default:
 				nroHno = nodoAux.getRegistros().get(pos)
-				.getNroBloqueIzquierdo();
+					.getNroBloqueIzquierdo();
 				break;
 			}
 			nodoHno.setBytes(archivo.leerBloque(nroHno));

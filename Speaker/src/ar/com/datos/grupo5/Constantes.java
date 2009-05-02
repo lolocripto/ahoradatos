@@ -209,6 +209,16 @@ public final class Constantes {
 		getXML("FACTOR_CARGA_BLOQUES"));
 
 	/**
+	 * Nuero de bloque de los datos arministrativos del archivo del arbol.
+	 */
+	public static final int NRO_BLOQUE_ADMIN = 0;
+	
+	/**
+	 * Nro de bloque de la raiz del arbol.
+	 */
+	public static final int NRO_BLOQUE_RAIZ = 1;
+	
+	/**
 	 * Lee delarchivo de configuracion.
 	 * 
 	 * @param nombre clave para recuperar el valor.
@@ -246,7 +256,8 @@ public final class Constantes {
 		Iterator<Element> it = lista.iterator();
 		ArrayList<IunidadDeHabla> listaFinal = new ArrayList<IunidadDeHabla>();
 		while (it.hasNext()) {
-			listaFinal.add(PalabrasFactory.getPalabra(it.next().getText()));
+			//listaFinal.add(PalabrasFactory.getPalabra(it.next().getText()));
+			it.next();
 		}
 			return listaFinal;
 	}

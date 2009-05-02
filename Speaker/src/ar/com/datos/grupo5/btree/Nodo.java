@@ -216,13 +216,22 @@ public class Nodo {
 	public final void listar() {
 		
 		System.out.println();
-		System.out.println("Contenido del nodo:");
+		System.out.println("Contenido del nodo: [" + nroBloque + "] Padre: ["
+				+ nroBloquePadre + "]");
 		for (RegistroNodo reg : registros) {
-			System.out.println("==== " + reg.getClave().getClave());
+			System.out.println("==== " + reg.getClave().getClave()
+					+ " Puntero derecho: [" + reg.getNroBloqueDerecho()
+					+ "] Puntero Izquierdo: [" + reg.getNroBloqueIzquierdo()
+					+ "]");
 		}
 	}
 	
 	/**
+	 * La raiz cuando hace split, genera 2 nodos nuevos. Uno de estos nodos va a
+	 * pasar a ser la nueva raiz, y los otros dos sus hijos. El nodo actual, que
+	 * es la raiz, por comodidad va a pasar a ser un hijo ya que la raiz solo va
+	 * a contener un registro y es mas facil crear un nodo nuevo.
+	 * 
 	 * @return the nodos
 	 */
 	public final ArrayList<Nodo> splitRaiz() {
@@ -231,8 +240,8 @@ public class Nodo {
 		Nodo nodo = new Nodo();
 		Nodo nuevaRaiz = new Nodo();
 		
-		setNroBloquePadre(0);
-		nodo.setNroBloquePadre(0);
+		setNroBloquePadre(Constantes.NRO_BLOQUE_RAIZ);
+		nodo.setNroBloquePadre(Constantes.NRO_BLOQUE_RAIZ);
 		nuevaRaiz.setNroBloquePadre(-1);
 		nuevaRaiz.setEsHoja(false);
 		nodo.setEsHoja(this.isEsHoja());
