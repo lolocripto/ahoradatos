@@ -235,6 +235,7 @@ public class Nodo {
 		nodo.setNroBloquePadre(0);
 		nuevaRaiz.setNroBloquePadre(-1);
 		nuevaRaiz.setEsHoja(false);
+		nodo.setEsHoja(this.isEsHoja());
 		// TODO Terminar Metodo
 		// Llenar nodo hno (nodo)
 		while (minIndiceCarga < registros.size()) {
