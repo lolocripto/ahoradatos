@@ -1,5 +1,6 @@
 package ar.com.datos.parser;
 
+import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.UnidadesDeExpresion.Palabra;
 import ar.com.datos.grupo5.Constantes;
 
@@ -46,6 +47,7 @@ public class PalabrasFactory {
 		Palabra nuevapalabra = new Palabra(palabraEscrita, fonetica);
 
 		nuevapalabra.setPronunciable(pronunciable);
+		nuevapalabra.setStopWord(chequeaStopWord(nuevapalabra));
 		return nuevapalabra;
 	}
 	
@@ -84,6 +86,12 @@ public class PalabrasFactory {
 		}
 
 	}
-
-
+  /**
+   * Revisa si la palabra pasada esta en la lista de stop words conocidas.
+   * @param palabra a consultar.
+   */
+   private static boolean chequeaStopWord(IunidadDeHabla palabra) {
+        ParserStopWords stopWords = new ParserStopWords();
+        return stopWords.IsStopWord(palabra);
+   }
 }

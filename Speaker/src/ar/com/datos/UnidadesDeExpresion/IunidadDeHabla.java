@@ -94,5 +94,9 @@ public interface IunidadDeHabla extends Comparable{
 	 * @return -1 
 	 */
 	int compareTo(Object o); 
-
+	/**
+	 * Indica si es una Stop word
+	 * @return true si es stop word.
+	 */
+    public boolean isStopWord();
 }

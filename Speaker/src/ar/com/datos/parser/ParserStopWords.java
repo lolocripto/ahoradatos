@@ -30,9 +30,10 @@ public class ParserStopWords {
 	 * @param palabras
 	 * @return Collection
 	 */
-
+    public ParserStopWords() {
+    	StopWords = Constantes.LISTA_STOP_WORDS;
+    }
 	public final Collection<IunidadDeHabla> filtroStopWords(final Collection<IunidadDeHabla> palabras) {
-	    StopWords = Constantes.LISTA_STOP_WORDS;
 	    Collection<IunidadDeHabla> auxpalabras = palabras;
 	    auxpalabras.removeAll(StopWords);
 	    return auxpalabras;
@@ -45,8 +46,8 @@ public class ParserStopWords {
 	 * @param palabra
 	 * @return
 	 */
-	private boolean IsStopWord(IunidadDeHabla palabra){
-		return false;
+	public boolean IsStopWord(IunidadDeHabla palabra){
+	    return StopWords.contains(palabra);
 	}
 
 }

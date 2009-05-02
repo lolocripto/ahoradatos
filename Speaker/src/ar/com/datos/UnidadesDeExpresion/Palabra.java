@@ -13,7 +13,7 @@ public class Palabra implements IunidadDeHabla {
 	 * 
 	 */
 	private boolean pronunciable;
-	
+	private boolean isStopWord;
 	/**
 	 * 
 	 */
@@ -129,8 +129,8 @@ public class Palabra implements IunidadDeHabla {
 	 * @return true si tienen el mismo equivalente fonetico.
 	 */
 	public final boolean equals(final Object o) {
-		String s1 = this.getEquivalenteFonetico();
-		String s2 =(((Palabra) (o)).getEquivalenteFonetico()).toString();
+		String s1 = this.getTextoEscrito();
+		String s2 =(((Palabra) (o)).getTextoEscrito()).toString();
 		if (s1.compareTo(s2) == 0 )
 		  return true;
 	return false;   
@@ -142,8 +142,15 @@ public class Palabra implements IunidadDeHabla {
      *  <0 si es mayor y  0 si son iguales.
      */
 	public final int compareTo(final Object o) {
-		String eqiu = ((Palabra) o).getEquivalenteFonetico();
-		return this.getEquivalenteFonetico().compareTo(eqiu);
+		String eqiu = ((Palabra) o).getTextoEscrito();
+		return this.getTextoEscrito().compareTo(eqiu);
+	}
+
+	public boolean isStopWord() {
+		return this.isStopWord;
+	}
+	public void setStopWord(final boolean stopword) {
+		this.isStopWord = stopword;
 	}
 
 }
