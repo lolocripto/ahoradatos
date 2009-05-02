@@ -237,15 +237,15 @@ public class Nodo {
 		nuevaRaiz.setEsHoja(false);
 		// TODO Terminar Metodo
 		// Llenar nodo hno (nodo)
-		for (int index = minIndiceCarga; index < registros.size(); index++) {
-			nodo.registros.add(this.registros.remove(index));
+		while (minIndiceCarga < registros.size()) {
+			nodo.insertarRegistro(registros.remove(minIndiceCarga + 1));
 		}
 		// Cargar Nueva raiz (nodoAux)
 		RegistroNodo reg = new RegistroNodo();
 		reg.setClave(nodo.getPrimerRegistro().getClave());
 		reg.setNroBloqueIzquierdo(this.getNroBloque());
 		reg.setNroBloqueDerecho(nodo.getNroBloque());
-		nuevaRaiz.registros.add(reg);
+		nuevaRaiz.insertarRegistro(reg);
 		nodos.add(nodo);
 		nodos.add(nuevaRaiz);
 		return nodos;
