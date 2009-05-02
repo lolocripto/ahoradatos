@@ -43,7 +43,6 @@ public final class Main {
 			logger.error("Error en main: " + e.getMessage());
 		}*/
 
-		Conversiones.shortToArrayByte(10);
 		try {
 			BTree tree = new BStar();
 			

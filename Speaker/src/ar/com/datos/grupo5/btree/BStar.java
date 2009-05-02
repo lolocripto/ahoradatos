@@ -119,7 +119,8 @@ public final class BStar implements BTree {
 			posReg = nodoActual.buscarRegistro(clave);
 			
 			switch (posReg) {
-			case Constantes.MENOR: //La clave es menor al primero, voy por la izquierda.
+			//La clave es menor al primero, voy por la izquierda.
+			case Constantes.MENOR:
 				if (!nodoActual.isEsHoja()) {
 
 					nroBloque = nodoActual.getRegistros().get(0)
@@ -135,8 +136,8 @@ public final class BStar implements BTree {
 					return nodoActual;
 				}
 				break;
-				
-			case Constantes.MAYOR: //La clave es mayor al ultimo, voy por la derecha.
+			//La clave es mayor al ultimo, voy por la derecha.
+			case Constantes.MAYOR:
 				if (!nodoActual.isEsHoja()) {
 					nroBloque = nodoActual.getRegistros().get(
 							nodoActual.getRegistros().size() - 1)
@@ -152,8 +153,8 @@ public final class BStar implements BTree {
 					return nodoActual;
 				}
 				break;
-				
-			default: //Encontré la clave que buscaba o una mayor.
+			//Encontré la clave que buscaba o una mayor.
+			default:
 				//Veo si lo que recupere el igual o mayor.
 				if (nodoActual.getRegistros().size() == 0) {
 					return nodoActual;
@@ -224,7 +225,8 @@ public final class BStar implements BTree {
 			//no puedo insertar!!!!
 			//TODO traer el padre!!!!!!! 
 			try {
-				if (nodo.equals(nodoRaiz)) {
+				if (nodo.getNroBloquePadre() < 0) {
+					// Es la raiz.
 					// Splitear nodo
 					ArrayList<Nodo> nodos = nodo.splitRaiz();
 					nodoRaiz = nodos.get(nodos.size() - 1);
