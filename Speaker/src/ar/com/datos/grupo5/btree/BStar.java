@@ -25,6 +25,11 @@ public final class BStar implements BTree {
 	private static final Logger LOG = Logger.getLogger(BStar.class);
 	
 	/**
+	 * Ultimo Bloque - Para saber donde escribir en el archivo.
+	 */
+	private int ultimoBloque;	
+	
+	/**
 	 * archivo para el arbol.
 	 */
 	private ArchivoBloques archivo;

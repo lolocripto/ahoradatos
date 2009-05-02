@@ -29,7 +29,7 @@ public final class Constantes {
 	/**
 	 * Para indicar que la clave es mayor que la ultima del nodo.
 	 */
-	public static final double FACTOR_CARGA = 0.66;
+	public static final Float FACTOR_CARGA_NODOS = new Float(0.66);
 	
 	/**
 	 * Para indicar que la clave es mayor que la ultima del nodo.

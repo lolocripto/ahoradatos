@@ -27,6 +27,11 @@ public class Nodo {
 	private static final Logger LOG = Logger.getLogger(Nodo.class);
 	
 	/**
+	 * Flag de desborde.
+	 */
+	private boolean overflow;	
+	/**
+	 * 
 	 * Espacio en el nodo.
 	 */
 	private int minIndiceCarga;
@@ -68,6 +73,7 @@ public class Nodo {
 		
 		nroBloquePadre = null;
 		registros = new ArrayList<RegistroNodo>();
+		this.overflow = false;
 		minIndiceCarga = -1;
 		espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
 		espacioOcupado = 0;
@@ -154,9 +160,7 @@ public class Nodo {
 	 */
 	public final boolean insertarRegistro(final RegistroNodo registro) {
 		//Obtengo la posicion en donde debo insertarlo.
-		if (!this.ocupar(registro.getBytes().length)) {
-			return false;
-		}
+		this.ocupar(registro.getBytes().length);
 		int pos = this.buscarRegistro(registro.getClave());
 		switch (pos) {
 		case Constantes.MENOR:
@@ -168,6 +172,9 @@ public class Nodo {
 		default:
 				this.registros.add(pos, registro);
 			break;
+		}
+		if (overflow) {
+			return false;
 		}
 		return true;
 	}
@@ -219,8 +226,6 @@ public class Nodo {
 		ArrayList<Nodo> nodos = new ArrayList<Nodo>();
 		Nodo nodo = new Nodo();
 		Nodo nodoAux = new Nodo();
-		nodo.setNroBloque(getNroBloque() + 1);
-		nodoAux.setNroBloque(nodo.getNroBloque() + 1);
 		setNroBloquePadre(nodoAux.getNroBloque());
 		nodo.setNroBloquePadre(nodoAux.getNroBloque());
 		// TODO Terminar Metodo
@@ -241,15 +246,19 @@ public class Nodo {
 		Nodo nodo = new Nodo();
 		// FIXME Hacer el metodo
 		if (siguiente) {
-			//Junto con el siguiente
+			// -> El nuevo nodo es MENOR que el nodo actual.
+			// Paso todos los regs hasta el que garantiza el 66% de ocupacion
 			
-			//Busco posicion donde tengo que partir el nodo
-			//contabilizando bytes
+			// Luego lleno el nodo con lo del hermano siguiente
 		} else {
-			//Junto con el anterior
+			// -> El nuevo nodo es MAYOR que el nodo actual.
+			// Paso todos los regs hasta el que garantiza el 66% de ocupacion
+			
+			// Luego lleno el nodo con lo del hermano anterior.
 			
 		}
-		//Luego ver si tengo que generar el padre!!!!	
+		//Luego ver si tengo que generar el padre!!!!
+		// COMO CARAJO HAGO PARA SPLITEAR EL PADRE???????
 		return nodo;
 	}
 	
@@ -257,7 +266,8 @@ public class Nodo {
 	 * @return si pudo ocupar el nodo, o no le alcanzo el espacio libre
 	 */
 	public final boolean tieneCargaMinima() {
-		if ((this.espacioOcupado / this.espacioTotal) > Constantes.FACTOR_CARGA) {
+		if ((this.espacioOcupado / this.espacioTotal) > Constantes
+				.FACTOR_CARGA_NODOS) {
 			return true;
 		}
 		return false;
@@ -267,12 +277,11 @@ public class Nodo {
 	 * @param espacio the espacioOcupado to set
 	 * @return si pudo ocupar el nodo, o no le alcanzo el espacio libre
 	 */
-	public final boolean ocupar(final int espacio) {
+	public final void ocupar(final int espacio) {
 		if ((this.espacioOcupado + espacio) > this.espacioTotal) {
-			return false;
+			this.overflow = true;
 		}
 		this.espacioOcupado += espacio;
-		return true;
 	}
 	
 	/**
@@ -469,5 +478,19 @@ public class Nodo {
 	 */
 	public final void setNroBloque(Integer nroBloque) {
 		this.nroBloque = nroBloque;
+	}
+
+	/**
+	 * @param overflow the overflow to set
+	 */
+	public void setOverflow(boolean overflow) {
+		this.overflow = overflow;
+	}
+
+	/**
+	 * @return the overflow
+	 */
+	public boolean isOverflow() {
+		return overflow;
 	}
 }
