@@ -241,9 +241,6 @@ public final class BStar implements BTree {
 	 */
 	public boolean insertar(final RegistroNodo registro) {
 		
-		//FIXME: Arreglar esto!!!!!
-		registro.setNroBloqueDerecho(-1);
-		registro.setNroBloqueIzquierdo(-1);
 		if (nodoRaiz == null) {
 			
 			//Creo la raiz e inserto el registro.
@@ -270,7 +267,7 @@ public final class BStar implements BTree {
 			}
 			return true;
 		}
-		// TODO Terminar de implementar.
+		// TODO Terminar de implementar. setear los numeros de bloque.
 		//Busco en donde insertar.
 		Nodo nodo = buscarNodo(registro.getClave());
 		if (nodo.insertarRegistro(registro)) {
@@ -282,10 +279,8 @@ public final class BStar implements BTree {
 				if (nodo.getNroBloquePadre() < 0) {
 					// Es la raiz.
 					// Splitear nodo
-					ArrayList<Nodo> nodos = nodo.splitRaiz();
+					ArrayList<Nodo> nodos = nodo.splitRaiz(ultimoBloque);
 					nodoRaiz = nodos.get(nodos.size() - 1);
-					nodos.get(0).setNroBloque(ultimoBloque + 1);
-					nodo.setNroBloque(ultimoBloque + 2);
 					ultimoBloque += 2;
 					
 					// TODO Que escriba los 3 nodos a disco!!!

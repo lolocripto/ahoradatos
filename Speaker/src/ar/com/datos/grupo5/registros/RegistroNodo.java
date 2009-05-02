@@ -43,6 +43,14 @@ public class RegistroNodo {
 	private Integer nroBloqueDerecho;
 	
 	/**
+	 * Constructor.
+	 */
+	public RegistroNodo() {
+		
+		nroBloqueDerecho = -1;
+		nroBloqueIzquierdo = -1;
+	}
+	/**
 	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
 	 * @return los bytes que representan al registro.
 	 */

@@ -232,29 +232,34 @@ public class Nodo {
 	 * es la raiz, por comodidad va a pasar a ser un hijo ya que la raiz solo va
 	 * a contener un registro y es mas facil crear un nodo nuevo.
 	 * 
+	 * @param ultimoNroBloque el numero del ultimo bloque asignado.
 	 * @return the nodos
 	 */
-	public final ArrayList<Nodo> splitRaiz() {
+	public final ArrayList<Nodo> splitRaiz(final int ultimoNroBloque) {
 		
 		ArrayList<Nodo> nodos = new ArrayList<Nodo>();
 		Nodo nodo = new Nodo();
 		Nodo nuevaRaiz = new Nodo();
 		
-		setNroBloquePadre(Constantes.NRO_BLOQUE_RAIZ);
+		this.setNroBloquePadre(Constantes.NRO_BLOQUE_RAIZ);
+		this.setNroBloque(ultimoNroBloque + 2);
 		nodo.setNroBloquePadre(Constantes.NRO_BLOQUE_RAIZ);
-		nuevaRaiz.setNroBloquePadre(-1);
-		nuevaRaiz.setEsHoja(false);
+		nodo.setNroBloque(ultimoNroBloque + 1);
 		nodo.setEsHoja(this.isEsHoja());
+		nuevaRaiz.setNroBloquePadre(-1);
+		nuevaRaiz.setNroBloque(Constantes.NRO_BLOQUE_RAIZ);
+		nuevaRaiz.setEsHoja(false);
+		
 		// TODO Terminar Metodo
 		// Llenar nodo hno (nodo)
-		while (minIndiceCarga < registros.size() - 1) {
-			nodo.insertarRegistro(registros.remove(minIndiceCarga + 1));
+		while (minIndiceCarga <= registros.size() - 1) {
+			nodo.insertarRegistro(registros.remove(minIndiceCarga));
 		}
 		// Cargar Nueva raiz (nodoAux)
 		RegistroNodo reg = new RegistroNodo();
 		reg.setClave(nodo.getPrimerRegistro().getClave());
 		reg.setNroBloqueIzquierdo(this.getNroBloque());
-		reg.setNroBloqueDerecho(nodo.getNroBloque());
+		reg.setNroBloqueDerecho(ultimoNroBloque + 1);
 		nuevaRaiz.insertarRegistro(reg);
 		nodos.add(nodo);
 		nodos.add(nuevaRaiz);
