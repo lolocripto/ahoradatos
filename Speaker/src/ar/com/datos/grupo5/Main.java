@@ -6,6 +6,7 @@ import ar.com.datos.grupo5.btree.BStar;
 import ar.com.datos.grupo5.btree.BTree;
 import ar.com.datos.grupo5.btree.Clave;
 import ar.com.datos.grupo5.registros.RegistroNodo;
+import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
  * Esta clase es de ejemplo.
@@ -42,6 +43,7 @@ public final class Main {
 			logger.error("Error en main: " + e.getMessage());
 		}*/
 
+		Conversiones.shortToArrayByte(10);
 		try {
 			BTree tree = new BStar();
 			

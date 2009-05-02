@@ -352,7 +352,7 @@ public class Nodo {
 				
 				//Lea la cantidad de bytes que ocupa el registro.
 				cantidad = dos.readInt();
-				leido += Constantes.SIZE_OF_INT * 2;
+				leido += Constantes.SIZE_OF_INT + Constantes.SIZE_OF_INT;
 				
 				datos = new byte[cantidad];
 				leido += dos.read(datos, 0, cantidad);

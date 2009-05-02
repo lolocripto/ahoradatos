@@ -53,8 +53,8 @@ public class RegistroNodo {
 			// TODO TESTEARME!!!!!!!!!
 			byte[] claveBytes = claveNodo.getClave().getBytes();
 			byte[] longClave = Conversiones
-					.intToArrayByte(claveBytes.length);
-			int longitud = 2 * Constantes.SIZE_OF_INT
+					.shortToArrayByte(claveBytes.length);
+			int longitud = Constantes.SIZE_OF_INT + Constantes.SIZE_OF_SHORT
 					+ claveBytes.length;
 			
 			dos.write(Conversiones.intToArrayByte(nroBloqueIzquierdo));
@@ -85,7 +85,7 @@ public class RegistroNodo {
 		
 		try {
 			//Leo la longitud de la clave
-			int longdato = dos.readInt();
+			int longdato = dos.readShort();
 			datos = new byte[longdato];
 			//Leo la clave
 			dos.read(datos, 0, longdato);
