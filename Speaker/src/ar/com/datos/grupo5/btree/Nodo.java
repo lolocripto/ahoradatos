@@ -289,11 +289,11 @@ public class Nodo {
 			//Nro de bloque del padre
 			dos.write(longDatos, 0, longDatos.length);
 			longDatos = Conversiones.intToArrayByte(espacioOcupado);
-			LOG.debug("Espacio ocupado: " + espacioOcupado);
+			
+			//LOG.debug("Espacio ocupado: " + espacioOcupado);
+			
 			//Espacio ocupado del nodo.
 			dos.write(longDatos, 0, longDatos.length);
-			//Cantidad de registros.
-			//longDatos = Conversiones.intToArrayByte(registros.size());
 			
 			byte[] regBytes = null;
 			int offset = 0;
@@ -331,7 +331,7 @@ public class Nodo {
 		
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
 		DataInputStream dos = new DataInputStream(bis);
-		int bloqueAnt = 0, result = 1;
+		int bloqueAnt = 0, leido = 0, aLeer = 0;
 		int cantidad = 0;
 		byte[] datos = new byte[Constantes.SIZE_OF_INT];
 		RegistroNodo reg = null;
@@ -342,18 +342,20 @@ public class Nodo {
 			nroBloque = dos.readInt();
 			nroBloquePadre = dos.readInt();
 			espacioOcupado = dos.readInt();
+			aLeer = espacioOcupado;
 			
 			// Leo el primer dato del primer registro,que es el numero de bloque
 			// izquierdo al que apunta.
 			bloqueAnt = dos.readInt();
 			ocupar(4 * Constantes.SIZE_OF_INT);
-			while (result > 0) {
+			while (aLeer > leido) {
 				
 				//Lea la cantidad de bytes que ocupa el registro.
 				cantidad = dos.readInt();
+				leido += Constantes.SIZE_OF_INT * 2;
 				
 				datos = new byte[cantidad];
-				result = dos.read(datos, 0, cantidad);
+				leido += dos.read(datos, 0, cantidad);
 				reg = new RegistroNodo();
 				reg.setBytes(datos, bloqueAnt);
 				bloqueAnt = reg.getNroBloqueDerecho();

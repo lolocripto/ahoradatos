@@ -25,7 +25,7 @@ public class RegistroNodo {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger  = Logger.getLogger(ListasInvertidas.class);
+	private static Logger LOG = Logger.getLogger(ListasInvertidas.class);
 	
 	/**
 	 * Es la clave del nodo.
@@ -81,7 +81,7 @@ public class RegistroNodo {
 		
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
 		DataInputStream dos = new DataInputStream(bis);
-		byte[] datos = new byte[Constantes.SIZE_OF_INT];
+		byte[] datos = null;
 		
 		try {
 			//Leo la longitud de la clave
@@ -93,6 +93,7 @@ public class RegistroNodo {
 			//Leo el numero de bloque posterior.
 			setNroBloqueDerecho(dos.readInt());
 		} catch (Exception e) {
+			LOG.error("Error: ", e);
 			e.printStackTrace();
 		}
 	}
