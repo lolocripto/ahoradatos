@@ -75,7 +75,8 @@ public class Nodo {
 		registros = new ArrayList<RegistroNodo>();
 		this.overflow = false;
 		minIndiceCarga = -1;
-		espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
+		espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK
+				- Constantes.SIZE_OF_ADMIN_NODE_DATA;
 		espacioOcupado = 0;
 	}
 	

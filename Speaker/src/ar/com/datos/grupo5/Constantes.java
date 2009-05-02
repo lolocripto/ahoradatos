@@ -50,8 +50,13 @@ public final class Constantes {
 	 * Tamaño en bytes del bloque del archivo de indice.
 	 */
 	public static final int SIZE_OF_INDEX_BLOCK = Integer
-	.parseInt(getXML("SIZE_OF_INDEX_BLOCK"));
+			.parseInt(getXML("SIZE_OF_INDEX_BLOCK"));
 
+	/**
+	 * Tamaño en bytes de la informacion administrativa del nodo.
+	 */
+	public static final int SIZE_OF_ADMIN_NODE_DATA = 12;
+	
 	/**
 	 * Tamaño del orden del  Trie.
 	 */
