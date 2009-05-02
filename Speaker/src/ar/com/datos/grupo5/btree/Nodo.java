@@ -161,6 +161,9 @@ public class Nodo {
 	public final boolean insertarRegistro(final RegistroNodo registro) {
 		//Obtengo la posicion en donde debo insertarlo.
 		this.ocupar(registro.getBytes().length);
+		if (this.minIndiceCarga == Constantes.MENOR) {
+			tieneCargaMinima();
+		}
 		int pos = this.buscarRegistro(registro.getClave());
 		switch (pos) {
 		case Constantes.MENOR:
@@ -226,19 +229,23 @@ public class Nodo {
 		
 		ArrayList<Nodo> nodos = new ArrayList<Nodo>();
 		Nodo nodo = new Nodo();
-		Nodo nodoAux = new Nodo();
+		Nodo nuevaRaiz = new Nodo();
 		
-		nodo.setNroBloque(getNroBloque() + 1);
-		nodoAux.setNroBloque(nodo.getNroBloque() + 1);
-		setNroBloquePadre(nodoAux.getNroBloque());
-		nodo.setNroBloquePadre(nodoAux.getNroBloque());
+		setNroBloquePadre(nuevaRaiz.getNroBloque());
+		nodo.setNroBloquePadre(nuevaRaiz.getNroBloque());
 		// TODO Terminar Metodo
 		// Llenar nodo hno (nodo)
-		
+		for(int index = minIndiceCarga; index < registros.size(); index++) {
+			nodo.registros.add(this.registros.remove(index));
+		}
 		// Cargar Nueva raiz (nodoAux)
-		
+		RegistroNodo reg = new RegistroNodo();
+		reg.setClave(nodo.getPrimerRegistro().getClave());
+		reg.setNroBloqueIzquierdo(this.getNroBloque());
+		reg.setNroBloqueDerecho(nodo.getNroBloque());
+		nuevaRaiz.registros.add(reg);
 		nodos.add(nodo);
-		nodos.add(nodoAux);
+		nodos.add(nuevaRaiz);
 		return nodos;
 	}	
 	
@@ -270,8 +277,9 @@ public class Nodo {
 	 * @return si pudo ocupar el nodo, o no le alcanzo el espacio libre
 	 */
 	public final boolean tieneCargaMinima() {
-		if ((this.espacioOcupado / this.espacioTotal) > Constantes
+		if ((this.espacioOcupado / this.espacioTotal) >= Constantes
 				.FACTOR_CARGA_NODOS) {
+			minIndiceCarga = registros.size();
 			return true;
 		}
 		return false;
