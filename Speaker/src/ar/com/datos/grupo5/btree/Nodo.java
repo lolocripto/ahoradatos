@@ -238,7 +238,7 @@ public class Nodo {
 		nodo.setEsHoja(this.isEsHoja());
 		// TODO Terminar Metodo
 		// Llenar nodo hno (nodo)
-		while (minIndiceCarga < registros.size()) {
+		while (minIndiceCarga < registros.size() - 1) {
 			nodo.insertarRegistro(registros.remove(minIndiceCarga + 1));
 		}
 		// Cargar Nueva raiz (nodoAux)
@@ -250,7 +250,7 @@ public class Nodo {
 		nodos.add(nodo);
 		nodos.add(nuevaRaiz);
 		return nodos;
-	}	
+	}
 	
 	/**
 	 * @param siguiente es el nodo con el cual lo tengo que tratar para dividir.
