@@ -28,6 +28,21 @@ public final class Constantes {
 	}
 
 	/**
+	 * Para indicar que la clave es mayor que la ultima del nodo.
+	 */
+	public static final double FACTOR_CARGA = 0.66;
+	
+	/**
+	 * Para indicar que la clave es mayor que la ultima del nodo.
+	 */
+	public static final int MAYOR = -2;
+	
+	/**
+	 * Para indicar que la clave es menor que la primera del nodo.
+	 */
+	public static final int MENOR = -1;
+	
+	/**
 	 * Tamaño en bits de un byte.
 	 */
 	private static final int SIZE_OF_BYTE = 8;

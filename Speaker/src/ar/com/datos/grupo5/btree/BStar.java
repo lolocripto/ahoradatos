@@ -62,16 +62,6 @@ public final class BStar implements BTree {
 	}
 	
 	/**
-	 * Para indicar que la clave es mayor que la ultima del nodo.
-	 */
-	private static final int MAYOR = -2;
-	
-	/**
-	 * Para indicar que la clave es menor que la primera del nodo.
-	 */
-	private static final int MENOR = -1;
-	
-	/**
 	 * Busca un registro.
 	 * 
 	 * @param clave
@@ -99,8 +89,8 @@ public final class BStar implements BTree {
 		cerrarArchivos();
 		
 		switch (posReg) {
-		case MENOR:
-		case MAYOR:
+		case Constantes.MENOR:
+		case Constantes.MAYOR:
 			return null;
 		default:
 			if (nodo.getRegistros().get(posReg).getClave().equals(clave)) {
@@ -134,7 +124,7 @@ public final class BStar implements BTree {
 			posReg = nodoActual.buscarRegistro(clave);
 			
 			switch (posReg) {
-			case MENOR: //La clave es menor al primero, voy por la izquierda.
+			case Constantes.MENOR: //La clave es menor al primero, voy por la izquierda.
 				if (!nodoActual.isEsHoja()) {
 
 					nroBloque = nodoActual.getRegistros().get(0)
@@ -151,7 +141,7 @@ public final class BStar implements BTree {
 				}
 				break;
 				
-			case MAYOR: //La clave es mayor al ultimo, voy por la derecha.
+			case Constantes.MAYOR: //La clave es mayor al ultimo, voy por la derecha.
 				if (!nodoActual.isEsHoja()) {
 					nroBloque = nodoActual.getRegistros().get(
 							nodoActual.getRegistros().size() - 1)
@@ -233,8 +223,26 @@ public final class BStar implements BTree {
 		// TODO Terminar de implementar.
 		//Busco en donde insertar.
 		Nodo nodo = buscarNodo(registro.getClave());
-		nodo.insertarRegistro(registro);
-		nodoActual = nodo;
+		if (nodo.insertarRegistro(registro)) {
+			this.nodoActual = nodo;	
+		} else {
+			//no puedo insertar!!!!
+			//TODO traer el padre!!!!!!! 
+			try {
+				Nodo nodoAux = new Nodo();
+				nodoAux.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
+				//ahora nodo es el nodo padre del nodo que busque
+				int pos = nodoAux.buscarRegistro(registro.getClave());
+				// En pos tengo el indice de donde apunta al nro de Bloque 
+				// en el que tendria que insertar el registro
+				
+				
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		//Escribo el bloque completo.
 		try {
 			archivo.escribirBloque(nodoActual.getBytes(), nodoActual
@@ -282,6 +290,38 @@ public final class BStar implements BTree {
 		nodoActual.listar();
 	}
 
+	/**
+	 * @param nodo El nodo en el que no entra
+	 * @param reg el registro a pasar a un hermano de nodo.
+	 * @return si exito true.
+	 * @throws IOException no pudo obtener el nodo
+	 */
+	private boolean pasarRegistro(final Nodo nodo, final RegistroNodo reg) 
+	throws IOException {
+			Nodo nodoAux = new Nodo();
+			nodoAux.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
+			//ahora nodo es el nodo padre del nodo que busque
+			int pos = nodoAux.buscarRegistro(reg.getClave());
+			Nodo nodoHno = new Nodo();
+			int nroHno;
+			switch (pos) {
+			// Obtengo el hermano... Por DEFAULT USO EL MENOR 
+			case Constantes.MENOR:
+				nroHno = nodoAux.getPrimerRegistro().getNroBloqueIzquierdo();
+				break;
+			case Constantes.MAYOR:
+				nroHno = nodoAux.getUltimoRegistro().getNroBloqueDerecho();
+				break;
+			default:
+				nroHno = nodoAux.getRegistros().get(pos)
+				.getNroBloqueIzquierdo();
+				break;
+			}
+			nodoHno.setBytes(archivo.leerBloque(nroHno));
+			
+		return false;
+	}
+	
 	/**
 	 * 
 	 * @return si exito true.

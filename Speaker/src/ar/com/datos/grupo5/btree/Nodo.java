@@ -27,21 +27,6 @@ public class Nodo {
 	private static final Logger LOG = Logger.getLogger(Nodo.class);
 	
 	/**
-	 * Para indicar que la clave es mayor que la ultima del nodo.
-	 */
-	private static final double FACTOR_CARGA = 0.66;
-	
-	/**
-	 * Para indicar que la clave es mayor que la ultima del nodo.
-	 */
-	private static final int MAYOR = -2;
-	
-	/**
-	 * Para indicar que la clave es menor que la primera del nodo.
-	 */
-	private static final int MENOR = -1;
-	
-	/**
 	 * Espacio en el nodo.
 	 */
 	private int minIndiceCarga;
@@ -136,13 +121,13 @@ public class Nodo {
 		
 		// Si la clave es menor a la primera, no está.
 		if (clave.compareTo(registros.get(0).getClave()) < 0) {
-			return MENOR;
+			return Constantes.MENOR;
 		}
 
 		// Si la clave es mayor a la ultima, no está.
 		if (clave.compareTo(registros.get(registros.size() - 1)
 				.getClave()) > 0) {
-			return MAYOR;
+			return Constantes.MAYOR;
 		}
 		
 		//Recorro los nodos en busca de la clave.
@@ -176,10 +161,10 @@ public class Nodo {
 		}
 		int pos = this.buscarRegistro(registro.getClave());
 		switch (pos) {
-		case MENOR:
+		case Constantes.MENOR:
 				this.registros.add(0, registro);
 			break;
-		case MAYOR:
+		case Constantes.MAYOR:
 				this.registros.add(registros.size(), registro);
 			break;
 		default:
@@ -268,7 +253,7 @@ public class Nodo {
 	 * @return si pudo ocupar el nodo, o no le alcanzo el espacio libre
 	 */
 	public final boolean tieneCargaMinima() {
-		if ((this.espacioOcupado / this.espacioTotal) > FACTOR_CARGA) {
+		if ((this.espacioOcupado / this.espacioTotal) > Constantes.FACTOR_CARGA) {
 			return true;
 		}
 		return false;
