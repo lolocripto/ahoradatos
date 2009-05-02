@@ -223,9 +223,13 @@ public class Nodo {
 	 * @return the nodos
 	 */
 	public final ArrayList<Nodo> splitRaiz() {
+		
 		ArrayList<Nodo> nodos = new ArrayList<Nodo>();
 		Nodo nodo = new Nodo();
 		Nodo nodoAux = new Nodo();
+		
+		nodo.setNroBloque(getNroBloque() + 1);
+		nodoAux.setNroBloque(nodo.getNroBloque() + 1);
 		setNroBloquePadre(nodoAux.getNroBloque());
 		nodo.setNroBloquePadre(nodoAux.getNroBloque());
 		// TODO Terminar Metodo
