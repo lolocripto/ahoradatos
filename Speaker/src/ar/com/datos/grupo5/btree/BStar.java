@@ -235,6 +235,16 @@ public final class BStar implements BTree {
 		Nodo nodo = buscarNodo(registro.getClave());
 		nodo.insertarRegistro(registro);
 		nodoActual = nodo;
+		//Escribo el bloque completo.
+		try {
+			archivo.escribirBloque(nodoActual.getBytes(), nodoActual
+					.getNroBloque());
+		} catch (IOException e) {
+			LOG.error("Error: " + e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
+		
 		return true;
 	}
 

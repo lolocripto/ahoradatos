@@ -55,7 +55,7 @@ public class RegistroNodo {
 			byte[] longClave = Conversiones
 					.intToArrayByte(claveBytes.length);
 			int longitud = 2 * Constantes.SIZE_OF_INT
-					+ longClave.length;
+					+ claveBytes.length;
 			
 			dos.write(Conversiones.intToArrayByte(nroBloqueIzquierdo));
 			dos.write(Conversiones.intToArrayByte(longitud));

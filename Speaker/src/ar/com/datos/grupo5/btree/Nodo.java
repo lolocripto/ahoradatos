@@ -7,6 +7,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 import ar.com.datos.grupo5.registros.RegistroNodo;
@@ -19,6 +21,11 @@ import ar.com.datos.grupo5.utils.Conversiones;
  */
 public class Nodo {
 
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOG = Logger.getLogger(Nodo.class);
+	
 	/**
 	 * Para indicar que la clave es mayor que la ultima del nodo.
 	 */
@@ -297,6 +304,7 @@ public class Nodo {
 			//Nro de bloque del padre
 			dos.write(longDatos, 0, longDatos.length);
 			longDatos = Conversiones.intToArrayByte(espacioOcupado);
+			LOG.debug("Espacio ocupado: " + espacioOcupado);
 			//Espacio ocupado del nodo.
 			dos.write(longDatos, 0, longDatos.length);
 			//Cantidad de registros.
@@ -309,7 +317,7 @@ public class Nodo {
 				regBytes = registro.getBytes();
 				// El primer registro lo grabo completo, despues no grabo el
 				// puntero al bloque de la izquierda para no repetir.
-				dos.write(regBytes, offset, regBytes.length);
+				dos.write(regBytes, offset, regBytes.length - offset);
 				if (offset == 0) {
 					offset += Constantes.SIZE_OF_INT;
 				}
@@ -340,7 +348,6 @@ public class Nodo {
 		DataInputStream dos = new DataInputStream(bis);
 		int bloqueAnt = 0, result = 1;
 		int cantidad = 0;
-		int offset = 0;
 		byte[] datos = new byte[Constantes.SIZE_OF_INT];
 		RegistroNodo reg = null;
 		registros = new ArrayList<RegistroNodo>();
@@ -361,7 +368,7 @@ public class Nodo {
 				cantidad = dos.readInt();
 				
 				datos = new byte[cantidad];
-				result = dos.read(datos, offset, cantidad);
+				result = dos.read(datos, 0, cantidad);
 				reg = new RegistroNodo();
 				reg.setBytes(datos, bloqueAnt);
 				bloqueAnt = reg.getNroBloqueDerecho();
