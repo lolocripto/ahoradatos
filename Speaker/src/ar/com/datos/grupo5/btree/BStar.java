@@ -233,6 +233,7 @@ public final class BStar implements BTree {
 				if (nodo.equals(nodoRaiz)) {
 					// Splitear nodo
 					ArrayList<Nodo> nodos = nodo.splitRaiz();
+					nodoRaiz = nodos.get(nodos.size() - 1);
 					// TODO Que escriba los 3 nodos a disco!!!
 					
 				} else {
@@ -242,6 +243,8 @@ public final class BStar implements BTree {
 						// Buscar a los SIBLINGS!!!
 						// Primero al izquierdo
 						Nodo nodoAux = nodo.split(false);
+						// Persistir los cambios!!!!!
+						nodoActual = nodoAux;
 					}
 					
 				}
