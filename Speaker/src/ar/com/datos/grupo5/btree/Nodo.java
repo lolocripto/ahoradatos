@@ -231,11 +231,13 @@ public class Nodo {
 		Nodo nodo = new Nodo();
 		Nodo nuevaRaiz = new Nodo();
 		
-		setNroBloquePadre(nuevaRaiz.getNroBloque());
-		nodo.setNroBloquePadre(nuevaRaiz.getNroBloque());
+		setNroBloquePadre(0);
+		nodo.setNroBloquePadre(0);
+		nuevaRaiz.setNroBloquePadre(-1);
+		nuevaRaiz.setEsHoja(false);
 		// TODO Terminar Metodo
 		// Llenar nodo hno (nodo)
-		for(int index = minIndiceCarga; index < registros.size(); index++) {
+		for (int index = minIndiceCarga; index < registros.size(); index++) {
 			nodo.registros.add(this.registros.remove(index));
 		}
 		// Cargar Nueva raiz (nodoAux)
