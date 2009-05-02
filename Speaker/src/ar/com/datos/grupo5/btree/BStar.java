@@ -5,6 +5,7 @@ package ar.com.datos.grupo5.btree;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
@@ -229,13 +230,21 @@ public final class BStar implements BTree {
 			//no puedo insertar!!!!
 			//TODO traer el padre!!!!!!! 
 			try {
-				Nodo nodoAux = new Nodo();
-				nodoAux.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
-				//ahora nodo es el nodo padre del nodo que busque
-				int pos = nodoAux.buscarRegistro(registro.getClave());
-				// En pos tengo el indice de donde apunta al nro de Bloque 
-				// en el que tendria que insertar el registro
-				
+				if (nodo.equals(nodoRaiz)) {
+					// Splitear nodo
+					ArrayList<Nodo> nodos = nodo.splitRaiz();
+					// TODO Que escriba los 3 nodos a disco!!!
+					
+				} else {
+					//Intento pasar el registro.
+					//Si no puedo, veo con cual lo puedo Splitear
+					if (!pasarRegistro(nodo, registro)) {
+						// Buscar a los SIBLINGS!!!
+						// Primero al izquierdo
+						Nodo nodoAux = nodo.split(false);
+					}
+					
+				}
 				
 				
 			} catch (IOException e) {

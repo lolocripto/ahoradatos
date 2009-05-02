@@ -215,27 +215,31 @@ public class Nodo {
 	}
 	
 	/**
+	 * @return the nodos
+	 */
+	public final ArrayList<Nodo> splitRaiz() {
+		ArrayList<Nodo> nodos = new ArrayList<Nodo>();
+		Nodo nodo = new Nodo();
+		Nodo nodoAux = new Nodo();
+		setNroBloquePadre(nodoAux.getNroBloque());
+		nodo.setNroBloquePadre(nodoAux.getNroBloque());
+		// TODO Terminar Metodo
+		// Llenar nodo hno (nodo)
+		
+		// Cargar Nueva raiz (nodoAux)
+		
+		nodos.add(nodo);
+		nodos.add(nodoAux);
+		return nodos;
+	}	
+	
+	/**
 	 * @param siguiente es el nodo con el cual lo tengo que tratar para dividir.
 	 * @return the nodos
 	 */
 	public final Nodo split(final boolean siguiente) {
 		Nodo nodo = new Nodo();
 		// FIXME Hacer el metodo
-		if (this.getNroBloquePadre() == null) {
-			//Es la raiz!!!!!!
-			// Partir en 2! Si, se me canta. Y que?
-			Nodo nodoAux = new Nodo();
-			this.setNroBloquePadre(nodoAux.getNroBloque());
-			// Buscar el registro que asegura 66%
-			
-			// Llenar nodo hno
-			//FIXME
-			//this.nodoSiguiente = nodo;
-			//nodo.nodoAnterior = this;
-			nodo.setNroBloquePadre(nodoAux.getNroBloque());
-			
-			
-		}
 		if (siguiente) {
 			//Junto con el siguiente
 			
