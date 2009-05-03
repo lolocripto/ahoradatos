@@ -85,6 +85,9 @@ public final class BStar implements BTree {
 				ultimoBloque = Conversiones.arrayByteToInt(datos);
 			} else {
 				ultimoBloque = Constantes.NRO_BLOQUE_ADMIN;
+				archivo.escribirBloque(Conversiones
+						.intToArrayByte(ultimoBloque),
+						Constantes.NRO_BLOQUE_ADMIN);
 			}
 			
 		} catch (IOException e) {
