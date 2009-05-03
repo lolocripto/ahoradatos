@@ -162,6 +162,12 @@ public final class BStar implements BTree {
 		
 		Nodo nodoAux = null;
 		nodoActual = nodoRaiz;
+//		try {
+//			nodoActual.setBytes(archivo.leerBloque(1));
+//		} catch (IOException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		int posReg = 0;
 		int nroBloque = 0;
 		
@@ -329,7 +335,9 @@ public final class BStar implements BTree {
 							ultimoBloque);
 					nodoActual = nuevoHno;
 				}
-				
+				if (nodoPadre.getNroBloquePadre() < 0) {
+					nodoRaiz = nodoPadre;
+				}
 				
 				ultimoBloque++;
 				
@@ -465,7 +473,7 @@ public final class BStar implements BTree {
 				}
 				return true;
 			default:
-				int nroHnoDerecho = nodoPadre.getRegistros().get(pos - 1)
+				int nroHnoDerecho = nodoPadre.getRegistros().get(pos)
 						.getNroBloqueDerecho();
 				int nroHnoIzquierdo = nodoPadre.getRegistros().get(pos - 1)
 						.getNroBloqueIzquierdo();
