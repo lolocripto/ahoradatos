@@ -159,6 +159,7 @@ public class Nodo {
 	 * @return El resultado de la insercion.
 	 */
 	public final boolean insertarRegistro(final RegistroNodo registro) {
+		
 		//Obtengo la posicion en donde debo insertarlo.
 		ocupar(registro.getBytes().length);
 		if (minIndiceCarga < 0) {
@@ -173,6 +174,10 @@ public class Nodo {
 				this.registros.add(registros.size(), registro);
 			break;
 		default:
+				//	Me fijo si ya lo contiene.
+				//if (registros.get(pos).getClave().equals(registro.getClave())) {
+				//	return true;
+				//}
 				this.registros.add(pos, registro);
 			break;
 		}
@@ -284,16 +289,17 @@ public class Nodo {
 	 * @param siguiente es el nodo con el cual lo tengo que tratar para dividir.
 	 * @param nodoHermano es el hermano del nodo que tengo que splitear
 	 * @param nodoPadre El padre del nodo y su hermano
-	 * @param ultimoNroBloque
+	 * @param ultimoNroBloque .
 	 * @return the nodos
 	 */
 	public final Nodo split(final Nodo nodoHermano, final Nodo nodoPadre, 
 			final boolean siguiente, final int ultimoNroBloque) {
+		
 		Nodo nuevoHermano = new Nodo();
 		nuevoHermano.setNroBloque(ultimoNroBloque + 1);
 		nuevoHermano.setNroBloquePadre(getNroBloquePadre());
 		nuevoHermano.setEsHoja(this.isEsHoja());
-		ArrayList <RegistroNodo> Regs = new ArrayList <RegistroNodo>();
+		ArrayList<RegistroNodo> regs = new ArrayList<RegistroNodo>();
 	
 		if (siguiente) {
 			// -> El nuevo nodo es MENOR que el nodo actual.
@@ -303,24 +309,24 @@ public class Nodo {
 					.getPrimerRegistro().getClave());
 			while (minIndiceCarga <= registros.size() - 1) {
 				RegistroNodo reg = registros.remove(minIndiceCarga);
-				Regs.add(reg);
+				regs.add(reg);
 				this.ocupar(-reg.getBytes().length);
 			}
 			// ahora, tengo que vaciar el hno y llenarlo otra vez
-			for (int index = 0; index < nodoHermano.registros.size() -1; index++) {
+			for (int index = 0; index < nodoHermano.registros.size() - 1; index++) {
 				RegistroNodo reg = nodoHermano.registros.remove(index);
-				Regs.add(reg);
+				regs.add(reg);
 				nodoHermano.ocupar(-reg.getBytes().length);
 			}
 			nodoHermano.minIndiceCarga = Constantes.MENOR;
 			//ahora lo cargo hasta la minima ocupacion
 			while (nodoHermano.minIndiceCarga < 0) {
-				RegistroNodo reg = Regs.remove(0);
+				RegistroNodo reg = regs.remove(0);
 				nodoHermano.insertarRegistro(reg);
 			}
 			// Luego lleno el nodo con lo del hermano siguiente
-			while (Regs.size() > 0) {
-				RegistroNodo reg = Regs.remove(0);
+			while (regs.size() > 0) {
+				RegistroNodo reg = regs.remove(0);
 				nuevoHermano.insertarRegistro(reg);
 			}
 			// Ahora tengo que cargar las claves en el padre, y listo!
@@ -416,7 +422,7 @@ public class Nodo {
 	}
 
 	/**
-	 * 
+	 * @return .
 	 */
 	public final boolean hasMoreBytes() {
 		// TODO Auto-generated method stub
@@ -447,7 +453,6 @@ public class Nodo {
 			// Leo el primer dato del primer registro,que es el numero de bloque
 			// izquierdo al que apunta.
 			bloqueAnt = dos.readInt();
-			//ocupar(4 * Constantes.SIZE_OF_INT);
 			while (aLeer > leido) {
 				
 				//Lea la cantidad de bytes que ocupa el registro.
@@ -464,7 +469,6 @@ public class Nodo {
 				}
 				//Los agrego a la lista.
 				registros.add(reg);
-				//ocupar(cantidad);
 				if (this.tieneCargaMinima() && (minIndiceCarga < 0)) {
 					minIndiceCarga = this.registros.size() - 1;
 				}
@@ -550,10 +554,10 @@ public class Nodo {
 	}
 
 	/**
-	 * @param nroBloquePadre the nroBloquePadre to set
+	 * @param nroBloque the nroBloquePadre to set
 	 */
-	public final void setNroBloquePadre(Integer nroBloquePadre) {
-		this.nroBloquePadre = nroBloquePadre;
+	public final void setNroBloquePadre(final Integer nroBloque) {
+		this.nroBloquePadre = nroBloque;
 	}
 
 	/**
@@ -566,21 +570,21 @@ public class Nodo {
 	/**
 	 * @param nroBloque the nroBloque to set
 	 */
-	public final void setNroBloque(Integer nroBloque) {
+	public final void setNroBloque(final Integer nroBloque) {
 		this.nroBloque = nroBloque;
 	}
 
 	/**
 	 * @param overflow the overflow to set
 	 */
-	public void setOverflow(boolean overflow) {
+	public final void setOverflow(final boolean overflow) {
 		this.overflow = overflow;
 	}
 
 	/**
 	 * @return the overflow
 	 */
-	public boolean isOverflow() {
+	public final boolean isOverflow() {
 		return overflow;
 	}
 }

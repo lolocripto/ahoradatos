@@ -61,6 +61,9 @@ public class Clave implements Comparable<Clave> {
 		if (clave instanceof String) {
 			String c = (String) clave;
 			return c.equals(this.claveStr);
+		} else if (clave instanceof Clave) {
+			Clave otraClave = (Clave) clave;
+			return otraClave.getClave().equals(claveStr);
 		}
 		
 		return false;
