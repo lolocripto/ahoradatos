@@ -407,56 +407,76 @@ public final class BStar implements BTree {
 			nodoPadre.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
 			//ahora nodo es el nodo padre del nodo que busque
 			int pos = nodoPadre.buscarRegistro(reg.getClave());
-			Nodo nodoHno = new Nodo();
 			int nroHno = 0;
 			byte[] datos = null;
+			Nodo nodoHnoIzquierdo = null;
+			Nodo nodoHnoDerecho = null;
+			
 			switch (pos) {
 			// Obtengo el hermano... Por DEFAULT USO EL MENOR 
 			case Constantes.MENOR:
+				nodoHnoDerecho = new Nodo();
 				nroHno = nodoPadre.getPrimerRegistro().getNroBloqueDerecho();
 				datos = archivo.leerBloque(nroHno);
-				nodoHno.setBytes(datos);
-				if (!nodoHno.hayEspacio(reg.getBytes().length)) {
+				nodoHnoDerecho.setBytes(datos);
+				if (!nodoHnoDerecho.hayEspacio(reg.getBytes().length)) {
 					return false;
 				}
-				nodoHno.insertarRegistro(nodo.getUltimoRegistro());
+				nodoHnoDerecho.insertarRegistro(nodo.getUltimoRegistro());
 				nodoPadre.getPrimerRegistro().setClave(
 					nodo.getUltimoRegistro().getClave());
 				nodo.removerRegistro(nodo.getRegistros().size() - 1);
 				archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
 					.getNroBloque());
 				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
-				archivo.escribirBloque(nodoHno.getBytes(),
-						nodoHno.getNroBloque());
+				archivo.escribirBloque(nodoHnoDerecho.getBytes(),
+						nodoHnoDerecho.getNroBloque());
 				if (nodoPadre.getNroBloquePadre() < 0) {
 					nodoRaiz = nodoPadre;
 				}
 				return true;
 			case Constantes.MAYOR:
+				nodoHnoIzquierdo = new Nodo();
 				nroHno = nodoPadre.getUltimoRegistro().getNroBloqueIzquierdo();
 				datos = archivo.leerBloque(nroHno);
-				nodoHno.setBytes(datos);
-				if (!nodoHno.hayEspacio(reg.getBytes().length)) {
+				nodoHnoIzquierdo.setBytes(datos);
+				if (!nodoHnoIzquierdo.hayEspacio(reg.getBytes().length)) {
 					return false;
 				}
-				nodoHno.insertarRegistro(nodo.getPrimerRegistro());
+				nodoHnoIzquierdo.insertarRegistro(nodo.getPrimerRegistro());
 				nodo.removerRegistro(0);
 				nodoPadre.getUltimoRegistro().setClave(
 						nodo.getPrimerRegistro().getClave());
 				archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
 					.getNroBloque());
 				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
-				archivo.escribirBloque(nodoHno.getBytes(),
-						nodoHno.getNroBloque());
+				archivo.escribirBloque(nodoHnoIzquierdo.getBytes(),
+						nodoHnoIzquierdo.getNroBloque());
 				if (nodoPadre.getNroBloquePadre() < 0) {
 					nodoRaiz = nodoPadre;
 				}
 				return true;
 			default:
 				//TODO Hacer esto que es lo mas jodido.
-				nroHno = nodoPadre.getRegistros().get(pos)
-					.getNroBloqueIzquierdo();
-				nodoHno.setBytes(archivo.leerBloque(nroHno));
+				int nroHnoDerecho = nodoPadre.getRegistros().get(pos)
+						.getNroBloqueDerecho();
+				int nroHnoIzquierdo = nodoPadre.getRegistros().get(pos)
+						.getNroBloqueIzquierdo();
+				nodoHnoDerecho = new Nodo();
+				nodo.setBytes(archivo.leerBloque(nroHnoDerecho));
+				if (nodoHnoDerecho.hayEspacio(reg.getBytes().length)) {
+					
+				} else {
+					nodoHnoIzquierdo = new Nodo();
+					nodoHnoIzquierdo.setBytes(
+							archivo.leerBloque(nroHnoIzquierdo));
+					if (nodoHnoIzquierdo.hayEspacio(reg.getBytes().length)) {
+						
+					} else {
+						return false;
+					}
+				}
+				
 				break;
 			}
 			
