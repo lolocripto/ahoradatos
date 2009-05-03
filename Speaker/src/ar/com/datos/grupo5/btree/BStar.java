@@ -335,14 +335,38 @@ public final class BStar implements BTree {
 							ultimoBloque);
 					nodoActual = nuevoHno;
 				}
+				
+				ultimoBloque++;
+				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
+				archivo.escribirBloque(nodoActual.getBytes(), nodoActual
+						.getNroBloque());
+				archivo.escribirBloque(nodoHno.getBytes(), nodoHno
+						.getNroBloque());
+				
 				if (nodoPadre.getNroBloquePadre() < 0) {
-					//TODO Splitear raiz
 					nodoRaiz = nodoPadre;
+					if (nodoRaiz.isOverflow()) {
+						ArrayList<Nodo> nodos = nodoRaiz
+								.splitRaiz(ultimoBloque);
+						nodoRaiz = nodos.get(1);
+						nodoActual = nodos.get(0);
+						ultimoBloque += 2;
+						
+						archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
+								.getNroBloque());
+						archivo.escribirBloque(nodoActual.getBytes(),
+								nodoActual.getNroBloque());
+						archivo.escribirBloque(nodo.getBytes(), nodo
+								.getNroBloque());
+						
+						guardarDatosAdministrativos();
+						cerrarArchivos();
+						
+						return true;
+					}
 				} else {
 					//TODO splitear recursivamentes.
 				}
-				
-				ultimoBloque++;
 				
 				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
 				archivo.escribirBloque(nodoActual.getBytes(), nodoActual
