@@ -319,7 +319,7 @@ public class Nodo {
 			}
 			//ahora lo cargo hasta la minima ocupacion
 			nodoHermano.setMinIndiceCarga(Constantes.MENOR);
-			while (!nodoHermano.tieneCargaMinima()) {
+			while ((regs.size() > 0) && (!nodoHermano.tieneCargaMinima())) {
 				RegistroNodo reg = regs.remove(0);
 				nodoHermano.insertarRegistro(reg);
 			}
