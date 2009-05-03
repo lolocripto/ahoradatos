@@ -71,8 +71,12 @@ public class ArchivoBloques extends Directo {
 		byte[] bufferDato = new byte[tamanio];
 		file.seek(offset * tamanio);
 
-        file.read(bufferDato, 0, tamanio);
-		return bufferDato;
+        if (file.read(bufferDato, 0, tamanio) > 0) {
+        	return bufferDato;
+        } else {
+        	return null;
+        }
+		
 	}
 	
 	/**
