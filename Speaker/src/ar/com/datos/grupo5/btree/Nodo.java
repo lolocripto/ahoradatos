@@ -345,9 +345,8 @@ public class Nodo {
 			int pos2 = nodoPadre.buscarRegistro(getPrimerRegistro().getClave());
 			int cargaInicial = nodoHermano.minIndiceCarga;
 			for (int index = 0; index <= cargaInicial; index++) {
-				RegistroNodo reg = nodoHermano.registros.remove(0);
+				RegistroNodo reg = nodoHermano.removerRegistro(0);
 				nuevoHermano.insertarRegistro(reg);
-				nodoHermano.ocupar(-reg.getBytes().length);
 			}
 			// ahora, tengo que vaciar el hno y llenarlo otra vez
 			nodoHermano.setMinIndiceCarga(Constantes.MENOR);
@@ -360,8 +359,7 @@ public class Nodo {
 			RegistroNodo reg = nodoPadre.removerRegistro(pos);
 			reg.setClave(nodoHermano.getPrimerRegistro().getClave());
 			nodoPadre.insertarRegistro(reg);
-			reg = nodoPadre.registros.remove(pos2);
-			nodoPadre.ocupar(-reg.getBytes().length);
+			reg = nodoPadre.removerRegistro(pos2);
 			reg.setClave(nodoHermano.getPrimerRegistro().getClave());
 			nodoPadre.insertarRegistro(reg);
 			reg = new RegistroNodo();
