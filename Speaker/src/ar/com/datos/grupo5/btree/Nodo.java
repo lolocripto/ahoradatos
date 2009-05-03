@@ -313,8 +313,8 @@ public class Nodo {
 				this.ocupar(-reg.getBytes().length);
 			}
 			// ahora, tengo que vaciar el hno y llenarlo otra vez
-			for (int index = 0; index < nodoHermano.registros.size() - 1; index++) {
-				RegistroNodo reg = nodoHermano.registros.remove(index);
+			while (nodoHermano.registros.size() > 0) {
+				RegistroNodo reg = nodoHermano.registros.remove(0);
 				regs.add(reg);
 				nodoHermano.ocupar(-reg.getBytes().length);
 			}
