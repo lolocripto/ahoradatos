@@ -414,7 +414,7 @@ public final class BStar implements BTree {
 				nroHno = nodoPadre.getPrimerRegistro().getNroBloqueDerecho();
 				datos = archivo.leerBloque(nroHno);
 				nodoHno.setBytes(datos);
-				if (!nodoHno.hayEspacio(datos.length)) {
+				if (!nodoHno.hayEspacio(reg.getBytes().length)) {
 					return false;
 				}
 				nodoHno.insertarRegistro(nodo.getUltimoRegistro());
@@ -431,7 +431,7 @@ public final class BStar implements BTree {
 				nroHno = nodoPadre.getUltimoRegistro().getNroBloqueIzquierdo();
 				datos = archivo.leerBloque(nroHno);
 				nodoHno.setBytes(datos);
-				if (!nodoHno.hayEspacio(datos.length)) {
+				if (!nodoHno.hayEspacio(reg.getBytes().length)) {
 					return false;
 				}
 				nodoHno.insertarRegistro(nodo.getPrimerRegistro());
