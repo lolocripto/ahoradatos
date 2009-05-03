@@ -473,17 +473,16 @@ public final class BStar implements BTree {
 				nodoHnoDerecho = new Nodo();
 				nodoHnoDerecho.setBytes(archivo.leerBloque(nroHnoDerecho));
 				if (nodoHnoDerecho.hayEspacio(reg.getBytes().length)) {
-					nroHno = nodoPadre.getPrimerRegistro().getNroBloqueDerecho();
-					if (!nodoHnoDerecho.hayEspacio(reg.getBytes().length)) {
-						return false;
-					}
-					nodoHnoDerecho.insertarRegistro(nodo.getUltimoRegistro());
-					nodoPadre.getPrimerRegistro().setClave(
-						nodo.getUltimoRegistro().getClave());
-					nodo.removerRegistro(nodo.getRegistros().size() - 1);
+					
+					RegistroNodo regAux = nodo.removerRegistro(
+							nodo.getRegistros().size() - 1);
+					nodoHnoDerecho.insertarRegistro(regAux);
+					nodoPadre.getRegistros().get(pos).setClave(
+							regAux.getClave());
 					archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
-						.getNroBloque());
-					archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
+							.getNroBloque());
+					archivo.escribirBloque(nodo.getBytes(), 
+							nodo.getNroBloque());
 					archivo.escribirBloque(nodoHnoDerecho.getBytes(),
 							nodoHnoDerecho.getNroBloque());
 					if (nodoPadre.getNroBloquePadre() < 0) {
@@ -496,16 +495,15 @@ public final class BStar implements BTree {
 							archivo.leerBloque(nroHnoIzquierdo));
 					if (nodoHnoIzquierdo.hayEspacio(reg.getBytes().length)) {
 						
-						if (!nodoHnoIzquierdo.hayEspacio(reg.getBytes().length)) {
-							return false;
-						}
-						nodoHnoIzquierdo.insertarRegistro(nodo.getPrimerRegistro());
-						nodo.removerRegistro(0);
-						nodoPadre.getUltimoRegistro().setClave(
-								nodo.getPrimerRegistro().getClave());
+						RegistroNodo regAux = nodo.removerRegistro(0);
+						nodoHnoIzquierdo.insertarRegistro(regAux);
+						nodoPadre.getRegistros().get(pos).setClave(
+								regAux.getClave());
+						
 						archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
 							.getNroBloque());
-						archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
+						archivo.escribirBloque(nodo.getBytes(),
+								nodo.getNroBloque());
 						archivo.escribirBloque(nodoHnoIzquierdo.getBytes(),
 								nodoHnoIzquierdo.getNroBloque());
 						if (nodoPadre.getNroBloquePadre() < 0) {

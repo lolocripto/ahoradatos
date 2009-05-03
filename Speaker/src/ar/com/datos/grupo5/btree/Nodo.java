@@ -211,21 +211,6 @@ public class Nodo {
 		}
 		return false;
 	}
-
-	
-	/**
-	 * @param registro the registro to set
-	 * @return .
-	 */
-	public final boolean pasarRegistro(final RegistroNodo registro) {
-		// FIXME
-		//TODO Solo aplica para los nodos hoja
-		if (this.nroBloquePadre == null) {
-				// Es el unico nodo -> Raiz SOLA!!!!!
-				return false;
-			} 
-		return false;
-	}
 	
 	/**
 	 * Para testear.
