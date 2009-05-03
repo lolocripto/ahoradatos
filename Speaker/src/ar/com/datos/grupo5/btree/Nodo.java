@@ -346,7 +346,7 @@ public class Nodo {
 			// Paso todos los regs hasta el que garantiza el 66% de ocupacion
 			int pos2 = nodoPadre.buscarRegistro(getPrimerRegistro().getClave());
 			int cargaInicial = nodoHermano.minIndiceCarga;
-			for (int index = 0; index <= cargaInicial; index++) {
+			for (int index = 0; index < cargaInicial; index++) {
 				RegistroNodo reg = nodoHermano.removerRegistro(0);
 				nuevoHermano.insertarRegistro(reg);
 			}
@@ -358,14 +358,11 @@ public class Nodo {
 			}
 			setMinIndiceCarga(Constantes.MENOR);
 			// Ahora tengo que cargar las claves en el padre, y listo!
-			RegistroNodo reg = nodoPadre.removerRegistro(pos);
-			reg.setClave(nodoHermano.getPrimerRegistro().getClave());
-			nodoPadre.insertarRegistro(reg);
-			reg = nodoPadre.removerRegistro(pos2);
-			reg.setClave(nodoHermano.getPrimerRegistro().getClave());
+			RegistroNodo reg = nodoPadre.removerRegistro(pos2);
+			reg.setClave(getPrimerRegistro().getClave());
 			nodoPadre.insertarRegistro(reg);
 			reg = new RegistroNodo();
-			reg.setClave(nuevoHermano.getPrimerRegistro().getClave());
+			reg.setClave(nodoHermano.getPrimerRegistro().getClave());
 			reg.setNroBloqueDerecho(nodoHermano.getNroBloque());
 			reg.setNroBloqueIzquierdo(nuevoHermano.getNroBloque());
 			nodoPadre.insertarRegistro(reg);
