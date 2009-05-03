@@ -299,27 +299,29 @@ public final class BStar implements BTree {
 			//Intento pasar el registro.
 			//Si no puedo, veo con cual lo puedo Splitear
 			if (!pasarRegistro(nodo, registro)) {
-				// Buscar a los SIBLINGS!!!
-				// Primero al izquierdo
-				//Nodo nodoAux = nodo.split(false);
-				// Persistir los cambios!!!!!
-				//nodoActual = nodoAux;
 				
-				archivo.escribirBloque(nodo.getBytes(), nodo
-						.getNroBloque());
-				archivo.escribirBloque(nodoActual.getBytes(),
-						nodoActual.getNroBloque());
-				
-				cerrarArchivos();
-				
-				return true;
-			} else {
 				Nodo nodoHno = new Nodo();
 				Nodo nodoPadre = new Nodo();
 				nodoPadre
 						.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
 				//nodoHno.setBytes(archivo.leerBloque());
-				nodo.split(nodoHno, nodoPadre, true, ultimoBloque);
+				Nodo nuevoHno = nodo.split(nodoHno, nodoPadre, true,
+						ultimoBloque);
+				nodoActual = nuevoHno;
+				
+				ultimoBloque++;
+				
+				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
+				archivo.escribirBloque(nodoActual.getBytes(), nodoActual
+						.getNroBloque());
+				archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
+						.getNroBloque());
+				archivo.escribirBloque(nodoHno.getBytes(), nodoHno
+						.getNroBloque());
+				
+				cerrarArchivos();
+				
+				return true;
 			}
 		}
 		
