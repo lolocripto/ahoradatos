@@ -269,12 +269,11 @@ public final class BStar implements BTree {
 
 			return true;
 		}
-		// TODO Terminar de implementar. setear los numeros de bloque.
 		//Busco en donde insertar.
 		Nodo nodo = buscarNodo(registro.getClave());
 		//Si ya existe, no inserto.
 		if (nodo.existeClave(registro.getClave())) {
-			//TODO revisar, seria para no insertar duplicados.
+			//FIXME creo que esta bien, seria para no insertar duplicados.
 			cerrarArchivos();
 			LOG.debug("No se inserto en el elemento ["
 					+ registro.getClave().getClave()
@@ -406,11 +405,16 @@ public final class BStar implements BTree {
 			int pos = nodoPadre.buscarRegistro(reg.getClave());
 			Nodo nodoHno = new Nodo();
 			int nroHno = 0;
+			byte[] datos = null;
 			switch (pos) {
 			// Obtengo el hermano... Por DEFAULT USO EL MENOR 
 			case Constantes.MENOR:
 				nroHno = nodoPadre.getPrimerRegistro().getNroBloqueDerecho();
-				nodoHno.setBytes(archivo.leerBloque(nroHno));
+				datos = archivo.leerBloque(nroHno);
+				nodoHno.setBytes(datos);
+				if (!nodoHno.hayEspacio(datos.length)) {
+					return false;
+				}
 				nodoHno.insertarRegistro(nodo.getUltimoRegistro());
 				nodoPadre.getPrimerRegistro().setClave(
 					nodo.getUltimoRegistro().getClave());
@@ -423,7 +427,11 @@ public final class BStar implements BTree {
 				return true;
 			case Constantes.MAYOR:
 				nroHno = nodoPadre.getUltimoRegistro().getNroBloqueIzquierdo();
-				nodoHno.setBytes(archivo.leerBloque(nroHno));
+				datos = archivo.leerBloque(nroHno);
+				nodoHno.setBytes(datos);
+				if (!nodoHno.hayEspacio(datos.length)) {
+					return false;
+				}
 				nodoHno.insertarRegistro(nodo.getPrimerRegistro());
 				nodo.removerRegistro(0);
 				nodoPadre.getUltimoRegistro().setClave(

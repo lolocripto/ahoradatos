@@ -191,10 +191,11 @@ public class Nodo {
 	 * @param pos
 	 *            .
 	 */
-	public final void removerRegistro(final int pos) {
+	public final RegistroNodo removerRegistro(final int pos) {
 
 		RegistroNodo reg = registros.remove(pos);
 		ocupar(-reg.getBytes().length);
+		return reg;
 	}
 	
 	/**
@@ -395,8 +396,9 @@ public class Nodo {
 	}
 	
 	/**
-	 * @param espacio the espacioOcupado to set
-	 * @return si pudo ocupar el nodo, o no le alcanzo el espacio libre
+	 * @param espacio
+	 *            the espacioOcupado to set
+	 * @return si pudo ocupar el nodo, o no le alcanzo el espacio libre.
 	 */
 	public final void ocupar(final int espacio) {
 		if ((espacioOcupado + espacio) > this.espacioTotal) {
