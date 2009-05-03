@@ -272,6 +272,13 @@ public final class BStar implements BTree {
 		// TODO Terminar de implementar. setear los numeros de bloque.
 		//Busco en donde insertar.
 		Nodo nodo = buscarNodo(registro.getClave());
+		//Si ya existe, no inserto.
+		if (nodo.existeClave(registro.getClave())) {
+			//TODO revizar, seria para no insertar duplicados.
+			cerrarArchivos();
+			return true;
+		}
+		
 		if (nodo.insertarRegistro(registro)) {
 			
 			this.nodoActual = nodo;
@@ -421,6 +428,7 @@ public final class BStar implements BTree {
 						nodoHno.getNroBloque());
 				return true;
 			default:
+				//TODO Hacer esto que es lo mas jodido.
 				nroHno = nodoPadre.getRegistros().get(pos)
 					.getNroBloqueIzquierdo();
 				nodoHno.setBytes(archivo.leerBloque(nroHno));

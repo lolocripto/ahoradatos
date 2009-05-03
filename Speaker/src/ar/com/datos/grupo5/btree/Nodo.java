@@ -102,7 +102,7 @@ public class Nodo {
 	 * @return true si la clave existe.
 	 */
 	public final boolean existeClave(final Clave clave) {
-		//FIXME: Esto es cualquiera!!!!!!!
+
 		return this.registros.contains(clave);
 	}
 	

@@ -148,4 +148,22 @@ public class RegistroNodo {
 		this.nroBloqueDerecho = nroBloqueDerecha;
 	}
 
+	/**
+	 * @param clave .
+	 * @return true si son iguales.
+	 */
+	@Override
+	public final boolean equals(final Object clave) {
+		
+		if (clave instanceof String) {
+			String c = (String) clave;
+			return c.equals(this.claveNodo.getClave());
+		} else if (clave instanceof Clave) {
+			Clave otraClave = (Clave) clave;
+			return otraClave.getClave().equals(claveNodo);
+		}
+		
+		return false;
+	}
+	
 }
