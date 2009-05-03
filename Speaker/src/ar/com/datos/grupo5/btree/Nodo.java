@@ -220,8 +220,8 @@ public class Nodo {
 				+ nroBloquePadre + "]");
 		for (RegistroNodo reg : registros) {
 			System.out.println("==== " + reg.getClave().getClave()
-					+ "] Puntero Izquierdo: [" + reg.getNroBloqueIzquierdo()
-					+ " Puntero derecho: [" + reg.getNroBloqueDerecho()
+					+ " Puntero Izquierdo: [" + reg.getNroBloqueIzquierdo()
+					+ "] Puntero derecho: [" + reg.getNroBloqueDerecho()
 					+ "]");
 		}
 	}
