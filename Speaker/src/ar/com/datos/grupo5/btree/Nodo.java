@@ -391,7 +391,7 @@ public class Nodo {
 			// Leo el primer dato del primer registro,que es el numero de bloque
 			// izquierdo al que apunta.
 			bloqueAnt = dos.readInt();
-			ocupar(4 * Constantes.SIZE_OF_INT);
+			//ocupar(4 * Constantes.SIZE_OF_INT);
 			while (aLeer > leido) {
 				
 				//Lea la cantidad de bytes que ocupa el registro.
@@ -408,7 +408,7 @@ public class Nodo {
 				}
 				//Los agrego a la lista.
 				registros.add(reg);
-				ocupar(cantidad);
+				//ocupar(cantidad);
 				if (this.tieneCargaMinima() && (minIndiceCarga < 0)) {
 					minIndiceCarga = this.registros.size() - 1;
 				}
