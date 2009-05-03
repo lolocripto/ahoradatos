@@ -71,11 +71,11 @@ public final class Main {
 			reg.setClave(clave);
 			tree.insertar(reg);
 			
-//			clave = new Clave();
-//			reg = new RegistroNodo();
-//			clave.setClave("5");
-//			reg.setClave(clave);
-//			tree.insertar(reg);
+			clave = new Clave();
+			reg = new RegistroNodo();
+			clave.setClave("5");
+			reg.setClave(clave);
+			tree.insertar(reg);
 					
 			((BStar) tree).listar();
 		} catch (Exception e) {

@@ -403,6 +403,9 @@ public class Nodo {
 				reg = new RegistroNodo();
 				reg.setBytes(datos, bloqueAnt);
 				bloqueAnt = reg.getNroBloqueDerecho();
+				if (bloqueAnt < 0) {
+					esHoja = true;
+				}
 				//Los agrego a la lista.
 				registros.add(reg);
 				ocupar(cantidad);

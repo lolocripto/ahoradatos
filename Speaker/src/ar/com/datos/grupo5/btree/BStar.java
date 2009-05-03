@@ -193,7 +193,7 @@ public final class BStar implements BTree {
 				if (!nodoActual.isEsHoja()) {
 					nroBloque = nodoActual.getRegistros().get(
 							nodoActual.getRegistros().size() - 1)
-							.getNroBloqueIzquierdo();
+								.getNroBloqueDerecho();
 					nodoAux = new Nodo();
 					try {
 						nodoAux.setBytes(archivo.leerBloque(nroBloque));
