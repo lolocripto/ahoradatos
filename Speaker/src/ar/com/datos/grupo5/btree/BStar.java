@@ -313,6 +313,13 @@ public final class BStar implements BTree {
 				cerrarArchivos();
 				
 				return true;
+			} else {
+				Nodo nodoHno = new Nodo();
+				Nodo nodoPadre = new Nodo();
+				nodoPadre
+						.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
+				//nodoHno.setBytes(archivo.leerBloque());
+				nodo.split(nodoHno, nodoPadre, true, ultimoBloque);
 			}
 		}
 		
