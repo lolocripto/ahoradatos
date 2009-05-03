@@ -465,10 +465,9 @@ public final class BStar implements BTree {
 				}
 				return true;
 			default:
-				//TODO Hacer esto que es lo mas jodido.
-				int nroHnoDerecho = nodoPadre.getRegistros().get(pos)
+				int nroHnoDerecho = nodoPadre.getRegistros().get(pos - 1)
 						.getNroBloqueDerecho();
-				int nroHnoIzquierdo = nodoPadre.getRegistros().get(pos)
+				int nroHnoIzquierdo = nodoPadre.getRegistros().get(pos - 1)
 						.getNroBloqueIzquierdo();
 				nodoHnoDerecho = new Nodo();
 				nodoHnoDerecho.setBytes(archivo.leerBloque(nroHnoDerecho));

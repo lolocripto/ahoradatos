@@ -111,8 +111,6 @@ public final class Main {
 			System.out.println("Inserto [4]");
 			((BStar) tree).listar();
 
-			
-			((BStar) tree).listar();
 		} catch (Exception e) {
 			logger.error("Error: " + e);
 			e.printStackTrace();
