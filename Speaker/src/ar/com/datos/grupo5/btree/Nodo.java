@@ -39,7 +39,7 @@ public class Nodo {
 	 * Espacio en el nodo.
 	 */
 	private int espacioTotal;
-	
+
 	/**
 	 * Espacio ocupado.
 	 */
@@ -162,9 +162,7 @@ public class Nodo {
 		
 		//Obtengo la posicion en donde debo insertarlo.
 		ocupar(registro.getBytes().length);
-		if (minIndiceCarga < 0) {
-			tieneCargaMinima();
-		}
+		tieneCargaMinima();
 		int pos = this.buscarRegistro(registro.getClave());
 		switch (pos) {
 		case Constantes.MENOR:
@@ -300,13 +298,13 @@ public class Nodo {
 		nuevoHermano.setNroBloquePadre(getNroBloquePadre());
 		nuevoHermano.setEsHoja(this.isEsHoja());
 		ArrayList<RegistroNodo> regs = new ArrayList<RegistroNodo>();
+		int pos = nodoPadre.buscarRegistro(nodoHermano
+				.getPrimerRegistro().getClave());
 	
 		if (siguiente) {
-			// -> El nuevo nodo es MENOR que el nodo actual.
+			// -> El nuevo nodo es MAYOR que el nodo actual.
 			// Paso todos los regs hasta el que garantiza el 66% de ocupacion
 			// Primero paso los del nodo actual
-			int pos = nodoPadre.buscarRegistro(nodoHermano
-					.getPrimerRegistro().getClave());
 			while (minIndiceCarga <= registros.size() - 1) {
 				RegistroNodo reg = registros.remove(minIndiceCarga);
 				regs.add(reg);
@@ -318,9 +316,9 @@ public class Nodo {
 				regs.add(reg);
 				nodoHermano.ocupar(-reg.getBytes().length);
 			}
-			nodoHermano.minIndiceCarga = Constantes.MENOR;
 			//ahora lo cargo hasta la minima ocupacion
-			while (nodoHermano.minIndiceCarga < 0) {
+			nodoHermano.setMinIndiceCarga(Constantes.MENOR);
+			while (!nodoHermano.tieneCargaMinima()) {
 				RegistroNodo reg = regs.remove(0);
 				nodoHermano.insertarRegistro(reg);
 			}
@@ -335,21 +333,47 @@ public class Nodo {
 			reg.setClave(nodoHermano.getPrimerRegistro().getClave());
 			nodoPadre.insertarRegistro(reg);
 			
-			RegistroNodo reg2 = new RegistroNodo();
-			reg2.setClave(nuevoHermano.getPrimerRegistro().getClave());
-			reg2.setNroBloqueIzquierdo(nodoHermano.getNroBloque());
-			reg2.setNroBloqueDerecho(nuevoHermano.getNroBloque());
+			reg = new RegistroNodo();
+			reg.setClave(nuevoHermano.getPrimerRegistro().getClave());
+			reg.setNroBloqueIzquierdo(nodoHermano.getNroBloque());
+			reg.setNroBloqueDerecho(nuevoHermano.getNroBloque());
 			nodoPadre.insertarRegistro(reg);
 			
 		} else {
-			// -> El nuevo nodo es MAYOR que el nodo actual.
+			// -> El nuevo nodo es MENOR que el nodo actual.
 			// Paso todos los regs hasta el que garantiza el 66% de ocupacion
-			int pos = nodoPadre.buscarRegistro(getPrimerRegistro().getClave());
-			// Luego lleno el nodo con lo del hermano anterior.
+			int pos2 = nodoPadre.buscarRegistro(getPrimerRegistro().getClave());
+			int cargaInicial = nodoHermano.minIndiceCarga;
+			for (int index = 0; index <= cargaInicial; index++) {
+				RegistroNodo reg = nodoHermano.registros.remove(0);
+				nuevoHermano.insertarRegistro(reg);
+				nodoHermano.ocupar(-reg.getBytes().length);
+			}
+			// ahora, tengo que vaciar el hno y llenarlo otra vez
+			nodoHermano.setMinIndiceCarga(Constantes.MENOR);
+			while (!nodoHermano.tieneCargaMinima()) {
+				RegistroNodo reg = registros.remove(0);
+				nodoHermano.insertarRegistro(reg);
+				ocupar(-reg.getBytes().length);
+			}
+
+			// Ahora tengo que cargar las claves en el padre, y listo!
+			RegistroNodo reg = nodoPadre.registros.remove(pos);
+			nodoPadre.ocupar(-reg.getBytes().length);
+			reg.setClave(nodoHermano.getPrimerRegistro().getClave());
+			nodoPadre.insertarRegistro(reg);
+			reg = nodoPadre.registros.remove(pos2);
+			nodoPadre.ocupar(-reg.getBytes().length);
+			reg.setClave(nodoHermano.getPrimerRegistro().getClave());
+			nodoPadre.insertarRegistro(reg);
+			reg = new RegistroNodo();
+			reg.setClave(nuevoHermano.getPrimerRegistro().getClave());
+			reg.setNroBloqueDerecho(nodoHermano.getNroBloque());
+			reg.setNroBloqueIzquierdo(nuevoHermano.getNroBloque());
+			nodoPadre.insertarRegistro(reg);
 			
 		}
-		//Luego ver si tengo que generar el padre!!!!
-		// COMO CARAJO HAGO PARA SPLITEAR EL PADRE???????
+		// Si quedo en overflow, va a haber que splitear el padre
 		return nuevoHermano;
 	}
 	
@@ -359,9 +383,11 @@ public class Nodo {
 	public final boolean tieneCargaMinima() {
 		Float ocup = new Float(espacioOcupado);
 		ocup = ocup / espacioTotal;
-		if (ocup >= Constantes.FACTOR_CARGA_NODOS) {
-			minIndiceCarga = registros.size();			
-			return true;
+		if (minIndiceCarga < 0) {
+			if (ocup >= Constantes.FACTOR_CARGA_NODOS) {
+				minIndiceCarga = registros.size();			
+				return true;
+			}
 		}
 		return false;
 	}
@@ -375,6 +401,7 @@ public class Nodo {
 			overflow = true;
 		}
 		espacioOcupado += espacio;
+		tieneCargaMinima();
 	}
 	
 	/**
@@ -586,5 +613,19 @@ public class Nodo {
 	 */
 	public final boolean isOverflow() {
 		return overflow;
+	}
+	
+	/**
+	 * @return the minIndiceCarga
+	 */
+	public final int getMinIndiceCarga() {
+		return minIndiceCarga;
+	}
+
+	/**
+	 * @param minIndiceCarga the minIndiceCarga to set
+	 */
+	public final void setMinIndiceCarga(int minIndiceCarga) {
+		this.minIndiceCarga = minIndiceCarga;
 	}
 }
