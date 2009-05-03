@@ -326,8 +326,8 @@ public final class BStar implements BTree {
 				ultimoBloque++;
 				
 				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
-				//archivo.escribirBloque(nodoActual.getBytes(), nodoActual
-				//.getNroBloque());
+				archivo.escribirBloque(nodoActual.getBytes(), nodoActual
+						.getNroBloque());
 				archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
 						.getNroBloque());
 				archivo.escribirBloque(nodoHno.getBytes(), nodoHno
