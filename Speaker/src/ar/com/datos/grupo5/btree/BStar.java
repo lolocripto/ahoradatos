@@ -291,7 +291,6 @@ public final class BStar implements BTree {
 					nodoActual = nodos.get(0);
 					ultimoBloque += 2;
 					
-					// TODO Que escriba los 3 nodos a disco!!!
 					try {
 						archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
 								.getNroBloque());
@@ -319,6 +318,22 @@ public final class BStar implements BTree {
 						//Nodo nodoAux = nodo.split(false);
 						// Persistir los cambios!!!!!
 						nodoActual = nodoAux;
+						
+						try {
+							archivo.escribirBloque(nodo.getBytes(), nodo
+									.getNroBloque());
+							archivo.escribirBloque(nodoActual.getBytes(),
+									nodoActual.getNroBloque());
+							
+							return true;
+							
+						} catch (IOException e) {
+							LOG.error("Error: " + e.getMessage());
+							e.printStackTrace();
+							return false;
+						} finally {
+							cerrarArchivos();
+						}
 					}
 					
 				}
@@ -391,28 +406,50 @@ public final class BStar implements BTree {
 	 * @return si exito true.
 	 * @throws IOException no pudo obtener el nodo
 	 */
-	private boolean pasarRegistro(final Nodo nodo, final RegistroNodo reg) 
-	throws IOException {
-			Nodo nodoAux = new Nodo();
-			nodoAux.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
+	private boolean pasarRegistro(final Nodo nodo, final RegistroNodo reg)
+			throws IOException {
+		
+			Nodo nodoPadre = new Nodo();
+			nodoPadre.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
 			//ahora nodo es el nodo padre del nodo que busque
-			int pos = nodoAux.buscarRegistro(reg.getClave());
+			int pos = nodoPadre.buscarRegistro(reg.getClave());
 			Nodo nodoHno = new Nodo();
-			int nroHno;
+			int nroHno = 0;
 			switch (pos) {
 			// Obtengo el hermano... Por DEFAULT USO EL MENOR 
 			case Constantes.MENOR:
-				nroHno = nodoAux.getPrimerRegistro().getNroBloqueIzquierdo();
-				break;
+				nroHno = nodoPadre.getPrimerRegistro().getNroBloqueDerecho();
+				nodoHno.setBytes(archivo.leerBloque(nroHno));
+				nodoHno.insertarRegistro(nodo.getUltimoRegistro());
+				nodoPadre.getPrimerRegistro().setClave(
+					nodo.getUltimoRegistro().getClave());
+				nodo.removerRegistro(nodo.getRegistros().size() - 1);
+				archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
+					.getNroBloque());
+				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
+				archivo.escribirBloque(nodoHno.getBytes(),
+						nodoHno.getNroBloque());
+				return true;
 			case Constantes.MAYOR:
-				nroHno = nodoAux.getUltimoRegistro().getNroBloqueDerecho();
-				break;
+				nroHno = nodoPadre.getUltimoRegistro().getNroBloqueIzquierdo();
+				nodoHno.setBytes(archivo.leerBloque(nroHno));
+				nodoHno.insertarRegistro(nodo.getPrimerRegistro());
+				nodoPadre.getUltimoRegistro().setClave(
+					nodo.getPrimerRegistro().getClave());
+				nodo.removerRegistro(0);
+				archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
+					.getNroBloque());
+				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
+				archivo.escribirBloque(nodoHno.getBytes(),
+						nodoHno.getNroBloque());
+				return true;
 			default:
-				nroHno = nodoAux.getRegistros().get(pos)
+				nroHno = nodoPadre.getRegistros().get(pos)
 					.getNroBloqueIzquierdo();
+				nodoHno.setBytes(archivo.leerBloque(nroHno));
 				break;
 			}
-			nodoHno.setBytes(archivo.leerBloque(nroHno));
+			
 			
 		return false;
 	}

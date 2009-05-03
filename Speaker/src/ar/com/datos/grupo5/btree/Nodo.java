@@ -183,6 +183,18 @@ public class Nodo {
 	}
 	
 	/**
+	 * Remueve el registro en la posicion pos.
+	 * 
+	 * @param pos
+	 *            .
+	 */
+	public final void removerRegistro(final int pos) {
+
+		RegistroNodo reg = registros.remove(pos);
+		ocupar(-reg.getBytes().length);
+	}
+	
+	/**
 	 * @param registro the registro to set
 	 * @return .
 	 */
