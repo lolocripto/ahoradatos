@@ -316,7 +316,7 @@ public final class BStar implements BTree {
 					if (!pasarRegistro(nodo, registro)) {
 						// Buscar a los SIBLINGS!!!
 						// Primero al izquierdo
-						Nodo nodoAux = nodo.split(false);
+						//Nodo nodoAux = nodo.split(false);
 						// Persistir los cambios!!!!!
 						nodoActual = nodoAux;
 					}

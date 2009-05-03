@@ -270,16 +270,45 @@ public class Nodo {
 	
 	/**
 	 * @param siguiente es el nodo con el cual lo tengo que tratar para dividir.
+	 * @param nodoHermano es el hermano del nodo que tengo que splitear
+	 * @param nodoPadre El padre del nodo y su hermano
+	 * @param ultimoNroBloque
 	 * @return the nodos
 	 */
-	public final Nodo split(final boolean siguiente) {
-		Nodo nodo = new Nodo();
-		// FIXME Hacer el metodo
+	public final Nodo split(final Nodo nodoHermano, final Nodo nodoPadre, 
+			final boolean siguiente, final int ultimoNroBloque) {
+		Nodo nuevoHermano = new Nodo();
+		nuevoHermano.setNroBloque(ultimoNroBloque + 1);
+		nuevoHermano.setNroBloquePadre(getNroBloquePadre());
+		nuevoHermano.setEsHoja(this.isEsHoja());
+		ArrayList <RegistroNodo> Regs = new ArrayList <RegistroNodo>();
 		if (siguiente) {
 			// -> El nuevo nodo es MENOR que el nodo actual.
 			// Paso todos los regs hasta el que garantiza el 66% de ocupacion
-			
+			// Primero paso los del nodo actual
+			while (minIndiceCarga <= registros.size() - 1) {
+				RegistroNodo reg = registros.remove(minIndiceCarga);
+				Regs.add(reg);
+				this.ocupar(-reg.getBytes().length);
+			}
+			// ahora, tengo que vaciar el hno y llenarlo otra vez
+			for (int index = 0; index < nodoHermano.registros.size() -1; index++) {
+				RegistroNodo reg = nodoHermano.registros.remove(index);
+				Regs.add(reg);
+				nodoHermano.ocupar(-reg.getBytes().length);
+			}
+			nodoHermano.minIndiceCarga = Constantes.MENOR;
+			//ahora lo cargo hasta la minima ocupacion
+			while (nodoHermano.minIndiceCarga < 0) {
+				RegistroNodo reg = Regs.remove(0);
+				nodoHermano.insertarRegistro(reg);
+			}
 			// Luego lleno el nodo con lo del hermano siguiente
+			while (Regs.size() > 0) {
+				RegistroNodo reg = Regs.remove(0);
+				nuevoHermano.insertarRegistro(reg);
+			}
+			// Ahora tengo que cargar las claves en el padre, y listo!
 		} else {
 			// -> El nuevo nodo es MAYOR que el nodo actual.
 			// Paso todos los regs hasta el que garantiza el 66% de ocupacion
@@ -289,7 +318,7 @@ public class Nodo {
 		}
 		//Luego ver si tengo que generar el padre!!!!
 		// COMO CARAJO HAGO PARA SPLITEAR EL PADRE???????
-		return nodo;
+		return nuevoHermano;
 	}
 	
 	/**
