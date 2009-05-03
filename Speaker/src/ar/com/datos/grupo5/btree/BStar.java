@@ -345,6 +345,7 @@ public final class BStar implements BTree {
 				
 				if (nodoPadre.getNroBloquePadre() < 0) {
 					nodoRaiz = nodoPadre;
+					Nodo nodoAux = nodoPadre;
 					if (nodoRaiz.isOverflow()) {
 						ArrayList<Nodo> nodos = nodoRaiz
 								.splitRaiz(ultimoBloque);
@@ -357,6 +358,8 @@ public final class BStar implements BTree {
 						archivo.escribirBloque(nodoActual.getBytes(),
 								nodoActual.getNroBloque());
 						archivo.escribirBloque(nodo.getBytes(), nodo
+								.getNroBloque());
+						archivo.escribirBloque(nodoAux.getBytes(), nodoAux
 								.getNroBloque());
 						
 						guardarDatosAdministrativos();
