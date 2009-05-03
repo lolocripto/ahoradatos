@@ -475,8 +475,9 @@ public class Nodo {
 			//Leo el numero de bloque.
 			nroBloque = dos.readInt();
 			nroBloquePadre = dos.readInt();
-			espacioOcupado = dos.readInt();
-			aLeer = espacioOcupado;
+			//espacioOcupado = dos.readInt();
+			//aLeer = espacioOcupado;
+			aLeer = dos.readInt();
 			
 			// Leo el primer dato del primer registro,que es el numero de bloque
 			// izquierdo al que apunta.
@@ -496,10 +497,8 @@ public class Nodo {
 					esHoja = true;
 				}
 				//Los agrego a la lista.
-				registros.add(reg);
-				if (this.tieneCargaMinima() && (minIndiceCarga < 0)) {
-					minIndiceCarga = this.registros.size() - 1;
-				}
+				//registros.add(reg);
+				this.insertarRegistro(reg);
 			}
 			
 		} catch (Exception e) {
