@@ -384,9 +384,11 @@ public class Nodo {
 			if (ocup >= Constantes.FACTOR_CARGA_NODOS) {
 				minIndiceCarga = registros.size();			
 				return true;
+			} else {
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 	
 	/**
