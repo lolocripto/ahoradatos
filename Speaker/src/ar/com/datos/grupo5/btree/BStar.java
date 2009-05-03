@@ -276,6 +276,9 @@ public final class BStar implements BTree {
 		if (nodo.existeClave(registro.getClave())) {
 			//TODO revisar, seria para no insertar duplicados.
 			cerrarArchivos();
+			LOG.debug("No se inserto en el elemento ["
+					+ registro.getClave().getClave()
+					+ "] debido a que ya existia la clave en el arbol.");
 			return true;
 		}
 		
@@ -298,6 +301,7 @@ public final class BStar implements BTree {
 			archivo.escribirBloque(nodo.getBytes(), nodo
 					.getNroBloque());
 			
+			guardarDatosAdministrativos();
 			cerrarArchivos();
 			
 			return true;
@@ -329,6 +333,7 @@ public final class BStar implements BTree {
 				archivo.escribirBloque(nodoHno.getBytes(), nodoHno
 						.getNroBloque());
 				
+				guardarDatosAdministrativos();
 				cerrarArchivos();
 				
 				return true;
@@ -338,6 +343,7 @@ public final class BStar implements BTree {
 		archivo.escribirBloque(nodoActual.getBytes(), nodoActual
 					.getNroBloque());
 		
+		guardarDatosAdministrativos();
 		cerrarArchivos();
 		
 		return true;

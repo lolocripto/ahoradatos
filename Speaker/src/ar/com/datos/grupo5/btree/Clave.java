@@ -1,5 +1,7 @@
 package ar.com.datos.grupo5.btree;
 
+import ar.com.datos.grupo5.registros.RegistroNodo;
+
 /**
  * Clave de un registro.
  * @author cristian
@@ -64,6 +66,9 @@ public class Clave implements Comparable<Clave> {
 		} else if (clave instanceof Clave) {
 			Clave otraClave = (Clave) clave;
 			return otraClave.getClave().equals(claveStr);
+		} else if (clave instanceof RegistroNodo) {
+			RegistroNodo reg = (RegistroNodo) clave;
+			return reg.getClave().getClave().equals(claveStr);
 		}
 		
 		return false;
