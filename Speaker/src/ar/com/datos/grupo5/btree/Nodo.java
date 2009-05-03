@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
-import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 import ar.com.datos.grupo5.registros.RegistroNodo;
 import ar.com.datos.grupo5.utils.Conversiones;
 
@@ -254,7 +253,9 @@ public class Nodo {
 		// TODO Terminar Metodo
 		// Llenar nodo hno (nodo)
 		while (minIndiceCarga <= registros.size() - 1) {
-			nodo.insertarRegistro(registros.remove(minIndiceCarga));
+			RegistroNodo reg = registros.remove(minIndiceCarga);
+			nodo.insertarRegistro(reg);
+			this.ocupar(-reg.getBytes().length);
 		}
 		// Cargar Nueva raiz (nodoAux)
 		RegistroNodo reg = new RegistroNodo();

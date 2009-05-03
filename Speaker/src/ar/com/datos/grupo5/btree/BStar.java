@@ -249,8 +249,6 @@ public final class BStar implements BTree {
 			nodoRaiz.setEsHoja(true);
 			nodoRaiz.setNroBloque(Constantes.NRO_BLOQUE_RAIZ);
 			nodoRaiz.setNroBloquePadre(-1);
-			registro.setNroBloqueDerecho(-1);
-			registro.setNroBloqueIzquierdo(-1);
 			nodoRaiz.insertarRegistro(registro);
 			ultimoBloque = Constantes.NRO_BLOQUE_RAIZ;
 			
@@ -271,7 +269,9 @@ public final class BStar implements BTree {
 		//Busco en donde insertar.
 		Nodo nodo = buscarNodo(registro.getClave());
 		if (nodo.insertarRegistro(registro)) {
-			this.nodoActual = nodo;	
+			
+			this.nodoActual = nodo;
+			
 		} else {
 			//no puedo insertar!!!!
 			//TODO traer el padre!!!!!!! 
@@ -280,10 +280,26 @@ public final class BStar implements BTree {
 					// Es la raiz.
 					// Splitear nodo
 					ArrayList<Nodo> nodos = nodo.splitRaiz(ultimoBloque);
-					nodoRaiz = nodos.get(nodos.size() - 1);
+					nodoRaiz = nodos.get(1);
+					nodoActual = nodos.get(0);
 					ultimoBloque += 2;
 					
 					// TODO Que escriba los 3 nodos a disco!!!
+					try {
+						archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
+								.getNroBloque());
+						archivo.escribirBloque(nodo.getBytes(), nodo
+								.getNroBloque());
+						archivo.escribirBloque(nodoActual.getBytes(),
+								nodoActual.getNroBloque());
+						
+						return true;
+						
+					} catch (IOException e) {
+						LOG.error("Error: " + e.getMessage());
+						e.printStackTrace();
+						return false;
+					}
 					
 				} else {
 					//Intento pasar el registro.
