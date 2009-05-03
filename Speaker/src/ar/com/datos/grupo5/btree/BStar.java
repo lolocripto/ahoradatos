@@ -65,6 +65,7 @@ public final class BStar implements BTree {
 					nodoRaiz.setBytes(nodoLeido);
 				}
 			}
+			cerrarArchivos();
 		} catch (IOException e) {
 			LOG.error("", e);
 			e.printStackTrace();
@@ -241,6 +242,7 @@ public final class BStar implements BTree {
 	 */
 	public boolean insertar(final RegistroNodo registro) {
 		
+		abrirArchivos();
 		if (nodoRaiz == null) {
 			
 			//Creo la raiz e inserto el registro.
@@ -262,6 +264,8 @@ public final class BStar implements BTree {
 			} catch (IOException e) {
 				LOG.error("Error: " + e.getMessage());
 				e.printStackTrace();
+			} finally {
+				cerrarArchivos();
 			}
 			return true;
 		}
@@ -299,6 +303,8 @@ public final class BStar implements BTree {
 						LOG.error("Error: " + e.getMessage());
 						e.printStackTrace();
 						return false;
+					} finally {
+						cerrarArchivos();
 					}
 					
 				} else {
@@ -328,6 +334,8 @@ public final class BStar implements BTree {
 			LOG.error("Error: " + e.getMessage());
 			e.printStackTrace();
 			return false;
+		} finally {
+			cerrarArchivos();
 		}
 		
 		return true;
