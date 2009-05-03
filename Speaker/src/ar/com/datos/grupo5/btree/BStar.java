@@ -336,7 +336,10 @@ public final class BStar implements BTree {
 					nodoActual = nuevoHno;
 				}
 				if (nodoPadre.getNroBloquePadre() < 0) {
+					//TODO Splitear raiz
 					nodoRaiz = nodoPadre;
+				} else {
+					//TODO splitear recursivamentes.
 				}
 				
 				ultimoBloque++;
