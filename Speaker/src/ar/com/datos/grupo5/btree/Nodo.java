@@ -309,15 +309,13 @@ public class Nodo {
 			// Paso todos los regs hasta el que garantiza el 66% de ocupacion
 			// Primero paso los del nodo actual
 			while (minIndiceCarga <= registros.size() - 1) {
-				RegistroNodo reg = registros.remove(minIndiceCarga);
+				RegistroNodo reg = removerRegistro(minIndiceCarga);
 				regs.add(reg);
-				this.ocupar(-reg.getBytes().length);
 			}
 			// ahora, tengo que vaciar el hno y llenarlo otra vez
 			while (nodoHermano.registros.size() > 0) {
-				RegistroNodo reg = nodoHermano.registros.remove(0);
+				RegistroNodo reg = nodoHermano.removerRegistro(0);
 				regs.add(reg);
-				nodoHermano.ocupar(-reg.getBytes().length);
 			}
 			//ahora lo cargo hasta la minima ocupacion
 			nodoHermano.setMinIndiceCarga(Constantes.MENOR);
@@ -331,8 +329,7 @@ public class Nodo {
 				nuevoHermano.insertarRegistro(reg);
 			}
 			// Ahora tengo que cargar las claves en el padre, y listo!
-			RegistroNodo reg = nodoPadre.registros.remove(pos);
-			nodoPadre.ocupar(-reg.getBytes().length);
+			RegistroNodo reg = nodoPadre.removerRegistro(pos);
 			reg.setClave(nodoHermano.getPrimerRegistro().getClave());
 			nodoPadre.insertarRegistro(reg);
 			
@@ -355,14 +352,12 @@ public class Nodo {
 			// ahora, tengo que vaciar el hno y llenarlo otra vez
 			nodoHermano.setMinIndiceCarga(Constantes.MENOR);
 			while (!nodoHermano.tieneCargaMinima()) {
-				RegistroNodo reg = registros.remove(0);
+				RegistroNodo reg = removerRegistro(0);
 				nodoHermano.insertarRegistro(reg);
-				ocupar(-reg.getBytes().length);
 			}
 
 			// Ahora tengo que cargar las claves en el padre, y listo!
-			RegistroNodo reg = nodoPadre.registros.remove(pos);
-			nodoPadre.ocupar(-reg.getBytes().length);
+			RegistroNodo reg = nodoPadre.removerRegistro(pos);
 			reg.setClave(nodoHermano.getPrimerRegistro().getClave());
 			nodoPadre.insertarRegistro(reg);
 			reg = nodoPadre.registros.remove(pos2);
