@@ -160,8 +160,8 @@ public class Nodo {
 	 */
 	public final boolean insertarRegistro(final RegistroNodo registro) {
 		//Obtengo la posicion en donde debo insertarlo.
-		this.ocupar(registro.getBytes().length);
-		if (this.minIndiceCarga == Constantes.MENOR) {
+		ocupar(registro.getBytes().length);
+		if (minIndiceCarga < 0) {
 			tieneCargaMinima();
 		}
 		int pos = this.buscarRegistro(registro.getClave());
@@ -229,7 +229,7 @@ public class Nodo {
 		
 		System.out.println();
 		System.out.println("Contenido del nodo: [" + nroBloque + "] Padre: ["
-				+ nroBloquePadre + "]");
+				+ nroBloquePadre + "] FactMinCarga: " + minIndiceCarga);
 		for (RegistroNodo reg : registros) {
 			System.out.println("==== " + reg.getClave().getClave()
 					+ " Puntero Izquierdo: [" + reg.getNroBloqueIzquierdo()
@@ -351,9 +351,10 @@ public class Nodo {
 	 * @return si pudo ocupar el nodo, o no le alcanzo el espacio libre
 	 */
 	public final boolean tieneCargaMinima() {
-		if ((this.espacioOcupado / this.espacioTotal) >= Constantes
-				.FACTOR_CARGA_NODOS) {
-			minIndiceCarga = registros.size();
+		Float ocup = new Float(espacioOcupado);
+		ocup = ocup / espacioTotal;
+		if (ocup >= Constantes.FACTOR_CARGA_NODOS) {
+			minIndiceCarga = registros.size();			
 			return true;
 		}
 		return false;
@@ -364,10 +365,10 @@ public class Nodo {
 	 * @return si pudo ocupar el nodo, o no le alcanzo el espacio libre
 	 */
 	public final void ocupar(final int espacio) {
-		if ((this.espacioOcupado + espacio) > this.espacioTotal) {
-			this.overflow = true;
+		if ((espacioOcupado + espacio) > this.espacioTotal) {
+			overflow = true;
 		}
-		this.espacioOcupado += espacio;
+		espacioOcupado += espacio;
 	}
 	
 	/**
