@@ -326,8 +326,8 @@ public final class BStar implements BTree {
 				ultimoBloque++;
 				
 				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
-				archivo.escribirBloque(nodoActual.getBytes(), nodoActual
-						.getNroBloque());
+				//archivo.escribirBloque(nodoActual.getBytes(), nodoActual
+				//.getNroBloque());
 				archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
 						.getNroBloque());
 				archivo.escribirBloque(nodoHno.getBytes(), nodoHno
@@ -386,6 +386,8 @@ public final class BStar implements BTree {
 			}
 			System.out.println("######################################");
 			
+			archivo.cerrar();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -426,6 +428,9 @@ public final class BStar implements BTree {
 				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
 				archivo.escribirBloque(nodoHno.getBytes(),
 						nodoHno.getNroBloque());
+				if (nodoPadre.getNroBloquePadre() < 0) {
+					nodoRaiz = nodoPadre;
+				}
 				return true;
 			case Constantes.MAYOR:
 				nroHno = nodoPadre.getUltimoRegistro().getNroBloqueIzquierdo();
@@ -443,6 +448,9 @@ public final class BStar implements BTree {
 				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
 				archivo.escribirBloque(nodoHno.getBytes(),
 						nodoHno.getNroBloque());
+				if (nodoPadre.getNroBloquePadre() < 0) {
+					nodoRaiz = nodoPadre;
+				}
 				return true;
 			default:
 				//TODO Hacer esto que es lo mas jodido.
