@@ -162,7 +162,6 @@ public class Nodo {
 		
 		//Obtengo la posicion en donde debo insertarlo.
 		ocupar(registro.getBytes().length);
-		tieneCargaMinima();
 		int pos = this.buscarRegistro(registro.getClave());
 		switch (pos) {
 		case Constantes.MENOR:
@@ -179,6 +178,7 @@ public class Nodo {
 				this.registros.add(pos, registro);
 			break;
 		}
+		tieneCargaMinima();
 		if (overflow) {
 			return false;
 		}
@@ -401,7 +401,7 @@ public class Nodo {
 			overflow = true;
 		}
 		espacioOcupado += espacio;
-		tieneCargaMinima();
+		//tieneCargaMinima();
 	}
 	
 	/**
