@@ -317,7 +317,7 @@ public final class BStar implements BTree {
 						// Primero al izquierdo
 						//Nodo nodoAux = nodo.split(false);
 						// Persistir los cambios!!!!!
-						nodoActual = nodoAux;
+						//nodoActual = nodoAux;
 						
 						try {
 							archivo.escribirBloque(nodo.getBytes(), nodo

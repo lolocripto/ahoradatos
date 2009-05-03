@@ -294,10 +294,13 @@ public class Nodo {
 		nuevoHermano.setNroBloquePadre(getNroBloquePadre());
 		nuevoHermano.setEsHoja(this.isEsHoja());
 		ArrayList <RegistroNodo> Regs = new ArrayList <RegistroNodo>();
+	
 		if (siguiente) {
 			// -> El nuevo nodo es MENOR que el nodo actual.
 			// Paso todos los regs hasta el que garantiza el 66% de ocupacion
 			// Primero paso los del nodo actual
+			int pos = nodoPadre.buscarRegistro(nodoHermano
+					.getPrimerRegistro().getClave());
 			while (minIndiceCarga <= registros.size() - 1) {
 				RegistroNodo reg = registros.remove(minIndiceCarga);
 				Regs.add(reg);
@@ -321,10 +324,21 @@ public class Nodo {
 				nuevoHermano.insertarRegistro(reg);
 			}
 			// Ahora tengo que cargar las claves en el padre, y listo!
+			RegistroNodo reg = nodoPadre.registros.remove(pos);
+			nodoPadre.ocupar(-reg.getBytes().length);
+			reg.setClave(nodoHermano.getPrimerRegistro().getClave());
+			nodoPadre.insertarRegistro(reg);
+			
+			RegistroNodo reg2 = new RegistroNodo();
+			reg2.setClave(nuevoHermano.getPrimerRegistro().getClave());
+			reg2.setNroBloqueIzquierdo(nodoHermano.getNroBloque());
+			reg2.setNroBloqueDerecho(nuevoHermano.getNroBloque());
+			nodoPadre.insertarRegistro(reg);
+			
 		} else {
 			// -> El nuevo nodo es MAYOR que el nodo actual.
 			// Paso todos los regs hasta el que garantiza el 66% de ocupacion
-			
+			int pos = nodoPadre.buscarRegistro(getPrimerRegistro().getClave());
 			// Luego lleno el nodo con lo del hermano anterior.
 			
 		}
