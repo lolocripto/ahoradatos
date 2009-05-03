@@ -471,25 +471,53 @@ public final class BStar implements BTree {
 				int nroHnoIzquierdo = nodoPadre.getRegistros().get(pos)
 						.getNroBloqueIzquierdo();
 				nodoHnoDerecho = new Nodo();
-				nodo.setBytes(archivo.leerBloque(nroHnoDerecho));
+				nodoHnoDerecho.setBytes(archivo.leerBloque(nroHnoDerecho));
 				if (nodoHnoDerecho.hayEspacio(reg.getBytes().length)) {
-					
+					nroHno = nodoPadre.getPrimerRegistro().getNroBloqueDerecho();
+					if (!nodoHnoDerecho.hayEspacio(reg.getBytes().length)) {
+						return false;
+					}
+					nodoHnoDerecho.insertarRegistro(nodo.getUltimoRegistro());
+					nodoPadre.getPrimerRegistro().setClave(
+						nodo.getUltimoRegistro().getClave());
+					nodo.removerRegistro(nodo.getRegistros().size() - 1);
+					archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
+						.getNroBloque());
+					archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
+					archivo.escribirBloque(nodoHnoDerecho.getBytes(),
+							nodoHnoDerecho.getNroBloque());
+					if (nodoPadre.getNroBloquePadre() < 0) {
+						nodoRaiz = nodoPadre;
+					}
+					return true;
 				} else {
 					nodoHnoIzquierdo = new Nodo();
 					nodoHnoIzquierdo.setBytes(
 							archivo.leerBloque(nroHnoIzquierdo));
 					if (nodoHnoIzquierdo.hayEspacio(reg.getBytes().length)) {
 						
+						if (!nodoHnoIzquierdo.hayEspacio(reg.getBytes().length)) {
+							return false;
+						}
+						nodoHnoIzquierdo.insertarRegistro(nodo.getPrimerRegistro());
+						nodo.removerRegistro(0);
+						nodoPadre.getUltimoRegistro().setClave(
+								nodo.getPrimerRegistro().getClave());
+						archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
+							.getNroBloque());
+						archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
+						archivo.escribirBloque(nodoHnoIzquierdo.getBytes(),
+								nodoHnoIzquierdo.getNroBloque());
+						if (nodoPadre.getNroBloquePadre() < 0) {
+							nodoRaiz = nodoPadre;
+						}
+						return true;
 					} else {
 						return false;
 					}
 				}
-				
-				break;
 			}
-			
-			
-		return false;
+		//return false;
 	}
 	
 	/**
