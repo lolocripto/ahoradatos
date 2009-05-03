@@ -376,6 +376,7 @@ public final class BStar implements BTree {
 			archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
 					Constantes.ABRIR_PARA_LECTURA);
 			
+			System.out.println("######################################");
 			for (int i = Constantes.NRO_BLOQUE_RAIZ; i <= ultimoBloque; i++) {
 				
 				nodoActual = new Nodo();
@@ -383,6 +384,7 @@ public final class BStar implements BTree {
 				nodoActual.listar();
 				
 			}
+			System.out.println("######################################");
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
