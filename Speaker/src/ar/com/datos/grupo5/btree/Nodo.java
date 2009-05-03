@@ -630,4 +630,15 @@ public class Nodo {
 	public final void setMinIndiceCarga(int minIndiceCarga) {
 		this.minIndiceCarga = minIndiceCarga;
 	}
+	
+	/**
+	 * @param espacioNuevoReg El espacio en bytes del bloque a insertar
+	 * @return si entra, true, sino false
+	 */
+	public boolean hayEspacio(final int espacioNuevoReg) {
+		if ((espacioOcupado + espacioNuevoReg) <= espacioTotal) {
+			return true;
+		}
+		return false;
+	}
 }
