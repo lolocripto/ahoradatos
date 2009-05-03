@@ -55,13 +55,13 @@ public final class Main {
 			
 			clave = new Clave();
 			reg = new RegistroNodo();
-			clave.setClave("5");
+			clave.setClave("3");
 			reg.setClave(clave);
 			tree.insertar(reg);
 			
 			clave = new Clave();
 			reg = new RegistroNodo();
-			clave.setClave("8");
+			clave.setClave("5");
 			reg.setClave(clave);
 			tree.insertar(reg);
 			
@@ -70,25 +70,25 @@ public final class Main {
 			clave.setClave("9");
 			reg.setClave(clave);
 			tree.insertar(reg);
-			
-//			clave = new Clave();
-//			reg = new RegistroNodo();
-//			clave.setClave("5");
-//			reg.setClave(clave);
-//			tree.insertar(reg);
-			
+						
 //			clave = new Clave();
 //			reg = new RegistroNodo();
 //			clave.setClave("0");
 //			reg.setClave(clave);
 //			tree.insertar(reg);
 			
-//			clave = new Clave();
-//			reg = new RegistroNodo();
-//			clave.setClave("7");
-//			reg.setClave(clave);
-//			tree.insertar(reg);
-					
+			clave = new Clave();
+			reg = new RegistroNodo();
+			clave.setClave("7");
+			reg.setClave(clave);
+			tree.insertar(reg);
+	
+			clave = new Clave();
+			reg = new RegistroNodo();
+			clave.setClave("8");
+			reg.setClave(clave);
+			tree.insertar(reg);
+			
 			((BStar) tree).listar();
 		} catch (Exception e) {
 			logger.error("Error: " + e);
