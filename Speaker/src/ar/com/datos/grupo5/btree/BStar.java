@@ -274,7 +274,7 @@ public final class BStar implements BTree {
 		Nodo nodo = buscarNodo(registro.getClave());
 		//Si ya existe, no inserto.
 		if (nodo.existeClave(registro.getClave())) {
-			//TODO revizar, seria para no insertar duplicados.
+			//TODO revisar, seria para no insertar duplicados.
 			cerrarArchivos();
 			return true;
 		}
