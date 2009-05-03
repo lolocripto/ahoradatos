@@ -95,11 +95,13 @@ public final class Main {
 			System.out.println("Inserto [8]");
 			((BStar) tree).listar();
 			
-//			clave = new Clave();
-//			reg = new RegistroNodo();
-//			clave.setClave("2");
-//			reg.setClave(clave);
-//			tree.insertar(reg);
+			clave = new Clave();
+			reg = new RegistroNodo();
+			clave.setClave("7");
+			reg.setClave(clave);
+			tree.insertar(reg);
+			System.out.println("Inserto [7]");
+			((BStar) tree).listar();
 			
 			((BStar) tree).listar();
 		} catch (Exception e) {
