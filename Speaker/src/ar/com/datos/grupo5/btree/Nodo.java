@@ -171,10 +171,10 @@ public class Nodo {
 				this.registros.add(registros.size(), registro);
 			break;
 		default:
-				//	Me fijo si ya lo contiene.
-				//if (registros.get(pos).getClave().equals(registro.getClave())) {
-				//	return true;
-				//}
+				// Me fijo si ya lo contiene.
+			// if (registros.get(pos).getClave().equals(registro.getClave())) {
+			// return true;
+			// }
 				this.registros.add(pos, registro);
 			break;
 		}
@@ -188,7 +188,8 @@ public class Nodo {
 	/**
 	 * Remueve el registro en la posicion pos.
 	 * 
-	 * @param pos
+	 * @param pos el indice del registro que se quiere eliminar.
+	 * @return el regstro que se elimina.
 	 *            .
 	 */
 	public final RegistroNodo removerRegistro(final int pos) {
@@ -394,7 +395,6 @@ public class Nodo {
 	/**
 	 * @param espacio
 	 *            the espacioOcupado to set
-	 * @return si pudo ocupar el nodo, o no le alcanzo el espacio libre.
 	 */
 	public final void ocupar(final int espacio) {
 		if ((espacioOcupado + espacio) > this.espacioTotal) {
@@ -442,6 +442,7 @@ public class Nodo {
 			}
 
 		} catch (IOException e) {
+			LOG.error("Error: " + e.getMessage(), e);
 			e.printStackTrace();
 		}
 		
@@ -581,10 +582,10 @@ public class Nodo {
 	}
 
 	/**
-	 * @param nroBloque the nroBloquePadre to set
+	 * @param bloque the nroBloquePadre to set
 	 */
-	public final void setNroBloquePadre(final Integer nroBloque) {
-		this.nroBloquePadre = nroBloque;
+	public final void setNroBloquePadre(final Integer bloque) {
+		this.nroBloquePadre = bloque;
 	}
 
 	/**
@@ -595,17 +596,17 @@ public class Nodo {
 	}
 
 	/**
-	 * @param nroBloque the nroBloque to set
+	 * @param bloque the nroBloque to set
 	 */
-	public final void setNroBloque(final Integer nroBloque) {
-		this.nroBloque = nroBloque;
+	public final void setNroBloque(final Integer bloque) {
+		this.nroBloque = bloque;
 	}
 
 	/**
-	 * @param overflow the overflow to set
+	 * @param hayOverflow the overflow to set
 	 */
-	public final void setOverflow(final boolean overflow) {
-		this.overflow = overflow;
+	public final void setOverflow(final boolean hayOverflow) {
+		this.overflow = hayOverflow;
 	}
 
 	/**
@@ -623,17 +624,17 @@ public class Nodo {
 	}
 
 	/**
-	 * @param minIndiceCarga the minIndiceCarga to set
+	 * @param minIndice the minIndiceCarga to set
 	 */
-	public final void setMinIndiceCarga(int minIndiceCarga) {
-		this.minIndiceCarga = minIndiceCarga;
+	public final void setMinIndiceCarga(final int minIndice) {
+		this.minIndiceCarga = minIndice;
 	}
 	
 	/**
 	 * @param espacioNuevoReg El espacio en bytes del bloque a insertar
 	 * @return si entra, true, sino false
 	 */
-	public boolean hayEspacio(final int espacioNuevoReg) {
+	public final boolean hayEspacio(final int espacioNuevoReg) {
 		if ((espacioOcupado + espacioNuevoReg) <= espacioTotal) {
 			return true;
 		}

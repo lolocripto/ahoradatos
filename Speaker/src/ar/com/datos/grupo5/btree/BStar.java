@@ -81,7 +81,7 @@ public final class BStar implements BTree {
 		try {
 			
 			byte[] datos = archivo.leerBloque(Constantes.NRO_BLOQUE_ADMIN);
-			if (datos != null && datos.length >= 4) {
+			if (datos != null && datos.length >= Constantes.SIZE_OF_INT) {
 				ultimoBloque = Conversiones.arrayByteToInt(datos);
 			} else {
 				ultimoBloque = Constantes.NRO_BLOQUE_ADMIN;

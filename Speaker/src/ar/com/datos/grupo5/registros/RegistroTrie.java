@@ -7,6 +7,11 @@ import java.io.IOException;
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.utils.Conversiones;
 
+/**
+ * 
+ * @author cristian
+ *
+ */
 public class RegistroTrie extends RegistroNodo {
 	/**
 	 * Nivel del trie.
@@ -41,7 +46,7 @@ public class RegistroTrie extends RegistroNodo {
 	 * @param longitud
 	 * @param datoExt
 	 */
-	public RegistroTrie(int nivel, int bloque, int longitud,
+	public RegistroTrie(final int nivel, int bloque, int longitud,
 			String datoExt) {
 		this.setNivel(nivel);
 		this.setNroBloque(bloque);

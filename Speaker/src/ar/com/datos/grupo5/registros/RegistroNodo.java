@@ -25,7 +25,7 @@ public class RegistroNodo {
 	/**
 	 * Logger.
 	 */
-	private static Logger LOG = Logger.getLogger(ListasInvertidas.class);
+	private static final Logger LOG = Logger.getLogger(ListasInvertidas.class);
 	
 	/**
 	 * Es la clave del nodo.
@@ -82,7 +82,7 @@ public class RegistroNodo {
 	 * @param buffer Cadena de Bytes leida en el archivo de bloques
 	 * @param bloqueAnt nro de bloque anterior.
 	 */
-	public void setBytes(final byte[] buffer, final int bloqueAnt) {
+	public final void setBytes(final byte[] buffer, final int bloqueAnt) {
 		//TODO TESTEARLO YA!!!!!!!!!!
 		//Leo el numero de bloque Anterior.
 		setNroBloqueIzquierdo(bloqueAnt);
@@ -128,10 +128,10 @@ public class RegistroNodo {
 	}
 
 	/**
-	 * @param nroBloqueIzquierdo the nroBloqueIzquierdo to set
+	 * @param nroBloque the nroBloqueIzquierdo to set
 	 */
-	public final void setNroBloqueIzquierdo(final Integer nroBloqueIzquierdo) {
-		this.nroBloqueIzquierdo = nroBloqueIzquierdo;
+	public final void setNroBloqueIzquierdo(final Integer nroBloque) {
+		this.nroBloqueIzquierdo = nroBloque;
 	}
 
 	/**
@@ -164,6 +164,13 @@ public class RegistroNodo {
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * @return .
+	 */
+	public final int hashCode() {
+		return 0;
 	}
 	
 }
