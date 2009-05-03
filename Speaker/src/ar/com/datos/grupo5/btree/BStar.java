@@ -242,8 +242,9 @@ public final class BStar implements BTree {
 	 * @param registro
 	 *            El registro para insertar.
 	 * @return true si lo inserta.
+	 * @throws IOException .
 	 */
-	public boolean insertar(final RegistroNodo registro) {
+	public boolean insertar(final RegistroNodo registro) throws IOException {
 		
 		abrirArchivos();
 		if (nodoRaiz == null) {
@@ -261,15 +262,11 @@ public final class BStar implements BTree {
 			// ver si se puede sacarlo de aca, habria que hacerlo cada tanto.
 			guardarDatosAdministrativos();
 			
-			try {
-				archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
+			archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
 						.getNroBloque());
-			} catch (IOException e) {
-				LOG.error("Error: " + e.getMessage());
-				e.printStackTrace();
-			} finally {
-				cerrarArchivos();
-			}
+			
+			cerrarArchivos();
+
 			return true;
 		}
 		// TODO Terminar de implementar. setear los numeros de bloque.
@@ -279,82 +276,50 @@ public final class BStar implements BTree {
 			
 			this.nodoActual = nodo;
 			
+		} else if (nodo.getNroBloquePadre() < 0) {
+			// Es la raiz.
+			// Splitear nodo
+			ArrayList<Nodo> nodos = nodo.splitRaiz(ultimoBloque);
+			nodoRaiz = nodos.get(1);
+			nodoActual = nodos.get(0);
+			ultimoBloque += 2;
+			
+			archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
+					.getNroBloque());
+			archivo.escribirBloque(nodoActual.getBytes(),
+					nodoActual.getNroBloque());
+			archivo.escribirBloque(nodo.getBytes(), nodo
+					.getNroBloque());
+			
+			cerrarArchivos();
+			
+			return true;
+				
 		} else {
-			//no puedo insertar!!!!
-			//TODO traer el padre!!!!!!! 
-			try {
-				if (nodo.getNroBloquePadre() < 0) {
-					// Es la raiz.
-					// Splitear nodo
-					ArrayList<Nodo> nodos = nodo.splitRaiz(ultimoBloque);
-					nodoRaiz = nodos.get(1);
-					nodoActual = nodos.get(0);
-					ultimoBloque += 2;
-					
-					try {
-						archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
-								.getNroBloque());
-						archivo.escribirBloque(nodoActual.getBytes(),
-								nodoActual.getNroBloque());
-						archivo.escribirBloque(nodo.getBytes(), nodo
-								.getNroBloque());
-						
-						return true;
-						
-					} catch (IOException e) {
-						LOG.error("Error: " + e.getMessage());
-						e.printStackTrace();
-						return false;
-					} finally {
-						cerrarArchivos();
-					}
-					
-				} else {
-					//Intento pasar el registro.
-					//Si no puedo, veo con cual lo puedo Splitear
-					if (!pasarRegistro(nodo, registro)) {
-						// Buscar a los SIBLINGS!!!
-						// Primero al izquierdo
-						//Nodo nodoAux = nodo.split(false);
-						// Persistir los cambios!!!!!
-						//nodoActual = nodoAux;
-						
-						try {
-							archivo.escribirBloque(nodo.getBytes(), nodo
-									.getNroBloque());
-							archivo.escribirBloque(nodoActual.getBytes(),
-									nodoActual.getNroBloque());
-							
-							return true;
-							
-						} catch (IOException e) {
-							LOG.error("Error: " + e.getMessage());
-							e.printStackTrace();
-							return false;
-						} finally {
-							cerrarArchivos();
-						}
-					}
-					
-				}
+			//Intento pasar el registro.
+			//Si no puedo, veo con cual lo puedo Splitear
+			if (!pasarRegistro(nodo, registro)) {
+				// Buscar a los SIBLINGS!!!
+				// Primero al izquierdo
+				//Nodo nodoAux = nodo.split(false);
+				// Persistir los cambios!!!!!
+				//nodoActual = nodoAux;
 				
+				archivo.escribirBloque(nodo.getBytes(), nodo
+						.getNroBloque());
+				archivo.escribirBloque(nodoActual.getBytes(),
+						nodoActual.getNroBloque());
 				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				cerrarArchivos();
+				
+				return true;
 			}
 		}
-		//Escribo el bloque completo.
-		try {
-			archivo.escribirBloque(nodoActual.getBytes(), nodoActual
+		
+		archivo.escribirBloque(nodoActual.getBytes(), nodoActual
 					.getNroBloque());
-		} catch (IOException e) {
-			LOG.error("Error: " + e.getMessage());
-			e.printStackTrace();
-			return false;
-		} finally {
-			cerrarArchivos();
-		}
+		
+		cerrarArchivos();
 		
 		return true;
 	}

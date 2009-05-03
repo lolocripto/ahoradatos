@@ -1,5 +1,7 @@
 package ar.com.datos.grupo5.btree;
 
+import java.io.IOException;
+
 import ar.com.datos.grupo5.registros.RegistroNodo;
 
 /**
@@ -25,8 +27,9 @@ public interface BTree {
 	 * @param registro
 	 *            El registro para insertar.
 	 * @return true si lo inserta.
+	 * @throws IOException 
 	 */
-	boolean insertar(final RegistroNodo registro);
+	boolean insertar(final RegistroNodo registro) throws IOException;
 	
 	/**
 	 * true si lo modifica.
