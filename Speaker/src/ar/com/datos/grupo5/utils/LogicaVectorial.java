@@ -30,7 +30,7 @@ public class LogicaVectorial {
 			    RegistroTerminoDocumentos registro = itera.next();
 			    if (terminos2.contains(registro)) {
 			    	double pesoGlobal=calcularPesoglobal(cantDocumentos, registro.getCantidadDocumentos());
-			    	similitud+=pesoGlobal*pesoGlobal;
+			    	similitud+=(registro.getCantidadDocumentos()*(pesoGlobal*pesoGlobal));
                 }
 		}
 		return similitud;

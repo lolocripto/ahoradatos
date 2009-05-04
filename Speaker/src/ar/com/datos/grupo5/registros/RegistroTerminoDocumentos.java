@@ -398,4 +398,7 @@ public class RegistroTerminoDocumentos implements Registro {
 	public final int getTamanioControl() {
 		return tamanioControl;
 	}
+	public final boolean equals(final Object o) {
+		return (this.getIdTermino() == ((RegistroTerminoDocumentos)o).getIdTermino());
+	}
 }
