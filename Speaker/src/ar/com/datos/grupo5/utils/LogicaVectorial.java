@@ -23,13 +23,15 @@ public final class LogicaVectorial {
 		 return Math.log10(cantDocumentos + ni);
 	}
 	/**
-	 * 
+	 * @param offsetDocumento1 offset del documeto al cual se le quiere
+	 * calcular la similitud.
 	 * @param terminos1 documento a calcular la similitud con terminos2.
 	 * @param terminos2 consulta.
 	 * @param cantDocumentos total de documentos.
 	 * @return similitud.
 	 */
 	public static double calcularSimilitud(
+			final long offsetDocumento1,
 			final Collection<RegistroTerminoDocumentos> terminos1, 
 			final Collection<RegistroTerminoDocumentos> terminos2, 
 			final int cantDocumentos) {
@@ -45,7 +47,7 @@ public final class LogicaVectorial {
 			    	/**ver el offset.
 			    	 * 
 			    	 */
-			    	similitud += (registro.getDocumentoFrecuencia(1) 
+			    	similitud += (registro.getDocumentoFrecuencia(offsetDocumento1) 
 			    			* (pesoGlobal * pesoGlobal));
                 }
 		}
