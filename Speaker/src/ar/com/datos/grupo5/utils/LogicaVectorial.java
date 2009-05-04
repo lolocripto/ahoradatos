@@ -29,7 +29,7 @@ public final class LogicaVectorial {
 	 * @param cantDocumentos total de documentos.
 	 * @return similitud.
 	 */
-	public static double cacularSimilitud(
+	public static double calcularSimilitud(
 			final Collection<RegistroTerminoDocumentos> terminos1, 
 			final Collection<RegistroTerminoDocumentos> terminos2, 
 			final int cantDocumentos) {
