@@ -212,6 +212,11 @@ public final class Constantes {
 	 */
 	public static final Float FACTOR_CARGA_BLOQUES = Float.parseFloat(
 		getXML("FACTOR_CARGA_BLOQUES"));
+	/**
+	 * Cantidad de Resultados en Consulta rankeada
+	 */
+	public static final int TOP_RANKING = Integer.parseInt(
+			getXML("TOP_RANKING"));
 
 	/**
 	 * Nuero de bloque de los datos arministrativos del archivo del arbol.

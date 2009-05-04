@@ -1,6 +1,7 @@
 
 package ar.com.datos.grupo5.registros;
 
+import java.beans.ParameterDescriptor;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.ByteArrayInputStream;
@@ -398,7 +399,34 @@ public class RegistroTerminoDocumentos implements Registro {
 	public final int getTamanioControl() {
 		return tamanioControl;
 	}
+	/**
+	 * Redifinicion de equals para el uso de collections.
+	 */
 	public final boolean equals(final Object o) {
 		return (this.getIdTermino() == ((RegistroTerminoDocumentos)o).getIdTermino());
+	}
+	
+	/**
+	 * Dado un offset y un termino devuelve su frecuencia dentro del mismo.
+	 * @param Offset del documento a buscar 
+	 * @return frecuencia del termino dentro del documento a buscar
+	 */
+	public long getDocumentoFrecuencia(long Offset) {
+		ParFrecuenciaDocumento parTemporal = new ParFrecuenciaDocumento();
+		parTemporal.setOffsetDocumento(Offset);
+		long frecuencia = 0;
+		if (this.datosDocumentos.contains(parTemporal)) {
+			Iterator<ParFrecuenciaDocumento> iterador = datosDocumentos.iterator();
+			boolean encontrado = false;
+			ParFrecuenciaDocumento aux = new ParFrecuenciaDocumento();
+			while (iterador.hasNext() && !encontrado) {
+				 aux = iterador.next();
+				encontrado = parTemporal.equals(aux);
+			}
+			if (encontrado) {
+				frecuencia = aux.getFrecuencia();
+			}
+		}
+		return frecuencia;
 	}
 }

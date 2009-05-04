@@ -42,8 +42,10 @@ public final class LogicaVectorial {
 			    	
 			    	double pesoGlobal = calcularPesoglobal(cantDocumentos,
 			    				registro.getCantidadDocumentos());
-			    	
-			    	similitud += (registro.getCantidadDocumentos() 
+			    	/**ver el offset.
+			    	 * 
+			    	 */
+			    	similitud += (registro.getDocumentoFrecuencia(1) 
 			    			* (pesoGlobal * pesoGlobal));
                 }
 		}

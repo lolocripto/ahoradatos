@@ -1,5 +1,7 @@
 package ar.com.datos.grupo5;
 
+import ar.com.datos.grupo5.registros.RegistroTerminoDocumentos;
+
 /**
  * Clase que encapsula la relacion de la frecuencia del termino
  * con el documento en el que aparece.
@@ -66,5 +68,8 @@ public class ParFrecuenciaDocumento {
 	
 	public int getTamanio() {
 		return Constantes.SIZE_OF_LONG * 2;
+	}
+	public final boolean equals(final Object o) {
+		return (this.getOffsetDocumento() == ((RegistroTerminoDocumentos)o).getIdTermino());
 	}
 }
