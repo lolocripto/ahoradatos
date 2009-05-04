@@ -202,7 +202,10 @@ public class RegistroTerminoDocumentos implements Registro {
 					frecuenciaDocumento = (ParFrecuenciaDocumento)it.next();
 					byte[] frecuenciaBytes = Conversiones.longToArrayByte(frecuenciaDocumento.getFrecuencia());
 					byte[] offsetDocumentoBytes = Conversiones.longToArrayByte(frecuenciaDocumento.getOffsetDocumento());
-	
+					
+					logger.debug("Escribo: " + frecuenciaBytes + ", dato: " + frecuenciaDocumento.getFrecuencia());
+					logger.debug("Escribo: " + offsetDocumentoBytes + ", dato: " + frecuenciaDocumento.getOffsetDocumento());
+					
 					dos.write(frecuenciaBytes, 0, frecuenciaBytes.length);
 					moreBytes -= frecuenciaBytes.length;
 					cantidadByte += frecuenciaBytes.length;
@@ -247,6 +250,7 @@ public class RegistroTerminoDocumentos implements Registro {
 				this.cantidadDocumentos = dis.readInt();
 				offsetByte += Constantes.SIZE_OF_INT;
 				
+				int tamanioNodo = this.getTamanioNodo();
 				/* 
 				 * Condiciones para seguir levantando nodos
 				 * 1) cantidad de nodos sea mayor que la cantidad de nodos leidos 
@@ -254,8 +258,11 @@ public class RegistroTerminoDocumentos implements Registro {
 				 * 3) la cantidad de espacio que queda en el bloque sea mayor a la de un nodo
 				 */
 				while (this.cantidadDocumentos > this.cantidadDocumentosLeidos 
-						&& offsetByte < Constantes.SIZE_OF_LIST_BLOCK &&
-						(Constantes.SIZE_OF_LIST_BLOCK - offsetByte) > this.getTamanioNodo()) {
+						&& offsetByte <= (buffer.length - offset.intValue()) && 
+//						&& offsetByte <= (Constantes.SIZE_OF_LIST_BLOCK - this.tamanioControl) &&
+//						(Constantes.SIZE_OF_LIST_BLOCK - offsetByte - this.tamanioControl) > tamanioNodo) {
+						(buffer.length - offset.intValue() - offsetByte) > tamanioNodo) {
+					
 					/* recorro la cadena de bytes y genero los 
 					 * pares frecuencia, Documento */
 					parFD = new ParFrecuenciaDocumento();
@@ -291,8 +298,10 @@ public class RegistroTerminoDocumentos implements Registro {
 		ParFrecuenciaDocumento parFD = null;
 		int offsetDatos = offset;
 		
-		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
+		ByteArrayInputStream bis = new ByteArrayInputStream(buffer,offset,buffer.length - offset);
 		DataInputStream dis = new DataInputStream(bis);
+		
+		int tamanioNodo = this.getTamanioNodo();
 		
 		try {
 			/* 
@@ -301,9 +310,15 @@ public class RegistroTerminoDocumentos implements Registro {
 			 * 2) el offsetByte no supere el largo del bloque
 			 * 3) la cantidad de espacio que queda en el bloque sea mayor a la de un nodo
 			 */			
-			while (this.cantidadDocumentos > this.cantidadDocumentosLeidos
+			
+			while (this.cantidadDocumentos > this.cantidadDocumentosLeidos 
+					&& offsetDatos <= (buffer.length - offset) && //2036
+//					&& offsetByte <= (Constantes.SIZE_OF_LIST_BLOCK - this.tamanioControl) &&
+//					(Constantes.SIZE_OF_LIST_BLOCK - offsetByte - this.tamanioControl) > tamanioNodo) {
+					(buffer.length - offset - offsetDatos) > tamanioNodo) {
+		/*	while (this.cantidadDocumentos > this.cantidadDocumentosLeidos
 					&& offsetDatos < Constantes.SIZE_OF_LIST_BLOCK &&
-					(Constantes.SIZE_OF_LIST_BLOCK - offsetDatos) > this.getTamanioNodo()) {
+					(Constantes.SIZE_OF_LIST_BLOCK - offsetDatos) > this.getTamanioNodo()) {*/
 				/* recorro la cadena de bytes y genero los 
 				 * pares frecuencia, Documento */
 				parFD = new ParFrecuenciaDocumento();
@@ -314,6 +329,7 @@ public class RegistroTerminoDocumentos implements Registro {
 				this.datosDocumentos.add(parFD);
 				this.cantidadDocumentosLeidos++;
 			}
+			this.moreBytes += (offsetDatos - offset);
 		} catch (Exception e) {
 			logger.error("Error: " + e.getMessage());
 		}		
@@ -352,8 +368,8 @@ public class RegistroTerminoDocumentos implements Registro {
 	 * Obtiene el tamaño del registro.
 	 * @return el tamaño del registro
 	 */
-	public final Short getTamanio() {
-		return (short) (this.getBytes().length);
+	public final Long getTamanio() {
+		return (this.moreBytes);
 	}
 	
 	/**

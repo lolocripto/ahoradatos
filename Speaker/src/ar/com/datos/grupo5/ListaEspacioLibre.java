@@ -31,12 +31,17 @@ public class ListaEspacioLibre {
 	private Float factorCarga;
 	
 	/**
+	 * Tamaño del bloque
+	 */
+	private int tamanio;
+	/**
 	 * Constructor de la clase.
 	 */
-	public ListaEspacioLibre() {
+	public ListaEspacioLibre(int tamanio) {
 		this.espacioLibrePorBloque = new ArrayList<NodoListaEspacioLibre>();
 		this.factorCarga = Constantes.FACTOR_CARGA_BLOQUES;
 		this.setIndex(0);
+		this.tamanio = tamanio;
 	}
 	
 	/**
@@ -56,14 +61,13 @@ public class ListaEspacioLibre {
 			case -1:
 				/* Agrego un elementos mas a la lista */
 				nodo = new NodoListaEspacioLibre();
-				nodo.setEspacio(espacio);
+				nodo.setEspacio((short) (tamanio - espacio));
 				nodo.setNroBloque(nroBloqueExt);
 				this.espacioLibrePorBloque.add(nodo);
 			break;
 			default:
 				/* Modifico un elemento mas a la lista */
-				nodo = this.espacioLibrePorBloque.get(index);
-				nodo.setEspacio(espacio);
+				this.actualizarEspacio((short) (tamanio - espacio));
 			break;
 		}	
 	}
@@ -142,14 +146,18 @@ public class ListaEspacioLibre {
 	 * por buscarEspacio.
 	 * @param espacioActual Espacio que queda en el bloque.
 	 */
-	public final void actualizarEspacio(final Short espacioActual) {
+	public final void actualizarEspacio(final Short espacioOcupadoActual) {
 		NodoListaEspacioLibre nodo;
 		
 		nodo = this.espacioLibrePorBloque.get(this.index);
-		
-		nodo.setEspacio(espacioActual);
-		
-		//this.espacioLibrePorBloque.add(this.index, nodo);
+	
+		int espacioLibreActual = tamanio - espacioOcupadoActual;
+	
+		if (espacioLibreActual > (tamanio * this.factorCarga)) {
+			nodo.setEspacio((short) espacioLibreActual);
+		} else {
+			this.espacioLibrePorBloque.remove(this.index);
+		}
 	}
 	
 	/**

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -39,6 +40,12 @@ public class ListasInvertidas {
 	 * Cantidad de bloques dentro del archivo.
 	 */
 	private int cantidadBloques;
+	
+	/**
+	 * Lista que contiene los movimientos de los registros
+	 * de un bloque a otro.
+	 */
+	private Map<Long,Long> registrosMovidos;
 	
 	/**
 	 * Tamaño que tiene el area de control.
@@ -195,7 +202,7 @@ public class ListasInvertidas {
 		try {
 			dos.writeLong(nroSiguienteBloque);
 			dos.writeShort(primerRegistro);
-			dos.writeShort(offsetFinal - offsetInicial);
+			dos.writeShort(espacioOcupado);
 			dos.write(datos , offsetInicial, offsetFinal - offsetInicial);
 
 		} catch (Exception e) {
@@ -250,7 +257,8 @@ public class ListasInvertidas {
 		 * y la cantidad de documentos */
 		int tamanioControlRegistro = reg.getTamanioControl();
 		
-		int nodosPorBloques = (bytesDisponibles) / reg.getTamanioNodo();
+		int tamaniodisponible = bytesDisponibles - tamanioControlRegistro;
+		int nodosPorBloques = (tamaniodisponible) / reg.getTamanioNodo();
 		int espacioOcupadoNodos = (tamanioControlRegistro + (nodosPorBloques * reg.getTamanioNodo()));
 		int bloqueAInsertar = -1;
 		this.nroBloque = this.cantidadBloques;
@@ -263,7 +271,7 @@ public class ListasInvertidas {
 					 * lo escribo
 					 */
 					bytesAEscribir = armarDatosBloque(0L, bytes, 
-									(short) (tamanioControl + bytes.length - offsetEscritura),
+									(short) (bytes.length - offsetEscritura),
 									(short) (tamanioControl + bytes.length - offsetEscritura),
 									offsetEscritura,bytes.length);
 					try {
@@ -274,7 +282,7 @@ public class ListasInvertidas {
 					//Indico que es un nuevo elemento en la lista de espacios libres
 					this.espacioLibre.setIndex(-1);
 					this.espacioLibre.actualizarListaEspacioLibre(cantidadBloques, 
-							(short) (Constantes.SIZE_OF_LIST_BLOCK-bytesAEscribir.length));				
+							(short) (bytesAEscribir.length));				
 					offsetEscritura += 	bytes.length - offsetEscritura;
 					this.cantidadBloques++;
 					
@@ -290,7 +298,7 @@ public class ListasInvertidas {
 						bytesAEscribir = armarDatosBloque(
 								(long) (this.cantidadBloques + 1), 
 								bytes, (short) 0, 
-								(short) (this.tamanioControl + espacioOcupadoNodos),
+								(short) (tamanioControl + espacioOcupadoNodos),
 								offsetEscritura,
 								espacioOcupadoNodos + offsetEscritura);
 						try {
@@ -302,7 +310,8 @@ public class ListasInvertidas {
 						this.cantidadBloques++;
 						
 					}
-					
+				nodosPorBloques = (bytesDisponibles) / reg.getTamanioNodo();
+				espacioOcupadoNodos = (nodosPorBloques * reg.getTamanioNodo());
 				} else {
 					
 					/*
@@ -371,7 +380,7 @@ public class ListasInvertidas {
 					//libres-
 					this.espacioLibre.setIndex(-1);
 					this.espacioLibre.actualizarListaEspacioLibre(cantidadBloques, 
-							(short) (Constantes.SIZE_OF_LIST_BLOCK - bytesAEscribir.length));				
+							(short) (bytesAEscribir.length));				
 					offsetEscritura += 	bytes.length - offsetEscritura;
 					this.cantidadBloques++;
 					}
@@ -391,7 +400,7 @@ public class ListasInvertidas {
 		this.nroBloque = 0;
 		this.nroBloqueLista = 1;
 		this.offsetLista = 0;
-		this.espacioLibre = new ListaEspacioLibre();
+		this.espacioLibre = new ListaEspacioLibre(Constantes.SIZE_OF_LIST_BLOCK);
 		this.tamanioControl = Constantes.SIZE_OF_SHORT * 2 
 					+ Constantes.SIZE_OF_LONG;
 	}
@@ -686,8 +695,7 @@ public class ListasInvertidas {
 		 * pares(long,long) */
 		long idTermino = 0;
 		int cantDocumentos = 0;
-		int offsetAConsultar = Constantes.SIZE_OF_LONG 
-			+ Constantes.SIZE_OF_SHORT * 2 + offsetPrimerLista;
+		int offsetAConsultar = this.tamanioControl + offsetPrimerLista;
 		
 		//Empiezo a leer desde la primer lista del bloque
 		ByteArrayInputStream bis; 
@@ -843,7 +851,7 @@ public class ListasInvertidas {
 			Long bloqueSiguiente = dis.readLong();
 			Short primerRegistro = dis.readShort(); 
 			Short espacioOcupado = dis.readShort();
-			Short offsetListaSiguiente = 0;
+			long offsetListaSiguiente = 0;
 			
 			//espacioOcupado -= (short) tamanioControl;
 			
@@ -856,12 +864,18 @@ public class ListasInvertidas {
 			}
 			
 			//Calculo el nuevo offset lista
-			offsetListaSiguiente = (short) (this.offsetLista + regInt.getTamanio());
+			offsetListaSiguiente = (this.offsetLista + regInt.getTamanio() - this.tamanioControl);
 			
+			/*
+			 * TODO: Ver la utilidad del codido.
+			 * if (offsetListaSiguiente > Constantes.SIZE_OF_LIST_BLOCK) {
+			 * 	offsetListaSiguiente = Constantes.SIZE_OF_INDEX_BLOCK;
+			 * }
+			 */
 			regActualizado = new RegistroTerminoDocumentos();
 			regActualizado.setIdTermino(idTerminoExt);
 			regActualizado.setDatosDocumentos(listaExt);
-			
+			/*
 			if (offsetListaSiguiente >= espacioOcupado && bloqueSiguiente == 0){
 				byte[] bytesAEscribir;
 				byte[] datos = regActualizado.getBytes();
@@ -878,17 +892,17 @@ public class ListasInvertidas {
 				}
 				
 				if (this.espacioLibre.buscarBloque(nroBloqueExt)) {
-					this.espacioLibre.actualizarListaEspacioLibre(cantidadBloques, (short) (Constantes.SIZE_OF_LIST_BLOCK-bytesAEscribir.length));	
+					this.espacioLibre.actualizarListaEspacioLibre(nroBloqueExt, (short) (Constantes.SIZE_OF_LIST_BLOCK-bytesAEscribir.length));	
 				} else {
 					this.espacioLibre.setIndex(-1);
-					this.espacioLibre.actualizarListaEspacioLibre(cantidadBloques, (short) (Constantes.SIZE_OF_LIST_BLOCK-bytesAEscribir.length));
+					this.espacioLibre.actualizarListaEspacioLibre(nroBloqueExt, (short) (Constantes.SIZE_OF_LIST_BLOCK-bytesAEscribir.length));
 				}
 				return true;
 			}
-			
+			*/
 			/* Se encarga de correr todas las listas actualizando la actual */
 			this.administrarBloquesAModificar(bloqueSiguiente, espacioOcupado,
-					primerRegistro, regActualizado, offsetListaSiguiente,
+					primerRegistro, regActualizado, (short) offsetListaSiguiente,
 					nroBloqueExt);
 		
 		} catch (IOException e) {
@@ -901,95 +915,229 @@ public class ListasInvertidas {
 		return true;
 	}
 	
-	/**
-	 * Se encarga de la administracion de los bloques al momento de modificar.
-	 * 1) Si la lista esta y no tiene listas que le sigan, actualizo el bloque
-	 * 		actualizando el tamaño libre.
-	 * 2) Si la lista esta y tiene listas despues de ella, se desplazan las 
-	 * 		listas.
+	/** d.
+	 * @param offsetListaSiguiente Lo que ocupa desde el principio del 
+	 * bloque hasta terminar la lista a modificar. Tamanño viejo.
+	 * @param siguienteExt el siguiente del bloque donde esta la lista.
+	 * @paaram espacioOcupadoExt el espacio ocupado dentro del bloque.
+	 * @param primerRegistroExt donde empieza el primer registro dentro del 
+	 * bloque nroBloqueExt
+	 * @param regActualizado la nueva lista que se va a escribir en lugar 
+	 * de la otra.
+	 * @param nroBloqueExt el numero de bloque donde esta la lista 
+	 * a modificar. 
+	 * 
 	 */
-	private Long administrarBloquesAModificar(final Long siguienteExt, final Short espacioOcupadoExt, 
-					final Short primerRegistroExt, final RegistroTerminoDocumentos regActualizado,
-					final Short offsetListaSiguiente, final int nroBloqueExt) {
-		/*
-		 * Datos que tengo:
-		 * 		offsetLista (previa busqueda).
-		 * 		datos del bloque (byte[]).
-		 * 		datos de control.
-		 * 		datos del registro actualizados.
-		 */
+	private Long administrarBloquesAModificar(Long siguienteExt, final Short espacioOcupadoExt, 
+			final Short primerRegistroExt, final RegistroTerminoDocumentos regActualizado,
+			Short offsetListaSiguiente, final int nroBloqueExt) {
+		//TODO: Ver el tema de los final
+		boolean continua = false; 
+		// datos de la lista a grabar
+		byte[] datosListaActualizada = regActualizado.getBytes();
+		
+		// tamaño de la lista a grabar
+		int tamanioListaActualizada = datosListaActualizada.length;
+		
+		//Espacio disponible por bloque
+		int espacioDispBloque = Constantes.SIZE_OF_LIST_BLOCK - tamanioControl;
+		
+		//Cantidad de bloques que ocupaba por completo el registro anterior 
+		int bloquesRegAnterior = (offsetListaSiguiente/(espacioDispBloque));
+		
+		//bloque en el que voy a insertar los datos
+		int bloqueAInsertar = (new Integer(nroBloqueExt)).intValue();
+		
+		//byte[] para no pisar this.datosLeidosProBloque.
+		byte[] datosLeidos;
 		
 		/*
-		 * Si entre aca es porque tengo mas listas en el bloque
-		 * Armar el registro con lo viejo + lo nuevo
+		 * Me armo los datos anteriores al registro para escribirlos tal cual
+		 * mas adelante se usara para lo sobrante de cada bloque que se
+		 * tiene que guardar en el siguiente.
 		 */
-		byte[] datosActualizados = regActualizado.getBytes();
-		/* Longitud de la lista a actualizar */
-		Short longitudNuevoRegistro = (short) datosActualizados.length;
-		/* Longitud total del nuevo registro */
-		@SuppressWarnings("unused")
-		Short espacioOcupadoNewConDatosControl = (short) (longitudNuevoRegistro 
-				+ this.offsetLista);
+		byte[] datosAnteriores = new byte[this.offsetLista - tamanioControl];
 		
-		//int datosControl = Constantes.SIZE_OF_SHORT * 2 + Constantes.SIZE_OF_LONG;
+		//Tamaño de los datos anteriores
+		int tamanioDatosAnteriores = datosAnteriores.length;
 		
-		//int bytesDisponibles = Constantes.SIZE_OF_LIST_BLOCK - tamanioControl;
+		//Copia los datos del registro al "datosAnteriores".
+		System.arraycopy(this.datosLeidosPorBloque, tamanioControl, datosAnteriores, 0, tamanioDatosAnteriores);
 		
-		//short espacioOcupadoNew = (short) (espacioOcupadoNewConDatosControl - tamanioControl);
-		
-		//int totalBloques = 0;
-		
-		//TODO: Lo nuevo es a partir de aquí
-		Long siguiente = siguienteExt;
-		Short primerRegistro = primerRegistroExt;
-		@SuppressWarnings("unused")
-		Short espacioOcupado = espacioOcupadoExt;
-		byte[] siguienteBloque;
-		byte[] datos;
-		short espacioDisponible = (short) (Constantes.SIZE_OF_LIST_BLOCK - tamanioControl);
-		int offsetEscritura = 0;
-		
-		//Leo las listas que le siguen en el mismo bloque.
-		RegistroTerminoDocumentos regLista;
-		ArrayList<RegistroTerminoDocumentos> listas;
-		Iterator<RegistroTerminoDocumentos> it;
-		
-		listas = leerListasPorBloque(offsetListaSiguiente);
-		
-		Long cantidadEscritaEnBuffer = 0L;
-		/* El control esta dado por el numero de termino y la 
-		 * cantidad de documentos */
-		int tamanioControlRegistro = regActualizado.getTamanioControl();
-		
-		byte[] datosNuevo = regActualizado.getBytes();
-		byte[] datosAnteriores = new byte[this.offsetLista - tamanioControl 
-		                                  + datosNuevo.length];
-		
-		System.arraycopy(this.datosLeidosPorBloque, tamanioControl, 
-						datosAnteriores, 0, this.offsetLista - tamanioControl);
-		
-		System.arraycopy(datosNuevo, 0, datosAnteriores, this.offsetLista 
-						- tamanioControl, datosNuevo.length);
-		
+		//Donde voy a ir escribiendo los datos
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		DataOutputStream dos = new DataOutputStream(bos);
 		
-		ByteArrayOutputStream bosaux = new ByteArrayOutputStream();
-		DataOutputStream dosaux = new DataOutputStream(bosaux);
-		
-		
 		try {
 			
-		while (siguiente != 0) {
+			//escribo los datos anteriores al registro a modificar			
+			dos.write(datosAnteriores, 0, datosAnteriores.length);
+			//escribo los datos nuevos del registro.
+			dos.write(datosListaActualizada, 0, tamanioListaActualizada);
+			
+		} catch (IOException e2) {
+			// Error en la escritura de datos
+			return 1L;
+		}
+		
+		datosAnteriores = bos.toByteArray();
+		
+		//se empieza a copiar desde ...
+		int offsetInicial = 0;
+		
+		//se termina de copiar en ...
+		int offsetFinal = 0;
+		
+		//Donde voy a ir leyendo los datos
+		ByteArrayInputStream bis;
+		DataInputStream dis;
+		
+		// datos que tendra el nuevo bloque
+		byte[] datosBloque;
+		
+		Short primerRegistro = primerRegistroExt;
+		Short espacioOcupado = espacioOcupadoExt;
+		
+		//es la cantidad de nodos que puedo insertar en el registro de bloques.
+		int cantidadNodos = 0;
+		int tamanioNodos = regActualizado.getTamanioNodo(); 
+		
+		//Trato de actualizar los registros que estaban utilizados por completo
+		if (bloquesRegAnterior > 0) {
+			
+			continua = true;
+			
+			//Cuantos nodos puedo insertar en el bloque
+			cantidadNodos = (espacioDispBloque-tamanioDatosAnteriores);
+			cantidadNodos -= regActualizado.getTamanioControl();
+			cantidadNodos /= tamanioNodos;
+			
+			// escribo "bloquesRegAnterior" con los datos nuevos.
+			
+			/*
+			 * termino de copiar en el ultimo nodo que me entra completo
+			 * en el bloque 
+			 */
+			offsetFinal += tamanioDatosAnteriores + regActualizado.getTamanioControl() 
+						+ (cantidadNodos * tamanioNodos);
+			
+			for (int i = 0; i < bloquesRegAnterior; i++) { 
+
+				
+				offsetListaSiguiente -= (offsetFinal - offsetInicial);
+				
+				//armo el bloque a insertar
+				datosBloque = this.armarDatosBloque(siguienteExt, datosAnteriores, primerRegistro, espacioOcupado, offsetInicial, offsetFinal);
+				
+				//inserto el bloque
+				try {
+					this.archivo.escribirBloque(datosBloque, bloqueAInsertar);
+				} catch (IOException e) {
+					// Error en la escritura del bloque
+					return 3L;
+				}
+				
+				//aumento el numero de bloque
+				bloqueAInsertar = siguienteExt.intValue();
+				
+				//leo el siguiente bloque.
+				try {
+					datosLeidos = this.archivo.leerBloque(siguienteExt.intValue());
+				} catch (IOException e) {
+					// Error en la lectura del bloque
+					return 4L;
+				}
+				
+				//Leo los datos de control del bloque
+				bis = new ByteArrayInputStream(datosLeidos);
+				dis = new DataInputStream(bis);
+				
+				try {
+					siguienteExt = dis.readLong();
+					primerRegistro = dis.readShort();
+					espacioOcupado = dis.readShort();
+				} catch (IOException e) {
+					// Error al leer datos del bloque
+					return 5L;
+				}
+				
+				
+				//Armo los nuevos offset a escribir.
+				//Comienzo donde deje
+				offsetInicial = offsetFinal;
+				
+				/*
+				 * en el nuevo bloque no hay datos anteriores porque
+				 * ya pertenecia al registro que estoy actualizando
+				 */
+				tamanioDatosAnteriores = 0;
+				
+				cantidadNodos = (espacioDispBloque-tamanioDatosAnteriores);
+				cantidadNodos /= tamanioNodos;
+				
+				/*
+				 * termino de copiar en el ultimo nodo que me entra completo
+				 * en el bloque 
+				 */
+				offsetFinal += tamanioDatosAnteriores + (cantidadNodos * tamanioNodos);
+			}
+		}
+		
+		int cantidadEscritaEnBuffer = 0;
+		ArrayList<RegistroTerminoDocumentos> listaListas;
+		Iterator<RegistroTerminoDocumentos> it;
+		RegistroTerminoDocumentos regLista;
+		byte[] datosNuevo;
+		byte[] datos;
+			
+		ByteArrayOutputStream bosaux = new ByteArrayOutputStream();
+		DataOutputStream dosaux = new DataOutputStream(bosaux);
+			
+		/*
+		 * Mientras no sea el último bloque. Leo las listas que comparten 
+		 * el bloque y las corro segun la sobra del bloque anterior.
+		 * 				
+		 * Estoy en un bloque que contiene varias listas!!!
+		 * 1) Leer Listas del bloque, a lo sumo me trae un pedazo del 
+		 * 		otro bloque.
+		 * 2) Contacteno los datos que me sobraron del ultimo bloque
+		 * 		con los datos de la listas leidas.
+		 * 3) inserto validando la cantidad de elementos que pongo.
+		 * 4) valido si una lista se paso de bloque y lo agrego al
+		 * 		map para que se actulice luego el numero de bloque.
+		 */			
+		while (siguienteExt != 0) {
+			/*
+			 * cuando voy restandole a offsetListaSiguiente supuestamente 
+			 * en este bloque me tiene que quedar donde comienza el 
+			 * primerRegistro, si es mayor pongo a primerRegistro, sino a
+			 * offsetListaSiguiente.
+			 */
+			if (offsetListaSiguiente > primerRegistro) {
+				listaListas = this.leerListasPorBloque(primerRegistro,espacioOcupado);
+			} else {
+				listaListas = this.leerListasPorBloque(offsetListaSiguiente,espacioOcupado);
+			}
+			//La lista puede venir vacia pero si viene null existio error
+			if (listaListas == null) {
+				//Error al leer las listas en el bloque
+				return 2L;
+			}
+			
 			//Hay un bloque que le sigue por lo tanto tengo que actualizarlo
 			try {
-				dos.write(datosAnteriores, 0, datosAnteriores.length);
-				cantidadEscritaEnBuffer += datosAnteriores.length;
+				bos.reset();
+				dos = new DataOutputStream(bos);
+				dos.write(datosAnteriores, offsetInicial, datosAnteriores.length - offsetInicial);
+				cantidadEscritaEnBuffer += datosAnteriores.length - offsetInicial;
+				primerRegistro = (short) (datosAnteriores.length - offsetInicial);
+				offsetListaSiguiente -= (datosAnteriores.length - offsetInicial);
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				// Error al escribir datos
+				return 1L;
 			}
-			it = listas.iterator();
+			
+			it = listaListas.iterator();
 			
 			//Para cada insercion tengo que validar que los datos 
 			//de control entren
@@ -999,8 +1147,13 @@ public class ListasInvertidas {
 				regLista = it.next();
 				datosNuevo = regLista.getBytes();
 				//Si entra el registro completo lo inserto.
-				if (datosNuevo.length <= (Constantes.SIZE_OF_LIST_BLOCK - cantidadEscritaEnBuffer)) {
-					dos.write(datosNuevo, 0, datosNuevo.length);
+				if (datosNuevo.length <= (espacioDispBloque - cantidadEscritaEnBuffer)) {
+					try {
+						dos.write(datosNuevo, 0, datosNuevo.length);
+					} catch (IOException e) {
+						// error al escribir datos 
+						return 1L;
+					}
 					cantidadEscritaEnBuffer += datosNuevo.length;
 				} else {
 					/*
@@ -1010,58 +1163,236 @@ public class ListasInvertidas {
 					 * bloque y la cantidad max de elementos de las listas para
 					 * insertar. 
 					 */
-					if (tamanioControlRegistro <= (Constantes.SIZE_OF_LIST_BLOCK - cantidadEscritaEnBuffer)) {
-						Long cantidadNodosDisponibles = (Constantes.SIZE_OF_LIST_BLOCK - cantidadEscritaEnBuffer) / regLista.getTamanioNodo();
+					if (regLista.getTamanioControl() <= (espacioDispBloque - cantidadEscritaEnBuffer)) {
+			
+						Long cantidadNodosDisponibles = (long) (espacioDispBloque 
+								- cantidadEscritaEnBuffer - regLista.getTamanioControl()) / regLista.getTamanioNodo();
+							
+						Long espacioCantidadNodos = regLista.getTamanioControl() 
+								+ (cantidadNodosDisponibles * regLista.getTamanioNodo());
 						//Inserto los nodo que puedo por el tamaño
-						dos.write(datosNuevo, 0, (int) (tamanioControlRegistro + (cantidadNodosDisponibles * regLista.getTamanioNodo())));
-						cantidadEscritaEnBuffer += (int) (tamanioControlRegistro + (cantidadNodosDisponibles * regLista.getTamanioNodo()));
+						try {
+							//escribo los datos del bloque a escribir
+							dos.write(datosNuevo, 0, espacioCantidadNodos.intValue());
+							//escribo los datos sobrantes del bloque
+							dosaux.write(datosNuevo, espacioCantidadNodos.intValue(), datosNuevo.length - espacioCantidadNodos.intValue());
+							continua = true;
+						} catch (IOException e) {
+							//Error al escribir datos
+							return 1L;
+						}
+						cantidadEscritaEnBuffer += (int) (regLista.getTamanioControl() + (cantidadNodosDisponibles * regLista.getTamanioNodo()));
 					} else {
 						//Escribo toda la lista en un auxiliar.
-						
-						dosaux.write(datosNuevo, 0, datosNuevo.length);
+						this.registrosMovidos.put(regLista.getIdTermino(),siguienteExt );
+						try {
+							dosaux.write(datosNuevo, 0, datosNuevo.length);
+							continua = true;
+						} catch (IOException e) {
+							// error al escribir datos
+							return 1L;
+						}
 					}
 				}
-			}
-			
+			} //Fin del while (it.hasNect())
+				
+			//Ya tengo el registro listo para escribir en el archivo
 			datos = bos.toByteArray();
 			//Ahora armo el bloque y lo inserto
-			this.archivo.escribirBloque(
-						this.armarDatosBloque(siguiente, datos, primerRegistro, (short) datos.length, offsetEscritura, datos.length),
-						(int) nroBloqueExt);
+			try {
+				this.archivo.escribirBloque(
+							this.armarDatosBloque(siguienteExt, datos, primerRegistro, (short) datos.length, 0, datos.length),
+							(int) bloqueAInsertar);
+			} catch (IOException e) {
+				// Error al escribir bloque
+				return 3L;
+			}
 			
 			//Definir que es datosAnteriores.
 			bos.reset();
+			dos = new DataOutputStream(bos);
 			datosAnteriores = bosaux.toByteArray();
+			offsetInicial = 0;
+			bloqueAInsertar = siguienteExt.intValue();
+			cantidadEscritaEnBuffer = 0;
+			try {
+				datosLeidos = this.archivo.leerBloque(siguienteExt.intValue());
+			} catch (IOException e) {
+				// Error al leer el bloque
+				return 0L;
+			}
 			
-			//escribo lo que sobro del registro,pero supuestamente ahora no va a sobrar nada
-			//dos.write(datos,espacioDisponible,datos.length - espacioDisponible);
+			bis = new ByteArrayInputStream(datosLeidos);  
+			dis = new DataInputStream(bis);
 			
-			siguienteBloque = this.archivo.leerBloque(siguiente.intValue());
+			try {
+				siguienteExt = dis.readLong();
+				primerRegistro = dis.readShort(); 
+				espacioOcupado = dis.readShort();
+			} catch (IOException e) {
+				// Error al leer datos de control
+				return 5L;
+			}
 			
-			ByteArrayInputStream bis = new ByteArrayInputStream(siguienteBloque);  
-			DataInputStream dis = new DataInputStream(bis);
-			
-			siguiente = dis.readLong();
-			primerRegistro = dis.readShort(); 
-			espacioOcupado = dis.readShort();
+		}
+		/*
+		 * Si estamos en el último bloque a modificar leo las listas que 
+		 * tiene y las corro segun la sobra del bloque anterior.
+		 * Si el bloque desborda entonces crea uno nuevo.
+		 */
+		if (siguienteExt == 0) {
+			//obtengo las listas empezando del primerRegistro
+			try {
+				bos.reset();
+				bosaux.reset();
+				dos = new DataOutputStream(bos);
+				dosaux = new DataOutputStream(bosaux);
+				dos.write(datosAnteriores, offsetInicial, datosAnteriores.length - offsetInicial);
+				cantidadEscritaEnBuffer += datosAnteriores.length - offsetInicial;
 				
-			//Definir el nuevo offset
-			listas = leerListasPorBloque((short) primerRegistro);
-			primerRegistro = (short) (datos.length - espacioDisponible);
+			} catch (IOException e1) {
+				// Error al escribir datos
+				return 1L;
+			}
+			
+			/*
+			 * cuando voy restandole a offsetListaSiguiente supuestamente 
+			 * en este bloque me tiene que quedar donde comienza el 
+			 * primerRegistro, si es mayor pongo a primerRegistro, sino a
+			 * offsetListaSiguiente.
+			 */
+			if ((offsetListaSiguiente > primerRegistro && continua) || offsetListaSiguiente <= 0) {
+				listaListas = this.leerListasPorBloque(primerRegistro,espacioOcupado);
+			} else {
+				listaListas = this.leerListasPorBloque(offsetListaSiguiente,espacioOcupado);
+			}
+			
+			if (continua) {
+				primerRegistro = (short) (datosAnteriores.length - offsetInicial);
+				}
+			
+			//La lista puede venir vacia pero si viene null existio error
+			if (listaListas == null) {
+				//Error al leer las listas en el bloque
+				return 2L;
+			}
+				
+			//Itero las listas y voy insertando todo
+				it = listaListas.iterator();
+			
+			//Para cada insercion tengo que validar que los datos 
+			//de control entren
+			//Que los nodos de las listas no queden partidos.
+			while (it.hasNext()) {
+				//Mientras tenga listas en el vector de listas las agrego
+				regLista = it.next();
+				datosNuevo = regLista.getBytes();
+				//Si entra el registro completo lo inserto.
+				if (datosNuevo.length <= (espacioDispBloque - cantidadEscritaEnBuffer)) {
+					try {
+						dos.write(datosNuevo, 0, datosNuevo.length);
+					} catch (IOException e) {
+						// error al escribir datos 
+						return 1L;
+					}
+					cantidadEscritaEnBuffer += datosNuevo.length;
+				} else {
+					/*
+					 * Si no entra el bloque entero entonces escribo una parte
+					 * en el bloque a escribir y la otra en el datosAnteriores.
+					 * Para ello busco el tamaño que me falta para completar el
+					 * bloque y la cantidad max de elementos de las listas para
+					 * insertar. 
+					 */
+					if (regLista.getTamanioControl() <= (espacioDispBloque - cantidadEscritaEnBuffer)) {
+						Long cantidadNodosDisponibles = (long) (espacioDispBloque 
+								- cantidadEscritaEnBuffer - regLista.getTamanioControl()) / regLista.getTamanioNodo();
+						
+						Long espacioCantidadNodos = regLista.getTamanioControl() 
+									+ (cantidadNodosDisponibles * regLista.getTamanioNodo());
+						//Inserto los nodo que puedo por el tamaño
+						try {
+							//escribo los datos del bloque a escribir
+							dos.write(datosNuevo, 0, espacioCantidadNodos.intValue());
+							//escribo los datos sobrantes del bloque
+							dosaux.write(datosNuevo, espacioCantidadNodos.intValue(), datosNuevo.length - espacioCantidadNodos.intValue());
+						} catch (IOException e) {
+							//Error al escribir datos
+							return 1L;
+						}
+						primerRegistro = (short) cantidadEscritaEnBuffer; 
+						cantidadEscritaEnBuffer += espacioCantidadNodos.intValue();
+					} else {
+						//Escribo toda la lista en un auxiliar.
+						this.registrosMovidos.put(regLista.getIdTermino(),siguienteExt );
+						try {
+							dosaux.write(datosNuevo, 0, datosNuevo.length);
+						} catch (IOException e) {
+							// error al escribir datos
+							return 1L;
+						}
+					}
+				}
+			} //Fin del while (it.hasNect())
+			
+			datos = bos.toByteArray();
+			if (dosaux.size() > 0) {
+				//Inserto el bloque
+				try {
+					//inserto el primer registro con el offset al fondo
+					this.archivo.escribirBloque(
+							this.armarDatosBloque((long) this.cantidadBloques, datos, primerRegistro, (short) (datos.length + tamanioControl), 0, datos.length)
+							, bloqueAInsertar);
+					
+					//Actualizo la memoria libre
+					if (this.espacioLibre.buscarBloque(bloqueAInsertar)) {
+						this.espacioLibre.actualizarEspacio((short) (datos.length));	
+					} else {
+						this.espacioLibre.setIndex(-1);
+						this.espacioLibre.actualizarEspacio((short) (datos.length));
+					}
+					
+					datos = bosaux.toByteArray();
+					primerRegistro = (short) datos.length;
+ 					bloqueAInsertar = this.cantidadBloques;
+				} catch (IOException e) {
+					//	Error al escribir el bloque
+					return 2L;
+				}	
+			}
+			
+			try {
+				//inserto el primer registro con el offset al fondo
+				this.archivo.escribirBloque(
+						this.armarDatosBloque(0L, datos, primerRegistro, (short) (datos.length + tamanioControl), 0, datos.length)
+						, bloqueAInsertar);
+				
+				//Actualizo la memoria libre
+				if (this.espacioLibre.buscarBloque(bloqueAInsertar)) {
+					this.espacioLibre.actualizarEspacio((short) (datos.length));	
+				} else {
+					this.espacioLibre.setIndex(-1);
+					this.espacioLibre.actualizarListaEspacioLibre(bloqueAInsertar,(short) (datos.length));
+				}
+				
+				this.cantidadBloques++;
+			} catch (IOException e) {
+				//	Error al escribir el bloque
+				return 2L;
+			}
+			
+			
 		}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0L;
-	}
+		
+	return 0L;
+}
 	
 	/**
 	 * Lee todas las listas del bloque, previamente tengo que leer el bloque donde comienza
 	 * @param comienzo
 	 * @return
 	 */
-	private ArrayList<RegistroTerminoDocumentos> leerListasPorBloque(final short comienzo) {
+	private ArrayList<RegistroTerminoDocumentos> leerListasPorBloque(final short comienzo, final short espacioOcupadoExt) {
 		
 		RegistroTerminoDocumentos reg;
 		long siguiente = this.nroBloque;
@@ -1072,6 +1403,15 @@ public class ListasInvertidas {
 		ArrayList<RegistroTerminoDocumentos> listas = new ArrayList<RegistroTerminoDocumentos>();
 		Short offsetSiguienteLista = new Short(comienzo);
 
+		//Si el registro acaba en el offset devuelvo la lista vacia
+		if (offsetSiguienteLista.shortValue() >= (espacioOcupadoExt - tamanioControl)) {
+			return listas;
+		}
+		
+		if (offsetSiguienteLista > Constantes.SIZE_OF_LIST_BLOCK) {
+			return listas;
+		}
+		
 		boolean masListas = true;
 		while (masListas) {
 			reg  = new RegistroTerminoDocumentos();
@@ -1086,10 +1426,11 @@ public class ListasInvertidas {
 					siguiente = dis.readLong();
 					primerRegistro = dis.readShort();
 					espacioOcupado = dis.readShort();
+					
 					if (cantBloquesLeidos == 0) {		
 						/* Armo la lista para el termino especifico */
 						reg.setBytes(this.datosLeidosPorBloque, 
-										offsetSiguienteLista.longValue());
+										offsetSiguienteLista.longValue() + tamanioControl);
 						if (reg.incompleto()) {
 							/* Obtengo el bloque según el numero de bloque*/
 							datosLeidosPorBloque = this.archivo.leerBloque((int) siguiente);
@@ -1114,17 +1455,32 @@ public class ListasInvertidas {
 			} //Me devuelve la lista leida
 			listas.add(reg);
 			//Con la lista leida veo si hay mas.
-			if (cantBloquesLeidos > 1) {
+			if (cantBloquesLeidos > 0) {
 				//No hay mas listas porque cambie de bloque
 				masListas = false;
 			} else {
-				offsetSiguienteLista = (short) (Constantes.SIZE_OF_LONG + Constantes.SIZE_OF_INT 
+				offsetSiguienteLista += (short) (Constantes.SIZE_OF_LONG + Constantes.SIZE_OF_INT 
 							+ (Constantes.SIZE_OF_LONG * reg.getCantidadDocumentos() * 2));
-				if (offsetSiguienteLista >= espacioOcupado) {
+				if (offsetSiguienteLista >= (espacioOcupado - tamanioControl)) {
 					masListas = false;
 				}
 			}
 		}
 		return listas;
+	}
+
+	/**
+	 * @param registroMovidos the registroMovidos to set
+	 */
+	@SuppressWarnings("unused")
+	private void setRegistrosMovidos(Map<Long,Long> registroMovidos) {
+		this.registrosMovidos = registroMovidos;
+	}
+
+	/**
+	 * @return the registroMovidos
+	 */
+	public final Map<Long,Long> getRegistrosMovidos() {
+		return registrosMovidos;
 	}
 }

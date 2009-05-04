@@ -37,9 +37,9 @@ public final class TestRam {
 		// TODO Auto-generated method stub
 		ListasInvertidas listasI = new ListasInvertidas();
 		Collection<ParFrecuenciaDocumento> lista = new ArrayList<ParFrecuenciaDocumento>();
-		int nroBloque;
-		long idtermino = 2;
-		int accion = 1;
+		int nroBloque = 5;
+		long idtermino = 4;
+		int accion = 1; // 0-Escribir, 1-Leer, 2-Modificar
 		
 		switch (accion) {
 			case 0:{
@@ -55,8 +55,10 @@ public final class TestRam {
 				
 				ParFrecuenciaDocumento nodo;
 				
-//				for (int i = 0; i < 300; i++) {
-				for (int i = 0; i < 100; i++) {
+				//for (int i = 0; i < 300; i++) {
+				//for (int i = 0; i < 100; i++) {
+				//for (int i = 0; i < 50; i++) {
+				for (int i = 0; i < 15; i++) {
 					nodo = new ParFrecuenciaDocumento();
 					nodo.setFrecuencia((long) (20+i));
 					nodo.setOffsetDocumento((long) (2+i));
@@ -67,7 +69,7 @@ public final class TestRam {
 				
 				nroBloque = (int) listasI.getBloqueInsertado(); 
 
-				logger.debug("Inserte una lista invertida");
+				logger.debug("Inserte una lista invertida, en el bloque: "+nroBloque);
 				
 				try {
 					listasI.cerrar();
@@ -92,7 +94,6 @@ public final class TestRam {
 				}
 				
 				logger.debug("Abrio el archivo de listas invertidas");
-				nroBloque = 5; 
 				RegistroTerminoDocumentos rtd = listasI.leerLista(idtermino, (int) nroBloque);
 				
 				if (rtd == null) {
@@ -129,14 +130,16 @@ public final class TestRam {
 				
 				ParFrecuenciaDocumento nodo;
 				
-				//for (int i = 0; i < 300; i++) {
-				for (int i = 0; i < 101; i++) {
+				for (int i = 0; i < 370; i++) {
+				//for (int i = 0; i < 102; i++) {
+				//for (int i = 0; i < 52; i++) {
+				//for (int i = 0; i < 20; i++) {
 					nodo = new ParFrecuenciaDocumento();
 					nodo.setFrecuencia((long) (20+i));
 					nodo.setOffsetDocumento((long) (2+i));
 					lista.add(nodo);
 				}
-				nroBloque = 5; 
+				
 				if (listasI.modificarLista(nroBloque, idtermino, lista)) {
 					logger.debug("modifique la lista invertida");
 				} else {
