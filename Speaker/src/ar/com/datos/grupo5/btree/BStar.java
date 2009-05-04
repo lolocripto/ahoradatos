@@ -300,6 +300,8 @@ public final class BStar implements BTree {
 			if (!pasarRegistro(nodo, registro)) {
 				
 				Nodo padre = split(nodo);
+				listar();
+				abrirArchivos();
 				while (padre.isOverflow()) {
 					if (padre.getNroBloquePadre() < 0) {
 						return splitRaiz(padre);
@@ -327,12 +329,13 @@ public final class BStar implements BTree {
 		return true;
 	}
 	
-	/*
+	/**
 	 * Split interno.
 	 * @param nodo .
 	 * @throws IOException .
 	 */
 	private boolean splitRaiz(final Nodo nodo) throws IOException{
+		
 		ArrayList<Nodo> nodos = nodo.splitRaiz(ultimoBloque);
 		nodoRaiz = nodos.get(1);
 		nodoActual = nodos.get(0);
