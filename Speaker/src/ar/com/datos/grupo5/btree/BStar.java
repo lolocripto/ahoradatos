@@ -264,8 +264,6 @@ public final class BStar implements BTree {
 			nodoRaiz.insertarRegistro(registro);
 			ultimoBloque = Constantes.NRO_BLOQUE_RAIZ;
 			
-			//FIXME: guardo en disco los datos administrativos
-			// ver si se puede sacarlo de aca, habria que hacerlo cada tanto.
 			guardarDatosAdministrativos();
 			
 			archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
@@ -316,71 +314,7 @@ public final class BStar implements BTree {
 			//Si no puedo, veo con cual lo puedo Splitear
 			if (!pasarRegistro(nodo, registro)) {
 				
-				Nodo nodoHno = new Nodo();
-				Nodo nodoPadre = new Nodo();
-				nodoPadre
-						.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
-				int pos = nodoPadre.buscarRegistro(nodo.getPrimerRegistro()
-						.getClave());
-				if (pos < nodoPadre.getRegistros().size() - 1) {
-					nodoHno.setBytes(archivo.leerBloque(nodoPadre.getRegistros()
-						.get(pos + 1).getNroBloqueDerecho()));
-					Nodo nuevoHno = nodo.split(nodoHno, nodoPadre, true,
-						ultimoBloque);
-					nodoActual = nuevoHno;
-				} else {
-					nodoHno.setBytes(archivo.leerBloque(nodoPadre.getRegistros()
-							.get(pos).getNroBloqueIzquierdo()));
-					Nodo nuevoHno = nodo.split(nodoHno, nodoPadre, false,
-							ultimoBloque);
-					nodoActual = nuevoHno;
-				}
-				
-				ultimoBloque++;
-				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
-				archivo.escribirBloque(nodoActual.getBytes(), nodoActual
-						.getNroBloque());
-				archivo.escribirBloque(nodoHno.getBytes(), nodoHno
-						.getNroBloque());
-				
-				if (nodoPadre.getNroBloquePadre() < 0) {
-					nodoRaiz = nodoPadre;
-					Nodo nodoAux = nodoPadre;
-					if (nodoRaiz.isOverflow()) {
-						ArrayList<Nodo> nodos = nodoRaiz
-								.splitRaiz(ultimoBloque);
-						nodoRaiz = nodos.get(1);
-						nodoActual = nodos.get(0);
-						ultimoBloque += 2;
-						
-						archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
-								.getNroBloque());
-						archivo.escribirBloque(nodoActual.getBytes(),
-								nodoActual.getNroBloque());
-						archivo.escribirBloque(nodo.getBytes(), nodo
-								.getNroBloque());
-						archivo.escribirBloque(nodoAux.getBytes(), nodoAux
-								.getNroBloque());
-						
-						guardarDatosAdministrativos();
-						cerrarArchivos();
-						
-						return true;
-					}
-				} else {
-					//TODO splitear recursivamentes.
-				}
-				
-				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
-				archivo.escribirBloque(nodoActual.getBytes(), nodoActual
-						.getNroBloque());
-				archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
-						.getNroBloque());
-				archivo.escribirBloque(nodoHno.getBytes(), nodoHno
-						.getNroBloque());
-				
-				guardarDatosAdministrativos();
-				cerrarArchivos();
+				split(nodo);
 				
 				return true;
 			}
@@ -395,6 +329,51 @@ public final class BStar implements BTree {
 		return true;
 	}
 
+	/**
+	 * Split interno.
+	 * @param nodo
+	 * @throws IOException
+	 */
+	private void split(Nodo nodo) throws IOException {
+		
+		Nodo nodoHno = new Nodo();
+		Nodo nodoPadre = new Nodo();
+		nodoPadre
+				.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
+		int pos = nodoPadre.buscarRegistro(nodo.getPrimerRegistro()
+				.getClave());
+		if (pos < nodoPadre.getRegistros().size() - 1) {
+			nodoHno.setBytes(archivo.leerBloque(nodoPadre.getRegistros()
+				.get(pos + 1).getNroBloqueDerecho()));
+			Nodo nuevoHno = nodo.split(nodoHno, nodoPadre, true,
+				ultimoBloque);
+			nodoActual = nuevoHno;
+		} else {
+			nodoHno.setBytes(archivo.leerBloque(nodoPadre.getRegistros()
+					.get(pos).getNroBloqueIzquierdo()));
+			Nodo nuevoHno = nodo.split(nodoHno, nodoPadre, false,
+					ultimoBloque);
+			nodoActual = nuevoHno;
+		}
+		
+		ultimoBloque++;
+		
+		if (nodoPadre.getNroBloquePadre() < 0) {
+			nodoRaiz = nodoPadre;
+		}
+		
+		archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
+		archivo.escribirBloque(nodoActual.getBytes(), nodoActual
+				.getNroBloque());
+		archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
+				.getNroBloque());
+		archivo.escribirBloque(nodoHno.getBytes(), nodoHno
+				.getNroBloque());
+		
+		guardarDatosAdministrativos();
+		cerrarArchivos();
+	}
+	
 	/**
 	 * true si lo modifica.
 	 * @param registro El registro que se quiere modificar.
