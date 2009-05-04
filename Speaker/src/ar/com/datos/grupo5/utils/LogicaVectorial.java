@@ -5,7 +5,12 @@ import java.util.Iterator;
 
 import ar.com.datos.grupo5.registros.RegistroTerminoDocumentos;
 
-public class LogicaVectorial {
+/**
+ * 
+ * @author Led Zeppelin
+ *
+ */
+public final class LogicaVectorial {
 	
 	/**
 	 * Calcula el peso global de un termino.
@@ -13,26 +18,43 @@ public class LogicaVectorial {
 	 * @param ni cantidad de documentos en los que aparecene.
 	 * @return peso global del documento.
 	 */
-	public static final double calcularPesoglobal(final int cantDocumentos, final int ni) {
+	public static double calcularPesoglobal(final int cantDocumentos, 
+			final int ni) {
 		 return Math.log10(cantDocumentos + ni);
 	}
 	/**
 	 * 
 	 * @param terminos1 documento a calcular la similitud con terminos2.
-	 * @param terminos2
+	 * @param terminos2 consulta.
 	 * @param cantDocumentos total de documentos.
 	 * @return similitud.
 	 */
-	public static final double cacularSimilitud(Collection<RegistroTerminoDocumentos> terminos1,Collection<RegistroTerminoDocumentos> terminos2,int cantDocumentos) {
+	public static double cacularSimilitud(
+			final Collection<RegistroTerminoDocumentos> terminos1, 
+			final Collection<RegistroTerminoDocumentos> terminos2, 
+			final int cantDocumentos) {
+		
 		double similitud = 0;
 		Iterator<RegistroTerminoDocumentos> itera = terminos1.iterator();
 		while (itera.hasNext()) {
 			    RegistroTerminoDocumentos registro = itera.next();
 			    if (terminos2.contains(registro)) {
-			    	double pesoGlobal=calcularPesoglobal(cantDocumentos, registro.getCantidadDocumentos());
-			    	similitud+=(registro.getCantidadDocumentos()*(pesoGlobal*pesoGlobal));
+			    	
+			    	double pesoGlobal = calcularPesoglobal(cantDocumentos,
+			    				registro.getCantidadDocumentos());
+			    	
+			    	similitud += (registro.getCantidadDocumentos() 
+			    			* (pesoGlobal * pesoGlobal));
                 }
 		}
 		return similitud;
+		
+	}
+	
+	/**
+	 * Constructor de la clase.
+	 */
+	private LogicaVectorial() {
+		super();
 	}
 }
