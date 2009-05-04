@@ -94,7 +94,7 @@ public final class Main {
 			tree.insertar(reg);
 			System.out.println("Inserto [8]");
 			((BStar) tree).listar();
-			
+/*			
 			clave = new Clave();
 			reg = new RegistroNodo();
 			clave.setClave("2");
@@ -118,7 +118,7 @@ public final class Main {
 			tree.insertar(reg);
 			System.out.println("Inserto [91]");
 			((BStar) tree).listar();
-
+*/
 			clave = new Clave();
 			reg = new RegistroNodo();
 			clave.setClave("6");
@@ -126,7 +126,7 @@ public final class Main {
 			tree.insertar(reg);
 			System.out.println("Inserto [6]");
 			((BStar) tree).listar();
-			
+/*			
 			clave = new Clave();
 			reg = new RegistroNodo();
 			clave.setClave("92");
@@ -150,7 +150,7 @@ public final class Main {
 			tree.insertar(reg);
 			System.out.println("Inserto [94]");
 			((BStar) tree).listar();
-			
+*/			
 		} catch (Exception e) {
 			logger.error("Error: " + e);
 			e.printStackTrace();
