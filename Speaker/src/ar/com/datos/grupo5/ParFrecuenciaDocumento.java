@@ -66,9 +66,19 @@ public class ParFrecuenciaDocumento {
 		this.offsetDocumento = 0L;
 	}
 	
-	public int getTamanio() {
+	/**
+	 * Obtiene el tamaño del objeto.
+	 * @return el tamaño del objeto.
+	 */
+	public final int getTamanio() {
 		return Constantes.SIZE_OF_LONG * 2;
 	}
+	
+	/**
+	 * Comparador de dos objetos ParFrecuenciaDocumento.
+	 * @param o objeto a ser comparado con this.
+	 * @return True si son iguales, false si no lo son.
+	 */
 	public final boolean equals(final Object o) {
 		return (this.getOffsetDocumento() == ((RegistroTerminoDocumentos)o).getIdTermino());
 	}
