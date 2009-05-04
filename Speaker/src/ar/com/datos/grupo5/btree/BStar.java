@@ -314,7 +314,20 @@ public final class BStar implements BTree {
 			//Si no puedo, veo con cual lo puedo Splitear
 			if (!pasarRegistro(nodo, registro)) {
 				
-				split(nodo);
+				Nodo padre = split(nodo);
+				while (padre.isOverflow()) {
+					if (padre.getNroBloquePadre() < 0) {
+						
+					} else {
+						padre = split(padre);
+					}
+				}
+				
+				archivo.escribirBloque(padre.getBytes(), padre
+						.getNroBloque());
+				
+				guardarDatosAdministrativos();
+				cerrarArchivos();
 				
 				return true;
 			}
@@ -331,10 +344,10 @@ public final class BStar implements BTree {
 
 	/**
 	 * Split interno.
-	 * @param nodo
-	 * @throws IOException
+	 * @param nodo .
+	 * @throws IOException .
 	 */
-	private void split(Nodo nodo) throws IOException {
+	private Nodo split(final Nodo nodo) throws IOException {
 		
 		Nodo nodoHno = new Nodo();
 		Nodo nodoPadre = new Nodo();
@@ -365,13 +378,14 @@ public final class BStar implements BTree {
 		archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
 		archivo.escribirBloque(nodoActual.getBytes(), nodoActual
 				.getNroBloque());
-		archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
-				.getNroBloque());
+		if (!nodoPadre.isOverflow()) {
+			archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
+					.getNroBloque());
+		}
 		archivo.escribirBloque(nodoHno.getBytes(), nodoHno
 				.getNroBloque());
 		
-		guardarDatosAdministrativos();
-		cerrarArchivos();
+		return nodoPadre;
 	}
 	
 	/**
