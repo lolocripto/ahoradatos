@@ -292,22 +292,7 @@ public final class BStar implements BTree {
 		} else if (nodo.getNroBloquePadre() < 0) {
 			// Es la raiz.
 			// Splitear nodo
-			ArrayList<Nodo> nodos = nodo.splitRaiz(ultimoBloque);
-			nodoRaiz = nodos.get(1);
-			nodoActual = nodos.get(0);
-			ultimoBloque += 2;
-			
-			archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
-					.getNroBloque());
-			archivo.escribirBloque(nodoActual.getBytes(),
-					nodoActual.getNroBloque());
-			archivo.escribirBloque(nodo.getBytes(), nodo
-					.getNroBloque());
-			
-			guardarDatosAdministrativos();
-			cerrarArchivos();
-			
-			return true;
+			return splitRaiz(nodo);
 				
 		} else {
 			//Intento pasar el registro.
@@ -317,18 +302,7 @@ public final class BStar implements BTree {
 				Nodo padre = split(nodo);
 				while (padre.isOverflow()) {
 					if (padre.getNroBloquePadre() < 0) {
-						ArrayList<Nodo> nodos = padre.splitRaiz(ultimoBloque);
-						nodoRaiz = nodos.get(1);
-						nodoActual = nodos.get(0);
-						ultimoBloque += 2;
-						
-						archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
-								.getNroBloque());
-						archivo.escribirBloque(nodoActual.getBytes(),
-								nodoActual.getNroBloque());
-						archivo.escribirBloque(padre.getBytes(), nodo
-								.getNroBloque());
-						padre.setOverflow(false);
+						return splitRaiz(padre);
 					} else {
 						padre = split(padre);
 					}
@@ -352,7 +326,32 @@ public final class BStar implements BTree {
 		
 		return true;
 	}
-
+	
+	/*
+	 * Split interno.
+	 * @param nodo .
+	 * @throws IOException .
+	 */
+	private boolean splitRaiz(final Nodo nodo) throws IOException{
+		ArrayList<Nodo> nodos = nodo.splitRaiz(ultimoBloque);
+		nodoRaiz = nodos.get(1);
+		nodoActual = nodos.get(0);
+		ultimoBloque += 2;
+		
+		archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
+				.getNroBloque());
+		archivo.escribirBloque(nodoActual.getBytes(),
+				nodoActual.getNroBloque());
+		archivo.escribirBloque(nodo.getBytes(), nodo
+				.getNroBloque());
+		
+		guardarDatosAdministrativos();
+		cerrarArchivos();
+		
+		return true;
+	}
+	
+	
 	/**
 	 * Split interno.
 	 * @param nodo .
