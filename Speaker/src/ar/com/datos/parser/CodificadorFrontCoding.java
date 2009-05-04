@@ -1,5 +1,7 @@
 package ar.com.datos.parser;
 
+import gnu.java.beans.editors.StringEditor;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -62,27 +64,30 @@ public class CodificadorFrontCoding {
 	 * @param linea
 	 * @return
 	 */
-	public static String[] decodificar(String linea) {
+	public static Collection<String> decodificar(String linea) {
 		char[] caracteresLinea = linea.toCharArray();
 		int i = 0;
-		String[] listaPalabras = null ;
+		Collection<String> listaPalabras = new ArrayList<String>();
+		String terminoAnterior = new String();
 		while (i< caracteresLinea.length) {
- 		 int caracteres = caracteresLinea[i];
- 		 String terminoAnterior = new String();
+ 		 Character caracter = new Character(linea.charAt(i));
+ 		 int caracteresCompartidos = Integer.parseInt(caracter.toString());
  		 i++;
-		 int longitud = caracteresLinea[i];
-		 String terminoActual = new String(caracteresLinea,i,i+longitud);
-		 String terminoCompleto = new String();
-		 if (caracteres != 0) {
-			 terminoCompleto = terminoAnterior.substring(0, caracteres)+terminoActual;
+ 		 Character caracter2 = new Character(linea.charAt(i));
+		 int longitud = Integer.parseInt(caracter2.toString());
+ 		 String terminoActual = new String(caracteresLinea,i+1,longitud);
+ 		  String terminoCompleto = new String();
+		 if (caracteresCompartidos != 0) {
+			 terminoCompleto = terminoAnterior.substring(0, caracteresCompartidos)+terminoActual;
 		 }
 		 else {
 			 terminoCompleto = terminoActual;
 		 }
-		 i += longitud;
-		  listaPalabras[listaPalabras.length] = terminoCompleto;
+		 i += longitud+1;
+		 listaPalabras.add(terminoCompleto);
+  	     terminoAnterior = terminoCompleto;
 		}
-		
+     		
 		return listaPalabras;
 	}
 	    
