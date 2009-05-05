@@ -91,8 +91,12 @@ public class ArchivoBloques extends Directo {
 	 *             Excepcion de extrada/salida.
 	 */
 	public void escribirBloque(final byte[] bytes, final int nroBloque)
-			throws IOException {
+			throws IOException { 
+		
+		//este metodo esta fallando cuando por ej quiero poner el bloque numero 4 y solo hay 2 bloques, lo escribe en la posicion numero 3
+		//habria que lanzar una excepcion o generar los bloques vacios que corresponda. para colocar en posicion mi bloque 4
 
+		
 		// Me posiciono al comienzo del bloque.
 		if (file.length() <= (nroBloque * tamanio)) {
 			file.seek(file.length());
