@@ -1,6 +1,8 @@
 package ar.com.datos.sortExterno;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class ReplacementSelection {
 	private List<NodoRS> listaNodo;
 	private List<String> listaParticiones;
 	private int memoria;
-	private int tam;
+	private int cantidadNodos;
 	
 	public ReplacementSelection(){
 	}
@@ -37,28 +39,42 @@ public class ReplacementSelection {
 		this.memoria = Constantes.TAMANIO_BUFFER_REPLACEMENT_SELECTION;
 	}
 	
+	/**
+	 * Devuelve la cantidad de elementos no congelados.
+	 * @return Cantidad de elementos no congelados.
+	 */
 	private int cuantosDisponibles(){
-		/*
-		list<NodoRS*>::iterator i;
+		
+		Iterator<NodoRS> it;
+		NodoRS nodo;
+		
+		it = this.listaNodo.iterator();
 		int cont=0;
-		for(i=listaNodo.begin();i!=listaNodo.end();i++)
-		{
-			if (((NodoRS*)(*i))->getFlag() == 0) cont+=1;
+		
+		while (it.hasNext()) {
+			nodo = it.next();
+			if (nodo.getFlag() == 0 ) {
+				cont++;
+			}
 		}
 		return cont;
-		*/
-		return 0;
 	}
 
-	private int hacerDisponible(){
-		/*
-		list<NodoRS*>::iterator i;
-		for(i=listaNodo.begin();i!=listaNodo.end();i++)
-		{
-			((NodoRS*)(*i))->setFlag(0);
+	/**
+	 * Convierte los nodos congelados en nodos diponibles.
+	 * @return 
+	 */
+	private void hacerDisponible(){
+		
+		Iterator<NodoRS> it;
+		NodoRS nodo;
+		
+		it = this.listaNodo.iterator();
+		
+		while (it.hasNext()) {
+			nodo = it.next();
+			nodo.setFlag(0);
 		}
-		*/
-		return 0;
 	}
 
 	public int listar(){
@@ -96,31 +112,35 @@ public class ReplacementSelection {
 	/**
 	 * 
 	 * @return
-	 * 		devuelve true si el nodo esta congelado.
-	 * False si no lo esta.
+	 * 		devuelve true si todos los nodos están congelados.
+	 * False si no lo están.
 	 */
 	private boolean nodoRSCongelado() {
-		/*
-		int f = 0;
+		
+		int cantCongelada = 0;
 		Iterator<NodoRS> it = this.listaNodo.iterator();
 		NodoRS nodo;
 		while (it.hasNext()) {
 			nodo = it.next();
-			if (nodo.getFlag() == 10) {
-				f++;	
+			if (nodo.getFlag() == 1) {
+				cantCongelada++;	
 			}
 		}
-		
-		return (f == tam);
-		*/
-		return true;
+		return (cantCongelada == this.cantidadNodos);
 	}
 
-	private boolean NodoRSVacio(){
-	//	return this.listaNodo.isEmpty();
-		return true;
+	/**
+	 * Verifica si la lista tiene más elementos.
+	 * @return True si no tiene más elementos. False si aún tiene.
+	 */
+	private boolean nodoRSVacio(){
+		return this.listaNodo.isEmpty();
 	}
 
+	/**
+	 * Busca el menor de los nodos.
+	 * @return el menor de los nodos.
+	 */
 	private NodoRS obtenerMenorNodo(){
 		
 		int comp;
@@ -140,122 +160,101 @@ public class ReplacementSelection {
 		return nodoJ;
 	}
 
+	/**
+	 * Metodo que se encarga de ordenar lo elementos leidos y
+	 * generar las particiones.
+	 * @return cantidad de particiones.
+	 */
 	public int ordenar(){
-		int longitud,flag,desc;
-		int idT,idD,fdt,idT2,idD2,fdt2,comp;
-		long nRegistros,cont=0;
-		NodoRS N;
-		NodoRS N1;
-		NodoRS N2;
+		int flag, desc, comp;
+		long nRegistros, cont=0;
+		NodoRS nodo = new NodoRS();
+		NodoRS nodo1 = new NodoRS();
 		NodoRS menor;
-		String part;
-		Character chr = '1';
-		File P;
+		byte[] dataNodo = new byte[nodo.getTamanio()];
+		Integer particionNumero = new Integer(1);
+		RandomAccessFile P;
+		
 		//1-calculo tamaño de lista de objetos a ordenar
-		tam = M / ( 3 * Constantes.SIZE_OF_INT ); //divido por el tamaño de un nodo
+		this.cantidadNodos = this.memoria / nodo.getTamanio();
+		
 		//2-abro el archivo
-		/*
-		File f = fopen(arch.c_str(),"rb");
-		if (f != NULL)
-		{
-			fseek(f,0,SEEK_END);
-			nRegistros = ftell(f)/(3*sizeof(int));
-			fseek(f,0,SEEK_SET);
-			//3-cargo por primera vez el buffer(Lista de NodoRS)
-			for(int i=0;i<tam;i++)
-			{
-				fread(&idT,1,sizeof(int),f);
-				fread(&idD,1,sizeof(int),f);
-				fread(&fdt,1,sizeof(int),f);
-				N = new NodoRS(idT,idD,fdt);
-				this->listaNodo.insert(listaNodo.end(),N);
-				cont +=1;
-			}
-			while (!NodoRSCongelado() && !NodoRSVacio())
-			{
-			//4-arranca el bucle (mientras el buffer no este vacio ni congelado)
-			//4.1-creo Pi
-			part = (char*)malloc(arch.size() + 7);
-		    strcpy(part,arch.c_str());
-			strcat(part,"part");
-			longitud = strlen(part);
-			*(part + longitud) = chr;
-			*(part + longitud + 1) = '\0';
-			P = fopen(part,"w+b");
-			flag=0;
-			while (!NodoRSCongelado() && !NodoRSVacio() && flag==0)
-			{
-			//4.2-tomo el menor del buffer con flag en disponible
-			menor = obtenerMenorNodo();
-			//4.3-lo grabo en Pi y lo elimino de listaNodo
-			idT2 = menor->getIdTermino();
-			idD2 = menor->getIdDocumento();
-			fdt2 = menor->getFTD();
-			fwrite(&idT2,1,sizeof(int),P);
-			fwrite(&idD2,1,sizeof(int),P);
-			fwrite(&fdt2,1,sizeof(int),P);
-			listaNodo.remove(menor);
-			//4.4-leo el siguiente del archivo f
-			if (cont<nRegistros)
-			{
-				fread(&idT,1,sizeof(int),f);
-				fread(&idD,1,sizeof(int),f);
-				fread(&fdt,1,sizeof(int),f);
-				cont+=1;
-				//4.4.1-si reg(f) < grabado -> congelado
-				N1 = new NodoRS(idT,idD,fdt);
-				N2 = new NodoRS(idT2,idD2,fdt2);
-				comp = ((NodoRS*)N1)->comparar((NodoRS*)N2);
-				if ( comp == -1 )  
-				{
-					N = new NodoRS(idT,idD,fdt);
-					N->setFlag(1);
-					this->listaNodo.insert(listaNodo.end(),N);
+		try {
+			RandomAccessFile archivoTrabajo = new RandomAccessFile(arch,Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			if (archivoTrabajo != null) {
+				nRegistros = archivoTrabajo.length() / nodo.getTamanio();
+				archivoTrabajo.seek(0);
+				//3-cargo por primera vez el buffer(Lista de NodoRS)
+				for(int i=0; i < this.cantidadNodos; i++) {
+					archivoTrabajo.read(dataNodo, 0, dataNodo.length);
+					nodo.setBytes(dataNodo);
+					this.listaNodo.add(nodo);
+					dataNodo = new byte[nodo.getTamanio()];
+					cont +=1;
 				}
-				//4.4.2-si reg(f) > grabado -> disponible
-				if ( comp == 1 )  
-				{
-					N = new NodoRS(idT,idD,fdt);
-					N->setFlag(0);
-					this->listaNodo.insert(listaNodo.end(),N);
-				}
-				delete N1;
-				delete N2;
-			}
-			else 
-				{
-					flag=1;
-					desc = cuantosDisponibles();
-					//guardo los disponibles que quedaron en la particion 
-					for (int j=0;j<desc;j++)
-					{
-					menor = obtenerMenorNodo();
-					idT2 = menor->getIdTermino();
-					idD2 = menor->getIdDocumento();
-					fdt2 = menor->getFTD();
-					fwrite(&idT2,1,sizeof(int),P);
-					fwrite(&idD2,1,sizeof(int),P);
-					fwrite(&fdt2,1,sizeof(int),P);
-					listaNodo.remove(menor);
+				
+				while (!nodoRSCongelado() && !nodoRSVacio()) {
+					//4-arranca el bucle (mientras el buffer no este vacio ni congelado)
+					//4.1-creo Pi
+					String nombreParticion = new String(this.arch + "part" + particionNumero.toString()); 
+					P = new RandomAccessFile(nombreParticion,Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+					flag=0;
+					while (!nodoRSCongelado() && !nodoRSVacio() && flag==0) {
+						
+						//4.2-tomo el menor del buffer con flag en disponible
+						menor = obtenerMenorNodo();
+						//4.3-lo grabo en Pi y lo elimino de listaNodo
+						dataNodo = menor.getBytes();
+						P.write(dataNodo, 0, dataNodo.length);
+						this.listaNodo.remove(menor);
+						//4.4-leo el siguiente del archivo f
+						if (cont<nRegistros)
+						{
+							nodo1 = new NodoRS();
+							archivoTrabajo.read(dataNodo,0,dataNodo.length);
+							nodo1.setBytes(dataNodo); //idT,idD,fdt
+							cont++;
+							//4.4.1-si reg(f) < grabado -> congelado = nodo1 < menor
+							comp = nodo1.comparar(menor);
+							if (comp == -1) {
+								nodo1.setFlag(1);
+								this.listaNodo.add(nodo1);
+							}
+							//4.4.2-si reg(f) > grabado -> disponible = nodo1 > menor
+							if (comp == 1)  
+							{
+								nodo1.setFlag(0);
+								this.listaNodo.add(nodo1);
+							}
+						} else {
+							flag=1;
+							desc = cuantosDisponibles();
+							//guardo los disponibles que quedaron en la particion 
+							for (int j=0;j<desc;j++)
+							{
+								menor = obtenerMenorNodo();
+								//4.3-lo grabo en Pi y lo elimino de listaNodo
+								dataNodo = menor.getBytes();
+								P.write(dataNodo, 0, dataNodo.length);
+								this.listaNodo.remove(menor);
+							}
+						}
 					}
+					//5-cierro Pi y registro que la guarde
+					P.close();
+					listaParticiones.add(nombreParticion);
+					//6-pongo los flag en disponible y vuelvo a empezar
+					hacerDisponible();
+					particionNumero++;
 				}
+				archivoTrabajo.close();
 			}
-			//5-cierro Pi y registro que la guarde
-			fclose(P);
-			listaParticiones.insert(listaParticiones.end(),part);
-			//6-pongo los flag en disponible y vuelvo a empezar
-			hacerDisponible();
-			chr += 1;
-			}
-			fclose(f);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0;
 		}
-		if (part != NULL)
-		{
-			//free((char*)part);
-			part = NULL;
-		}
-		*/
-		return 0;
+		return this.listaParticiones.size();
 	}
 
 	/**
