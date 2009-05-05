@@ -116,7 +116,7 @@ public class ArchivoBloques extends Directo {
 
 /**
  * Método que se diferencia de "escribirBloque" en la libertad de poder escribir bloques en posiciones
- * separadas del archivo, es decir, poder escribir el bloque 7 sin tener el bloque 6
+ * separadas del archivo, es decir, poder escribir el bloque 7 sin tener el bloque 6.
  * 
  * @param bytes
  *            Es el registro que se va a agregar al archivo.

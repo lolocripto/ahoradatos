@@ -4,10 +4,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.utils.Conversiones;
 
 public class Contenedor {
@@ -56,28 +56,25 @@ public class Contenedor {
 		DataInputStream dis = new DataInputStream(bis);
 		
 		ArrayList<Contenedor> lista = new ArrayList<Contenedor>();
-		
-		int i =0;
 		int longitud;
 		
-		while (i<listaSerializada.length){
-			
-		
+		while (true){
 		
 		try {
+			longitud = dis.readInt(); //leo la longitud del dato del contenedor
+			byte[] datos = new byte[longitud]; //genero una variable aux para almacenar el dato
+			dis.read(datos, 0, longitud); //leo tantos bytes como diga la longitud
 			
-			longitud = dis.readInt();
-			byte[] datos = new byte[longitud];
-			dis.read(datos, 0, longitud);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			Contenedor cont = new Contenedor(); //genero el nuevo contenedor
+			cont.setDato(datos);  // seteo el dato que acabo de levantar
+			lista.add(cont); //agrego el contenedor a la lista
+		} catch (EOFException e) {
+			return lista;
+		} catch (IOException e){
 			e.printStackTrace();
+			return lista;
 		}
-		
-		
 		}
-	
-	return null;
 	}
 
 	public byte[] getDato() {
