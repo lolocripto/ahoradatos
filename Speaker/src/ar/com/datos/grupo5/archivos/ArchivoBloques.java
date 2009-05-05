@@ -50,7 +50,7 @@ public class ArchivoBloques extends Directo {
 	/**
 	 * Método para recuperar un bloque de un archivo directo por bloques.
 	 * @param offset
-	 *              La posición en la cual empieza el registro buscado.
+	 *              el numero de nodo buscado
 	 * @return 
 	 *        Retorna el registro que se encuentra en la posición offset.
 	 * @throws IOException .
