@@ -8,7 +8,7 @@ import ar.com.datos.grupo5.Constantes;
 
 
 /**
- * @author xxvkue
+ * @author Led Zeppelin
  * @version 1.0
  * @created 04-May-2009 04:16:43 p.m.
  */
@@ -17,7 +17,7 @@ public class ReplacementSelection {
 	private String arch;
 	private List<NodoRS> listaNodo;
 	private List<String> listaParticiones;
-	private int M;
+	private int memoria;
 	private int tam;
 	
 	public ReplacementSelection(){
@@ -27,11 +27,14 @@ public class ReplacementSelection {
 	}
 
 	/**
-	 * 
-	 * @param arch
+	 * Define el nombre del archivo y lee la cantidad de memoria 
+	 * en bytes a usar.
+	 * @param archExt Nombre del archivo que tiene 
+	 * los elementos a ordena.
 	 */
-	public ReplacementSelection(String arch){
-
+	public ReplacementSelection(String archExt){
+		this.arch = archExt;
+		this.memoria = Constantes.TAMANIO_BUFFER_REPLACEMENT_SELECTION;
 	}
 	
 	private int cuantosDisponibles(){

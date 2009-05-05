@@ -91,6 +91,9 @@ public final class Constantes {
 	public static final int TAMANIO_BUFFER_ESCRITURA = Integer
 			.parseInt(getXML("TAMANIO_BUFFER_ESCRITURA"));
 	
+	
+	public static final int TAMANIO_BUFFER_REPLACEMENT_SELECTION = Integer
+			.parseInt(getXML("TAMANIO_BUFFER_REPLACEMENT_SELECTION"));
 	/**
 	 * Abrir un archivo para lectura.
 	 */
