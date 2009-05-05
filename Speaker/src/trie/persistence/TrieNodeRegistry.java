@@ -187,8 +187,19 @@ public class TrieNodeRegistry {
 			cont.setDato(this.serializar());
 			return cont;
 			
-		}
+		}	
 		
+		public Nodo getNodo(){
+			
+			Nodo miNodo = new Nodo();
+			miNodo.setContenido(this.contenido);
+			
+			PunteroSonido ps = new PunteroSonido(this.puntero);
+			
+			miNodo.setPuntero(ps);
+			return miNodo;
+			
+		}
 	
 		public void setNroNodo(long nroBloque) {
 			this.nroNodo = nroBloque;
