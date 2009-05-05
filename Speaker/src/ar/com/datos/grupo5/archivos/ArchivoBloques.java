@@ -113,6 +113,17 @@ public class ArchivoBloques extends Directo {
 		
 	}
 
+	
+	public boolean estaVacio(){
+		try {
+			if (file.length() == 0){
+				return true;
+			}else return false;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
 
 /**
  * Método que se diferencia de "escribirBloque" en la libertad de poder escribir bloques en posiciones
