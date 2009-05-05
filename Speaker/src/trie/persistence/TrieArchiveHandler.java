@@ -21,7 +21,15 @@ public class TrieArchiveHandler {
 		miArchivo = new ArchivoBloques(tamanioBloque);
 		try {
 			miArchivo.abrir(rutaArch, Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-		} catch (FileNotFoundException e) {
+			
+			if (miArchivo.estaVacio()){
+				this.inicializarArchivo();
+			}
+			
+			Contenedor cont = Contenedor.rehidratar(miArchivo.leerBloque(0));
+			AdministrationRegistry.hidratar(cont);
+			
+		} catch (Exception e) {
 			System.out.println("no se puede abrir el archivo de trie");
 			e.printStackTrace();
 		}
@@ -30,7 +38,10 @@ public class TrieArchiveHandler {
 	
 	public void closeArchivo(){
 		try {
+			
+			miArchivo.escribirBloque(AdministrationRegistry.getPaqueteSerializado().serializar(), 0);
 			miArchivo.cerrar();
+			
 		} catch (IOException e) {
 			System.out.println("no se ha podido cerrar el archivo de trie");
 			e.printStackTrace();
@@ -38,6 +49,19 @@ public class TrieArchiveHandler {
 		
 	}
 	
+	
+	private void inicializarArchivo(){
+		
+		AdministrationRegistry.setCantNodos(0);
+		
+		try {
+			miArchivo.escribirBloque(AdministrationRegistry.getPaqueteSerializado().serializar(), 0);
+		} catch (IOException e) {
+			System.out.println("no se ha podido inicializar el archivo de trie");
+			e.printStackTrace();
+		}
+		
+	}
 	
 	public void guardarNodo(TrieNodeRegistry registroNodo){
 		
