@@ -3,6 +3,7 @@ package ar.com.datos.sortExterno;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,6 +24,8 @@ public class ReplacementSelection {
 	private int cantidadNodos;
 	
 	public ReplacementSelection(){
+		this.listaNodo = new ArrayList<NodoRS>();
+		this.listaParticiones = new ArrayList<String>();
 	}
 	
 	public void finalize() throws Throwable {
@@ -37,6 +40,8 @@ public class ReplacementSelection {
 	public ReplacementSelection(String archExt){
 		this.arch = archExt;
 		this.memoria = Constantes.TAMANIO_BUFFER_REPLACEMENT_SELECTION;
+		this.listaNodo = new ArrayList<NodoRS>();
+		this.listaParticiones = new ArrayList<String>();
 	}
 	
 	/**
@@ -185,11 +190,11 @@ public class ReplacementSelection {
 				nRegistros = archivoTrabajo.length() / nodo.getTamanio();
 				archivoTrabajo.seek(0);
 				//3-cargo por primera vez el buffer(Lista de NodoRS)
-				for(int i=0; i < this.cantidadNodos; i++) {
+				for(int i=0; i < this.cantidadNodos && i < nRegistros; i++) {
 					archivoTrabajo.read(dataNodo, 0, dataNodo.length);
 					nodo.setBytes(dataNodo);
 					this.listaNodo.add(nodo);
-					dataNodo = new byte[nodo.getTamanio()];
+					nodo = new NodoRS();
 					cont +=1;
 				}
 				

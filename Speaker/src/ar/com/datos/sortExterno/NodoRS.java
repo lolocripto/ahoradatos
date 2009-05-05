@@ -65,8 +65,6 @@ public class NodoRS {
 		this.tamanio = Constantes.SIZE_OF_LONG * 2;
 	}
 
-	//TODO: evaluar el comparar.
-	//TODO: Ver el tema si contempla que esten congelados
 	//TODO: Creo que necesito el equals
 	/**
 	 * Comparar es una funcion que devuelve: 0 si this = NRS 1 si this > NRS -1 si
@@ -76,7 +74,7 @@ public class NodoRS {
 	 * @return 0
 	 */
 	public final int comparar(final NodoRS nRS) {
-		if ((this.flag == 1)&&(nRS.getFlag() == 0)) return 1;
+		if (this.flag == 1 && nRS.getFlag() == 0) return 1;
 		else
 		if ((nRS.getFlag()==1)&&(this.flag==0)) return -1;
 		else
@@ -84,13 +82,13 @@ public class NodoRS {
 		else
 		if ((nRS.getFlag()==0)&&(this.flag==0))
 		{
-			if ((this.idTermino==nRS.getIdTermino())&&(this.idDocumento==nRS.getIdDocumento()))
+			if (this.idTermino == nRS.getIdTermino() && this.idDocumento == nRS.getIdDocumento())
 				return 0;
-			else if (this.idTermino>nRS.getIdTermino())
+			else if (this.idTermino > nRS.getIdTermino())
 					return 1;
 			     else if (this.idTermino < nRS.getIdTermino())
 							return -1;
-					  else if ((this.idTermino == nRS.getIdTermino())&&(this.idDocumento > nRS.getIdDocumento()))
+					  else if (this.idTermino == nRS.getIdTermino() && this.idDocumento > nRS.getIdDocumento())
 								return 1;
 							else if ((this.idTermino==nRS.getIdTermino())&&(this.idDocumento<nRS.getIdDocumento()))
 									return -1;
