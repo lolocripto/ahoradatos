@@ -342,33 +342,44 @@ public class Nodo {
 			nodoPadre.insertarRegistro(reg);
 			
 		} else {
-			// -> El nuevo nodo es MENOR que el nodo actual.
-			// Paso todos los regs hasta el que garantiza el 66% de ocupacion
-			int pos2 = nodoPadre.buscarRegistro(getPrimerRegistro().getClave());
-			int cargaInicial = nodoHermano.minIndiceCarga;
-			for (int index = 0; index < cargaInicial; index++) {
-				RegistroNodo reg = nodoHermano.removerRegistro(0);
+			while (nodoHermano.minIndiceCarga < nodoHermano.registros.size()) {
+				RegistroNodo reg = nodoHermano.removerRegistro(nodoHermano.
+						minIndiceCarga);
+				regs.add(reg);
+			}
+
+			// ahora, tengo que vaciar el hno y llenarlo otra vez
+			regs.addAll(getRegistros());
+			getRegistros().clear();
+			setEspacioOcupado(0);
+			
+			//ahora lo cargo hasta la minima ocupacion
+			setMinIndiceCarga(Constantes.MENOR);
+			while ((regs.size() > 0) && (!tieneCargaMinima())) {
+				RegistroNodo reg = regs.remove(0);
+				insertarRegistro(reg);
+			}
+			// Luego lleno el nodo con lo del hermano siguiente
+			while (regs.size() > 0) {
+				RegistroNodo reg = regs.remove(0);
 				nuevoHermano.insertarRegistro(reg);
 			}
-			// ahora, tengo que vaciar el hno y llenarlo otra vez
-			nodoHermano.setMinIndiceCarga(Constantes.MENOR);
-			while (!nodoHermano.tieneCargaMinima()) {
-				RegistroNodo reg = removerRegistro(0);
-				nodoHermano.insertarRegistro(reg);
-			}
-			setMinIndiceCarga(Constantes.MENOR);
 			// Ahora tengo que cargar las claves en el padre, y listo!
-			RegistroNodo reg = nodoPadre.removerRegistro(pos2);
+			pos = nodoPadre.buscarRegistro(getPrimerRegistro().getClave());
+			RegistroNodo reg = nodoPadre.removerRegistro(pos);
 			reg.setClave(getPrimerRegistro().getClave());
 			nodoPadre.insertarRegistro(reg);
+			
 			reg = new RegistroNodo();
-			reg.setClave(nodoHermano.getPrimerRegistro().getClave());
-			reg.setNroBloqueDerecho(nodoHermano.getNroBloque());
-			reg.setNroBloqueIzquierdo(nuevoHermano.getNroBloque());
+			reg.setClave(nuevoHermano.getPrimerRegistro().getClave());
+			reg.setNroBloqueIzquierdo(getNroBloque());
+			reg.setNroBloqueDerecho(nuevoHermano.getNroBloque());
 			nodoPadre.insertarRegistro(reg);
 			
 		}
 		// Si quedo en overflow, va a haber que splitear el padre
+		if (nodoPadre.isOverflow())
+			return nodoPadre;
 		return nuevoHermano;
 	}
 	
