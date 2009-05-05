@@ -28,16 +28,13 @@ public class Nodo implements INodo{
 	public Nodo()
 	{
 		puntero=null;
-		// One child corresponding to one lowercase alphabet
 		hijo = new HashMap<String, INodo>(); 
 		this.isDirty = true;
 	}
 		
 	public Nodo(String letra)
 	{
-		// Cell 0 corresponds to the character 'a'
-		// Cell 1 corresponds to the character 'b'
-		// ... and so on
+		
 		contenido = letra;
 		puntero=null;
 		hijo =  new HashMap<String, INodo>();
@@ -46,9 +43,7 @@ public class Nodo implements INodo{
 	
 	public Nodo(char letra)
 	{
-		// Cell 0 corresponds to the character 'a'
-		// Cell 1 corresponds to the character 'b'
-		// ... and so on
+	
 		Character casteo = new Character(letra);
 		contenido = casteo.toString();
 		puntero=null;
