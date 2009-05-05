@@ -112,4 +112,32 @@ public class ArchivoBloques extends Directo {
 		}
 		
 	}
+
+
+/**
+ * Método que se diferencia de "escribirBloque" en la libertad de poder escribir bloques en posiciones
+ * separadas del archivo, es decir, poder escribir el bloque 7 sin tener el bloque 6
+ * 
+ * @param bytes
+ *            Es el registro que se va a agregar al archivo.
+ * @param nroBloque
+ *            Es la posición en donde comienza el bloque a modificar.
+ * @throws IOException
+ *             Excepcion de extrada/salida.
+ */
+public void escribirBloqueSalteado(final byte[] bytes, final int nroBloque)
+		throws IOException { 
+
+		file.seek(nroBloque * tamanio);
+	if (tamanio > (bytes.length)) {
+		file.write(bytes, 0, bytes.length);
+		byte[] bytesAux = new byte[tamanio - (bytes.length)];
+		file.write(bytesAux);
+	} else {
+		file.write(bytes, 0, tamanio);
+	}
+	
 }
+}
+
+
