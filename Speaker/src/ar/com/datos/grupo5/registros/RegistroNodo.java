@@ -167,6 +167,15 @@ public class RegistroNodo {
 	}
 	
 	/**
+	 * Este metodo permite obtener el bloque al cual hace referencia el nodo hoja
+	 * en ese bloque, estara almacenada (en ppio) la información que se busca
+	 * @return
+	 */
+	public final int getPunteroBloque(){
+		return this.nroBloqueDerecho;
+	}
+	
+	/**
 	 * @return .
 	 */
 	public final int hashCode() {
