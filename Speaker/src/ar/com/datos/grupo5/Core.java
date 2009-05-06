@@ -4,6 +4,7 @@ package ar.com.datos.grupo5;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
@@ -73,6 +74,15 @@ public class Core {
 	private static Logger logger = Logger.getLogger(Core.class);
 	
 	/**
+	 * Archivo de trabajo.
+	 */
+	private RandomAccessFile archivoTrabajo;
+	
+	/**
+	 * Administra las listas invertidas en el archivo de bloques.
+	 */
+	private ListasInvertidas listasInvertidas;
+	/**
 	 * Busca las palabras a grabar, graba el audio y lo guarda.
 	 * 
 	 * @param invocador
@@ -87,7 +97,6 @@ public class Core {
 		
 		logger.debug("Entre en load");
 		
-		RandomAccessFile archivoTrabajo;
 		try {
 			Iterator<IunidadDeHabla> iterador;
 
@@ -222,20 +231,10 @@ public class Core {
 				
 			}
 			
-			//Ahora tengo que realizar el replacement Selection
-			ReplacementSelection remplacementP
-						= new ReplacementSelection(Constantes.ARCHIVO_TRABAJO);
+			this.archivoTrabajo.close();
 			
-			remplacementP.ordenar();
-			
-			ArrayList<String> listaParticiones 
-						= remplacementP.getListaParticiones();
-			
-			Merge mergeManager 
-						= new Merge(listaParticiones, remplacementP.getArch());
-			
-			mergeManager.ejecutarMerge();
-			
+			generarListasInvertidas();
+
 			cerrarArchivo(invocador);
 		} catch (SimpleAudioPlayerException e) {
 			logger.error("Error: " + e.getMessage());
@@ -667,6 +666,82 @@ public class Core {
 		
 		logger.debug("Abrio el archivo de terminos globales");
 		return true;
+	}
+	
+	/**
+	 * Se encarga de la generacion y actualizacion 
+	 * de las listas invertidas.
+	 */
+	private void generarListasInvertidas() {
+		//Ahora tengo que realizar el replacement Selection
+		ReplacementSelection remplacementP
+					= new ReplacementSelection(Constantes.ARCHIVO_TRABAJO);
+		
+		remplacementP.ordenar();
+		
+		ArrayList<String> listaParticiones 
+					= remplacementP.getListaParticiones();
+		
+		Merge mergeManager 
+					= new Merge(listaParticiones, remplacementP.getArch());
+		
+		mergeManager.ejecutarMerge();
+		
+		long nRegistros = 0;
+		NodoRS nodo = new NodoRS();
+		byte[] dataNodo = new byte[nodo.getTamanio()];
+		try {
+			this.archivoTrabajo = new RandomAccessFile(
+					Constantes.ARCHIVO_TRABAJO,
+					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			
+			nRegistros = this.archivoTrabajo.length() / nodo.getTamanio();
+		
+			Long idTermino = 0L;
+			Long idDocumento = 0L;
+			Long frecuencia = 0L;
+			int i = 0;
+			this.archivoTrabajo.read(dataNodo, 0, dataNodo.length);
+			nodo.setBytes(dataNodo);
+			idTermino = nodo.getIdTermino();
+			idDocumento = nodo.getIdDocumento();
+			
+			//El documento siempre es el mismo
+			while (i < nRegistros) {
+				while (idTermino == nodo.getIdTermino() && idDocumento == nodo.getIdDocumento()&& i < nRegistros) {
+					frecuencia++;
+					i++;
+					this.archivoTrabajo.read(dataNodo, 0, dataNodo.length);
+					nodo = new NodoRS();
+					nodo.setBytes(dataNodo);
+				}
+				ParFrecuenciaDocumento parFrecDoc = new ParFrecuenciaDocumento();
+				parFrecDoc.setFrecuencia(frecuencia);
+				parFrecDoc.setOffsetDocumento(idDocumento);
+				
+				//Leo el termino
+				String termino = this.terminosGlobalesManager.leerTermino(idTermino);
+				//TODO:Pido al FTRS los datos del termino. Busco el termino
+				
+				
+				RegistroTerminoDocumentos regTerminoDocumentos 
+						= new RegistroTerminoDocumentos();
+				
+				//regTerminoDocumentos.
+				
+				
+				
+				idTermino = nodo.getIdTermino();
+				idDocumento = nodo.getIdDocumento();
+				frecuencia = 0L;
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

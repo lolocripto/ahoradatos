@@ -45,7 +45,7 @@ public class ListasInvertidas {
 	 * Lista que contiene los movimientos de los registros
 	 * de un bloque a otro.
 	 */
-	private Map<Long,Long> registrosMovidos;
+	private Map<Long, Long> registrosMovidos;
 	
 	/**
 	 * Tamaño que tiene el area de control.
