@@ -2,9 +2,11 @@ package ar.com.datos.grupo5;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.RandomAccessFile;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -17,6 +19,8 @@ import ar.com.datos.grupo5.registros.RegistroTerminoDocumentos;
 import ar.com.datos.parser.ITextInput;
 import ar.com.datos.parser.TextInterpreter;
 import ar.com.datos.reproduccionaudio.exception.SimpleAudioPlayerException;
+import ar.com.datos.sortExterno.NodoRS;
+import ar.com.datos.sortExterno.ReplacementSelection;
 
 
 /**
@@ -81,6 +85,7 @@ public class Core {
 		
 		logger.debug("Entre en load");
 		
+		RandomAccessFile archivoTrabajo;
 		try {
 			Iterator<IunidadDeHabla> iterador;
 
@@ -102,11 +107,15 @@ public class Core {
 				return "Intente denuevo";
 			}
 			
+			//TODO: Pisar el anterior!!
+			archivoTrabajo = new RandomAccessFile(Constantes.ARCHIVO_TRABAJO,Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			
+			NodoRS idTerminoIdDocumento;
 			/*
 			 * Creo el documento en el archivo de documentos.
 			 * TODO: Completar el tema de documentos.
 			 */
-			//Long offsetDoc;
+			Long offsetDoc = 0L;
 			//offsetDoc = this.documentManager.agregarDocumento(pathDocumento);
 			
 			IunidadDeHabla elemento;
@@ -123,23 +132,28 @@ public class Core {
 				/*
 				 * TODO: Cada palabra necesito agregarla al documento.
 				 */
-				
-				/*
-				 * TODO: Busco el termino en el FTRS.
-				 * regTerminoDocumentos = busqueda(elemento.getTextoEscrito());
-				 */
-				
-				/*
-				 * Si es nulo entonces no existe el termino en el ftrs
-				 * por lo tanto tampoco existe en el archivo de termino globales.
-				 */
-				if (regTerminoDocumentos == null) {
-					//Se encarga de agregar el termino que no existe.
-					regTerminoDocumentos 
-						= this.agregaTermino(elemento.getTextoEscrito());
+				// Si no es StopWord entonces utilizo el Ftrs.
+				if (!elemento.isStopWord()) {
+					/*
+					 * TODO: Busco el termino en el FTRS.
+					 * regTerminoDocumentos = busqueda(elemento.getTextoEscrito());
+					 */
+					
+					/*
+					 * Si es nulo entonces no existe el termino en el ftrs
+					 * por lo tanto tampoco existe en el archivo de termino globales.
+					 */
+					if (regTerminoDocumentos == null) {
+						//Se encarga de agregar el termino que no existe.
+						regTerminoDocumentos 
+							= this.agregaTermino(elemento.getTextoEscrito());
+					}
+					
+					//Escribo el idTermino junto con el offsetDoc
+					idTerminoIdDocumento = new NodoRS(regTerminoDocumentos.getIdTermino(), offsetDoc);
+					archivoTrabajo.write(idTerminoIdDocumento.getBytes(), 0, idTerminoIdDocumento.getTamanio());
+
 				}
-				
-				//TODO: Escribo el idTermino Junto con el offsetDoc
 				
 				/*
 				 * Si es una palabra pronunciable la proxima palabra, sino pido
@@ -204,6 +218,10 @@ public class Core {
 						offsetRegistroAudio);
 				
 			}
+			//Ahora tengo que realizar el replacement Selection
+			ReplacementSelection RP = new ReplacementSelection(Constantes.ARCHIVO_TRABAJO);
+			RP.ordenar();
+			
 			cerrarArchivo(invocador);
 		} catch (SimpleAudioPlayerException e) {
 			logger.error("Error: " + e.getMessage());

@@ -238,6 +238,13 @@ public final class Constantes {
 		getXML("ARCHIVO_DOCUMENTOS");
 	
 	/**
+	 * Archivo que usa el diccionario para guardar las palabras.
+	 */
+	public static final String ARCHIVO_TRABAJO = 
+		getXML("ARCHIVO_TRABAJO");
+	
+	
+	/**
 	 * Lee delarchivo de configuracion.
 	 * 
 	 * @param nombre clave para recuperar el valor.
