@@ -17,10 +17,10 @@ public class TestTrie {
 		
 	 System.out.println(System.currentTimeMillis());
 		
-	 PersistentNodeFactory factory = new PersistentNodeFactory();
+//	 PersistentNodeFactory factory = new PersistentNodeFactory();
 	 
 	 
-	 INodo uno = factory.createNodo(Nodo.class);
+	 INodo uno = PersistentNodeFactory.getNewNodo(" ");
 	 
 	 Trie T = new Trie(uno);
 		
@@ -28,7 +28,7 @@ public class TestTrie {
 		Long L = new Long(4123);
 		PunteroSonido p = new PunteroSonido(L);
 
-		T.insert("caca", p);
+		T.insert("casa", p);
 		T.insert("cacarusa", p);
 		T.insert("cacaroto", p);
 		T.insert("pis", p);

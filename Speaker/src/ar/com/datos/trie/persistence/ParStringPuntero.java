@@ -16,6 +16,9 @@ public class ParStringPuntero {
 	private String letraOpalabra;
 	private Long numeroNodo;
 	
+	private Long codigoNull = new Long (999999999);
+	
+	
 	public ParStringPuntero(Long numeroNodo, String letraOpalabra) {
 		super();
 		this.letraOpalabra = letraOpalabra;
@@ -34,7 +37,13 @@ public class ParStringPuntero {
 		
 		
 		try {
-			this.numeroNodo = dis.readLong(); //leo el long que hace referencia al numero de nodo
+			Long punteroSerializado = dis.readLong();
+			if (punteroSerializado == this.codigoNull){
+				this.numeroNodo = null;
+			}else{
+				
+				this.numeroNodo = punteroSerializado;
+			}
 			
 			byte[] aux = new byte[longString]; //genero un array auxiliar para leer el resto
 			dis.read(aux); //copio el resto del buffer en el aray auxiliar
@@ -69,7 +78,16 @@ public class ParStringPuntero {
 		DataOutputStream dos = new DataOutputStream(bos);
 		
 		try {
-			dos.write(Conversiones.longToArrayByte(this.numeroNodo));
+			
+			Long punteroAserializar;
+			
+			if (this.numeroNodo ==null){
+				punteroAserializar = this.codigoNull;
+			}else{
+				punteroAserializar = this.numeroNodo;
+			}
+			
+			dos.write(Conversiones.longToArrayByte(punteroAserializar));
 			dos.write(this.letraOpalabra.getBytes());
 			
 		} catch (IOException e) {
@@ -88,5 +106,23 @@ public class ParStringPuntero {
 		return nuevoContenedor;
 		
 	}
+
+
+	public boolean equals(Object obj) {
+		
+		if (obj instanceof ParStringPuntero){
+			
+			if(	((ParStringPuntero) obj).getLetraOpalabra().equalsIgnoreCase(this.letraOpalabra)){
+				return true;
+			}else{
+				return false;
+			}
+			
+		}else {
+			return false;
+		}
+	}
+	
+	
 	
 }

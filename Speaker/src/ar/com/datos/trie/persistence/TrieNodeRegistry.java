@@ -25,6 +25,47 @@ public class TrieNodeRegistry {
 		
 		private boolean isDirty;
 		
+		private Nodo nodoReferenciado;
+
+		/**
+		 * puntero a sonido, si la letra actual es la ultima de una palabra,
+		 * debiera haber un puntero hacia la ubicación de su sonido asociado.
+		 */
+		private Long puntero;
+		
+		public Long getPuntero() {
+			return puntero;
+		}
+
+
+		public void setPuntero(Long puntero) {
+			this.puntero = puntero;
+		}
+
+		/**
+		 * lista con los hijos y punteros a ellos. si fuese un nodo hoja esta lista no se usa					
+		 */
+		public ArrayList<ParStringPuntero> listaDepunteros;
+		
+
+		public TrieNodeRegistry(INodo unNodo) {
+			this.nroNodo = unNodo.getNumeroNodo();
+			this.contenido = unNodo.getContenido();
+			if (unNodo.getPuntero()!=null){
+			this.puntero = unNodo.getPuntero().getOffset();
+			}else{
+				this.puntero =null;
+			}
+			this.nodoReferenciado = (Nodo)unNodo;
+			unNodo.setRegistroAsociado(this);
+			
+			this.isDirty = true;
+			
+			listaDepunteros = new ArrayList<ParStringPuntero>();
+			
+		}
+		
+		
 		public boolean isDirty() {
 			return isDirty;
 		}
@@ -40,27 +81,9 @@ public class TrieNodeRegistry {
 		public void setContenido(String contenido) {
 			this.contenido = contenido;
 		}
-
-		/**
-		 * puntero a sonido, si la letra actual es la ultima de una palabra,
-		 * debiera haber un puntero hacia la ubicación de su sonido asociado.
-		 */
-		private Long puntero;
 		
-		/**
-		 * lista con los hijos y punteros a ellos. si fuese un nodo hoja esta lista no se usa					
-		 */
-		public ArrayList<ParStringPuntero> listaDepunteros;
 		
-
-		public TrieNodeRegistry(INodo unNodo) {
-			this.nroNodo = unNodo.getNumeroNodo();
-			this.contenido = unNodo.getContenido();
-			this.puntero = unNodo.getPuntero().getOffset();
-			
-			listaDepunteros = new ArrayList<ParStringPuntero>();
-			
-		}
+		
 		
 		public TrieNodeRegistry (byte[] registroSerializado){
 			
@@ -202,13 +225,17 @@ public class TrieNodeRegistry {
 		
 		public Nodo getNodo(){
 			
+			if (this.nodoReferenciado ==null){
 			Nodo miNodo = new Nodo();
 			miNodo.setContenido(this.contenido);
-			
 			PunteroSonido ps = new PunteroSonido(this.puntero);
-			
 			miNodo.setPuntero(ps);
+			miNodo.setRegistroAsociado(this);
+			this.nodoReferenciado = miNodo;
 			return miNodo;
+			}else{
+			 return this.nodoReferenciado;
+			}
 			
 		}
 	

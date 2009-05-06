@@ -10,18 +10,11 @@ public class Trie {
 	int profundidad;
 
 	/**
-	 * Constructor del Trie, genera la raiz vacia.
+	 * Constructor del Trie,recibe la raiz.
 	 */
-	public Trie()
-	{
-		root = new Nodo(); 
-		root.setContenido(" ");  // Root node contains blank - represents empty string.
-		profundidad = Constantes.SIZE_OF_TRIE + 1;
-	}
-	
-	public Trie (INodo unnodo){
-		this.root = unnodo;
-		root.setContenido(" ");  // Root node contains blank - represents empty string.
+
+	public Trie (INodo raiz){
+		this.root = raiz;
 		profundidad = Constantes.SIZE_OF_TRIE + 1;
 		
 	}
@@ -79,7 +72,7 @@ public class Trie {
 
 	
 
-	public boolean search(String s)
+	public PunteroSonido search(String s)
 	{
 		INodo current = root;
 		System.out.println("\nSearching for string: "+s);
@@ -95,7 +88,7 @@ public class Trie {
 				if(current.getHijo(s.charAt(i)) == null)
 				{
 					System.out.println("No se ha encontrado el string: "+s);
-					return false;
+					return null;
 				}
 				else
 				{
@@ -108,7 +101,7 @@ public class Trie {
 					if(current.getHijo(s.substring(i)) == null)
 					{
 						System.out.println("no se ha encontrado el resto del string: "+s.substring(i));
-						return false;
+						return null;
 					}
 					else
 					{
@@ -123,16 +116,16 @@ public class Trie {
 			if (current.getPuntero() != null)
 			{
 				System.out.println("Found string: "+s);
-				return true;
+				return current.getPuntero();
 			}
 			else
 			{
 				System.out.println("Cannot find string: "+s +"(only present as a substring)");
-				return false;
+				return null;
 			}
 		}
 		
-		return false; 
+		return null; 
 	}
 
 }

@@ -5,10 +5,14 @@ import ar.com.datos.trie.core.Nodo;
 public interface ITriePersistence {
 
 	
-	public Nodo getNodo(int i);
+	public Nodo getNodo(Long i);
 	
 	public void saveNodo(Nodo unNodo);
 	
-	public void updateNodo (Nodo unNodo);
+	public void flush();
+	
+	public void agregarNodoSucio(Nodo unNodo);
+	
+	
 	
 }
