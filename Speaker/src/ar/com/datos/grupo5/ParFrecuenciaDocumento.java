@@ -8,7 +8,7 @@ import ar.com.datos.grupo5.registros.RegistroTerminoDocumentos;
  * @author Led Zeppelin
  *
  */
-public class ParFrecuenciaDocumento {
+public class ParFrecuenciaDocumento implements Comparable {
 
 	/**
 	 * Frecuencia con la que aparece el termino en el documento asociado.
@@ -82,4 +82,23 @@ public class ParFrecuenciaDocumento {
 	public final boolean equals(final Object o) {
 		return (this.getOffsetDocumento() == ((RegistroTerminoDocumentos)o).getIdTermino());
 	}
+
+	/**
+	 * Metodo para comparar las clases.
+	 */
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		ParFrecuenciaDocumento parFrecDoc = (ParFrecuenciaDocumento) o;
+		if (this.frecuencia == parFrecDoc.getFrecuencia() && this.offsetDocumento == parFrecDoc.getOffsetDocumento()) {
+			return 0;
+		}
+		if (this.frecuencia < parFrecDoc.getFrecuencia()) {
+			return -1;
+		}
+		if (this.frecuencia > parFrecDoc.getFrecuencia()) {
+			return 1;
+		}
+		return 0;
+	}
+
 }

@@ -10,10 +10,15 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import ar.com.datos.grupo5.utils.comparadorFrecuencias;
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.grupo5.registros.RegistroDiccionario;
@@ -82,6 +87,7 @@ public class Core {
 	 * Administra las listas invertidas en el archivo de bloques.
 	 */
 	private ListasInvertidas listasInvertidas;
+	
 	/**
 	 * Busca las palabras a grabar, graba el audio y lo guarda.
 	 * 
@@ -233,7 +239,7 @@ public class Core {
 			
 			this.archivoTrabajo.close();
 			
-			generarListasInvertidas();
+			//TODO: generarListasInvertidas();
 
 			cerrarArchivo(invocador);
 		} catch (SimpleAudioPlayerException e) {
@@ -604,6 +610,15 @@ public class Core {
 				invocador.mensaje("Error al cerrar el archivo de terminos " 
 						+ "Globales.");
 			}
+			
+			try {
+				if (this.listasInvertidas != null) {
+					this.listasInvertidas.cerrar();
+				}
+			} catch (Exception g) {
+				invocador.mensaje("Error al cerrar el archivo de listas " 
+						+ "invertidas.");
+			}
 			invocador.mensaje("Error al cerrar el archivo de diccionario.");
 			return false;
 		}
@@ -665,6 +680,16 @@ public class Core {
 		}
 		
 		logger.debug("Abrio el archivo de terminos globales");
+		
+		try {
+			this.listasInvertidas.abrir(Constantes.ARCHIVO_LISTAS_INVERTIDAS,
+					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+		} catch (FileNotFoundException e) {
+			invocador.mensaje("No se pudo abrir el archivo de listas invertidas.");
+			return false;
+		}
+		
+		logger.debug("Abrio el archivo de terminos globales");
 		return true;
 	}
 	
@@ -721,7 +746,49 @@ public class Core {
 				
 				//Leo el termino
 				String termino = this.terminosGlobalesManager.leerTermino(idTermino);
+				
 				//TODO:Pido al FTRS los datos del termino. Busco el termino
+				
+				//TODO:Si tengo lista invertida para el termino entonces la leo
+				//y la actualizo, sino la inserto. 
+				if (1 == 1) {
+					//TODO: Tengo lista invertida, ver como agarrar el bloque
+					RegistroTerminoDocumentos regTD
+						= this.listasInvertidas.leerLista(idTermino, 2);
+					
+					//Ahora ingreso el ParFrecuenciaDocumento al Registro.
+					Collection<ParFrecuenciaDocumento> listaDatosDocumentos = regTD.getDatosDocumentos();
+					listaDatosDocumentos.add(parFrecDoc);
+					Collections.sort((List<ParFrecuenciaDocumento>) listaDatosDocumentos, (new comparadorFrecuencias()));
+					
+					//Ya esta ordenada la lista por frecuencias descendiente
+					this.listasInvertidas.modificarLista(2, idTermino, listaDatosDocumentos);
+					Map<Long,Long> registrosMovidos = this.listasInvertidas.getRegistrosMovidos();
+					
+					if (!registrosMovidos.isEmpty()) {
+						//Si no esta vacio entonces tengo que actualizar el FTRS
+						Iterator itr = registrosMovidos.entrySet().iterator();
+						while (itr.hasNext()) {
+							Map.Entry e = (Map.Entry)itr.next();
+							//Map[idtermino,bloquenuevo]
+							termino = this.terminosGlobalesManager.leerTermino((Long)e.getKey());
+							//TODO: Actualizame el Termino "termino" con el bloque "e.getValue()"
+							//TODO: Borrar Map para no repetir
+						}
+					}
+				} else {
+					//No tengo lista invertida
+					ArrayList<ParFrecuenciaDocumento> listaTemp
+						= new ArrayList<ParFrecuenciaDocumento>();
+					listaTemp.add(parFrecDoc);
+					
+					this.listasInvertidas.agregar(idTermino, listaTemp);
+					Long bloqueLista = this.listasInvertidas.getBloqueInsertado();
+					
+					//TODO: Actualizame el Termino "termino" con el bloque "bloqueLista"
+					
+					
+				}
 				
 				
 				RegistroTerminoDocumentos regTerminoDocumentos 

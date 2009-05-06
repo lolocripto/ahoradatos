@@ -1184,7 +1184,7 @@ public class ListasInvertidas {
 						cantidadEscritaEnBuffer += (int) (regLista.getTamanioControl() + (cantidadNodosDisponibles * regLista.getTamanioNodo()));
 					} else {
 						//Escribo toda la lista en un auxiliar.
-						this.registrosMovidos.put(regLista.getIdTermino(),siguienteExt );
+						this.registrosMovidos.put(regLista.getIdTermino(),siguienteExt);
 						try {
 							dosaux.write(datosNuevo, 0, datosNuevo.length);
 							continua = true;
