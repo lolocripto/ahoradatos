@@ -27,8 +27,8 @@ public class BufferedCollectionIterator<E> implements Iterator<E> {
 	 * 
 	 * @param lista
 	 */
-	public BufferedCollectionIterator(BufferedCollection<E> lista){
-		coleccionPabras=lista;
+	public BufferedCollectionIterator(BufferedCollection<E> lista) {
+		coleccionPabras = lista;
 		buffer = lista.listaUnidades.iterator();
 	}
 	

@@ -87,6 +87,8 @@ public class Core {
 	 * Administra las listas invertidas en el archivo de bloques.
 	 */
 	private ListasInvertidas listasInvertidas;
+
+	private long tiempoConsulta;
 	
 	/**
 	 * Busca las palabras a grabar, graba el audio y lo guarda.
@@ -133,7 +135,7 @@ public class Core {
 			 * TODO: Completar el tema de documentos.
 			 */
 			Long offsetDoc = 0L;
-			//offsetDoc = this.documentManager.agregarDocumento(pathDocumento);
+			offsetDoc = this.documentManager.agregarDocumento(pathDocumento);
 			
 			IunidadDeHabla elemento;
 			iterador = contenedor.iterator();
@@ -411,6 +413,9 @@ public class Core {
 	public final String playDocument(final InterfazUsuario invocador,
 			final String pathDocumento) {
 		
+		/*
+		 * TODO: Version Vieja
+		 */
 		try {
 			Iterator<IunidadDeHabla> iterador;
 			
@@ -461,6 +466,10 @@ public class Core {
 			return "Error inesperado.";
 		}
 			
+		/*
+		 * TODO: Version Nueva
+		 * 
+		 */
 		return "Reproduccion finalizada";
 	}
 
@@ -811,4 +820,37 @@ public class Core {
 		}
 	}
 	
+	/**
+	 * Metodo que se encarga de administrar la consulta del usuario.
+	 * @param invocador 
+	 * 			.
+	 * @param query cadena de caracteres que debe tener los documentos.
+	 * @return
+	 * 		Devuelve un mensaje con el estado final del proceso.
+	 */
+	public final String query(final InterfazUsuario invocador, final String query) {
+		this.tiempoConsulta = System.currentTimeMillis();
+		/*
+		 * TODO: 
+		 * 		1) enviar consulta al FTRS
+		 * Supongo que el FTRS me devolvera 5 elementos donde tenga offsetDocumento 
+		 * y deberia estar ordenado por prioridad
+		 * 		this.ranking = resultadoFTRS
+		 * Iterator<Long> it;
+		 * it = this.ranking.iterator();
+		 * Long nodo;
+		 * Integer i = 1;
+		 * invocador.mensaje("Seleccione un de los documentos para ser reproducido:");
+		 * while (it.hasNext()) {
+		 * 		nodo = it.next();
+		 * 		String mensaje = i.toString() + ". " + this.documentManager.leerDocumento(nodo);  
+		 * 		invocador.mensaje(mensaje);
+		 * }
+		 * 
+		 * invocador.mensaje("Para reproducir el documento: playDocument <Nro del lista>");
+		 * 
+		 */
+		Float tiempoFinal = (float)(System.currentTimeMillis() - this.tiempoConsulta) / 1000;
+		return tiempoFinal.toString() + " segundos";
+	}
 }

@@ -9,12 +9,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collection;
 
 import org.apache.log4j.Logger;
 
+import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.archivos.Archivo;
+import ar.com.datos.grupo5.archivos.ArchivoDocumentos;
 import ar.com.datos.grupo5.archivos.Directo;
 import ar.com.datos.grupo5.registros.RegistroDocumento;
+import ar.com.datos.parser.ITextInput;
 
 
 /**
@@ -27,7 +31,17 @@ public class DocumentsManager {
 	/**
 	 * Objeto que maneja las operaciones sobre archivos.
 	 */
-	private Archivo archivo;
+	private ArchivoDocumentos archivo;
+	
+	/**
+	 * Collection con bytes.
+	 */
+	private Collection<IunidadDeHabla> terminos; 
+	
+	/**
+	 * 
+	 */
+	private ITextInput parser;
 	
 	/**
 	 * Atributo para administrar el nivel de logueo mediante Log4j.
@@ -40,12 +54,18 @@ public class DocumentsManager {
 	private String rutaArchivo;
 	
 	private boolean moreLines;
+	
 	/**
 	 * Constructor de la clase AudioFileManager.
 	 *
 	 */
 	public DocumentsManager() {
-		this.archivo = new Directo();
+		try {
+			this.archivo = new ArchivoDocumentos();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -79,56 +99,8 @@ public class DocumentsManager {
 	 * @throws FileNotFoundException
 	 * @link ar.com.datos.grupo5.interfaces.Archivo#insertar(Registro)
 	 */
-	public Long agregarDocumento(final String Direccion) throws Exception, FileNotFoundException{
-		
-		BufferedReader buffer;
-		File archivoInput = new File(Direccion);
-
-		if (!archivoInput.exists()) {
-			FileNotFoundException e = new FileNotFoundException(
-					"No existe el archivo pasado al Parser");
-			milogueador.error("no existe el archivo", e);
-			throw e;
-		}
-		
-		try {
-			FileInputStream fis = new FileInputStream(archivoInput);
-			InputStreamReader isr = new InputStreamReader(fis,
-					Constantes.DEFAULT_TEXT_INPUT_CHARSET);
-			buffer = new BufferedReader(isr);
-		} catch (Exception e) {
-			milogueador.error("Error: " + e.getMessage());
-			throw e;
-		}
-		
-		String Documento = new String();
-		while(moreLines) {
-			Documento += leerLinea(buffer);
-		}
-		
-		RegistroDocumento reg = new RegistroDocumento();
-		
-		//reg.setDato(Documento);
-		
-		// Ahora debería agregar el registro al archivo
-		
-		
-		
-		/*
-		RegistroAudio reg = new RegistroAudio();
-		
-		ByteArrayOutputStream audioByteArray = (ByteArrayOutputStream) Direccion;
-		
-		reg.setDato(audioByteArray);
-		reg.setBytes(audioByteArray.toByteArray(), 0L);
-		try {
-			this.archivo.insertar(reg);
-			return this.archivo.getOffset();
-		} catch (Exception e) {
-			return null;
-		}
-		*/		
-		return 0L;
+	public final Long agregarDocumento(final String Direccion) {
+		return this.archivo.escribirDocumento(Direccion.getBytes());
 	}
 	
 	/**

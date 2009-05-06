@@ -23,7 +23,7 @@ public class Directo extends Archivo {
 	/**
 	 * Offset del ultimo registro insertado.
 	 */
-	private long offset = 0L;
+	protected long offset = 0L;
 	
 	/**
 	 * Logger.
