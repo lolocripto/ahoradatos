@@ -1,7 +1,7 @@
-package trie.core;
+package ar.com.datos.trie.core;
 
-import trie.proxy.PersistentNodeFactory;
 import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.trie.proxy.PersistentNodeFactory;
 
 
 public class Trie {

@@ -1,11 +1,10 @@
-package trie.persistence;
+package ar.com.datos.trie.persistence;
 
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
 
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.archivos.ArchivoBloques;
-import ar.com.datos.grupo5.registros.RegistroNodo;
 
 public class TrieArchiveHandler {
 

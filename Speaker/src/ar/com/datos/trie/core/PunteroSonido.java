@@ -1,4 +1,4 @@
-package trie.core;
+package ar.com.datos.trie.core;
 
 public class PunteroSonido {
 

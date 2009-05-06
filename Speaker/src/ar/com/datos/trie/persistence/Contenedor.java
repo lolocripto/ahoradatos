@@ -1,4 +1,4 @@
-package trie.persistence;
+package ar.com.datos.trie.persistence;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

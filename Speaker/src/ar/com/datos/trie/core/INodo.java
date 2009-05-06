@@ -1,10 +1,12 @@
-package trie.core;
+package ar.com.datos.trie.core;
+
+import ar.com.datos.trie.persistence.TrieNodeRegistry;
 
 
 public interface INodo {
 
 	
-	public Long getNumeroNodo();
+		public Long getNumeroNodo();
    	
 		public String getContenido();
 		
@@ -20,7 +22,11 @@ public interface INodo {
 		
 		public void setNuevoHijo(INodo nuevoNodo);
 		
-		public boolean esHoja();
+		public void setNumeroNodo(long numeroNodo);
+		
+		public TrieNodeRegistry getRegistroAsociado();
+		
+		public void setRegistroAsociado(TrieNodeRegistry t);
 
 	}
 

@@ -1,4 +1,4 @@
-package trie.persistence;
+package ar.com.datos.trie.persistence;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import trie.core.INodo;
-import trie.core.Nodo;
-import trie.core.PunteroSonido;
 
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.registros.RegistroNodo;
 import ar.com.datos.grupo5.utils.Conversiones;
+import ar.com.datos.trie.core.INodo;
+import ar.com.datos.trie.core.Nodo;
+import ar.com.datos.trie.core.PunteroSonido;
 
 public class TrieNodeRegistry {
 
@@ -23,6 +23,16 @@ public class TrieNodeRegistry {
 		
 		private String contenido; //letra del nodo actual
 		
+		private boolean isDirty;
+		
+		public boolean isDirty() {
+			return isDirty;
+		}
+
+		public void setDirty(boolean isDirty) {
+			this.isDirty = isDirty;
+		}
+
 		public String getContenido() {
 			return contenido;
 		}
@@ -54,6 +64,7 @@ public class TrieNodeRegistry {
 		
 		public TrieNodeRegistry (byte[] registroSerializado){
 			
+			this.isDirty =false;
 			//inicalizo la lista
 			listaDepunteros = new ArrayList<ParStringPuntero>();
 			
@@ -208,6 +219,20 @@ public class TrieNodeRegistry {
 		public long getNroNodo() {
 			return nroNodo;
 		}
+		
+		/**
+		 * Método que asegura la escritura a disco de cualquier nodo al que se le haya perdido referencia por error
+		 * o por obviar su condición de dirty
+		 */
+		protected void finalize() throws Throwable
+		{
+		  
+			if (this.isDirty){
+				
+			}
+			
+		  super.finalize();
+		} 
 
 
 }

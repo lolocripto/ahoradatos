@@ -1,9 +1,12 @@
-package trie.proxy;
+package ar.com.datos.trie.proxy;
 
 import java.lang.reflect.Proxy;
 
-import trie.core.INodo;
-import trie.core.Nodo;
+import ar.com.datos.trie.core.INodo;
+import ar.com.datos.trie.core.Nodo;
+import ar.com.datos.trie.persistence.AdministrationRegistry;
+import ar.com.datos.trie.persistence.TrieNodeRegistry;
+
 
 public class PersistentNodeFactory {
 
@@ -40,9 +43,16 @@ public class PersistentNodeFactory {
 		   Class claseAdministracion = Nodo.class;
 	       
 	        try {
-	            // Creamos un objeto de la clase que recibimos.
-	        	
+	            // creo un nuevo nodo con el valor del char pasado por parametro
 	        	nodoReal = (INodo) new Nodo(i);
+	        	//agrego al nodo un numero que voy a obtener del registro de administracion
+	        	nodoReal.setNumeroNodo(AdministrationRegistry.sumarUnNodo());
+	        	
+	        	//creo un registro que lo represente
+	        	TrieNodeRegistry t = new TrieNodeRegistry(nodoReal);
+	        	//se lo agrego al nodo
+	        	nodoReal.setRegistroAsociado(t);
+
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            return null;
@@ -67,9 +77,14 @@ public class PersistentNodeFactory {
 		   Class claseAdministracion = Nodo.class;
 	       
 	        try {
-	            // Creamos un objeto de la clase que recibimos.
 	        	
 	        	nodoReal = (INodo) new Nodo(i);
+	        	nodoReal.setNumeroNodo(AdministrationRegistry.sumarUnNodo());
+	        	
+	        	//creo un registro que lo represente
+	        	TrieNodeRegistry t = new TrieNodeRegistry(nodoReal);
+	        	//se lo agrego al nodo
+	        	nodoReal.setRegistroAsociado(t);
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            return null;

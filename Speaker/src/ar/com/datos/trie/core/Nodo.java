@@ -1,8 +1,10 @@
-package trie.core;
+package ar.com.datos.trie.core;
 
 import java.util.HashMap;
 
-import javax.swing.text.StyledEditorKit.BoldAction;
+import ar.com.datos.trie.persistence.TrieNodeRegistry;
+
+
 
 
 
@@ -11,8 +13,9 @@ public class Nodo implements INodo{
 	protected String contenido;
 	protected PunteroSonido puntero; 
 	protected HashMap<String, INodo> hijo;
-	protected Boolean isDirty =false;
 	private Long NumeroNodo;
+	private TrieNodeRegistry registroAsociado;
+	
 	
 	public Long getNumeroNodo() {
 		return NumeroNodo;
@@ -21,15 +24,12 @@ public class Nodo implements INodo{
 	public void setNumeroNodo(long numeroNodo) {
 		NumeroNodo = numeroNodo;
 	}
-
-	protected boolean eshoja;
 	
 
 	public Nodo()
 	{
 		puntero=null;
 		hijo = new HashMap<String, INodo>(); 
-		this.isDirty = true;
 	}
 		
 	public Nodo(String letra)
@@ -38,7 +38,6 @@ public class Nodo implements INodo{
 		contenido = letra;
 		puntero=null;
 		hijo =  new HashMap<String, INodo>();
-		this.isDirty = true;
 	}
 	
 	public Nodo(char letra)
@@ -48,7 +47,6 @@ public class Nodo implements INodo{
 		contenido = casteo.toString();
 		puntero=null;
 		hijo =  new HashMap<String, INodo>();
-		this.isDirty = true;
 	}
 
 
@@ -62,12 +60,12 @@ public class Nodo implements INodo{
 	
 	public void setContenido(String nuevoContenido){
 		this.contenido = nuevoContenido;
-		this.isDirty = true;
+
 	}
 	
 	public void setPuntero (PunteroSonido nuevoPuntero){
 		this.puntero = nuevoPuntero;
-		this.isDirty =true;
+
 	}
 	
 	public INodo getHijo(String letraOpalabra){
@@ -83,13 +81,15 @@ public class Nodo implements INodo{
 		this.hijo.put(nuevoNodo.getContenido(), nuevoNodo);
 	}
 
-
-	public boolean esHoja() {
-		return this.eshoja;
+	public TrieNodeRegistry getRegistroAsociado() {
+		
+		return this.registroAsociado;
 	}
-	
-	public void setHoja(Boolean a){
-		this.eshoja = a;
+
+
+	public void setRegistroAsociado(TrieNodeRegistry t) {
+		this.registroAsociado = t;
+		
 	}
 
 }

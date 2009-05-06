@@ -1,9 +1,10 @@
-package trie.persistence;
+package ar.com.datos.trie.persistence;
 
 import java.util.Iterator;
 
-import trie.core.Nodo;
-import trie.core.PunteroSonido;
+import ar.com.datos.trie.core.Nodo;
+import ar.com.datos.trie.core.PunteroSonido;
+
 
 public class PruebasPersistencia {
 

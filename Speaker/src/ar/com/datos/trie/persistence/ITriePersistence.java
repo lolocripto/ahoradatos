@@ -1,6 +1,6 @@
-package trie.persistence;
+package ar.com.datos.trie.persistence;
 
-import trie.core.Nodo;
+import ar.com.datos.trie.core.Nodo;
 
 public interface ITriePersistence {
 

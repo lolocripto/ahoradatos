@@ -1,4 +1,4 @@
-package trie.core;
+package ar.com.datos.trie.core;
 
 public class Raiz extends Nodo {
 
@@ -10,12 +10,12 @@ public class Raiz extends Nodo {
 
 	public void sumarUnNodo() {
 		this.ultimoNodo ++;
-		this.isDirty = true;
+
 	}
 
 	public Raiz() {
 		super();
-		this.isDirty =false;
+
 		this.contenido = " ";
 	}
 	

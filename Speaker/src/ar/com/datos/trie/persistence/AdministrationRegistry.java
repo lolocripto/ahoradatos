@@ -1,4 +1,4 @@
-package trie.persistence;
+package ar.com.datos.trie.persistence;
 
 import ar.com.datos.grupo5.utils.Conversiones;
 
@@ -8,9 +8,10 @@ public class AdministrationRegistry {
 	
 	
 	
-	public static void sumarUnNodo(){
+	public static long sumarUnNodo(){
 		
 		cantNodosUsados++;
+		return cantNodosUsados;
 	}
 	
 	public static long getCantidadNodosExistentes(){

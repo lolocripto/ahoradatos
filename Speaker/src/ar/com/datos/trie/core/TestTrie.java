@@ -1,13 +1,14 @@
-package trie.core;
+package ar.com.datos.trie.core;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import ar.com.datos.trie.persistence.TrieArchiveIndex;
+import ar.com.datos.trie.proxy.NodeRetrieveHandler;
+import ar.com.datos.trie.proxy.PersistentNodeFactory;
+
 import com.sun.corba.se.impl.orbutil.graph.Node;
 
-import trie.persistence.TrieArchiveIndex;
-import trie.proxy.NodeRetrieveHandler;
-import trie.proxy.PersistentNodeFactory;
 
 public class TestTrie {
 
