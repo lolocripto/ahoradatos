@@ -3,9 +3,11 @@
  */
 package ar.com.datos.tests;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.datos.grupo5.Constantes;
@@ -25,10 +27,13 @@ public class TestSortExternoMerge {
 	 */
 	public static void main(String[] args) {
 
-		String arch = "archivoTrabajo.data";
+		String arch = "./archivoTrabajo.data";
 
 		RandomAccessFile f;
 		try {
+		
+			//File file = new File(arch);
+			//file.delete();
 			f = new RandomAccessFile(arch,
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 		
@@ -36,6 +41,7 @@ public class TestSortExternoMerge {
 	
 			/* 1Alberto 2Cesar 3Ernesto 4Bartolo 5Demian */
 			/* 3 documentos */
+			
 			nodo.setIdTermino(1L);
 			nodo.setIdDocumento(1L);
 			f.write(nodo.getBytes());
@@ -92,12 +98,12 @@ public class TestSortExternoMerge {
 			
 			ReplacementSelection RP = new ReplacementSelection(arch);
 			RP.ordenar();
-			RP.listar();
-	/*
-			List<String> LP = RP.getListaParticiones();
-			Merge M = new Merge(LP,12,RP.getArch()); 
+			//RP.listar();
+	
+			ArrayList<String> LP = (ArrayList<String>) RP.getListaParticiones();
+			Merge M = new Merge(LP,RP.getArch()); 
 			M.ejecutarMerge();
-			*/	
+				
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -19,6 +20,7 @@ import ar.com.datos.grupo5.registros.RegistroTerminoDocumentos;
 import ar.com.datos.parser.ITextInput;
 import ar.com.datos.parser.TextInterpreter;
 import ar.com.datos.reproduccionaudio.exception.SimpleAudioPlayerException;
+import ar.com.datos.sortExterno.Merge;
 import ar.com.datos.sortExterno.NodoRS;
 import ar.com.datos.sortExterno.ReplacementSelection;
 
@@ -219,9 +221,20 @@ public class Core {
 						offsetRegistroAudio);
 				
 			}
+			
 			//Ahora tengo que realizar el replacement Selection
-			ReplacementSelection RP = new ReplacementSelection(Constantes.ARCHIVO_TRABAJO);
-			RP.ordenar();
+			ReplacementSelection remplacementP
+						= new ReplacementSelection(Constantes.ARCHIVO_TRABAJO);
+			
+			remplacementP.ordenar();
+			
+			ArrayList<String> listaParticiones 
+						= remplacementP.getListaParticiones();
+			
+			Merge mergeManager 
+						= new Merge(listaParticiones, remplacementP.getArch());
+			
+			mergeManager.ejecutarMerge();
 			
 			cerrarArchivo(invocador);
 		} catch (SimpleAudioPlayerException e) {

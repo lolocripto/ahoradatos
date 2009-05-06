@@ -1,6 +1,5 @@
 package ar.com.datos.sortExterno;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
@@ -17,13 +16,36 @@ import ar.com.datos.grupo5.Constantes;
  */
 public class ReplacementSelection {
 
+	/**
+	 * Nombre del archivo con los registros a ordenar.
+	 */
 	private String arch;
+	
+	/**
+	 * Lista con los pares idTermino - Documento.
+	 */
 	private List<NodoRS> listaNodo;
-	private List<String> listaParticiones;
+	
+	/**
+	 * Lista de particiones generadas.
+	 */
+	private ArrayList<String> listaParticiones;
+	
+	/**
+	 * Memoria que voy a usar como ventana de datos 
+	 * para las particiones.
+	 */
 	private int memoria;
+	
+	/**
+	 * Cantidad de nodos que entran en la memoria asignada.
+	 */
 	private int cantidadNodos;
 	
-	public ReplacementSelection(){
+	/**
+	 * Contructor de copia por defecto.
+	 */
+	public ReplacementSelection() {
 		this.listaNodo = new ArrayList<NodoRS>();
 		this.listaParticiones = new ArrayList<String>();
 	}
@@ -37,7 +59,7 @@ public class ReplacementSelection {
 	 * @param archExt Nombre del archivo que tiene 
 	 * los elementos a ordena.
 	 */
-	public ReplacementSelection(String archExt){
+	public ReplacementSelection(final String archExt) {
 		this.arch = archExt;
 		this.memoria = Constantes.TAMANIO_BUFFER_REPLACEMENT_SELECTION;
 		this.listaNodo = new ArrayList<NodoRS>();
@@ -48,17 +70,17 @@ public class ReplacementSelection {
 	 * Devuelve la cantidad de elementos no congelados.
 	 * @return Cantidad de elementos no congelados.
 	 */
-	private int cuantosDisponibles(){
+	private int cuantosDisponibles() {
 		
 		Iterator<NodoRS> it;
 		NodoRS nodo;
 		
 		it = this.listaNodo.iterator();
-		int cont=0;
+		int cont = 0;
 		
 		while (it.hasNext()) {
 			nodo = it.next();
-			if (nodo.getFlag() == 0 ) {
+			if (nodo.getFlag() == 0) {
 				cont++;
 			}
 		}
@@ -69,7 +91,7 @@ public class ReplacementSelection {
 	 * Convierte los nodos congelados en nodos diponibles.
 	 * @return 
 	 */
-	private void hacerDisponible(){
+	private void hacerDisponible() {
 		
 		Iterator<NodoRS> it;
 		NodoRS nodo;
@@ -81,39 +103,7 @@ public class ReplacementSelection {
 			nodo.setFlag(0);
 		}
 	}
-
-	public int listar(){
-		/*
-		list<char*>::iterator it;
-		int idt,idd,fdt,i,j=0;
-		long nRegistros;
-		printf("Replacement selection: \n");
-		for(it=listaParticiones.begin();it!=listaParticiones.end();it++)
-		{
-			FILE* p = fopen((char*)(*it),"rb");
-			fseek(p,0,SEEK_END);
-			nRegistros = ftell(p)/(3*sizeof(int));
-			fseek(p,0,SEEK_SET);
-			i=0;
-			printf("particion %d : ",j);
-			while(i<nRegistros)
-			{	
-				fread(&idt,1,sizeof(int),p);
-			 	fread(&idd,1,sizeof(int),p);
-			 	fread(&fdt,1,sizeof(int),p);
-				printf("%d ",idt);
-				printf("%d ",idd);
-				printf("%d | ",fdt);
-				i++;
-			}
-			printf("\n");
-			fclose(p);
-			j++;
-		}
-		*/
-		return 0;
-	}
-
+	
 	/**
 	 * 
 	 * @return
@@ -138,7 +128,7 @@ public class ReplacementSelection {
 	 * Verifica si la lista tiene más elementos.
 	 * @return True si no tiene más elementos. False si aún tiene.
 	 */
-	private boolean nodoRSVacio(){
+	private boolean nodoRSVacio() {
 		return this.listaNodo.isEmpty();
 	}
 
@@ -146,20 +136,20 @@ public class ReplacementSelection {
 	 * Busca el menor de los nodos.
 	 * @return el menor de los nodos.
 	 */
-	private NodoRS obtenerMenorNodo(){
+	private NodoRS obtenerMenorNodo() {
 		
 		int comp;
-		Iterator<NodoRS> i,j;
+		Iterator<NodoRS> i, j;
 		NodoRS nodoI, nodoJ;
-		j= this.listaNodo.iterator();
-		i= this.listaNodo.iterator();
+		j = this.listaNodo.iterator();
+		i = this.listaNodo.iterator();
 		nodoI = i.next();
 		nodoJ = j.next();
-		while(i.hasNext())
-		{
+		while (i.hasNext()) {
 			comp = nodoI.comparar(nodoJ);
-			if (comp == -1)
+			if (comp == -1) {
 				nodoJ = nodoI;
+			}
 			nodoI = i.next();
 		}
 		return nodoJ;
@@ -170,15 +160,15 @@ public class ReplacementSelection {
 	 * generar las particiones.
 	 * @return cantidad de particiones.
 	 */
-	public int ordenar(){
+	public final int ordenar() {
 		int flag, desc, comp;
-		long nRegistros, cont=0;
+		long nRegistros, cont = 0;
 		NodoRS nodo = new NodoRS();
 		NodoRS nodo1 = new NodoRS();
 		NodoRS menor;
 		byte[] dataNodo = new byte[nodo.getTamanio()];
 		Integer particionNumero = new Integer(1);
-		RandomAccessFile P;
+		RandomAccessFile p;
 		
 		//1-calculo tamaño de lista de objetos a ordenar
 		this.cantidadNodos = this.memoria / nodo.getTamanio();
@@ -190,63 +180,60 @@ public class ReplacementSelection {
 				nRegistros = archivoTrabajo.length() / nodo.getTamanio();
 				archivoTrabajo.seek(0);
 				//3-cargo por primera vez el buffer(Lista de NodoRS)
-				for(int i=0; i < this.cantidadNodos && i < nRegistros; i++) {
+				for (int i = 0; i < this.cantidadNodos && i < nRegistros; i++) {
 					archivoTrabajo.read(dataNodo, 0, dataNodo.length);
 					nodo.setBytes(dataNodo);
 					this.listaNodo.add(nodo);
 					nodo = new NodoRS();
-					cont +=1;
+					cont++;
 				}
 				
 				while (!nodoRSCongelado() && !nodoRSVacio()) {
 					//4-arranca el bucle (mientras el buffer no este vacio ni congelado)
 					//4.1-creo Pi
 					String nombreParticion = new String(this.arch + "part" + particionNumero.toString()); 
-					P = new RandomAccessFile(nombreParticion,Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-					flag=0;
-					while (!nodoRSCongelado() && !nodoRSVacio() && flag==0) {
+					p = new RandomAccessFile(nombreParticion,Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+					flag = 0;
+					while (!nodoRSCongelado() && !nodoRSVacio() && flag == 0) {
 						
 						//4.2-tomo el menor del buffer con flag en disponible
 						menor = obtenerMenorNodo();
 						//4.3-lo grabo en Pi y lo elimino de listaNodo
 						dataNodo = menor.getBytes();
-						P.write(dataNodo, 0, dataNodo.length);
+						p.write(dataNodo, 0, dataNodo.length);
 						this.listaNodo.remove(menor);
 						//4.4-leo el siguiente del archivo f
-						if (cont<nRegistros)
-						{
+						if (cont < nRegistros) {
 							nodo1 = new NodoRS();
-							archivoTrabajo.read(dataNodo,0,dataNodo.length);
+							archivoTrabajo.read(dataNodo, 0, dataNodo.length);
 							nodo1.setBytes(dataNodo); //idT,idD,fdt
 							cont++;
-							//4.4.1-si reg(f) < grabado -> congelado = nodo1 < menor
+							//4.4.1-si reg(f) <= grabado -> congelado
 							comp = nodo1.comparar(menor);
-							if (comp == -1) {
+							if (comp == -1 || comp == 0) {
 								nodo1.setFlag(1);
 								this.listaNodo.add(nodo1);
 							}
-							//4.4.2-si reg(f) > grabado -> disponible = nodo1 > menor
-							if (comp == 1)  
-							{
+							//4.4.2-si reg(f) > grabado -> disponible
+							if (comp == 1) {
 								nodo1.setFlag(0);
 								this.listaNodo.add(nodo1);
 							}
 						} else {
-							flag=1;
+							flag = 1;
 							desc = cuantosDisponibles();
 							//guardo los disponibles que quedaron en la particion 
-							for (int j=0;j<desc;j++)
-							{
+							for (int j = 0; j < desc; j++) {
 								menor = obtenerMenorNodo();
 								//4.3-lo grabo en Pi y lo elimino de listaNodo
 								dataNodo = menor.getBytes();
-								P.write(dataNodo, 0, dataNodo.length);
+								p.write(dataNodo, 0, dataNodo.length);
 								this.listaNodo.remove(menor);
 							}
 						}
 					}
 					//5-cierro Pi y registro que la guarde
-					P.close();
+					p.close();
 					listaParticiones.add(nombreParticion);
 					//6-pongo los flag en disponible y vuelvo a empezar
 					hacerDisponible();
@@ -265,7 +252,7 @@ public class ReplacementSelection {
 	/**
 	 * @return La lista
 	 */
-	public final List<String> getListaParticiones() {
+	public final ArrayList<String> getListaParticiones() {
 		return this.listaParticiones;
 	}
 	

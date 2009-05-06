@@ -9,7 +9,6 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
-import ar.com.datos.parser.PalabrasFactory;
 
 /**
  * Constantes de la aplicacion.
@@ -92,7 +91,7 @@ public final class Constantes {
 			.parseInt(getXML("TAMANIO_BUFFER_ESCRITURA"));
 	
 	/**
-	 * Tamaño del buffer para generar las particiones por replacement selection
+	 * Tamaño del buffer para generar las particiones por replacement selection.
 	 */
 	public static final int TAMANIO_BUFFER_REPLACEMENT_SELECTION = Integer
 			.parseInt(getXML("TAMANIO_BUFFER_REPLACEMENT_SELECTION"));
@@ -271,7 +270,10 @@ public final class Constantes {
 
 	}
 	
-	
+	/**
+	 * Carga un listado de palabras a filtrar.
+	 * @return listado de palabras.
+	 */
 	private static List<IunidadDeHabla> stopWords() {
 
 			try {
@@ -292,6 +294,9 @@ public final class Constantes {
 			return listaFinal;
 	}
 	
+	/**
+	 * Lista de palabras a filtrar.
+	 */
 	public static final List<IunidadDeHabla> LISTA_STOP_WORDS = stopWords();
 	
 }
