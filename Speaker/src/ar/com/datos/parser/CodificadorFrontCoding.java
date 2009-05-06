@@ -34,7 +34,7 @@ public class CodificadorFrontCoding {
 			String termino = actual.substring(caracterescoincidentes, actual
 					.length());
 			int nroBloque = 0; /*ver de donde obtener el nro de bloque*/
-			claves.add(new ClaveFrontCoding(caracterescoincidentes, nroBloque,
+			claves.add(new ClaveFrontCoding(caracterescoincidentes,
 					termino.length(), termino));
 			anterior = actual;
 		}

@@ -9,11 +9,6 @@ public class ClaveFrontCoding {
 	private int longitudTermino;
 
 	/**
-	 * El numero de bloque en el que esta su lista invertida.
-	 */
-	private int nroBloqueTermino;
-
-	/**
 	 * Ver si seria una clave en vez de un String.
 	 */
 	private String termino;
@@ -24,12 +19,11 @@ public class ClaveFrontCoding {
 	 * @param longitud
 	 * @param termino
 	 */
-	public ClaveFrontCoding(final int caracteres, final int nroBloque, final int longitud,
+	public ClaveFrontCoding(final int caracteres, final int longitud,
 			final String termino) {
 		this.caracteresCoincidentes = caracteres;
 		this.longitudTermino = longitud;
 		this.termino = termino;
-		this.setNroBloqueTermino(nroBloque);
 	}
 
 	public void setCaracteresCoincidentes(int caracteresCoincidentes) {
@@ -59,19 +53,11 @@ public class ClaveFrontCoding {
 	public String toString() {
 		String termino = new String();
 		termino += (new Integer(caracteresCoincidentes).toString());
-		termino += (new Integer(nroBloqueTermino).toString());
 		termino += (new Integer(longitudTermino).toString());
 		termino += (this.termino);
 
 		return termino;
 	}
 
-	public void setNroBloqueTermino(int nroBloqueTermino) {
-		this.nroBloqueTermino = nroBloqueTermino;
-	}
-
-	public int getNroBloqueTermino() {
-		return nroBloqueTermino;
-	}
-
+	
 }
