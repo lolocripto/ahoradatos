@@ -91,9 +91,12 @@ public final class Constantes {
 	public static final int TAMANIO_BUFFER_ESCRITURA = Integer
 			.parseInt(getXML("TAMANIO_BUFFER_ESCRITURA"));
 	
-	
+	/**
+	 * Tamaño del buffer para generar las particiones por replacement selection
+	 */
 	public static final int TAMANIO_BUFFER_REPLACEMENT_SELECTION = Integer
 			.parseInt(getXML("TAMANIO_BUFFER_REPLACEMENT_SELECTION"));
+	
 	/**
 	 * Abrir un archivo para lectura.
 	 */
@@ -215,8 +218,9 @@ public final class Constantes {
 	 */
 	public static final Float FACTOR_CARGA_BLOQUES = Float.parseFloat(
 		getXML("FACTOR_CARGA_BLOQUES"));
+	
 	/**
-	 * Cantidad de Resultados en Consulta rankeada
+	 * Cantidad de Resultados en Consulta rankeada.
 	 */
 	public static final int TOP_RANKING = Integer.parseInt(
 			getXML("TOP_RANKING"));

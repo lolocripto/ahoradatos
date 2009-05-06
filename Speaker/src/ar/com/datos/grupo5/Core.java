@@ -132,6 +132,7 @@ public class Core {
 				/*
 				 * TODO: Cada palabra necesito agregarla al documento.
 				 */
+				
 				// Si no es StopWord entonces utilizo el Ftrs.
 				if (!elemento.isStopWord()) {
 					/*

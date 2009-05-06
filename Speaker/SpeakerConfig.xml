@@ -29,6 +29,12 @@
 
 	<ARCHIVO_AUDIO>./audio.data</ARCHIVO_AUDIO>
 	
+	<TAMANIO_BUFFER_REPLACEMENT_SELECTION>64</TAMANIO_BUFFER_REPLACEMENT_SELECTION>
+		
+	<ARCHIVO_TRABAJO>./archivoTrabajo.data</ARCHIVO_TRABAJO>
+	
+	<ARCHIVO_DOCUMENTOS>./documentos.data</ARCHIVO_DOCUMENTOS>
+	
 	<ARCHIVO_LISTAS_INVERTIDAS>./listasinvertidas.data</ARCHIVO_LISTAS_INVERTIDAS>
 
 	<ARCHIVO_TERMINOS_GLOBALES>./terminosglobales.data</ARCHIVO_TERMINOS_GLOBALES>
@@ -43,5 +49,4 @@
 		<![CDATA[((l{2}))|([b])|((?<!c)h)|((je))|((ji))|((mb))|((ce))|((ci))|((za))|((zu))|((\.))|((\,))|((\-))|((\+))|((\=))|((\$))|((\*))|((\%))|((\#))|((\@))|(([1]))|(([2]))|(([3]))|(([4]))|(([5]))|(([6]))|(([7]))|(([8]))|(([9]))|(([0]))]]>
 	</ESCAPES_REGEX>
 	
-	<TAMANIO_BUFFER_REPLACEMENT_SELECTION>64</TAMANIO_BUFFER_REPLACEMENT_SELECTION>
-	<ARCHIVO_TRABAJO>./archivoTrabajo.data</ARCHIVO_TRABAJO></configuracion>
+</configuracion>
