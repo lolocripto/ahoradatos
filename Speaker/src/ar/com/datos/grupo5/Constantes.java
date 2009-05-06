@@ -232,6 +232,12 @@ public final class Constantes {
 	public static final int NRO_BLOQUE_RAIZ = 1;
 	
 	/**
+	 * Archivo para los documentos.
+	 */
+	public static final String ARCHIVO_DOCUMENTOS = 
+		getXML("ARCHIVO_DOCUMENTOS");
+	
+	/**
 	 * Lee delarchivo de configuracion.
 	 * 
 	 * @param nombre clave para recuperar el valor.

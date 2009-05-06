@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.grupo5.registros.RegistroDiccionario;
+import ar.com.datos.grupo5.registros.RegistroTerminoDocumentos;
 import ar.com.datos.parser.ITextInput;
 import ar.com.datos.parser.TextInterpreter;
 import ar.com.datos.reproduccionaudio.exception.SimpleAudioPlayerException;
@@ -41,9 +42,19 @@ public class Core {
 	private AudioManager audioManager;
 	
 	/**
+	 * Se encarga de manejar los documentos en disco.
+	 */
+	private DocumentsManager documentManager;
+	
+	/**
 	 * 
 	 */
 	private AudioFileManager audioFileManager;
+	
+	/**
+	 * Se encarga de administrar los terminos.
+	 */
+	private TerminosGlobales terminosGlobalesManager;
 	
 	/**
 	 * Conteniene todas las palabras a grabar o a leer del documento ingresado.
@@ -84,21 +95,51 @@ public class Core {
 			}
 			
 			logger.debug("tengo el contenedor de palabras.");
-
+			
 			Long offsetRegistroAudio;
 			
 			if (!abrirArchivo(invocador)) {
 				return "Intente denuevo";
 			}
 			
+			/*
+			 * Creo el documento en el archivo de documentos.
+			 * TODO: Completar el tema de documentos.
+			 */
+			//Long offsetDoc;
+			//offsetDoc = this.documentManager.agregarDocumento(pathDocumento);
+			
 			IunidadDeHabla elemento;
 			iterador = contenedor.iterator();
+			
+			RegistroTerminoDocumentos regTerminoDocumentos = null;
 			
 			// Mientras tenga palabras para verificar consulto
 			while (iterador.hasNext()) {
 
 				elemento = iterador.next();
 				logger.debug("Itero una vez.txt.");
+				
+				/*
+				 * TODO: Cada palabra necesito agregarla al documento.
+				 */
+				
+				/*
+				 * TODO: Busco el termino en el FTRS.
+				 * regTerminoDocumentos = busqueda(elemento.getTextoEscrito());
+				 */
+				
+				/*
+				 * Si es nulo entonces no existe el termino en el ftrs
+				 * por lo tanto tampoco existe en el archivo de termino globales.
+				 */
+				if (regTerminoDocumentos == null) {
+					//Se encarga de agregar el termino que no existe.
+					regTerminoDocumentos 
+						= this.agregaTermino(elemento.getTextoEscrito());
+				}
+				
+				//TODO: Escribo el idTermino Junto con el offsetDoc
 				
 				/*
 				 * Si es una palabra pronunciable la proxima palabra, sino pido
@@ -174,6 +215,24 @@ public class Core {
 		
 		logger.debug("Sali de al funcion load");
 		return "Las palabras han sido correctamente ingresadas.";
+	}
+
+	/**
+	 * Se encarga de agregar el termino que no existe en el 
+	 * archivo de terminos globales y en el FTRS.
+	 * @param textoEscritoExt Termino a agregar.
+	 */
+	private RegistroTerminoDocumentos agregaTermino(final String textoEscritoExt) {
+		// TODO Auto-generated method stub
+		Long idTermino
+			= this.terminosGlobalesManager.agregar(textoEscritoExt);
+		/*
+		 * agregar al FTRS el termino con idTermino y con el 
+		 * offset a la lista en null.
+		 */
+		RegistroTerminoDocumentos reg = new RegistroTerminoDocumentos();
+		reg.setIdTermino(idTermino);
+		return reg;
 	}
 
 	/**
@@ -455,6 +514,7 @@ public class Core {
 		this.audioManager = new AudioManager();
 		this.parser = new TextInterpreter();
 		this.audioFileManager = new AudioFileManager();
+		this.documentManager = new DocumentsManager();
 	}
 	
 	/**
@@ -484,6 +544,9 @@ public class Core {
 			if (this.audioFileManager != null) {
 				this.audioFileManager.cerrar();
 			}
+			if (this.documentManager != null) {
+				this.documentManager.cerrar();
+			}
 			return true;
 
 		} catch (Exception e) {
@@ -494,6 +557,21 @@ public class Core {
 				}
 			} catch (Exception g) {
 				invocador.mensaje("Error al cerrar el archivo de audio.");
+			}
+			try {
+				if (this.documentManager != null) {
+					this.documentManager.cerrar();
+				}
+			} catch (Exception g) {
+				invocador.mensaje("Error al cerrar el archivo de documentos.");
+			}
+			try {
+				if (this.terminosGlobalesManager != null) {
+					this.terminosGlobalesManager.cerrar();
+				}
+			} catch (Exception g) {
+				invocador.mensaje("Error al cerrar el archivo de terminos " 
+						+ "Globales.");
 			}
 			invocador.mensaje("Error al cerrar el archivo de diccionario.");
 			return false;
@@ -533,6 +611,29 @@ public class Core {
 		}
 
 		logger.debug("Abrio el archivo Audio");
+		
+		/*
+		 * Abro el archivo para la carga y consulta de los documentos
+		 */
+		try {
+			this.documentManager.abrir(Constantes.ARCHIVO_DOCUMENTOS,
+					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+		} catch (FileNotFoundException e) {
+			invocador.mensaje("No se pudo abrir el archivo de documentos.");
+			return false;
+		}
+		
+		logger.debug("Abrio el archivo documentos");
+		
+		try {
+			this.terminosGlobalesManager.abrir(Constantes.ARCHIVO_TERMINOS_GLOBALES,
+					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+		} catch (FileNotFoundException e) {
+			invocador.mensaje("No se pudo abrir el archivo de terminos globales.");
+			return false;
+		}
+		
+		logger.debug("Abrio el archivo de terminos globales");
 		return true;
 	}
 	

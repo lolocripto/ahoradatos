@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ar.com.datos.grupo5;
 
 import java.util.ArrayList;
@@ -31,25 +28,24 @@ public class ListaEspacioLibre {
 	private Float factorCarga;
 	
 	/**
-	 * Tamaño del bloque
+	 * Tamaño del bloque.
 	 */
 	private int tamanio;
 	/**
 	 * Constructor de la clase.
+	 * @param tamanioExt Tamaño del bloque del cual administra
+	 * su espacio libre.
 	 */
-	public ListaEspacioLibre(int tamanio) {
+	public ListaEspacioLibre(final int tamanioExt) {
 		this.espacioLibrePorBloque = new ArrayList<NodoListaEspacioLibre>();
 		this.factorCarga = Constantes.FACTOR_CARGA_BLOQUES;
 		this.setIndex(0);
-		this.tamanio = tamanio;
+		this.tamanio = tamanioExt;
 	}
 	
 	/**
 	 * Se encarga de actualizar un nodo o agregar un nodo en la 
-	 * lista de espacios libres
-	 * para mantener actualizada la lista.
-	 * @param index
-	 * 			Lugar dentro de la lista.
+	 * lista de espacios libres para mantener actualizada la lista.
 	 * @param nroBloqueExt
 	 * 			Numero de bloque que tiene el espacio libre.
 	 * @param espacio
@@ -72,25 +68,36 @@ public class ListaEspacioLibre {
 		}	
 	}
 	
+	/**
+	 * Permite obtener el tamaño de la lista.
+	 * @return
+	 * 		El tamaño de la lista.
+	 */
 	public final int getSize() {
 		return this.espacioLibrePorBloque.size();
 	}
 	
-	public final void agregarNodo(NodoListaEspacioLibre nodo) {
+	/**
+	 * Permite agregar un nodo a la lista.
+	 * @param nodo Nodo a insertar
+	 */
+	public final void agregarNodo(final NodoListaEspacioLibre nodo) {
 		this.espacioLibrePorBloque.add(nodo);
 	}
 
 	/**
-	 * @param index the index to set
+	 * Permite setear el indice de la lista.
+	 * @param indexExt El indice a modificar
 	 */
-	public void setIndex(int index) {
-		this.index = index;
+	public final void setIndex(final int indexExt) {
+		this.index = indexExt;
 	}
 
 	/**
+	 * Permite obtener el indice actual de la lista.
 	 * @return the index
 	 */
-	public int getIndex() {
+	public final int getIndex() {
 		return index;
 	}
 	
@@ -144,7 +151,8 @@ public class ListaEspacioLibre {
 	/**
 	 * Actualiza el espacio del ultimo elemento accedido 
 	 * por buscarEspacio.
-	 * @param espacioActual Espacio que queda en el bloque.
+	 * @param espacioOcupadoActual Espacio que esta ocupado
+	 * en el bloque.
 	 */
 	public final void actualizarEspacio(final Short espacioOcupadoActual) {
 		NodoListaEspacioLibre nodo;

@@ -20,7 +20,7 @@ public final class LogicaVectorial {
 	 */
 	public static double calcularPesoglobal(final int cantDocumentos, 
 			final int ni) {
-		 return Math.log10(cantDocumentos + ni);
+		 return Math.log10(cantDocumentos / ni);
 	}
 	/**
 	 * @param offsetDocumento1 offset del documeto al cual se le quiere
