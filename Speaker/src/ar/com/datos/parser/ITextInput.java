@@ -2,6 +2,7 @@ package ar.com.datos.parser;
 
 import java.util.Collection;
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.grupo5.DocumentsManager;
 
 /**
  * Interface implementada por las clases del paquete Parser. Permite obtener una
@@ -25,7 +26,7 @@ public interface ITextInput  {
 	 * @return Colección de objetos "palabra"
 	 * @throws Exception .
 	 */
-	Collection<IunidadDeHabla> modoCarga(String rutaOlinea, boolean esArchivo)
+	Collection<IunidadDeHabla> modoCarga(String rutaOlinea, boolean esArchivo, DocumentsManager docMan)
 			throws Exception;
 	
 	/**

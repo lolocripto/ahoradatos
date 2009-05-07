@@ -3,6 +3,7 @@ package ar.com.datos.parser;
 import java.util.Collection;
 
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.grupo5.DocumentsManager;
 
 /**
  * Es la clase que se utiliza para parsear y cargar las palabras.
@@ -15,7 +16,7 @@ public class TextInterpreter implements ITextInput {
 	 * 
 	 */
 	public Collection<IunidadDeHabla> modoCarga(String rutaOlinea,
-			boolean esArchivo) throws Exception {
+			boolean esArchivo, DocumentsManager docMan) throws Exception {
 
 		Parser miparser = new Parser(rutaOlinea, esArchivo);
 		if (esArchivo) {
