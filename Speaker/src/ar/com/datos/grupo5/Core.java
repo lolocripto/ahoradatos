@@ -64,30 +64,16 @@ public class Core {
 	private AudioFileManager audioFileManager;
 	
 	/**
-	 * Se encarga de administrar los terminos.
-	 */
-	private TerminosGlobales terminosGlobalesManager;
-	
-	/**
 	 * Conteniene todas las palabras a grabar o a leer del documento ingresado.
 	 */
 	private Collection<IunidadDeHabla>  contenedor; 
-	
+
+	private FTRSManager ftrsManager;
 	/**
 	 * Logger para la clase.
 	 */
 	private static Logger logger = Logger.getLogger(Core.class);
 	
-	/**
-	 * Archivo de trabajo.
-	 */
-	private RandomAccessFile archivoTrabajo;
-	
-	/**
-	 * Administra las listas invertidas en el archivo de bloques.
-	 */
-	private ListasInvertidas listasInvertidas;
-
 	private long tiempoConsulta;
 	
 	/**
@@ -125,11 +111,8 @@ public class Core {
 			if (!abrirArchivo(invocador)) {
 				return "Intente denuevo";
 			}
+						
 			
-			//TODO: Pisar el anterior!!
-			archivoTrabajo = new RandomAccessFile(Constantes.ARCHIVO_TRABAJO,Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-			
-			NodoRS idTerminoIdDocumento;
 			/*
 			 * Creo el documento en el archivo de documentos.
 			 * TODO: Completar el tema de documentos.
@@ -140,39 +123,17 @@ public class Core {
 			IunidadDeHabla elemento;
 			iterador = contenedor.iterator();
 			
-			RegistroTerminoDocumentos regTerminoDocumentos = null;
-			
 			// Mientras tenga palabras para verificar consulto
 			while (iterador.hasNext()) {
 
 				elemento = iterador.next();
 				logger.debug("Itero una vez.txt.");
 				
-				/*
-				 * TODO: Cada palabra real necesito agregarla al documento.
-				 */
-				
 				// Si no es StopWord entonces utilizo el Ftrs.
 				if (!elemento.isStopWord()) {
-					/*
-					 * TODO: Busco el termino en el FTRS.
-					 * regTerminoDocumentos = busqueda(elemento.getTextoEscrito());
-					 */
 					
-					/*
-					 * Si es nulo entonces no existe el termino en el ftrs
-					 * por lo tanto tampoco existe en el archivo de termino globales.
-					 */
-					if (regTerminoDocumentos == null) {
-						//Se encarga de agregar el termino que no existe.
-						regTerminoDocumentos 
-							= this.agregaTermino(elemento.getEquivalenteFonetico());
-					}
+					this.ftrsManager.validarTermino(elemento.getEquivalenteFonetico(), offsetDoc);
 					
-					//Escribo el idTermino junto con el offsetDoc
-					idTerminoIdDocumento = new NodoRS(regTerminoDocumentos.getIdTermino(), offsetDoc);
-					archivoTrabajo.write(idTerminoIdDocumento.getBytes(), 0, idTerminoIdDocumento.getTamanio());
-
 				}
 				
 				/*
@@ -239,9 +200,7 @@ public class Core {
 				
 			}
 			
-			this.archivoTrabajo.close();
-			
-			//TODO: generarListasInvertidas();
+			this.ftrsManager.generarListasInvertidas();
 
 			cerrarArchivo(invocador);
 		} catch (SimpleAudioPlayerException e) {
@@ -256,24 +215,7 @@ public class Core {
 		return "Las palabras han sido correctamente ingresadas.";
 	}
 
-	/**
-	 * Se encarga de agregar el termino que no existe en el 
-	 * archivo de terminos globales y en el FTRS.
-	 * @param textoEscritoExt Termino a agregar.
-	 */
-	private RegistroTerminoDocumentos agregaTermino(final String textoEscritoExt) {
-		// TODO Auto-generated method stub
-		//Pasar el parser
-		Long idTermino
-			= this.terminosGlobalesManager.agregar(textoEscritoExt);
-		/*
-		 * agregar al FTRS el termino con idTermino y con el 
-		 * offset a la lista en null.
-		 */
-		RegistroTerminoDocumentos reg = new RegistroTerminoDocumentos();
-		reg.setIdTermino(idTermino);
-		return reg;
-	}
+	
 
 	/**
 	 * 
@@ -562,6 +504,7 @@ public class Core {
 		this.parser = new TextInterpreter();
 		this.audioFileManager = new AudioFileManager();
 		this.documentManager = new DocumentsManager();
+		this.ftrsManager = new FTRSManager();
 	}
 	
 	/**
@@ -612,24 +555,10 @@ public class Core {
 			} catch (Exception g) {
 				invocador.mensaje("Error al cerrar el archivo de documentos.");
 			}
-			try {
-				if (this.terminosGlobalesManager != null) {
-					this.terminosGlobalesManager.cerrar();
-				}
-			} catch (Exception g) {
-				invocador.mensaje("Error al cerrar el archivo de terminos " 
-						+ "Globales.");
-			}
 			
-			try {
-				if (this.listasInvertidas != null) {
-					this.listasInvertidas.cerrar();
-				}
-			} catch (Exception g) {
-				invocador.mensaje("Error al cerrar el archivo de listas " 
-						+ "invertidas.");
-			}
 			invocador.mensaje("Error al cerrar el archivo de diccionario.");
+			
+			this.ftrsManager.cerrarArchivos();
 			return false;
 		}
 	}
@@ -681,146 +610,11 @@ public class Core {
 		
 		logger.debug("Abrio el archivo documentos");
 		
-		try {
-			this.terminosGlobalesManager.abrir(Constantes.ARCHIVO_TERMINOS_GLOBALES,
-					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-		} catch (FileNotFoundException e) {
-			invocador.mensaje("No se pudo abrir el archivo de terminos globales.");
-			return false;
-		}
-		
-		logger.debug("Abrio el archivo de terminos globales");
-		
-		try {
-			this.listasInvertidas.abrir(Constantes.ARCHIVO_LISTAS_INVERTIDAS,
-					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-		} catch (FileNotFoundException e) {
-			invocador.mensaje("No se pudo abrir el archivo de listas invertidas.");
-			return false;
-		}
-		
-		logger.debug("Abrio el archivo de terminos globales");
+		this.ftrsManager.abrirArchivos();
 		return true;
 	}
 	
-	/**
-	 * Se encarga de la generacion y actualizacion 
-	 * de las listas invertidas.
-	 */
-	private void generarListasInvertidas() {
-		//Ahora tengo que realizar el replacement Selection
-		ReplacementSelection remplacementP
-					= new ReplacementSelection(Constantes.ARCHIVO_TRABAJO);
-		
-		remplacementP.ordenar();
-		
-		ArrayList<String> listaParticiones 
-					= remplacementP.getListaParticiones();
-		
-		Merge mergeManager 
-					= new Merge(listaParticiones, remplacementP.getArch());
-		
-		mergeManager.ejecutarMerge();
-		
-		long nRegistros = 0;
-		NodoRS nodo = new NodoRS();
-		byte[] dataNodo = new byte[nodo.getTamanio()];
-		try {
-			this.archivoTrabajo = new RandomAccessFile(
-					Constantes.ARCHIVO_TRABAJO,
-					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-			
-			nRegistros = this.archivoTrabajo.length() / nodo.getTamanio();
-		
-			Long idTermino = 0L;
-			Long idDocumento = 0L;
-			Long frecuencia = 0L;
-			int i = 0;
-			this.archivoTrabajo.read(dataNodo, 0, dataNodo.length);
-			nodo.setBytes(dataNodo);
-			idTermino = nodo.getIdTermino();
-			idDocumento = nodo.getIdDocumento();
-			
-			//El documento siempre es el mismo
-			while (i < nRegistros) {
-				while (idTermino == nodo.getIdTermino() && idDocumento == nodo.getIdDocumento()&& i < nRegistros) {
-					frecuencia++;
-					i++;
-					this.archivoTrabajo.read(dataNodo, 0, dataNodo.length);
-					nodo = new NodoRS();
-					nodo.setBytes(dataNodo);
-				}
-				ParFrecuenciaDocumento parFrecDoc = new ParFrecuenciaDocumento();
-				parFrecDoc.setFrecuencia(frecuencia);
-				parFrecDoc.setOffsetDocumento(idDocumento);
-				
-				//Leo el termino
-				String termino = this.terminosGlobalesManager.leerTermino(idTermino);
-				
-				//TODO:Pido al FTRS los datos del termino. Busco el termino
-				
-				//TODO:Si tengo lista invertida para el termino entonces la leo
-				//y la actualizo, sino la inserto. 
-				if (1 == 1) {
-					//TODO: Tengo lista invertida, ver como agarrar el bloque
-					RegistroTerminoDocumentos regTD
-						= this.listasInvertidas.leerLista(idTermino, 2);
-					
-					//Ahora ingreso el ParFrecuenciaDocumento al Registro.
-					Collection<ParFrecuenciaDocumento> listaDatosDocumentos = regTD.getDatosDocumentos();
-					listaDatosDocumentos.add(parFrecDoc);
-					Collections.sort((List<ParFrecuenciaDocumento>) listaDatosDocumentos, (new comparadorFrecuencias()));
-					
-					//Ya esta ordenada la lista por frecuencias descendiente
-					this.listasInvertidas.modificarLista(2, idTermino, listaDatosDocumentos);
-					Map<Long,Long> registrosMovidos = this.listasInvertidas.getRegistrosMovidos();
-					
-					if (!registrosMovidos.isEmpty()) {
-						//Si no esta vacio entonces tengo que actualizar el FTRS
-						Iterator itr = registrosMovidos.entrySet().iterator();
-						while (itr.hasNext()) {
-							Map.Entry e = (Map.Entry)itr.next();
-							//Map[idtermino,bloquenuevo]
-							termino = this.terminosGlobalesManager.leerTermino((Long)e.getKey());
-							//TODO: Actualizame el Termino "termino" con el bloque "e.getValue()"
-							//TODO: Borrar Map para no repetir
-						}
-					}
-				} else {
-					//No tengo lista invertida
-					ArrayList<ParFrecuenciaDocumento> listaTemp
-						= new ArrayList<ParFrecuenciaDocumento>();
-					listaTemp.add(parFrecDoc);
-					
-					this.listasInvertidas.agregar(idTermino, listaTemp);
-					Long bloqueLista = this.listasInvertidas.getBloqueInsertado();
-					
-					//TODO: Actualizame el Termino "termino" con el bloque "bloqueLista"
-					
-					
-				}
-				
-				
-				RegistroTerminoDocumentos regTerminoDocumentos 
-						= new RegistroTerminoDocumentos();
-				
-				//regTerminoDocumentos.
-				
-				
-				
-				idTermino = nodo.getIdTermino();
-				idDocumento = nodo.getIdDocumento();
-				frecuencia = 0L;
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+
 	/**
 	 * Metodo que se encarga de administrar la consulta del usuario.
 	 * @param invocador 
@@ -851,6 +645,10 @@ public class Core {
 		 * invocador.mensaje("Para reproducir el documento: playDocument <Nro del lista>");
 		 * 
 		 */
+		if (query.isEmpty()) {
+			return "Consulta inválida.";
+		}
+		
 		Float tiempoFinal = (float)(System.currentTimeMillis() - this.tiempoConsulta) / 1000;
 		return tiempoFinal.toString() + " segundos";
 	}
