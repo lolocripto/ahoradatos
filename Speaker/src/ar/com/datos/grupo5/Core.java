@@ -1,35 +1,20 @@
 package ar.com.datos.grupo5;
 
-
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.RandomAccessFile;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import ar.com.datos.grupo5.utils.comparadorFrecuencias;
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.grupo5.registros.RegistroDiccionario;
-import ar.com.datos.grupo5.registros.RegistroTerminoDocumentos;
 import ar.com.datos.parser.ITextInput;
 import ar.com.datos.parser.TextInterpreter;
 import ar.com.datos.reproduccionaudio.exception.SimpleAudioPlayerException;
-import ar.com.datos.sortExterno.Merge;
-import ar.com.datos.sortExterno.NodoRS;
-import ar.com.datos.sortExterno.ReplacementSelection;
-
 
 /**
  * @author LedZeppeling
