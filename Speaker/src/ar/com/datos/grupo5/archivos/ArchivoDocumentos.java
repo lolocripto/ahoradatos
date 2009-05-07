@@ -38,9 +38,9 @@ public class ArchivoDocumentos extends Directo {
 	private static Logger milogueador = Logger
 			.getLogger(ArchivoDocumentos.class);
 
-	// private String rutaArchivo = Constantes.ARCHIVO_DOCUMENTOS;
+   private String rutaArchivo = Constantes.ARCHIVO_DOCUMENTOS;
 
-	private String rutaArchivo = "/home/zeke/Escritorio/archivoDocs.dat";
+//	private String rutaArchivo = "/home/zeke/Escritorio/archivoDocs.dat";
 
 	/**
 	 * Constructor de la clase.
