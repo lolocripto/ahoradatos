@@ -81,7 +81,7 @@ public class Core {
 
 			// Cargo el parser con el documento en modo aprendizaje
 			try {
-				contenedor = this.parser.modoCarga(pathDocumento, true);
+				contenedor = this.parser.modoCarga(pathDocumento, true, this.documentManager);
 			} catch (FileNotFoundException e) {
 				return "No se pudo abrir el archivo: " + pathDocumento;
 			} catch (Exception e) {
@@ -96,15 +96,7 @@ public class Core {
 			if (!abrirArchivo(invocador)) {
 				return "Intente denuevo";
 			}
-						
-			
-			/*
-			 * Creo el documento en el archivo de documentos.
-			 * TODO: Completar el tema de documentos.
-			 */
 			Long offsetDoc = 0L;
-			offsetDoc = this.documentManager.agregarDocumento(pathDocumento);
-			
 			IunidadDeHabla elemento;
 			iterador = contenedor.iterator();
 			
