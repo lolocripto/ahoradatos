@@ -17,13 +17,44 @@ public class TestTextInterpreter {
 	
 
 
-//		String ruta = "/home/zeke/Escritorio/arcpru/prueba4.txt";
+		String ruta = "/home/zeke/Escritorio/arcpru/prueba4.txt";
 	
 		TextInterpreter ti = new TextInterpreter();
 		
 		DocumentsManager dm = DocumentsManager.getInstance();
 		
+
 		
+		Collection<IunidadDeHabla> coleccion =null;
+
+		
+/* prueba lectura directa desde archivo ok!
+ * 		
+		try {
+			coleccion = ti.modoLectura(ruta, true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+*/		
+		
+		
+		
+		
+/* prueba modo lectura desde string ok!
+ * 		
+
+		try {
+			coleccion = ti.modoLectura("hola como estas", false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+*/	
+		
+		
+/*	Prueba modo lectura desde documento almacenado Ok!
+ * 	
 		Long offset = new Long(141);
 		dm.initReadSession(offset);
 		
@@ -36,9 +67,9 @@ public class TestTextInterpreter {
 		}
 		
 		
+*/		
 		
-		
-/*	prueba almacenar un nuevo archivo de texto...	
+/*	prueba almacenar un nuevo archivo de texto...	Ok!
  * 		
 		dm.initWriteSession();
 		
