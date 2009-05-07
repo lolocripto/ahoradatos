@@ -1,4 +1,4 @@
-package ar.com.datos.trie.persistence;
+package ar.com.datos.tests;
 
 import java.util.Iterator;
 
@@ -7,7 +7,7 @@ import ar.com.datos.trie.core.PunteroSonido;
 import ar.com.datos.trie.core.TrieAdministrator;
 
 
-public class PruebasPersistencia {
+public class PruebasTrie {
 
 	/**
 	 * @param args
