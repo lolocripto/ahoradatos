@@ -14,7 +14,7 @@ import ar.com.datos.grupo5.Constantes;
 
 
 /**
- * @author Led Zeppelin
+ * @author zeke
  * 
  */
 public class ArchivoDocumentos extends Directo {
@@ -213,9 +213,11 @@ public class ArchivoDocumentos extends Directo {
 		if (this.modoEnEjecucion == 1 && this.masLineasLeer){
 			String linea;
 			try {
-				linea= this.file.readLine();
 				
-				if ((this.offsetLastDoc + this.longitudDoc) >= this.file.getFilePointer() ){
+				linea= this.file.readUTF();
+			//	linea= this.file.readLine();
+				
+				if ( this.file.getFilePointer() >= (this.offsetLastDoc + this.longitudDoc)){
 					this.masLineasLeer = false;
 				}
 				return linea;
@@ -242,13 +244,13 @@ public class ArchivoDocumentos extends Directo {
 			try {
 				//obtengo la longitud del documento que no sabia con la posicion actual
 				//menos el offset con el que empezamos
-				long longitudDocumentoAlm = this.file.getFilePointer() - this.offset;
+				long longitudDocumentoAlm = this.file.getFilePointer() - this.offsetLastDoc;
 				
 				//asigno la variable local de longitud con el valor obtenido
 				this.longitudDoc = longitudDocumentoAlm;
 				
 				//me pongo nuevamente al comienzo del doc
-				this.file.seek(this.offset);
+				this.file.seek(this.offsetLastDoc);
 				//y almaceno su longitud, porque al empezar la escritura solo reserve el espacio
 				this.file.writeLong(this.longitudDoc);
 				

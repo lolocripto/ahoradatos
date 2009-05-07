@@ -26,7 +26,7 @@ public class TestArchivoDocs {
 		File archivo; 
 		BufferedReader buffer=null;
 		
-	    archivo = new File("/home/zeke/Escritorio/prueba.txt");
+	    archivo = new File("/home/zeke/Escritorio/arcpru/prueba4.txt");
 
 		try {
 			FileInputStream fis = new FileInputStream(archivo);
@@ -42,21 +42,21 @@ public class TestArchivoDocs {
 		
 		DocumentsManager adm = DocumentsManager.getInstance();
 		
-		
+
 		
 		Long cero = new Long(0);
 		adm.initReadSession(cero);
 		
 		String Linea = adm.leerLinea();
 		
-		while (Linea !=null){
+		while (Linea != null){
 			System.out.println(Linea);
 			Linea = adm.leerLinea();
 		}
-	
+
 		
-/* carga		
-		
+
+/*		
 		adm.initWriteSession();
 		
 
@@ -79,7 +79,11 @@ public class TestArchivoDocs {
 				e.printStackTrace();
 			}
 		}
-*/		
+		
+
+*/
+
+
 		adm.cerrarSesion();
 		
 		
