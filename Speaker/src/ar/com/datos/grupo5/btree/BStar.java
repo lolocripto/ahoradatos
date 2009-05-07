@@ -303,6 +303,7 @@ public final class BStar implements BTree {
 				listar();
 				abrirArchivos();
 				while (padre.isOverflow()) {
+					
 					if (padre.getNroBloquePadre() < 0) {
 						return splitRaiz(padre);
 					} else {

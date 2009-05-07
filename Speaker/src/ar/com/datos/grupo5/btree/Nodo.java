@@ -139,15 +139,18 @@ public class Nodo {
 			pos++;
 			
 			resultado = reg.getClave().compareTo(clave);
-			switch (resultado) {
-				//Si es igual o mayor, devuelvo el indice.
-				case 0:
-				case 1:
-					return pos;
-				//Sigo buscando;
-				default:
-					break;
+			if (resultado >= 0) {
+				return pos;
 			}
+//			switch (resultado) {
+//				//Si es igual o mayor, devuelvo el indice.
+//				case 0:
+//				case 1:
+//					return pos;
+//				//Sigo buscando;
+//				default:
+//					break;
+//			}
 		}
 		
 		return pos;
@@ -378,8 +381,10 @@ public class Nodo {
 			
 		}
 		// Si quedo en overflow, va a haber que splitear el padre
-		if (nodoPadre.isOverflow())
+		/*
+		  if (nodoPadre.isOverflow())
 			return nodoPadre;
+		*/
 		return nuevoHermano;
 	}
 	
