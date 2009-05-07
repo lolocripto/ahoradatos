@@ -23,6 +23,7 @@ public interface ITextInput  {
 	 * @param rutaOlinea .
 	 *            ruta absoluta del archivo de carga
 	 * @param esArchivo .
+	 * @param docMan debe pasarse un objeto DocumentManager con la session de escritura iniciada.
 	 * @return Colección de objetos "palabra"
 	 * @throws Exception .
 	 */
@@ -45,5 +46,13 @@ public interface ITextInput  {
 	 */
 	Collection<IunidadDeHabla> modoLectura(String rutaOlinea, boolean esArchivo)
 			throws Exception;
+	
+	
+	/**
+	 * 
+	 * @param doc Debe pasarse un objeto DocumentManager con la sesion de lectura iniciada
+	 * @return
+	 */
+	public Collection<IunidadDeHabla> modoLecturaDocAlmacenado(DocumentsManager doc);
 	
 }

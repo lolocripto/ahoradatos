@@ -12,13 +12,11 @@ import ar.com.datos.grupo5.DocumentsManager;
  */
 public class TextInterpreter implements ITextInput {
 
-	/**
-	 * 
-	 */
+
 	public Collection<IunidadDeHabla> modoCarga(String rutaOlinea,
 			boolean esArchivo, DocumentsManager docMan) throws Exception {
 
-		Parser miparser = new Parser(rutaOlinea, esArchivo);
+		Parser miparser = new Parser(rutaOlinea, esArchivo, docMan);
 		if (esArchivo) {
 			return miparser.listar();
 		} else {
@@ -26,9 +24,7 @@ public class TextInterpreter implements ITextInput {
 		}
 	}
 
-	/**
-	 * 
-	 */
+
 	public Collection<IunidadDeHabla> modoLectura(String rutaOlinea,
 			boolean esArchivo) throws Exception {
 
@@ -39,5 +35,11 @@ public class TextInterpreter implements ITextInput {
 			return miparser.simpleString();
 		}
 	}
-
+	
+	public Collection<IunidadDeHabla> modoLecturaDocAlmacenado(DocumentsManager doc){
+		
+		Parser miParser = new Parser(doc);
+		return miParser.listar();
+	}
+	
 }
