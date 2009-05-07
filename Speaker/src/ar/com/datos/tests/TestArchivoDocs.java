@@ -39,12 +39,9 @@ public class TestArchivoDocs {
 		
 		
 		
-		
 		DocumentsManager adm = DocumentsManager.getInstance();
 		
-
-		
-		Long cero = new Long(0);
+		Long cero = new Long(315);
 		adm.initReadSession(cero);
 		
 		String Linea = adm.leerLinea();

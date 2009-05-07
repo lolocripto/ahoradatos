@@ -251,10 +251,6 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 			moreLines = false;
 			return null;
 		}
-		
-		
-		
-		
 	}
 	
 	
@@ -263,7 +259,12 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 
 		while ((linea != null) && (linea.isEmpty())) {
 			try {
-				linea = (buffer.readLine());	
+				linea = buffer.readLine();
+				
+				if (linea !=null){
+				if (linea.isEmpty()){
+					docMan.escribirLinea(linea);
+				}}
 			} catch (IOException e) {
 				e.printStackTrace();
 				this.moreLines = false;
