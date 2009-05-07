@@ -10,9 +10,9 @@ public class TrieArchiveHandler {
 
 	private ArchivoBloques miArchivo;
 	
-	private int tamanioBloque=512; //en bytes, segun mis calculos entran unos 30 o 35 punteros por nodo (promedio)
+	private int tamanioBloque=Constantes.TRIE_BLOCK_SIZE; //en bytes, segun mis calculos entran unos 30 o 35 punteros por nodo (promedio)
 	
-	private String rutaArch = "/home/zeke/Escritorio/trie.dat";
+	private String rutaArch = Constantes.ARCHIVO_TRIE;
 	
 	
 	public TrieArchiveHandler() {

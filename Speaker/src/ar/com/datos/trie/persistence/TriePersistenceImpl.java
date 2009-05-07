@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import ar.com.datos.grupo5.Constantes;
-import ar.com.datos.trie.core.INodo;
 import ar.com.datos.trie.core.Nodo;
 
 public class TriePersistenceImpl implements ITriePersistence {
