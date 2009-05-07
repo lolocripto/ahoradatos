@@ -334,20 +334,45 @@ public final class BStar implements BTree {
 	 * Split interno.
 	 * @param nodo .
 	 * @throws IOException .
+	 * @return Si pudo Splitear, devuelve true, sino false.
 	 */
-	private boolean splitRaiz(final Nodo nodo) throws IOException{
-		
+	private boolean splitRaiz(final Nodo nodo) throws IOException {
 		ArrayList<Nodo> nodos = nodo.splitRaiz(ultimoBloque);
-		nodoRaiz = nodos.get(1);
-		nodoActual = nodos.get(0);
+		nodoRaiz = nodos.get(0);
+		nodoActual = nodos.get(1);
 		ultimoBloque += 2;
-		
+		if (!nodoActual.isEsHoja()) {
+			//reasignar los NroBloquePadre de los hijos de nodo y de nodoActual
+			for (RegistroNodo reg : nodo.getRegistros()) {
+				Nodo nodoAuxiliar = new Nodo();
+				nodoAuxiliar.setBytes(archivo.leerBloque(reg
+						.getNroBloqueIzquierdo()));
+				nodoAuxiliar.setNroBloquePadre(nodo.getNroBloque());
+				archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
+						.getNroBloque());
+				}
+			for (RegistroNodo reg : nodoActual.getRegistros()) {
+				Nodo nodoAuxiliar = new Nodo();
+				nodoAuxiliar.setBytes(archivo.leerBloque(reg
+						.getNroBloqueIzquierdo()));
+				nodoAuxiliar.setNroBloquePadre(nodoActual.getNroBloque());
+				archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
+						.getNroBloque());
+				}
+			Nodo nodoAuxiliar = new Nodo();
+			nodoAuxiliar.setBytes(archivo.leerBloque(nodoActual
+					.getUltimoRegistro().getNroBloqueDerecho()));
+			nodoAuxiliar.setNroBloquePadre(nodoActual.getNroBloque());
+			archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
+					.getNroBloque());
+		}
 		archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
+				.getNroBloque());
+		archivo.escribirBloque(nodo.getBytes(), nodo
 				.getNroBloque());
 		archivo.escribirBloque(nodoActual.getBytes(),
 				nodoActual.getNroBloque());
-		archivo.escribirBloque(nodo.getBytes(), nodo
-				.getNroBloque());
+
 		
 		guardarDatosAdministrativos();
 		cerrarArchivos();

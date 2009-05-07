@@ -142,15 +142,6 @@ public class Nodo {
 			if (resultado >= 0) {
 				return pos;
 			}
-//			switch (resultado) {
-//				//Si es igual o mayor, devuelvo el indice.
-//				case 0:
-//				case 1:
-//					return pos;
-//				//Sigo buscando;
-//				default:
-//					break;
-//			}
 		}
 		
 		return pos;
@@ -264,9 +255,9 @@ public class Nodo {
 		Nodo nuevaRaiz = new Nodo();
 		
 		this.setNroBloquePadre(Constantes.NRO_BLOQUE_RAIZ);
-		this.setNroBloque(ultimoNroBloque + 2);
+		this.setNroBloque(ultimoNroBloque + 1);
 		nodo.setNroBloquePadre(Constantes.NRO_BLOQUE_RAIZ);
-		nodo.setNroBloque(ultimoNroBloque + 1);
+		nodo.setNroBloque(ultimoNroBloque + 2);
 		nodo.setEsHoja(this.isEsHoja());
 		nuevaRaiz.setNroBloquePadre(-1);
 		nuevaRaiz.setNroBloque(Constantes.NRO_BLOQUE_RAIZ);
@@ -277,16 +268,21 @@ public class Nodo {
 		while (minIndiceCarga < registros.size()) {
 			RegistroNodo reg = registros.remove(minIndiceCarga);
 			nodo.insertarRegistro(reg);
-			this.ocupar(-reg.getBytes().length);
 		}
 		// Cargar Nueva raiz (nodoAux)
 		RegistroNodo reg = new RegistroNodo();
-		reg.setClave(nodo.getPrimerRegistro().getClave());
+		if (!this.isEsHoja()) {
+			// Liberar la clave de la nueva raiz de la raiz anterior
+			reg.setClave(this.getUltimoRegistro().getClave());
+			removerRegistro(registros.size() - 1);
+		} else {
+			reg.setClave(nodo.getPrimerRegistro().getClave());
+		}
 		reg.setNroBloqueIzquierdo(this.getNroBloque());
-		reg.setNroBloqueDerecho(ultimoNroBloque + 1);
+		reg.setNroBloqueDerecho(nodo.getNroBloque());
 		nuevaRaiz.insertarRegistro(reg);
-		nodos.add(nodo);
 		nodos.add(nuevaRaiz);
+		nodos.add(nodo);
 		return nodos;
 	}
 	
