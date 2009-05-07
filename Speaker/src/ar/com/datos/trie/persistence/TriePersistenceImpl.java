@@ -73,7 +73,6 @@ public class TriePersistenceImpl implements ITriePersistence {
 	}
 	
 
-	@Override
 	public Nodo getNodo(Long i) {
 
 		TrieNodeRegistry registroNodo;
@@ -83,7 +82,6 @@ public class TriePersistenceImpl implements ITriePersistence {
 
 	}
 
-	@Override
 	public void saveNodo(Nodo unNodo) {
 
 		if (unNodo.getRegistroAsociado().isDirty()) {
