@@ -25,8 +25,7 @@ public class NodeRetrieveHandler implements InvocationHandler {
 	 */
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
-		
-		
+
 		if (method.getName() == "getHijo") {
 			this.accederNodo(this.nodoReal, args[0]);
 		}
@@ -34,12 +33,10 @@ public class NodeRetrieveHandler implements InvocationHandler {
 		if (method.getName() == "setNuevoHijo") {
 			this.agregarNuevoHijo(this.nodoReal, (INodo) args[0]);
 		}
-		
+
 		if (method.getName() == "setPuntero") {
 			this.setPuntero(this.nodoReal, (PunteroSonido) args[0]);
 		}
-
-		System.out.println("A Manager is being invoked:" + method.getName());
 
 		// Continuamos invocando al Manager real.
 		return method.invoke(nodoReal, args);
@@ -65,15 +62,15 @@ public class NodeRetrieveHandler implements InvocationHandler {
 		registroDelObjetoActual.setDirty(true);
 
 	}
-	
-	
-	private void setPuntero(INodo unNodo, PunteroSonido punt){
-		
+
+	private void setPuntero(INodo unNodo, PunteroSonido punt) {
+
 		unNodo.getRegistroAsociado().setPuntero(punt.getOffset());
 		unNodo.getRegistroAsociado().setDirty(true);
-		
-		TriePersistenceImpl.getPersistenceSession().agregarNodoSucio((Nodo)unNodo);
-		
+
+		TriePersistenceImpl.getPersistenceSession().agregarNodoSucio(
+				(Nodo) unNodo);
+
 	}
 
 	private void accederNodo(INodo objetoRealActual, Object palabra) {
@@ -102,7 +99,8 @@ public class NodeRetrieveHandler implements InvocationHandler {
 					Nodo miNodo;
 					miNodo = this.obtenerNodoDeDisco(objetoRealActual
 							.getRegistroAsociado().listaDepunteros.get(result));
-					objetoRealActual.setNuevoHijo(PersistentNodeFactory.getNewProxy(miNodo));
+					objetoRealActual.setNuevoHijo(PersistentNodeFactory
+							.getNewProxy(miNodo));
 
 				}
 			}
@@ -118,7 +116,7 @@ public class NodeRetrieveHandler implements InvocationHandler {
 				// si fue cargado genero un par auxiliar para buscar en la lista
 				// de punteros si tiene ese hijo pero no fue levantado
 				Long l = new Long(1);
-				ParStringPuntero aux = new ParStringPuntero(l,i);
+				ParStringPuntero aux = new ParStringPuntero(l, i);
 
 				// obtengo la posicion del objeto buscado
 				int result = objetoRealActual.getRegistroAsociado().listaDepunteros
@@ -130,13 +128,13 @@ public class NodeRetrieveHandler implements InvocationHandler {
 					Nodo miNodo;
 					miNodo = this.obtenerNodoDeDisco(objetoRealActual
 							.getRegistroAsociado().listaDepunteros.get(result));
-					objetoRealActual.setNuevoHijo(PersistentNodeFactory.getNewProxy(miNodo));
+					objetoRealActual.setNuevoHijo(PersistentNodeFactory
+							.getNewProxy(miNodo));
 
 				}
 
 			}
 		}
-		System.out.println("voy a disco y levanto el hijo");
 	}
 
 	private Nodo obtenerNodoDeDisco(ParStringPuntero psp) {

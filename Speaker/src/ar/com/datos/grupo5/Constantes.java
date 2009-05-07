@@ -9,6 +9,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.parser.PalabrasFactory;
 
 /**
  * Constantes de la aplicacion.
@@ -188,6 +189,10 @@ public final class Constantes {
 	 */
 	public static final String ARCHIVO_AUDIO = getXML("ARCHIVO_AUDIO");
 
+	
+	public static final int AUTO_FLUSH_AT = Integer.
+		parseInt(getXML("AUTO_FLUSH_AT"));
+	
 	/**
 	 * Archivo que usa ListasInvertidas para guardar las listas invertidas.
 	 */
@@ -287,9 +292,9 @@ public final class Constantes {
 		List<Element> lista = raiz.getChildren("palabra");
 		Iterator<Element> it = lista.iterator();
 		ArrayList<IunidadDeHabla> listaFinal = new ArrayList<IunidadDeHabla>();
+
 		while (it.hasNext()) {
-			//listaFinal.add(PalabrasFactory.getPalabra(it.next().getText()));
-			it.next();
+			listaFinal.add(PalabrasFactory.getPalabraSinChequeoStop(it.next().getText()));
 		}
 			return listaFinal;
 	}

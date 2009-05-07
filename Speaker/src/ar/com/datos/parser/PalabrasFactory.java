@@ -52,6 +52,37 @@ public class PalabrasFactory {
 	}
 	
 	
+	
+public static Palabra getPalabraSinChequeoStop(String palabraEscrita) {
+		
+		String fonetica;
+		boolean pronunciable = esPronunciable(palabraEscrita);
+		
+		/*
+		 * Verifico si esta activada la optimización al español, en cuyo caso el
+		 * equivalente fonético puede ser diferente a la palabra escrita, según
+		 * los usos de este idioma en particular.
+		 */
+		if (palabraEscrita.equalsIgnoreCase("~")) {
+			palabraEscrita = ".";
+		}
+		
+		if (palabraEscrita.equalsIgnoreCase("å")) {
+			palabraEscrita = ",";
+		}
+		
+		if (Constantes.SPANISH_OPTIMIZATION_ACTIVATED) {
+			fonetica = PatternRecognizer.posProcesadorFonetico(palabraEscrita);
+		} else {
+			fonetica = palabraEscrita;
+		}
+		Palabra nuevapalabra = new Palabra(palabraEscrita, fonetica);
+
+		nuevapalabra.setPronunciable(pronunciable);
+		return nuevapalabra;
+	}
+	
+	
 	/**
 	 * 
 	 * @param palabra

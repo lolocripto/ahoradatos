@@ -45,6 +45,10 @@
 	
     <TOP_RANKING>5</TOP_RANKING>
 	
+	<!-- Variable que permite setear el tamaño del buffer a llenar, antes 
+	de impactar a disco los nodos modificados del trie -->
+	<AUTO_FLUSH_AT>10</AUTO_FLUSH_AT>
+	
 	<ESCAPES_REGEX>
 		<![CDATA[((l{2}))|([b])|((?<!c)h)|((je))|((ji))|((mb))|((ce))|((ci))|((za))|((zu))|((\.))|((\,))|((\-))|((\+))|((\=))|((\$))|((\*))|((\%))|((\#))|((\@))|(([1]))|(([2]))|(([3]))|(([4]))|(([5]))|(([6]))|(([7]))|(([8]))|(([9]))|(([0]))]]>
 	</ESCAPES_REGEX>

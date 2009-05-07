@@ -3,6 +3,7 @@ package ar.com.datos.trie.persistence;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.trie.core.INodo;
 import ar.com.datos.trie.core.Nodo;
 
@@ -10,6 +11,9 @@ public class TriePersistenceImpl implements ITriePersistence {
 
 	TrieArchiveHandler tah;
 	ArrayList<Nodo> listaNodosSucios;
+	private int cantNodosSucios;
+	private int autoFlush = Constantes.AUTO_FLUSH_AT;
+	
 
 	static private TriePersistenceImpl singleton = null;
 
@@ -34,6 +38,12 @@ public class TriePersistenceImpl implements ITriePersistence {
 	
 	public void agregarNodoSucio(Nodo unNodo){
 		this.listaNodosSucios.add(unNodo);
+		this.cantNodosSucios++;
+		
+		if (this.cantNodosSucios > this.autoFlush){
+			this.flush();
+			this.cantNodosSucios =0;
+		}
 	}
 	
 	public Nodo nuevoNodo(char i) {
@@ -48,7 +58,7 @@ public class TriePersistenceImpl implements ITriePersistence {
 		TrieNodeRegistry t = new TrieNodeRegistry(unNodo);
 		
 		t.setDirty(true);
-		this.listaNodosSucios.add(unNodo);
+		this.agregarNodoSucio(unNodo);
 		
 		return unNodo;
 
@@ -66,7 +76,7 @@ public class TriePersistenceImpl implements ITriePersistence {
 		TrieNodeRegistry t = new TrieNodeRegistry(unNodo);
 		
 		t.setDirty(true);
-		this.listaNodosSucios.add(unNodo);
+		this.agregarNodoSucio(unNodo);
 		
 		return unNodo;
 
