@@ -1,9 +1,12 @@
 package ar.com.datos.grupo5;
 
+import java.io.IOException;
+
 import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.btree.BStar;
 import ar.com.datos.grupo5.btree.BTree;
 import ar.com.datos.grupo5.btree.Clave;
+import ar.com.datos.grupo5.registros.RegistroFTRS;
 import ar.com.datos.grupo5.registros.RegistroNodo;
 
 public class FTRSManager {
@@ -61,8 +64,25 @@ public class FTRSManager {
 	 * @param termino
 	 */
 	public final void agregarTermino(final long idTermino, final String termino) {
-		Clave clave = new Clave(termino);
-
+		
+		RegistroFTRS registroFtrs = new RegistroFTRS();
+		registroFtrs.setClave(new Clave(termino));
+		registroFtrs.setBloqueListaInvertida(-1L);
+		registroFtrs.setIdTermino(idTermino);
+		try {
+			this.arbolFTRS.insertar(registroFtrs);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
+	public final void actualizarTermino(final Long offsetLista, final String termino) {
+		//Armar el registro y llamar a actualizar del bTree
+		
+		RegistroFTRS registroFtrs = new RegistroFTRS();
+		registroFtrs.setClave(new Clave(termino));
+		registroFtrs.setBloqueListaInvertida(offsetLista);
+		this.arbolFTRS.modificar(registroFtrs);
+	}
 }

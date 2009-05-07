@@ -149,7 +149,7 @@ public class Core {
 				logger.debug("Itero una vez.txt.");
 				
 				/*
-				 * TODO: Cada palabra necesito agregarla al documento.
+				 * TODO: Cada palabra real necesito agregarla al documento.
 				 */
 				
 				// Si no es StopWord entonces utilizo el Ftrs.
@@ -166,7 +166,7 @@ public class Core {
 					if (regTerminoDocumentos == null) {
 						//Se encarga de agregar el termino que no existe.
 						regTerminoDocumentos 
-							= this.agregaTermino(elemento.getTextoEscrito());
+							= this.agregaTermino(elemento.getEquivalenteFonetico());
 					}
 					
 					//Escribo el idTermino junto con el offsetDoc
@@ -263,6 +263,7 @@ public class Core {
 	 */
 	private RegistroTerminoDocumentos agregaTermino(final String textoEscritoExt) {
 		// TODO Auto-generated method stub
+		//Pasar el parser
 		Long idTermino
 			= this.terminosGlobalesManager.agregar(textoEscritoExt);
 		/*

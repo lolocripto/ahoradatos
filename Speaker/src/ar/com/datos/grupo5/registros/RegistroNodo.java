@@ -82,7 +82,7 @@ public class RegistroNodo {
 	 * @param buffer Cadena de Bytes leida en el archivo de bloques
 	 * @param bloqueAnt nro de bloque anterior.
 	 */
-	public final void setBytes(final byte[] buffer, final int bloqueAnt) {
+	public void setBytes(final byte[] buffer, final int bloqueAnt) {
 		//TODO TESTEARLO YA!!!!!!!!!!
 		//Leo el numero de bloque Anterior.
 		setNroBloqueIzquierdo(bloqueAnt);
