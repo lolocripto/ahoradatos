@@ -425,12 +425,9 @@ public class Core {
 	
 				elemento = iterador.next();
 				if (elemento.esPronunciable()) {
-					
-					
+
 					Long puntero = this.diccionario.buscarPalabra(elemento.getEquivalenteFonetico());
-			
-					
-					
+
 					if (puntero != null) {
 						invocador.mensajeSinSalto(elemento.getTextoEscrito()
 								+ " ");
