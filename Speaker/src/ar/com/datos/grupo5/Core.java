@@ -124,7 +124,7 @@ public class Core {
 			while (iterador.hasNext()) {
 
 				elemento = iterador.next();
-				logger.debug("Itero una vez.txt.");
+				logger.debug("Termino: " + elemento.getTextoEscrito());
 				
 				// Si no es StopWord entonces utilizo el Ftrs.
 				if (!elemento.isStopWord()) {
@@ -361,7 +361,7 @@ public class Core {
 			// Mando a parsear el documento y obtengo un collection
 			try {
 				//this.documentManager.initReadSession(simDocs.getDocumento());
-				this.documentManager.initReadSession(21L);
+				this.documentManager.initReadSession(8L);
 				contenedor = this.parser.modoLecturaDocAlmacenado(this.documentManager);
 			} catch (Exception e) {
 				logger.error("Error al crear contenedor: " + e.getMessage(), e);
@@ -497,6 +497,9 @@ public class Core {
 		this.documentManager = DocumentsManager.getInstance();
 		this.ftrsManager = new FTRSManager();
 		this.ranking = null;
+		/*
+		 * Abro el diccionario. 
+		 */
 		this.diccionario = new Diccionario();
 	}
 	
@@ -520,10 +523,11 @@ public class Core {
 	private boolean cerrarArchivo(final InterfazUsuario invocador) {
 		
 		try {
-			
+/*			
 			if (this.diccionario != null) {
 				this.diccionario.cerrar();
 			}
+			*/
 			if (this.audioFileManager != null) {
 				this.audioFileManager.cerrar();
 			}
@@ -593,8 +597,11 @@ public class Core {
 	public final String query(final InterfazUsuario invocador, final String query) {
 		this.tiempoConsulta = System.currentTimeMillis();
 		
+		this.documentManager.initReadSession(0L);
+		Long cantidadDocs = this.documentManager.getCantidadDocsAlmacenados();
+		this.documentManager.cerrarSesion();
 		try {
-			ranking = this.ftrsManager.consultaRankeada(query);
+			ranking = this.ftrsManager.consultaRankeada(query, cantidadDocs);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -605,13 +612,16 @@ public class Core {
 		  SimilitudDocumento nodo;
 		  Integer i = 1;
 		  invocador.mensaje("Seleccione un de los documentos para ser reproducido:");
+		  this.documentManager.initReadSession(0L);
 		  while (it.hasNext()) {
 			  nodo = it.next();
 			  //TODO: Ver una funcion para poder leer el nombre del documento 
-			  //String mensaje = i.toString() + ". " + this.documentManager.leerDocumento(nodo.getDocumento());  
-			  //invocador.mensaje(mensaje);
+			  
+			  String mensaje = i.toString() + ". " + this.documentManager.getNombreDoc(nodo.getDocumento());  
+			  invocador.mensaje(mensaje);
 		  }
-			 invocador.mensaje("Para reproducir el documento: playDocument <Nro del lista>");
+		  this.documentManager.cerrarSesion();
+		  invocador.mensaje("Para reproducir el documento: playDocument <Nro del lista>");
 		
 		Float tiempoFinal = (float)(System.currentTimeMillis() - this.tiempoConsulta) / 1000;
 		return tiempoFinal.toString() + " segundos";

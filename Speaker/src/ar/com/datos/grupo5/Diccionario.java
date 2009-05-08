@@ -23,7 +23,7 @@ public class Diccionario {
 	 *
 	 */
 	public Diccionario() {
-		this.ta =new TrieAdministrator();
+		this.ta = new TrieAdministrator();
 	}
 	
 	/**

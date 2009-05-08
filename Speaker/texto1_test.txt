@@ -1,0 +1,2 @@
+Situacion problemática: El documento no puede ser escrito por palabra, porque habria que agregar una logica mucho mas costosa
+			que el write que implica dentro del parser. El documento tiene que ser IGUAL al documento que recibimos.

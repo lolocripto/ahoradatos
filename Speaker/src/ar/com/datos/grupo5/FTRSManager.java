@@ -132,7 +132,7 @@ public class FTRSManager {
 	 * @throws IOException .
 	 */
 	@SuppressWarnings("unchecked")
-	public final ArrayList<SimilitudDocumento> consultaRankeada(final String consulta) throws IOException {
+	public final ArrayList<SimilitudDocumento> consultaRankeada(final String consulta,final Long cantidadDocumentos) throws IOException {
 		//TODO: cambiar el tipo del array, debe devolver String = nombre del documento, offset al documento.
 		ArrayList<String> lista = new ArrayList<String>();
 		String[] terminosConsulta = consulta.split(" ");
@@ -153,11 +153,9 @@ public class FTRSManager {
 			
 			regTermDocs = this.listasInvertidas.leerLista(registroFtrs.getIdTermino(), registroFtrs.getBloqueListaInvertida());
 			
-			//TODO: CantidadDocumentosTotales
-			
 			pesoGlobalPorTermino = new ParPesoGlobalTermino();
 			pesoGlobalPorTermino.setPesoGlobal(
-					LogicaVectorial.calcularPesoglobal(1000/*cantidadDocumentosTotales*/, regTermDocs.getCantidadDocumentos())
+					LogicaVectorial.calcularPesoglobal(cantidadDocumentos.intValue(), regTermDocs.getCantidadDocumentos())
 					);
 			pesoGlobalPorTermino.setRegTermDocs(regTermDocs);
 			
@@ -175,13 +173,13 @@ public class FTRSManager {
 		//Primero busco en el termino de mayor peso global
 		int i = cantidadTerminos - 1;
 		
-		int cantidadDocumentos = 0;
+		int cantidadDocumentosSeleccionados = 0;
 		
 		Iterator<ParFrecuenciaDocumento> it;
 		
 		SimilitudDocumento simDocs;
 		ArrayList<SimilitudDocumento> listResultado = new ArrayList<SimilitudDocumento>();
-		while (i >= 0 && cantidadDocumentos < Constantes.TOP_RANKING) {
+		while (i >= 0 && cantidadDocumentosSeleccionados < Constantes.TOP_RANKING) {
 			//obtengo el la lista invertida del termino de mayor peso global
 			pesoGlobalPorTermino = pesoTerminoListas.get(i);
 			
@@ -194,7 +192,7 @@ public class FTRSManager {
 				parFD = it.next();
 				simDocs = new SimilitudDocumento();
 				simDocs.setDocumento(parFD.getOffsetDocumento());
-				cantidadDocumentos++;
+				cantidadDocumentosSeleccionados++;
 			}
 			i--;
 		}
@@ -385,7 +383,7 @@ public class FTRSManager {
 		
 		//Escribo el idTermino junto con el offsetDoc
 		idTerminoIdDocumento = new NodoRS(idTermino, offsetDoc);
-		try {
+		try {//TODO: byte[] = idTerminoIdDocumento.getBytes();
 			archivoTrabajo.write(idTerminoIdDocumento.getBytes(), 0,
 					idTerminoIdDocumento.getTamanio());
 		} catch (IOException e) {
@@ -414,7 +412,7 @@ public class FTRSManager {
 		
 		//TODO: Pisar el anterior!!
 		try {
-			archivoTrabajo = new RandomAccessFile(Constantes.ARCHIVO_TRABAJO,Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			archivoTrabajo = new RandomAccessFile(Constantes.ARCHIVO_TRABAJO,Constantes.ABRIR_PARA_LECTURA_ESCRITURA); //this.archivoTrabajo.setLength(0L);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
