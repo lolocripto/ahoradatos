@@ -3,9 +3,9 @@ package ar.com.datos.tests;
 import java.util.Collection;
 import java.util.Iterator;
 
-import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.DocumentsManager;
-import ar.com.datos.parser.TextInterpreter;
+import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.grupo5.parser.TextInterpreter;
 
 public class TestTextInterpreter {
 

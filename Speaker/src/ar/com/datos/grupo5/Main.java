@@ -6,7 +6,6 @@ import ar.com.datos.grupo5.btree.BStar;
 import ar.com.datos.grupo5.btree.BTree;
 import ar.com.datos.grupo5.btree.Clave;
 import ar.com.datos.grupo5.registros.RegistroNodo;
-import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
  * Esta clase es de ejemplo.
@@ -79,78 +78,22 @@ public final class Main {
 			System.out.println("Inserto [9]");
 			((BStar) tree).listar();
 			
-			clave = new Clave();
-			reg = new RegistroNodo();
-			clave.setClave("0");
-			reg.setClave(clave);
-			tree.insertar(reg);
-			System.out.println("Inserto [0]");
-			((BStar) tree).listar();
-			
-			clave = new Clave();
-			reg = new RegistroNodo();
-			clave.setClave("8");
-			reg.setClave(clave);
-			tree.insertar(reg);
-			System.out.println("Inserto [8]");
-			((BStar) tree).listar();
-		
-			clave = new Clave();
-			reg = new RegistroNodo();
-			clave.setClave("7");
-			reg.setClave(clave);
-			tree.insertar(reg);
-			System.out.println("Inserto [7]");
-			((BStar) tree).listar();
-			
-			clave = new Clave();
-			reg = new RegistroNodo();
-			clave.setClave("4");
-			reg.setClave(clave);
-			tree.insertar(reg);
-			System.out.println("Inserto [4]");
-			((BStar) tree).listar();
-			
-			clave = new Clave();
-			reg = new RegistroNodo();
-			clave.setClave("91");
-			reg.setClave(clave);
-			tree.insertar(reg);
-			System.out.println("Inserto [91]");
-			((BStar) tree).listar();
-
-			clave = new Clave();
-			reg = new RegistroNodo();
-			clave.setClave("6");
-			reg.setClave(clave);
-			tree.insertar(reg);
-			System.out.println("Inserto [6]");
-			((BStar) tree).listar();
-			
-			clave = new Clave();
-			reg = new RegistroNodo();
-			clave.setClave("92");
-			reg.setClave(clave);
-			tree.insertar(reg);
-			System.out.println("Inserto [92]");
-			((BStar) tree).listar();
-			
-			clave = new Clave();
-			reg = new RegistroNodo();
-			clave.setClave("93");
-			reg.setClave(clave);
-			tree.insertar(reg);
-			System.out.println("Inserto [93]");
-			((BStar) tree).listar();
-			
-			clave = new Clave();
-			reg = new RegistroNodo();
-			clave.setClave("94");
-			reg.setClave(clave);
-			tree.insertar(reg);
-			System.out.println("Inserto [94]");
-			((BStar) tree).listar();
-			
+//			clave = new Clave();
+//			reg = new RegistroNodo();
+//			clave.setClave("0");
+//			reg.setClave(clave);
+//			tree.insertar(reg);
+//			System.out.println("Inserto [0]");
+//			((BStar) tree).listar();
+//			
+//			clave = new Clave();
+//			reg = new RegistroNodo();
+//			clave.setClave("8");
+//			reg.setClave(clave);
+//			tree.insertar(reg);
+//			System.out.println("Inserto [8]");
+//			((BStar) tree).listar();
+						
 		} catch (Exception e) {
 			logger.error("Error: " + e);
 			e.printStackTrace();

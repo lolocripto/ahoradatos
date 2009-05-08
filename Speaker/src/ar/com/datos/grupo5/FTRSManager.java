@@ -10,17 +10,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.btree.BStar;
 import ar.com.datos.grupo5.btree.BTree;
 import ar.com.datos.grupo5.btree.Clave;
 import ar.com.datos.grupo5.registros.RegistroFTRS;
 import ar.com.datos.grupo5.registros.RegistroNodo;
 import ar.com.datos.grupo5.registros.RegistroTerminoDocumentos;
+import ar.com.datos.grupo5.sortExterno.Merge;
+import ar.com.datos.grupo5.sortExterno.NodoRS;
+import ar.com.datos.grupo5.sortExterno.ReplacementSelection;
 import ar.com.datos.grupo5.utils.comparadorFrecuencias;
-import ar.com.datos.sortExterno.Merge;
-import ar.com.datos.sortExterno.NodoRS;
-import ar.com.datos.sortExterno.ReplacementSelection;
 
 public class FTRSManager {
 
@@ -49,7 +49,12 @@ public class FTRSManager {
 	 * 
 	 */
 	public FTRSManager() {
-		arbolFTRS = new BStar();
+		try {
+			arbolFTRS = new BStar();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -58,8 +63,9 @@ public class FTRSManager {
 	 * @param palabra
 	 *            buscada
 	 * @return id del termino correspondiente a la palabra
+	 * @throws Exception 
 	 */
-	public final long buscarPalabra(final IunidadDeHabla palabra) {
+	public final long buscarPalabra(final IunidadDeHabla palabra) throws Exception {
 		long id = 0;
 		RegistroNodo nodo = new RegistroNodo();
 		if (!palabra.isStopWord()) {
@@ -74,8 +80,10 @@ public class FTRSManager {
 	 * 
 	 * @param palabra
 	 * @return true si se encuentra la palabra
+	 * @throws IOException ,
 	 */
-	public final boolean existePalabra(final IunidadDeHabla palabra) {
+	public final boolean existePalabra(final IunidadDeHabla palabra)
+			throws IOException {
 		boolean existe = false;
 		if (!palabra.isStopWord()) {
 			RegistroNodo nodo = arbolFTRS.buscar(new Clave(palabra
@@ -116,8 +124,9 @@ public class FTRSManager {
 	/**
 	 * Resuelve la consulta rankeada.
 	 * @return Lista de documentos con sus offset.
+	 * @throws IOException .
 	 */
-	public final ArrayList<String> consultaRankeada(final String consulta) {
+	public final ArrayList<String> consultaRankeada(final String consulta) throws IOException {
 		//TODO: cambiar el tipo del array, debe devolver String = nombre del documento, offset al documento.
 		ArrayList<String> lista = new ArrayList<String>();
 		String[] terminosConsulta = consulta.split(" ");
@@ -290,8 +299,9 @@ public class FTRSManager {
 	 * 
 	 * @param termino
 	 * @param offsetDoc
+	 * @throws IOException 
 	 */
-	public boolean validarTermino(final String termino, final Long offsetDoc) {
+	public boolean validarTermino(final String termino, final Long offsetDoc) throws IOException {
 		RegistroTerminoDocumentos regTerminoDocumentos;
 		NodoRS idTerminoIdDocumento;
 		Long idTermino = 0L;
@@ -310,7 +320,8 @@ public class FTRSManager {
 		//Escribo el idTermino junto con el offsetDoc
 		idTerminoIdDocumento = new NodoRS(idTermino, offsetDoc);
 		try {
-			archivoTrabajo.write(idTerminoIdDocumento.getBytes(), 0, idTerminoIdDocumento.getTamanio());
+			archivoTrabajo.write(idTerminoIdDocumento.getBytes(), 0,
+					idTerminoIdDocumento.getTamanio());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

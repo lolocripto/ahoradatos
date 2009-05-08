@@ -1,6 +1,6 @@
 package ar.com.datos.grupo5;
 
-import ar.com.datos.parser.CodificadorFrontCoding;
+import ar.com.datos.grupo5.parser.CodificadorFrontCoding;
 
 public class ClaveFrontCoding {
 

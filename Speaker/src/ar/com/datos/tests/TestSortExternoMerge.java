@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.sortExterno.Merge;
+import ar.com.datos.grupo5.sortExterno.NodoRS;
+import ar.com.datos.grupo5.sortExterno.ReplacementSelection;
 import ar.com.datos.grupo5.utils.Conversiones;
-import ar.com.datos.sortExterno.Merge;
-import ar.com.datos.sortExterno.NodoRS;
-import ar.com.datos.sortExterno.ReplacementSelection;
 
 /**
  * @author xxvkue

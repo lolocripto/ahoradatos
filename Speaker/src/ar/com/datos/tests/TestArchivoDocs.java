@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.DocumentsManager;
-import ar.com.datos.parser.Parser;
+import ar.com.datos.grupo5.parser.Parser;
 
 public class TestArchivoDocs {
 

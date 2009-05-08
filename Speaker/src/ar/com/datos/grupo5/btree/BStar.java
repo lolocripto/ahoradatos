@@ -47,8 +47,9 @@ public final class BStar implements BTree {
 	
 	/**
 	 * Constructor.
+	 * @throws Exception .
 	 */
-	public BStar() {
+	public BStar() throws Exception {
 		nodoActual = null;
 		archivo = new ArchivoBloques(Constantes.SIZE_OF_INDEX_BLOCK);
 		nodoRaiz = null;
@@ -120,8 +121,9 @@ public final class BStar implements BTree {
 	 * @param clave
 	 *            la clave del registro.
 	 * @return El registro buscado o el siguiente inmediatamente mayor.
+	 * @throws IOException .
 	 */
-	public RegistroNodo buscar(final Clave clave) {
+	public RegistroNodo buscar(final Clave clave) throws IOException {
 		//FIXME: Revisar.
 		
 		//Abro el archivo.
@@ -153,8 +155,9 @@ public final class BStar implements BTree {
 	 * 
 	 * @param clave .
 	 * @return El nodo buscado.
+	 * @throws IOException .
 	 */
-	private Nodo buscarNodo(final Clave clave) {
+	private Nodo buscarNodo(final Clave clave) throws IOException {
 		
 		if (nodoRaiz == null) {
 			return null;
@@ -188,6 +191,7 @@ public final class BStar implements BTree {
 						nodoAux.setBytes(archivo.leerBloque(nroBloque));
 					} catch (IOException e) {
 						e.printStackTrace();
+						throw e;
 					}
 					nodoActual = nodoAux;
 				} else {
@@ -205,6 +209,7 @@ public final class BStar implements BTree {
 						nodoAux.setBytes(archivo.leerBloque(nroBloque));
 					} catch (IOException e) {
 						e.printStackTrace();
+						throw e;
 					}
 					nodoActual = nodoAux;
 				} else {
@@ -231,6 +236,7 @@ public final class BStar implements BTree {
 									.leerBloque(nroBloque));
 						} catch (IOException e) {
 							e.printStackTrace();
+							throw e;
 						}
 						nodoActual = nodoAux;
 					} else {
@@ -337,6 +343,7 @@ public final class BStar implements BTree {
 	 * @return Si pudo Splitear, devuelve true, sino false.
 	 */
 	private boolean splitRaiz(final Nodo nodo) throws IOException {
+		
 		ArrayList<Nodo> nodos = nodo.splitRaiz(ultimoBloque);
 		nodoRaiz = nodos.get(0);
 		nodoActual = nodos.get(1);
@@ -384,6 +391,7 @@ public final class BStar implements BTree {
 	/**
 	 * Split interno.
 	 * @param nodo .
+	 * @return nodo.
 	 * @throws IOException .
 	 */
 	private Nodo split(final Nodo nodo) throws IOException {

@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
-import ar.com.datos.parser.ConsolaParser;
+import ar.com.datos.grupo5.parser.ConsolaParser;
 
 /**
  * @author LedZeppeling

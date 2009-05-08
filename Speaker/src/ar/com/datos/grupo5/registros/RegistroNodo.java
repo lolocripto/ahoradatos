@@ -53,8 +53,9 @@ public class RegistroNodo {
 	/**
 	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
 	 * @return los bytes que representan al registro.
+	 * @throws IOException ,
 	 */
-	public byte[] getBytes() {
+	public byte[] getBytes() throws IOException {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
 		try {
@@ -72,6 +73,7 @@ public class RegistroNodo {
 			dos.write(Conversiones.intToArrayByte(nroBloqueDerecho));
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw e;
 		}
 		
 		return bos.toByteArray();
@@ -81,8 +83,10 @@ public class RegistroNodo {
 	 * Método que llena los atributos a partir de lo contenido en el buffer.
 	 * @param buffer Cadena de Bytes leida en el archivo de bloques
 	 * @param bloqueAnt nro de bloque anterior.
+	 * @throws IOException .
 	 */
-	public void setBytes(final byte[] buffer, final int bloqueAnt) {
+	public void setBytes(final byte[] buffer, final int bloqueAnt)
+			throws IOException {
 		//TODO TESTEARLO YA!!!!!!!!!!
 		//Leo el numero de bloque Anterior.
 		setNroBloqueIzquierdo(bloqueAnt);
@@ -100,9 +104,10 @@ public class RegistroNodo {
 			claveNodo = new Clave(new String(datos));
 			//Leo el numero de bloque posterior.
 			setNroBloqueDerecho(dos.readInt());
-		} catch (Exception e) {
+		} catch (IOException e) {
 			LOG.error("Error: ", e);
 			e.printStackTrace();
+			throw e;
 		}
 	}
 

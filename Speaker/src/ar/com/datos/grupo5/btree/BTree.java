@@ -18,16 +18,17 @@ public interface BTree {
 	 *            la clave del registro.
 	 * @return El registro buscado o el siguiente inmediatamente mayor en el
 	 *         caso del b+, b#.
+	 * @throws IOException 
 	 */
-	RegistroNodo buscar(final Clave clave);
+	RegistroNodo buscar(final Clave clave) throws IOException;
 	
 	/**
 	 * Inserta un registro en el Arbol.
 	 * 
 	 * @param registro
 	 *            El registro para insertar.
-	 * @return true si lo inserta.
-	 * @throws IOException 
+	 * @return true si lo inserta. 
+	 * @throws Exception 
 	 */
 	boolean insertar(final RegistroNodo registro) throws IOException;
 	

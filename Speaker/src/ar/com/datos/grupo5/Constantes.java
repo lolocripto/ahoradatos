@@ -8,8 +8,8 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
-import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
-import ar.com.datos.parser.PalabrasFactory;
+import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.grupo5.parser.PalabrasFactory;
 
 /**
  * Constantes de la aplicacion.
@@ -206,12 +206,13 @@ public final class Constantes {
 		getXML("ARCHIVO_TERMINOS_GLOBALES");
 	
 	
-	public static final String ARCHIVO_TRIE =
-		getXML("ARCHIVO_TRIE");
+	public static final String ARCHIVO_TRIE = "";
+	//	getXML("ARCHIVO_TRIE");
 	
 	
-	public static final int TRIE_BLOCK_SIZE = Integer.parseInt(
-			getXML("TRIE_BLOCK_SIZE"));
+	public static final int TRIE_BLOCK_SIZE = 0; 
+		//Integer.parseInt(
+		//	getXML("TRIE_BLOCK_SIZE"));
 	
 	/**
 	 * Tamaño para los bloques del archivo de listas invertidas.

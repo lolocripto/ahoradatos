@@ -71,7 +71,12 @@ public class RegistroFTRS extends RegistroNodo{
 		@Override
 		public final void setBytes(final byte[] buffer, final int bloqueAnt) {
 			
-			super.setBytes(buffer, bloqueAnt);
+			try {
+				super.setBytes(buffer, bloqueAnt);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 			ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
 			DataInputStream dos = new DataInputStream(bis);

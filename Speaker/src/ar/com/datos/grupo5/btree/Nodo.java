@@ -151,8 +151,10 @@ public class Nodo {
 	 * Agrega un nodo.
 	 * @param registro El reistro para insertar.
 	 * @return El resultado de la insercion.
+	 * @throws IOException .
 	 */
-	public final boolean insertarRegistro(final RegistroNodo registro) {
+	public final boolean insertarRegistro(final RegistroNodo registro)
+			throws IOException {
 		
 		//Obtengo la posicion en donde debo insertarlo.
 		ocupar(registro.getBytes().length);
@@ -185,8 +187,10 @@ public class Nodo {
 	 * @param pos el indice del registro que se quiere eliminar.
 	 * @return el regstro que se elimina.
 	 *            .
+	 * @throws IOException .
 	 */
-	public final RegistroNodo removerRegistro(final int pos) {
+	public final RegistroNodo removerRegistro(final int pos) 
+		throws IOException {
 
 		RegistroNodo reg = registros.remove(pos);
 		ocupar(-reg.getBytes().length);
@@ -247,8 +251,10 @@ public class Nodo {
 	 * 
 	 * @param ultimoNroBloque el numero del ultimo bloque asignado.
 	 * @return the nodos
+	 * @throws IOException .
 	 */
-	public final ArrayList<Nodo> splitRaiz(final int ultimoNroBloque) {
+	public final ArrayList<Nodo> splitRaiz(final int ultimoNroBloque)
+			throws IOException {
 		
 		ArrayList<Nodo> nodos = new ArrayList<Nodo>();
 		Nodo nodo = new Nodo();
@@ -266,7 +272,7 @@ public class Nodo {
 		// TODO Terminar Metodo
 		// Llenar nodo hno (nodo)
 		while (minIndiceCarga < registros.size()) {
-			RegistroNodo reg = registros.remove(minIndiceCarga);
+			RegistroNodo reg = removerRegistro(minIndiceCarga);
 			nodo.insertarRegistro(reg);
 		}
 		// Cargar Nueva raiz (nodoAux)
@@ -292,9 +298,11 @@ public class Nodo {
 	 * @param nodoPadre El padre del nodo y su hermano
 	 * @param ultimoNroBloque .
 	 * @return the nodos
+	 * @throws IOException ,
 	 */
-	public final Nodo split(final Nodo nodoHermano, final Nodo nodoPadre, 
-			final boolean siguiente, final int ultimoNroBloque) {
+	public final Nodo split(final Nodo nodoHermano, final Nodo nodoPadre,
+			final boolean siguiente, final int ultimoNroBloque)
+			throws IOException {
 		
 		Nodo nuevoHermano = new Nodo();
 		nuevoHermano.setNroBloque(ultimoNroBloque + 1);
@@ -469,8 +477,10 @@ public class Nodo {
 	/**
 	 * 
 	 * @param buffer el nodo, pero expresado como cadena de bytes.
+	 * @throws Exception 
+	 * @throws IOException .
 	 */
-	public final void setBytes(final byte[] buffer) {
+	public final void setBytes(final byte[] buffer) throws IOException {
 		
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
 		DataInputStream dos = new DataInputStream(bis);
@@ -510,8 +520,10 @@ public class Nodo {
 				this.insertarRegistro(reg);
 			}
 			
-		} catch (Exception e) {
+		} catch (IOException e) {
+			LOG.error(e);
 			e.printStackTrace();
+			throw e;
 		}
 	}
 	

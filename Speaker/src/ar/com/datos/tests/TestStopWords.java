@@ -8,12 +8,12 @@ import java.util.List;
 
 import org.jdom.Element;
 
-import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
-import ar.com.datos.UnidadesDeExpresion.Palabra;
 import ar.com.datos.grupo5.Constantes;
-import ar.com.datos.parser.ITextInput;
-import ar.com.datos.parser.ParserStopWords;
-import ar.com.datos.parser.TextInterpreter;
+import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.grupo5.UnidadesDeExpresion.Palabra;
+import ar.com.datos.grupo5.parser.ITextInput;
+import ar.com.datos.grupo5.parser.ParserStopWords;
+import ar.com.datos.grupo5.parser.TextInterpreter;
 
 public class TestStopWords {
 

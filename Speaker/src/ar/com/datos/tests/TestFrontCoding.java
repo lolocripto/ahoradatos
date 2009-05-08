@@ -3,11 +3,11 @@ package ar.com.datos.tests;
 import java.util.Collection;
 import java.util.Iterator;
 
-import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.ClaveFrontCoding;
-import ar.com.datos.parser.CodificadorFrontCoding;
-import ar.com.datos.parser.ITextInput;
-import ar.com.datos.parser.TextInterpreter;
+import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.grupo5.parser.CodificadorFrontCoding;
+import ar.com.datos.grupo5.parser.ITextInput;
+import ar.com.datos.grupo5.parser.TextInterpreter;
 
 public class TestFrontCoding {
 	
