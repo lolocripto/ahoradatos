@@ -56,18 +56,18 @@ public final class Main {
 			
 			clave = new Clave();
 			reg = new RegistroNodo();
-			clave.setClave("3");
-			reg.setClave(clave);
-			tree.insertar(reg);
-			System.out.println("Inserto [3]");
-			((BStar) tree).listar();
-			
-			clave = new Clave();
-			reg = new RegistroNodo();
 			clave.setClave("5");
 			reg.setClave(clave);
 			tree.insertar(reg);
 			System.out.println("Inserto [5]");
+			((BStar) tree).listar();
+			
+			clave = new Clave();
+			reg = new RegistroNodo();
+			clave.setClave("3");
+			reg.setClave(clave);
+			tree.insertar(reg);
+			System.out.println("Inserto [3]");
 			((BStar) tree).listar();
 			
 			clave = new Clave();
@@ -78,22 +78,78 @@ public final class Main {
 			System.out.println("Inserto [9]");
 			((BStar) tree).listar();
 			
-//			clave = new Clave();
-//			reg = new RegistroNodo();
-//			clave.setClave("0");
-//			reg.setClave(clave);
-//			tree.insertar(reg);
-//			System.out.println("Inserto [0]");
-//			((BStar) tree).listar();
-//			
-//			clave = new Clave();
-//			reg = new RegistroNodo();
-//			clave.setClave("8");
-//			reg.setClave(clave);
-//			tree.insertar(reg);
-//			System.out.println("Inserto [8]");
-//			((BStar) tree).listar();
-						
+			clave = new Clave();
+			reg = new RegistroNodo();
+			clave.setClave("7");
+			reg.setClave(clave);
+			tree.insertar(reg);
+			System.out.println("Inserto [7]");
+			((BStar) tree).listar();
+			
+			clave = new Clave();
+			reg = new RegistroNodo();
+			clave.setClave("8");
+			reg.setClave(clave);
+			tree.insertar(reg);
+			System.out.println("Inserto [8]");
+			((BStar) tree).listar();
+			
+			clave = new Clave();
+			reg = new RegistroNodo();
+			clave.setClave("91");
+			reg.setClave(clave);
+			tree.insertar(reg);
+			System.out.println("Inserto [91]");
+			((BStar) tree).listar();
+			
+			clave = new Clave();
+			reg = new RegistroNodo();
+			clave.setClave("92");
+			reg.setClave(clave);
+			tree.insertar(reg);
+			System.out.println("Inserto [92]");
+			((BStar) tree).listar();
+			
+			clave = new Clave();
+			reg = new RegistroNodo();
+			clave.setClave("93");
+			reg.setClave(clave);
+			tree.insertar(reg);
+			System.out.println("Inserto [93]");
+			((BStar) tree).listar();
+			
+			clave = new Clave();
+			reg = new RegistroNodo();
+			clave.setClave("6");
+			reg.setClave(clave);
+			tree.insertar(reg);
+			System.out.println("Inserto [6]");
+			((BStar) tree).listar();
+			
+			clave = new Clave();
+			reg = new RegistroNodo();
+			clave.setClave("94");
+			reg.setClave(clave);
+			tree.insertar(reg);
+			System.out.println("Inserto [94]");
+			((BStar) tree).listar();
+			
+			clave = new Clave();
+			reg = new RegistroNodo();
+			clave.setClave("98");
+			reg.setClave(clave);
+			tree.insertar(reg);
+			System.out.println("Inserto [98]");
+			((BStar) tree).listar();
+			
+			clave = new Clave();
+			reg = new RegistroNodo();
+			clave.setClave("4");
+			reg.setClave(clave);
+			tree.insertar(reg);
+			System.out.println("Inserto [4]");
+			((BStar) tree).listar();
+			
 		} catch (Exception e) {
 			logger.error("Error: " + e);
 			e.printStackTrace();
