@@ -13,7 +13,6 @@ import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.grupo5.parser.ITextInput;
 import ar.com.datos.grupo5.parser.TextInterpreter;
-import ar.com.datos.grupo5.registros.RegistroDiccionario;
 import ar.com.datos.reproduccionaudio.exception.SimpleAudioPlayerException;
 
 /**
