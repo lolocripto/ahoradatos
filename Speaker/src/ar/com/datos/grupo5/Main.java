@@ -30,7 +30,7 @@ public final class Main {
 	public static void main(final String[] args) {
 		
 		
-		/*try {
+		try {
 			
 			Consola consola = new Consola(Core.class);
 			
@@ -40,8 +40,8 @@ public final class Main {
 
 		} catch (Exception e) {
 			logger.error("Error en main: " + e.getMessage());
-		}*/
-
+		}
+/*
 		try {
 			BTree tree = new BStar();
 			
@@ -149,11 +149,13 @@ public final class Main {
 			tree.insertar(reg);
 			System.out.println("Inserto [4]");
 			((BStar) tree).listar();
+
 			
 		} catch (Exception e) {
 			logger.error("Error: " + e);
 			e.printStackTrace();
 		}
+		*/
 	}
 
 }

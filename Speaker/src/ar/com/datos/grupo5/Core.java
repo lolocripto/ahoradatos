@@ -353,17 +353,15 @@ public class Core {
 	public final String playDocument(final InterfazUsuario invocador,
 			final String indiceDocumento) {
 		
-		/*
-		 * TODO: Version Vieja
-		 */
 		try {
 			Iterator<IunidadDeHabla> iterador;
 			
-			SimilitudDocumento simDocs = this.ranking.get(Integer.getInteger(indiceDocumento));
+			//SimilitudDocumento simDocs = this.ranking.get(Integer.getInteger(indiceDocumento));
 			
 			// Mando a parsear el documento y obtengo un collection
 			try {
-				this.documentManager.initReadSession(simDocs.getDocumento());
+				//this.documentManager.initReadSession(simDocs.getDocumento());
+				this.documentManager.initReadSession(21L);
 				contenedor = this.parser.modoLecturaDocAlmacenado(this.documentManager);
 			} catch (Exception e) {
 				logger.error("Error al crear contenedor: " + e.getMessage(), e);
@@ -594,11 +592,6 @@ public class Core {
 	 */
 	public final String query(final InterfazUsuario invocador, final String query) {
 		this.tiempoConsulta = System.currentTimeMillis();
-		
-		if (query.isEmpty()) {
-			Float tiempoFinal = (float)(System.currentTimeMillis() - this.tiempoConsulta) / 1000;
-			return "Consulta inválida." + tiempoFinal.toString() + " segundos";
-		}
 		
 		try {
 			ranking = this.ftrsManager.consultaRankeada(query);
