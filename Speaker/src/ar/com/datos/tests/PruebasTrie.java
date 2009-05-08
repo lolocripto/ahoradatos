@@ -1,13 +1,10 @@
 package ar.com.datos.tests;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.Constantes;
-import ar.com.datos.grupo5.trie.core.Nodo;
-import ar.com.datos.grupo5.trie.core.PunteroSonido;
+import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.trie.core.TrieAdministrator;
 
 
