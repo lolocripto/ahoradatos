@@ -75,7 +75,7 @@ public class TrieAdministrator {
 	public Long buscarPalabra (String pal){
 		
 		PunteroSonido punt = this.mitrie.search(pal);
-		if (punt ==null){
+		if (punt == null){
 			System.out.println("palabra no encontrada");
 			return null;
 		}else{

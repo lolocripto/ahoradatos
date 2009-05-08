@@ -1,19 +1,34 @@
 package ar.com.datos.grupo5;
 
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import ar.com.datos.grupo5.utils.comparadorFrecuencias;
 import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.grupo5.parser.ITextInput;
 import ar.com.datos.grupo5.parser.TextInterpreter;
+import ar.com.datos.grupo5.registros.RegistroTerminoDocumentos;
 import ar.com.datos.reproduccionaudio.exception.SimpleAudioPlayerException;
+import ar.com.datos.grupo5.sortExterno.Merge;
+import ar.com.datos.grupo5.sortExterno.NodoRS;
+import ar.com.datos.grupo5.sortExterno.ReplacementSelection;
+
 
 /**
  * @author LedZeppeling
@@ -53,6 +68,9 @@ public class Core {
 	private Collection<IunidadDeHabla>  contenedor; 
 
 	private FTRSManager ftrsManager;
+	
+	ArrayList<SimilitudDocumento> ranking;
+	
 	/**
 	 * Logger para la clase.
 	 */
@@ -77,9 +95,10 @@ public class Core {
 		
 		try {
 			Iterator<IunidadDeHabla> iterador;
-
 			// Cargo el parser con el documento en modo aprendizaje
 			try {
+				//Inicio la grabación del documento.
+				this.documentManager.initWriteSession();
 				contenedor = this.parser.modoCarga(pathDocumento, true, this.documentManager);
 			} catch (FileNotFoundException e) {
 				return "No se pudo abrir el archivo: " + pathDocumento;
@@ -95,7 +114,13 @@ public class Core {
 			if (!abrirArchivo(invocador)) {
 				return "Intente denuevo";
 			}
-			Long offsetDoc = 0L;
+						
+			Long offsetDoc = this.documentManager.getOffsetUltDoc();
+			
+			/*
+			 * Creo el documento en el archivo de documentos.
+			 * TODO: Completar el tema de documentos.
+			 */
 			IunidadDeHabla elemento;
 			iterador = contenedor.iterator();
 			
@@ -330,7 +355,7 @@ public class Core {
 	 * @return devuelve un mensaje informando el estado final del proceso.
 	 */
 	public final String playDocument(final InterfazUsuario invocador,
-			final String pathDocumento) {
+			final String indiceDocumento) {
 		
 		/*
 		 * TODO: Version Vieja
@@ -338,11 +363,12 @@ public class Core {
 		try {
 			Iterator<IunidadDeHabla> iterador;
 			
+			SimilitudDocumento simDocs = this.ranking.get(Integer.getInteger(indiceDocumento));
+			
 			// Mando a parsear el documento y obtengo un collection
 			try {
-				contenedor = this.parser.modoLectura(pathDocumento, true);
-			} catch (FileNotFoundException e) {
-				return "No se pudo abrir el archivo: " + pathDocumento;
+				this.documentManager.initReadSession(simDocs.getDocumento());
+				contenedor = this.parser.modoLecturaDocAlmacenado(this.documentManager);
 			} catch (Exception e) {
 				logger.error("Error al crear contenedor: " + e.getMessage(), e);
 				return "Error inesperado, consulte al proveedor del software";
@@ -361,12 +387,13 @@ public class Core {
 				
 				// Si lo encontro sigo en el bucle
 				if (elemento.esPronunciable()) {
-					
-				Long puntero =this.diccionario.buscarPalabra(elemento.getEquivalenteFonetico());
-				
-				if (puntero != null) {
+
+				Long offsetAudio = this.diccionario
+					.buscarPalabra(elemento.getEquivalenteFonetico());
+
+				if (offsetAudio != null) {
 					invocador.mensajeSinSalto(elemento.getTextoEscrito() + " ");
-					playWord(this.audioFileManager.leerAudio(puntero));
+					playWord(this.audioFileManager.leerAudio(offsetAudio));
 					audioManager.esperarFin();
 				}
 
@@ -384,10 +411,6 @@ public class Core {
 			return "Error inesperado.";
 		}
 			
-		/*
-		 * TODO: Version Nueva
-		 * 
-		 */
 		return "Reproduccion finalizada";
 	}
 
@@ -425,12 +448,12 @@ public class Core {
 				elemento = iterador.next();
 				if (elemento.esPronunciable()) {
 
-					Long puntero = this.diccionario.buscarPalabra(elemento.getEquivalenteFonetico());
-
-					if (puntero != null) {
+					Long offsetAudio = this.diccionario
+							.buscarPalabra(elemento.getEquivalenteFonetico());
+					if (offsetAudio != null) {
 						invocador.mensajeSinSalto(elemento.getTextoEscrito()
 								+ " ");
-						playWord(this.audioFileManager.leerAudio(puntero));
+						playWord(this.audioFileManager.leerAudio(offsetAudio));
 						audioManager.esperarFin();
 	
 					}
@@ -479,6 +502,8 @@ public class Core {
 		this.audioFileManager = new AudioFileManager();
 		this.documentManager = DocumentsManager.getInstance();
 		this.ftrsManager = new FTRSManager();
+		this.ranking = null;
+		this.diccionario = new Diccionario();
 	}
 	
 	/**
@@ -546,13 +571,6 @@ public class Core {
 	private boolean abrirArchivo(final InterfazUsuario invocador) {
 
 		/*
-		 * Abro el archivo para la carga y consulta del diccionario
-		 */
-		this.diccionario = new Diccionario();
-
-		logger.debug("Abrio el archivo Diccionario");
-
-		/*
 		 * Abro el archivo para la carga y consulta de los audios
 		 */
 		try {
@@ -564,8 +582,6 @@ public class Core {
 		}
 
 		logger.debug("Abrio el archivo Audio");
-		
-		logger.debug("Abrio el archivo documentos");
 		
 		this.ftrsManager.abrirArchivos();
 		return true;
@@ -582,15 +598,41 @@ public class Core {
 	 */
 	public final String query(final InterfazUsuario invocador, final String query) {
 		this.tiempoConsulta = System.currentTimeMillis();
+		
+		if (query.isEmpty()) {
+			Float tiempoFinal = (float)(System.currentTimeMillis() - this.tiempoConsulta) / 1000;
+			return "Consulta inválida." + tiempoFinal.toString() + " segundos";
+		}
+		
+		try {
+			ranking = this.ftrsManager.consultaRankeada(query);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		/*
 		 * TODO: 
 		 * 		1) enviar consulta al FTRS
 		 * Supongo que el FTRS me devolvera 5 elementos donde tenga offsetDocumento 
 		 * y deberia estar ordenado por prioridad
 		 * 		this.ranking = resultadoFTRS
-		 * Iterator<Long> it;
-		 * it = this.ranking.iterator();
-		 * Long nodo;
+		 * */
+		  Iterator<SimilitudDocumento> it;
+		  it = this.ranking.iterator();
+		  SimilitudDocumento nodo;
+		  Integer i = 1;
+		  invocador.mensaje("Seleccione un de los documentos para ser reproducido:");
+		  while (it.hasNext()) {
+			  nodo = it.next();
+			  //TODO: Ver una funcion para poder leer el nombre del documento 
+			  //String mensaje = i.toString() + ". " + this.documentManager.leerDocumento(nodo.getDocumento());  
+			  //invocador.mensaje(mensaje);
+		  }
+			 invocador.mensaje("Para reproducir el documento: playDocument <Nro del lista>");
+		  /*
+		  Long nodo;
 		 * Integer i = 1;
 		 * invocador.mensaje("Seleccione un de los documentos para ser reproducido:");
 		 * while (it.hasNext()) {
@@ -602,9 +644,7 @@ public class Core {
 		 * invocador.mensaje("Para reproducir el documento: playDocument <Nro del lista>");
 		 * 
 		 */
-		if (query.isEmpty()) {
-			return "Consulta inválida.";
-		}
+		
 		
 		Float tiempoFinal = (float)(System.currentTimeMillis() - this.tiempoConsulta) / 1000;
 		return tiempoFinal.toString() + " segundos";

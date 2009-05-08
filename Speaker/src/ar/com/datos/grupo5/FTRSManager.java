@@ -20,6 +20,7 @@ import ar.com.datos.grupo5.registros.RegistroTerminoDocumentos;
 import ar.com.datos.grupo5.sortExterno.Merge;
 import ar.com.datos.grupo5.sortExterno.NodoRS;
 import ar.com.datos.grupo5.sortExterno.ReplacementSelection;
+import ar.com.datos.grupo5.utils.LogicaVectorial;
 import ar.com.datos.grupo5.utils.comparadorFrecuencias;
 
 public class FTRSManager {
@@ -126,15 +127,17 @@ public class FTRSManager {
 	 * @return Lista de documentos con sus offset.
 	 * @throws IOException .
 	 */
-	public final ArrayList<String> consultaRankeada(final String consulta) throws IOException {
+	@SuppressWarnings("unchecked")
+	public final ArrayList<SimilitudDocumento> consultaRankeada(final String consulta) throws IOException {
 		//TODO: cambiar el tipo del array, debe devolver String = nombre del documento, offset al documento.
 		ArrayList<String> lista = new ArrayList<String>();
 		String[] terminosConsulta = consulta.split(" ");
-		ArrayList<RegistroTerminoDocumentos> listasInvertidas = new ArrayList<RegistroTerminoDocumentos>();
+		ArrayList<ParPesoGlobalTermino> pesoTerminoListas = new ArrayList<ParPesoGlobalTermino>();
 		int cantidadTerminos = terminosConsulta.length;
 		
 		//Leo las listas invertidas de los terminos de la consulta.
 		RegistroTerminoDocumentos regTermDocs;
+		ParPesoGlobalTermino pesoGlobalPorTermino;
 		for (int i = 0; i < cantidadTerminos; i++) {
 			//Busco el termino
 			RegistroFTRS registroFtrs = (RegistroFTRS) this.arbolFTRS.buscar(new Clave(terminosConsulta[i]));
@@ -146,16 +149,71 @@ public class FTRSManager {
 			
 			regTermDocs = this.listasInvertidas.leerLista(registroFtrs.getIdTermino(), registroFtrs.getBloqueListaInvertida());
 			
+			//TODO: CantidadDocumentosTotales
+			
+			pesoGlobalPorTermino = new ParPesoGlobalTermino();
+			pesoGlobalPorTermino.setPesoGlobal(
+					LogicaVectorial.calcularPesoglobal(1000/*cantidadDocumentosTotales*/, regTermDocs.getCantidadDocumentos())
+					);
+			pesoGlobalPorTermino.setRegTermDocs(regTermDocs);
+			
 			//TODO: Si no encuentra el termino paso de largo, no?
 			if (regTermDocs != null) {
-				listasInvertidas.add(regTermDocs);
+				pesoTerminoListas.add(pesoGlobalPorTermino);
 			}
 			
 		}
+		
+		//ordeno por pesoGlobal
+		Collections.sort((List<ParPesoGlobalTermino>) pesoTerminoListas);
+		
+		//Ver que documentos se van a agarrar ( los primeros X documentos segun la bibliografia)
+		//Primero busco en el termino de mayor peso global
+		int i = cantidadTerminos - 1;
+		
+		int cantidadDocumentos = 0;
+		
+		Iterator<ParFrecuenciaDocumento> it;
+		
+		SimilitudDocumento simDocs;
+		ArrayList<SimilitudDocumento> listResultado = new ArrayList<SimilitudDocumento>();
+		while (i >= 0 && cantidadDocumentos < Constantes.TOP_RANKING) {
+			//obtengo el la lista invertida del termino de mayor peso global
+			pesoGlobalPorTermino = pesoTerminoListas.get(i);
+			
+			regTermDocs = pesoGlobalPorTermino.getRegTermDocs();
+			
+			it = regTermDocs.getDatosDocumentos().iterator();
+			ParFrecuenciaDocumento parFD;
+			//Busco hasta que tenga X documentos, la X es el Ranking
+			while (it.hasNext() && cantidadDocumentos < Constantes.TOP_RANKING) {
+				parFD = it.next();
+				simDocs = new SimilitudDocumento();
+				simDocs.setDocumento(parFD.getOffsetDocumento());
+				cantidadDocumentos++;
+			}
+			i--;
+		}
+		
 		//TODO:Llamar a Logica Vectorial, pero revisar el funcionamiento, claro 
 		//a esta hora no se que es una pelota de futbol
 		//Ver el valor total de documentos.
-		return lista;
+		Iterator<SimilitudDocumento> itResultado = listResultado.iterator();
+		
+		while (itResultado.hasNext()) {
+			simDocs = itResultado.next();
+			// terminos1 = 
+			simDocs.setSimilitud(
+					LogicaVectorial.calcularSimilitud(
+										simDocs.getDocumento(), 
+										pesoTerminoListas
+					)
+			);
+		}
+		
+		Collections.sort((List<SimilitudDocumento>) listResultado);
+		
+		return listResultado;
 	}
 	
 	/**
