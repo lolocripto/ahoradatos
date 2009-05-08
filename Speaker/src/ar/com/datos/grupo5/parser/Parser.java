@@ -11,8 +11,8 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 
-import ar.com.datos.UnidadesDeExpresion.BufferedCollection;
-import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.grupo5.UnidadesDeExpresion.BufferedCollection;
+import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.DocumentsManager;
 

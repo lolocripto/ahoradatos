@@ -1,14 +1,10 @@
 package ar.com.datos.grupo5.parser;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 
 
 public class pruebas {

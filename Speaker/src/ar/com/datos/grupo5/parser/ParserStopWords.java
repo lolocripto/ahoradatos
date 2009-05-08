@@ -2,9 +2,8 @@ package ar.com.datos.grupo5.parser;
 
 import java.util.Collection;
 
-
-import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 
 /** 
  * Clase que utilizada para el filtrado de stop words.

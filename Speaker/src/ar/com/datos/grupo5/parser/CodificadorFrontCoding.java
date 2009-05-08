@@ -4,12 +4,10 @@ package ar.com.datos.grupo5.parser;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 
-import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.ClaveFrontCoding;
+import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 
 public class CodificadorFrontCoding {
 

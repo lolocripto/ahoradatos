@@ -8,7 +8,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
-import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.parser.PalabrasFactory;
 
 
