@@ -20,7 +20,8 @@ public class TestFrontCoding {
 		int aa = Integer.parseInt(oo); 
 		System.out.println("aaa"+aa);
 		try {
-			Collection<IunidadDeHabla> texto = tratadorDeTexto.modoCarga(terminos, false);
+			//FIXME: le agregueel ultimo parametro en null porque no compilaba.
+			Collection<IunidadDeHabla> texto = tratadorDeTexto.modoCarga (terminos, false,null);
 			Collection<ClaveFrontCoding>  claves = CodificadorFrontCoding.codificar(texto);
 			Iterator<ClaveFrontCoding> iterador = claves.iterator();
 			while (iterador.hasNext()) {

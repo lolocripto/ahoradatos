@@ -480,7 +480,7 @@ public class Core {
 		this.audioManager = new AudioManager();
 		this.parser = new TextInterpreter();
 		this.audioFileManager = new AudioFileManager();
-		this.documentManager = new DocumentsManager();
+		this.documentManager = DocumentsManager.getInstance();
 		this.ftrsManager = new FTRSManager();
 	}
 	
@@ -512,7 +512,7 @@ public class Core {
 				this.audioFileManager.cerrar();
 			}
 			if (this.documentManager != null) {
-				this.documentManager.cerrar();
+				this.documentManager.cerrarSesion();
 			}
 			return true;
 
@@ -527,7 +527,7 @@ public class Core {
 			}
 			try {
 				if (this.documentManager != null) {
-					this.documentManager.cerrar();
+					this.documentManager.cerrarSesion();
 				}
 			} catch (Exception g) {
 				invocador.mensaje("Error al cerrar el archivo de documentos.");
@@ -577,13 +577,13 @@ public class Core {
 		/*
 		 * Abro el archivo para la carga y consulta de los documentos
 		 */
-		try {
-			this.documentManager.abrir(Constantes.ARCHIVO_DOCUMENTOS,
-					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-		} catch (FileNotFoundException e) {
-			invocador.mensaje("No se pudo abrir el archivo de documentos.");
-			return false;
-		}
+//		try {
+//			this.documentManager.abrir(Constantes.ARCHIVO_DOCUMENTOS,
+//					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+//		} catch (FileNotFoundException e) {
+//			invocador.mensaje("No se pudo abrir el archivo de documentos.");
+//			return false;
+//		}
 		
 		logger.debug("Abrio el archivo documentos");
 		

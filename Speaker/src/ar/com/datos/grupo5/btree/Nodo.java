@@ -313,12 +313,12 @@ public class Nodo {
 				regs.add(reg);
 			}
 
-			// ahora, tengo que vaciar el hno y llenarlo otra vez
+			// ahora, agrego todos los registros del hermano y lo vacio.
 			regs.addAll(nodoHermano.getRegistros());
 			nodoHermano.getRegistros().clear();
 			nodoHermano.setEspacioOcupado(0);
 			
-			//ahora lo cargo hasta la minima ocupacion
+			//ahora lo cargo el hermano hasta la minima ocupacion
 			nodoHermano.setMinIndiceCarga(Constantes.MENOR);
 			while ((regs.size() > 0) && (!nodoHermano.tieneCargaMinima())) {
 				RegistroNodo reg = regs.remove(0);

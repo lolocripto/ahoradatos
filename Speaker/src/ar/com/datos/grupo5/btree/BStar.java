@@ -300,8 +300,8 @@ public final class BStar implements BTree {
 			if (!pasarRegistro(nodo, registro)) {
 				
 				Nodo padre = split(nodo);
-				listar();
-				abrirArchivos();
+//				listar();
+//				abrirArchivos();
 				while (padre.isOverflow()) {
 					
 					if (padre.getNroBloquePadre() < 0) {

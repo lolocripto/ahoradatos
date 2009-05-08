@@ -40,7 +40,8 @@ public class TestStopWords {
 		}
 			
 		try {
-			Collection<IunidadDeHabla> texto = tratadorDeTexto.modoCarga(cadenaTexto, false);
+			//FIXME: LE agregue el ultimo parametro en null porque no compilaba.
+			Collection<IunidadDeHabla> texto = tratadorDeTexto.modoCarga(cadenaTexto, false,null);
 			ParserStopWords parser = new ParserStopWords();
 			Collection<IunidadDeHabla> filtradas = parser
 					.filtroStopWords(texto);
