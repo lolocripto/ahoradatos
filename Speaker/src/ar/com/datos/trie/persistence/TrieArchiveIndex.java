@@ -11,7 +11,7 @@ import ar.com.datos.grupo5.utils.Conversiones;
 
 public class TrieArchiveIndex {
 
-	private int TamañoPar = Constantes.SIZE_OF_INT * 2;
+	private int tamaioPar = Constantes.SIZE_OF_INT * 2;
 	
 	/**
 	 * Archivo en disco.
@@ -141,7 +141,7 @@ public class TrieArchiveIndex {
 		
 		try {
 			
-			file.seek((TamañoPar * NumeroNodo)+Constantes.SIZE_OF_LONG);  //me posiciono en el nodo que quiero y le sumo lo que ocupa el valor del nodo
+			file.seek((tamaioPar * NumeroNodo)+Constantes.SIZE_OF_LONG);  //me posiciono en el nodo que quiero y le sumo lo que ocupa el valor del nodo
 			byte[] bufferBloque = new byte[Constantes.SIZE_OF_LONG]; //creo un buffer para leer el bloque
 	        file.read(bufferBloque, 0, Constantes.SIZE_OF_LONG); //leo el bloque partiendo de donde termina el int
 	        return Conversiones.arrayByteToLong(bufferBloque); //convierto los bytes al long y devuelvo.
