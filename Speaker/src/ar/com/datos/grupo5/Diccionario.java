@@ -1,14 +1,9 @@
 package ar.com.datos.grupo5;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-import ar.com.datos.grupo5.archivos.Archivo;
-import ar.com.datos.grupo5.archivos.Secuencial;
-import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
-import ar.com.datos.grupo5.registros.RegistroDiccionario;
-import ar.com.datos.trie.core.TrieAdministrator;
+import ar.com.datos.grupo5.trie.core.TrieAdministrator;
 
 /**
  * Clase que permite manipular el diccionario.

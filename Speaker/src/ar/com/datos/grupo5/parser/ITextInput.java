@@ -1,8 +1,9 @@
 package ar.com.datos.grupo5.parser;
 
 import java.util.Collection;
+
+import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.DocumentsManager;
-import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 
 /**
  * Interface implementada por las clases del paquete Parser. Permite obtener una

@@ -2,8 +2,8 @@ package ar.com.datos.grupo5.parser;
 
 import java.util.Collection;
 
+import ar.com.datos.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.DocumentsManager;
-import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 
 /**
  * Es la clase que se utiliza para parsear y cargar las palabras.
