@@ -19,9 +19,6 @@
 	<!--Tamanio del Bloque del archivo de Indice-->
 	<SIZE_OF_INDEX_BLOCK>64</SIZE_OF_INDEX_BLOCK>
 		
-	<!--Tamanio del orden del Trie-->
-	<SIZE_OF_TRIE>4</SIZE_OF_TRIE>
-		
 	<!--Tamanio del Bloque del archivo de listas invertidas-->
 	<SIZE_OF_LIST_BLOCK>2048</SIZE_OF_LIST_BLOCK>
 	
@@ -40,6 +37,13 @@
 	<ARCHIVO_TERMINOS_GLOBALES>./terminosglobales.data</ARCHIVO_TERMINOS_GLOBALES>
 	
 	<ARCHIVO_ARBOL_BSTAR>./arbolBStar.data</ARCHIVO_ARBOL_BSTAR>
+	
+	<ARCHIVO_TRIE>./arbolTrie.data</ARCHIVO_TRIE>
+	
+		<!--Tamanio del orden del Trie-->
+	<SIZE_OF_TRIE>4</SIZE_OF_TRIE>
+	
+	<TRIE_BLOCK_SIZE>512</TRIE_BLOCK_SIZE>
 	
 	<FACTOR_CARGA_BLOQUES>0.20</FACTOR_CARGA_BLOQUES>
 	
