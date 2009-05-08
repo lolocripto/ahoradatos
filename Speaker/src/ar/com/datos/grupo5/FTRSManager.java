@@ -52,6 +52,8 @@ public class FTRSManager {
 	public FTRSManager() {
 		try {
 			arbolFTRS = new BStar();
+			this.terminosGlobalesManager = new TerminosGlobales();
+			this.listasInvertidas = new ListasInvertidas();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,12 +108,14 @@ public class FTRSManager {
 		registroFtrs.setClave(new Clave(termino));
 		registroFtrs.setBloqueListaInvertida(-1L);
 		registroFtrs.setIdTermino(idTermino);
+		/*
 		try {
-			this.arbolFTRS.insertar(registroFtrs);
+			TODO: this.arbolFTRS.insertar(registroFtrs);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 	}
 
 	public final void actualizarTermino(final Long offsetLista, final String termino) {
@@ -274,7 +278,7 @@ public class FTRSManager {
 				
 				//TODO:Si tengo lista invertida para el termino entonces la leo
 				//y la actualizo, sino la inserto. 
-				if (1 == 1) {
+				if (1 == 2) {
 					//TODO: Tengo lista invertida, ver como agarrar el bloque
 					RegistroTerminoDocumentos regTD
 						= this.listasInvertidas.leerLista(idTermino, 2);
@@ -364,7 +368,11 @@ public class FTRSManager {
 		NodoRS idTerminoIdDocumento;
 		Long idTermino = 0L;
 		
-		RegistroFTRS registroFtrs = (RegistroFTRS) this.arbolFTRS.buscar(new Clave(termino));
+		RegistroFTRS registroFtrs = null;
+		/*
+		 * Lo comente porque el arbol aun no esta y me complica las pruebas
+		TODO: RegistroFTRS registroFtrs = (RegistroFTRS) this.arbolFTRS.buscar(new Clave(termino));
+		*/
 		
 		/*
 		 * Si es nulo entonces no existe el termino en el ftrs

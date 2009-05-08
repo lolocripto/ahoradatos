@@ -203,10 +203,7 @@ public class RegistroTerminoDocumentos implements Registro {
 					frecuenciaDocumento = (ParFrecuenciaDocumento)it.next();
 					byte[] frecuenciaBytes = Conversiones.longToArrayByte(frecuenciaDocumento.getFrecuencia());
 					byte[] offsetDocumentoBytes = Conversiones.longToArrayByte(frecuenciaDocumento.getOffsetDocumento());
-					
-					logger.debug("Escribo: " + frecuenciaBytes + ", dato: " + frecuenciaDocumento.getFrecuencia());
-					logger.debug("Escribo: " + offsetDocumentoBytes + ", dato: " + frecuenciaDocumento.getOffsetDocumento());
-					
+				
 					dos.write(frecuenciaBytes, 0, frecuenciaBytes.length);
 					moreBytes -= frecuenciaBytes.length;
 					cantidadByte += frecuenciaBytes.length;

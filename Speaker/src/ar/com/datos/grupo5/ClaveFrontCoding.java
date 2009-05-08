@@ -1,8 +1,9 @@
 package ar.com.datos.grupo5;
 
+import ar.com.datos.grupo5.btree.Clave;
 import ar.com.datos.grupo5.parser.CodificadorFrontCoding;
 
-public class ClaveFrontCoding {
+public class ClaveFrontCoding extends Clave {
 
 	private int caracteresCoincidentes;
 

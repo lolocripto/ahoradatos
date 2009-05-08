@@ -69,7 +69,7 @@ public class Core {
 
 	private FTRSManager ftrsManager;
 	
-	ArrayList<SimilitudDocumento> ranking;
+	private ArrayList<SimilitudDocumento> ranking;
 	
 	/**
 	 * Logger para la clase.
@@ -117,10 +117,6 @@ public class Core {
 						
 			Long offsetDoc = this.documentManager.getOffsetUltDoc();
 			
-			/*
-			 * Creo el documento en el archivo de documentos.
-			 * TODO: Completar el tema de documentos.
-			 */
 			IunidadDeHabla elemento;
 			iterador = contenedor.iterator();
 			
@@ -611,14 +607,6 @@ public class Core {
 			e.printStackTrace();
 		}
 		
-		
-		/*
-		 * TODO: 
-		 * 		1) enviar consulta al FTRS
-		 * Supongo que el FTRS me devolvera 5 elementos donde tenga offsetDocumento 
-		 * y deberia estar ordenado por prioridad
-		 * 		this.ranking = resultadoFTRS
-		 * */
 		  Iterator<SimilitudDocumento> it;
 		  it = this.ranking.iterator();
 		  SimilitudDocumento nodo;
@@ -631,20 +619,6 @@ public class Core {
 			  //invocador.mensaje(mensaje);
 		  }
 			 invocador.mensaje("Para reproducir el documento: playDocument <Nro del lista>");
-		  /*
-		  Long nodo;
-		 * Integer i = 1;
-		 * invocador.mensaje("Seleccione un de los documentos para ser reproducido:");
-		 * while (it.hasNext()) {
-		 * 		nodo = it.next();
-		 * 		String mensaje = i.toString() + ". " + this.documentManager.leerDocumento(nodo);  
-		 * 		invocador.mensaje(mensaje);
-		 * }
-		 * 
-		 * invocador.mensaje("Para reproducir el documento: playDocument <Nro del lista>");
-		 * 
-		 */
-		
 		
 		Float tiempoFinal = (float)(System.currentTimeMillis() - this.tiempoConsulta) / 1000;
 		return tiempoFinal.toString() + " segundos";
