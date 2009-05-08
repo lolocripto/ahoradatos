@@ -254,11 +254,15 @@ public class ArchivoDocumentos extends Directo {
 	public String getDocName(long offset){
 		
 		if (this.file != null){
-			
-		if (this.NombreDoc == null){
+		
+		/*
+		 * pregunto si no se ha cargado el nombre del documento actual o si se esta pidiendo el nombre
+		 * de otro documento diferente al cargado
+		 */
+		if ((this.NombreDoc == null) || (this.offsetLastDoc !=offset) ){
 		
 			try {
-				long posicionActual = this.file.getFilePointer();
+				long posicionInicial = this.file.getFilePointer();
 				/*
 				 * obtengo la posicion del nombre, que sera el offset del documento + la longitud de 
 				 * un long (longitud doc) + 1 byte (codigo de redundancia)
@@ -277,7 +281,7 @@ public class ArchivoDocumentos extends Directo {
 				nombre = nombre.trim();
 				
 				//devuelvo el puntero a su posicion original
-				this.file.seek(posicionActual);
+				this.file.seek(posicionInicial);
 				return nombre;
 				
 			} catch (IOException e) {

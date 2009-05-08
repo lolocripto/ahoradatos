@@ -76,9 +76,15 @@ public class DocumentsManager {
 		return null;
 	}
 	
-	public void initWriteSession(){
+	public void initDocWriteSession(){
 		this.archivo.iniciarSession();
 		this.archivo.setDocumentToWrite();
+	}
+	
+	
+	public void escribirOtroDocumento(){
+		this.cerrarSesion();
+		this.initDocWriteSession();
 	}
 	
 	public boolean setNombreDoc(String nombreDoc){
@@ -87,6 +93,14 @@ public class DocumentsManager {
 	
 	public Long getCantidadDocsAlmacenados(){
 		return this.archivo.getCantDocsAlmacenados();
+	}
+	
+	/*
+	 * Para usar esta funcion debe haberse iniciado una sesion de lectura
+	 */
+	public String getNombreDoc(Long offsetDoc){
+		return this.archivo.getDocName(offsetDoc);
+		
 	}
 	
 	public void escribirLinea(String linea){	

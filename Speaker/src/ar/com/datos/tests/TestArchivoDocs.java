@@ -3,17 +3,11 @@ package ar.com.datos.tests;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+
 import java.io.InputStreamReader;
-
-import javax.sound.sampled.Line;
-
-import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.DocumentsManager;
-import ar.com.datos.grupo5.parser.Parser;
 
 public class TestArchivoDocs {
 
@@ -44,7 +38,15 @@ public class TestArchivoDocs {
 		
 		Long cero = new Long(521);
 		adm.initReadSession(cero);
+
 		
+		System.out.println(adm.getNombreDoc(new Long(283)));
+		System.out.println(adm.getNombreDoc(new Long(521)));
+		System.out.println(adm.getNombreDoc(new Long(394)));
+		System.out.println(adm.getNombreDoc(new Long(156)));
+		
+		
+/*		
 		String Linea = adm.leerLinea();
 		
 		while (Linea != null){
@@ -52,6 +54,7 @@ public class TestArchivoDocs {
 			Linea = adm.leerLinea();
 		}
 
+*/
 
 
 /*

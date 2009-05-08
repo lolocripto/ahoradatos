@@ -98,7 +98,7 @@ public class Core {
 			// Cargo el parser con el documento en modo aprendizaje
 			try {
 				//Inicio la grabación del documento.
-				this.documentManager.initWriteSession();
+				this.documentManager.initDocWriteSession();
 				contenedor = this.parser.modoCarga(pathDocumento, true, this.documentManager);
 			} catch (FileNotFoundException e) {
 				return "No se pudo abrir el archivo: " + pathDocumento;
