@@ -8,6 +8,7 @@ import ar.com.datos.grupo5.archivos.Archivo;
 import ar.com.datos.grupo5.archivos.Secuencial;
 import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 import ar.com.datos.grupo5.registros.RegistroDiccionario;
+import ar.com.datos.trie.core.TrieAdministrator;
 
 /**
  * Clase que permite manipular el diccionario.
@@ -20,35 +21,14 @@ public class Diccionario {
 	 */
 	private static Logger logger  = Logger.getLogger(Diccionario.class);
 
-	/**
-	 * Archivo que contendrá las palabras y que será manejado por el
-	 * diccionario.
-	 */
-	private Archivo archivo;
+	private TrieAdministrator ta;
 	
 	/**
-	 * Metodo para cargar el diccionario, accediendo al archivo.
-	 * 
-	 * @param archivo
-	 *            La ruta completa del archivo a cargar.
-	 * @param modo
-	 *            El modo en el cual se debe abrir el archivo.
-	 * @return true si pudo abrir el archivo.
-	 * @see ar.ar.com.datos.grupo5.archivos.Archivo#cargar()
+	 * Constructor de la clase.
+	 *
 	 */
-	public final boolean abrir(final String archivo, final String modo)
-			throws FileNotFoundException {
-		return this.archivo.abrir(archivo, modo);
-	}
-	
-	/**
-	 * Método que cierra el diccionario.
-	 * 
-	 * @throws IOException
-	 * @see ar.ar.com.datos.grupo5.archivos.Archivo#cerrar()
-	 */
-	public final void cerrar() throws IOException {
-		this.archivo.cerrar();
+	public Diccionario() {
+		this.ta =new TrieAdministrator();
 	}
 	
 	/**
@@ -58,25 +38,9 @@ public class Diccionario {
 	 *            La palabra que se quiere buscar.
 	 * @return null si no encuentra la palabra, si no devuelve elregitro.
 	 */
-	public final RegistroDiccionario buscarPalabra(final String palabra) {
-		
-		RegistroDiccionario reg = null;
-		
-		try {
-			reg = (RegistroDiccionario) archivo.primero();
-			
-			while (reg != null) {
-				if (reg.getDato().equals(palabra)) {
-					break;
-				}
-				reg = (RegistroDiccionario) archivo.siguiente();
-			}
-			
-		} catch (UnImplementedMethodException e) {
-			logger.error("Error: " + e.getMessage());
-		}
-		
-		return reg;
+	public final Long buscarPalabra(final String palabra) {
+	
+		return this.ta.buscarPalabra(palabra);
 	}
 	
 	/**
@@ -92,25 +56,15 @@ public class Diccionario {
 	 * @link ar.com.datos.grupo5.interfaces.Archivo#insertar(Registro)
 	 */
 	public final boolean agregar(final String palabra, final Long offset) {		
-		RegistroDiccionario reg = new RegistroDiccionario();
 		
-		reg.setOffset(offset);
-		reg.setDato(palabra);
-		try {
-			this.archivo.insertar(reg);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}		
+		return this.ta.agregarPalabra(palabra, offset);
+		
+	}
+	
+	public final void cerrar(){
+		this.ta.terminarSesion();
 	}
 
-	
-	/**
-	 * Constructor de la clase.
-	 *
-	 */
-	public Diccionario() {
-		this.archivo = new Secuencial();
-	}
+
 }
 
