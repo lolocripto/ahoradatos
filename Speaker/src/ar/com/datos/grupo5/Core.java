@@ -362,13 +362,12 @@ public class Core {
 				
 				// Si lo encontro sigo en el bucle
 				if (elemento.esPronunciable()) {
-				RegistroDiccionario registro = this.diccionario
-					.buscarPalabra(elemento.getEquivalenteFonetico());
+					
+				Long puntero =this.diccionario.buscarPalabra(elemento.getEquivalenteFonetico());
 				
-				if (registro != null) {
+				if (puntero != null) {
 					invocador.mensajeSinSalto(elemento.getTextoEscrito() + " ");
-					playWord(this.audioFileManager.leerAudio(registro
-								.getOffset()));
+					playWord(this.audioFileManager.leerAudio(puntero));
 					audioManager.esperarFin();
 				}
 
@@ -426,13 +425,16 @@ public class Core {
 	
 				elemento = iterador.next();
 				if (elemento.esPronunciable()) {
-					RegistroDiccionario registro = this.diccionario
-							.buscarPalabra(elemento.getEquivalenteFonetico());
-					if (registro != null) {
+					
+					
+					Long puntero = this.diccionario.buscarPalabra(elemento.getEquivalenteFonetico());
+			
+					
+					
+					if (puntero != null) {
 						invocador.mensajeSinSalto(elemento.getTextoEscrito()
 								+ " ");
-						playWord(this.audioFileManager.leerAudio(registro
-								.getOffset()));
+						playWord(this.audioFileManager.leerAudio(puntero));
 						audioManager.esperarFin();
 	
 					}
@@ -476,7 +478,6 @@ public class Core {
 	 * Constructor de la clase.
 	 */
 	public Core() {
-		this.diccionario = new Diccionario();
 		this.audioManager = new AudioManager();
 		this.parser = new TextInterpreter();
 		this.audioFileManager = new AudioFileManager();
@@ -551,13 +552,7 @@ public class Core {
 		/*
 		 * Abro el archivo para la carga y consulta del diccionario
 		 */
-		try {
-			this.diccionario.abrir(Constantes.ARCHIVO_DICCIONARIO,
-					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-		} catch (FileNotFoundException e) {
-			invocador.mensaje("No se pudo abrir el diccionario.");
-			return false;
-		}
+		this.diccionario = new Diccionario();
 
 		logger.debug("Abrio el archivo Diccionario");
 
@@ -573,17 +568,6 @@ public class Core {
 		}
 
 		logger.debug("Abrio el archivo Audio");
-		
-		/*
-		 * Abro el archivo para la carga y consulta de los documentos
-		 */
-//		try {
-//			this.documentManager.abrir(Constantes.ARCHIVO_DOCUMENTOS,
-//					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-//		} catch (FileNotFoundException e) {
-//			invocador.mensaje("No se pudo abrir el archivo de documentos.");
-//			return false;
-//		}
 		
 		logger.debug("Abrio el archivo documentos");
 		
