@@ -207,13 +207,12 @@ public final class Constantes {
 		getXML("ARCHIVO_TERMINOS_GLOBALES");
 	
 	
-	public static final String ARCHIVO_TRIE = "";
-	//	getXML("ARCHIVO_TRIE");
+	public static final String ARCHIVO_TRIE =
+		getXML("ARCHIVO_TRIE");
 	
 	
-	public static final int TRIE_BLOCK_SIZE = 0; 
-		//Integer.parseInt(
-		//	getXML("TRIE_BLOCK_SIZE"));
+	public static final int TRIE_BLOCK_SIZE = Integer.
+	parseInt(getXML("TRIE_BLOCK_SIZE"));
 	
 	/**
 	 * Tamaño para los bloques del archivo de listas invertidas.
