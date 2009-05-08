@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import ar.com.datos.grupo5.Constantes;
-import ar.com.datos.parser.BufferRecharger;
+import ar.com.datos.grupo5.parser.BufferRecharger;
 
 
 /** Colection utlizada para el bufferizado.
