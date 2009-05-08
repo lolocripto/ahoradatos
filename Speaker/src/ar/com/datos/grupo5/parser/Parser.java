@@ -101,15 +101,14 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 				milogueador.error("Error: " + e.getMessage());
 				throw e;
 			}
-			
-
-			// buffer = new BufferedReader(lector);
+			doc.setNombreDoc(this.archivo.getName());
 
 		} else {
 			esArchivo = false;
 			lineaSimple = rutaOlinea;
 		}
 
+		
 	}
 
 	

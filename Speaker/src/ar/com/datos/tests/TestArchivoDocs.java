@@ -26,7 +26,7 @@ public class TestArchivoDocs {
 		File archivo; 
 		BufferedReader buffer=null;
 		
-	    archivo = new File("/home/zeke/Escritorio/arcpru/prueba4.txt");
+	    archivo = new File("/home/zeke/Escritorio/arcpru/prueba1.txt");
 
 		try {
 			FileInputStream fis = new FileInputStream(archivo);
@@ -37,11 +37,12 @@ public class TestArchivoDocs {
 			e.printStackTrace();
 		}
 		
-		
+	
 		
 		DocumentsManager adm = DocumentsManager.getInstance();
+
 		
-		Long cero = new Long(315);
+		Long cero = new Long(521);
 		adm.initReadSession(cero);
 		
 		String Linea = adm.leerLinea();
@@ -51,12 +52,14 @@ public class TestArchivoDocs {
 			Linea = adm.leerLinea();
 		}
 
-		
 
-/*		
+
+/*
 		adm.initWriteSession();
 		
 
+		adm.setNombreDoc(archivo.getName());
+		
 		String linea=null;
 		try {
 			linea = buffer.readLine();
@@ -81,9 +84,11 @@ public class TestArchivoDocs {
 */
 
 
+		
+		
 		adm.cerrarSesion();
 		
-		
+		System.out.println(adm.getCantidadDocsAlmacenados());
 		System.out.println(adm.getLongDocUltDoc());
 		System.out.println(adm.getOffsetUltDoc());
 		

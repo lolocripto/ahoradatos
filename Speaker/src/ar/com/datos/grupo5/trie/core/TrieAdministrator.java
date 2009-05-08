@@ -12,7 +12,6 @@ public class TrieAdministrator {
 	private TrieArchiveHandler admArchivo;
 	private TriePersistenceImpl persistencia;
 	
-	
 	public TrieAdministrator() {
 		
 		//instancio el administrador del archivo

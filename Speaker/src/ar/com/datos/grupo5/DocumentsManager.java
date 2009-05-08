@@ -81,6 +81,14 @@ public class DocumentsManager {
 		this.archivo.setDocumentToWrite();
 	}
 	
+	public boolean setNombreDoc(String nombreDoc){
+		return this.archivo.setCurrentDocName(nombreDoc);
+	}
+	
+	public Long getCantidadDocsAlmacenados(){
+		return this.archivo.getCantDocsAlmacenados();
+	}
+	
 	public void escribirLinea(String linea){	
 		this.archivo.escribirLinea(linea);
 	}
