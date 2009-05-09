@@ -21,11 +21,11 @@ public class ClaveFrontCoding extends Clave {
 	 */
 	private String termino;
 	
-	public ClaveFrontCoding(byte[] buffer) throws IOException {
+	public ClaveFrontCoding(byte[] buffer) {
 		try {
 			this.setBytes(buffer);
 		} catch (IOException e) {
-			throw e;
+			System.out.println("Incosistencias en los datos de la Clave creada.");
 		}
 	}
 	/**
