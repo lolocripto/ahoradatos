@@ -234,7 +234,7 @@ public class Nodo {
 		System.out.println("Contenido del nodo: [" + nroBloque + "] Padre: ["
 				+ nroBloquePadre + "] FactMinCarga: " + minIndiceCarga 
 				+ " Esp. Total: " + espacioTotal + " Esp. Ocupado: "
-				+ espacioOcupado + " Tiene Overflow: "+ isOverflow());
+				+ espacioOcupado + " Tiene Overflow: " + isOverflow());
 		for (RegistroNodo reg : registros) {
 			System.out.println("==== " + reg.getClave().getClave()
 					+ " Puntero Izquierdo: [" + reg.getNroBloqueIzquierdo()

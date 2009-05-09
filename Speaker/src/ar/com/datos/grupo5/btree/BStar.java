@@ -174,12 +174,7 @@ public final class BStar implements BTree {
 		
 		Nodo nodoAux = null;
 		nodoActual = nodoRaiz;
-//		try {
-//			nodoActual.setBytes(archivo.leerBloque(1));
-//		} catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
+
 		int posReg = 0;
 		int nroBloque = 0;
 		
@@ -307,6 +302,8 @@ public final class BStar implements BTree {
 		} else if (nodo.getNroBloquePadre() < 0) {
 			// Es la raiz.
 			// Splitear nodo
+			System.out.println("=====SplitRaiz=======Nodo: "
+					+ nodo.getNroBloque() + "========");
 			return splitRaiz(nodo);
 				
 		} else {
@@ -314,16 +311,24 @@ public final class BStar implements BTree {
 			//Si no puedo, veo con cual lo puedo Splitear
 			if (!pasarRegistro(nodo, registro)) {
 				
+				System.out.println("=====Split=======Nodo: "
+						+ nodo.getNroBloque() + "========");
 				Nodo padre = split(nodo);
 
 				while (padre.isOverflow()) {
 					
 					if (padre.getNroBloquePadre() < 0) {
+						System.out
+								.println("=====Overflow - SplitRaiz=======Nodo: "
+										+ padre.getNroBloque() + "========");
 						return splitRaiz(padre);
 					} else {
 						RegistroNodo regAux = new RegistroNodo();
 						regAux = padre.getPrimerRegistro();
 						if (!pasarRegistro(padre, regAux)) {
+							System.out
+									.println("=====Overflow Split=======Nodo: "
+											+ padre.getNroBloque() + "========");
 							padre = split(padre);
 						} else {
 							padre.setOverflow(false);
@@ -536,6 +541,7 @@ public final class BStar implements BTree {
 					nodoHnoDerecho.insertarRegistro(aux);
 					nodoPadre.getPrimerRegistro().setClave(
 							nodo.getUltimoRegistro().getClave());
+					
 					nodo.removerRegistro(nodo.getRegistros().size() - 1);
 					nodoHnoIzquierdo = new Nodo();
 					nodoHnoIzquierdo.setBytes(archivo.leerBloque(nodoHnoDerecho
@@ -559,6 +565,8 @@ public final class BStar implements BTree {
 				if (nodoPadre.getNroBloquePadre() < 0) {
 					nodoRaiz = nodoPadre;
 				}
+				System.out.println("=====PasarRegistro=======Nodo: "
+						+ nodo.getNroBloque() + "========");
 				return true;
 			case Constantes.MAYOR:
 				nodoHnoIzquierdo = new Nodo();
@@ -602,6 +610,8 @@ public final class BStar implements BTree {
 				if (nodoPadre.getNroBloquePadre() < 0) {
 					nodoRaiz = nodoPadre;
 				}
+				System.out.println("=====SplitRaiz=======Nodo: "
+						+ nodo.getNroBloque() + "========");
 				return true;
 			default:
 				int nroHnoDerecho = nodoPadre.getRegistros().get(pos)
@@ -648,6 +658,8 @@ public final class BStar implements BTree {
 					if (nodoPadre.getNroBloquePadre() < 0) {
 						nodoRaiz = nodoPadre;
 					}
+					System.out.println("=====SplitRaiz=======Nodo: "
+							+ nodo.getNroBloque() + "========");
 					return true;
 				} else {
 					nodoHnoIzquierdo = new Nodo();
@@ -688,6 +700,8 @@ public final class BStar implements BTree {
 						if (nodoPadre.getNroBloquePadre() < 0) {
 							nodoRaiz = nodoPadre;
 						}
+						System.out.println("=====SplitRaiz=======Nodo: "
+								+ nodo.getNroBloque() + "========");
 						return true;
 					} else {
 						return false;
