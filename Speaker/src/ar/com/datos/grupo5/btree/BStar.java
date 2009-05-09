@@ -306,8 +306,7 @@ public final class BStar implements BTree {
 			if (!pasarRegistro(nodo, registro)) {
 				
 				Nodo padre = split(nodo);
-//				listar();
-//				abrirArchivos();
+
 				while (padre.isOverflow()) {
 					
 					if (padre.getNroBloquePadre() < 0) {
@@ -357,7 +356,7 @@ public final class BStar implements BTree {
 				nodoAuxiliar.setNroBloquePadre(nodo.getNroBloque());
 				archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
 						.getNroBloque());
-				}
+			}
 			for (RegistroNodo reg : nodoActual.getRegistros()) {
 				Nodo nodoAuxiliar = new Nodo();
 				nodoAuxiliar.setBytes(archivo.leerBloque(reg
@@ -365,7 +364,7 @@ public final class BStar implements BTree {
 				nodoAuxiliar.setNroBloquePadre(nodoActual.getNroBloque());
 				archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
 						.getNroBloque());
-				}
+			}
 			Nodo nodoAuxiliar = new Nodo();
 			nodoAuxiliar.setBytes(archivo.leerBloque(nodoActual
 					.getUltimoRegistro().getNroBloqueDerecho()));
