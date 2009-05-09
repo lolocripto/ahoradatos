@@ -71,6 +71,15 @@ public class TestFrontCoding {
 			 System.out.println(reg1.getClaveFrontCoding().getTermino());
 		}
 		
+		listaPalabras = codi.decodificar(registros);
+
+		Iterator<CFFTRS> it1 = listaPalabras.iterator();
+		
+		CFFTRS reg2;
+		while (it1.hasNext()) {
+			 reg2 = it1.next();
+			 System.out.println(reg2.getPalabraDecodificada());
+		}
 }
 }
 

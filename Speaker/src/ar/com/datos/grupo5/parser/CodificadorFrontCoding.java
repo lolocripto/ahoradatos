@@ -51,7 +51,7 @@ public class CodificadorFrontCoding {
 					regGenerar.setBloqueListaInvertida(reg.getRegistroAsociado().getBloqueListaInvertida());
 					regGenerar.setIdTermino(reg.getRegistroAsociado().getIdTermino());
 				}
-				
+				registros.add(regGenerar);
 			} else {
 				//Ya tengo elementos
 				String palabraActual = reg.getPalabraDecodificada();
@@ -70,6 +70,7 @@ public class CodificadorFrontCoding {
 					regGenerar.setBloqueListaInvertida(reg.getRegistroAsociado().getBloqueListaInvertida());
 					regGenerar.setIdTermino(reg.getRegistroAsociado().getIdTermino());
 				}
+				registros.add(regGenerar);
 				ultimaPalabra = palabraActual;
 			}
 		}
