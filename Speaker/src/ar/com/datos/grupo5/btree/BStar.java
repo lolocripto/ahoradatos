@@ -547,7 +547,7 @@ public final class BStar implements BTree {
 					nodoHnoIzquierdo.setBytes(archivo.leerBloque(nodoHnoDerecho
 							.getPrimerRegistro().getNroBloqueIzquierdo()));
 					nodoHnoIzquierdo.setNroBloquePadre(nodoHnoDerecho
-							.getNroBloquePadre());
+							.getNroBloque());
 					archivo.escribirBloque(nodoHnoIzquierdo.getBytes(), 
 							nodoHnoIzquierdo.getNroBloque());
 					
@@ -592,7 +592,7 @@ public final class BStar implements BTree {
 					nodoHnoDerecho.setBytes(archivo.leerBloque(nodoHnoIzquierdo
 							.getUltimoRegistro().getNroBloqueDerecho()));
 					nodoHnoDerecho.setNroBloquePadre(nodoHnoIzquierdo
-							.getNroBloquePadre());
+							.getNroBloque());
 					archivo.escribirBloque(nodoHnoDerecho.getBytes(), 
 							nodoHnoDerecho.getNroBloque());
 					
@@ -639,7 +639,7 @@ public final class BStar implements BTree {
 						nodoHnoIzquierdo.setBytes(archivo.leerBloque(nodoHnoDerecho
 								.getPrimerRegistro().getNroBloqueIzquierdo()));
 						nodoHnoIzquierdo.setNroBloquePadre(nodoHnoDerecho
-								.getNroBloquePadre());
+								.getNroBloque());
 						archivo.escribirBloque(nodoHnoIzquierdo.getBytes(), 
 								nodoHnoIzquierdo.getNroBloque());
 					} else {
@@ -682,7 +682,7 @@ public final class BStar implements BTree {
 							nodoHnoDerecho.setBytes(archivo.leerBloque(nodoHnoIzquierdo
 									.getUltimoRegistro().getNroBloqueDerecho()));
 							nodoHnoDerecho.setNroBloquePadre(nodoHnoIzquierdo
-									.getNroBloquePadre());
+									.getNroBloque());
 							archivo.escribirBloque(nodoHnoDerecho.getBytes(), 
 									nodoHnoDerecho.getNroBloque());
 						} else {
