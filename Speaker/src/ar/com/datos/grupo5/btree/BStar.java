@@ -509,12 +509,22 @@ public final class BStar implements BTree {
 				}
 				if (!nodo.isEsHoja()) {
 					// pasar la clave y el resto reasignar las referencias
-					
-				}
+					RegistroNodo aux = new RegistroNodo();
+					aux.setClave(nodoPadre.getPrimerRegistro().getClave());
+					aux.setNroBloqueIzquierdo(nodo.getUltimoRegistro()
+							.getNroBloqueDerecho());
+					aux.setNroBloqueDerecho(nodoHnoDerecho.getPrimerRegistro()
+							.getNroBloqueIzquierdo());
+					nodoHnoDerecho.insertarRegistro(aux);
+					nodoPadre.getPrimerRegistro().setClave(
+							nodo.getUltimoRegistro().getClave());
+					nodo.removerRegistro(0);	
+				} else {
 				nodoHnoDerecho.insertarRegistro(nodo.getUltimoRegistro());
 				nodoPadre.getPrimerRegistro().setClave(
 					nodo.getUltimoRegistro().getClave());
 				nodo.removerRegistro(nodo.getRegistros().size() - 1);
+				}
 				archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
 					.getNroBloque());
 				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
@@ -534,12 +544,23 @@ public final class BStar implements BTree {
 				}
 				if (!nodo.isEsHoja()) {
 					// pasar la clave y el resto reasignar las referencias
+					RegistroNodo aux = new RegistroNodo();
+					aux.setClave(nodoPadre.getUltimoRegistro().getClave());
+					aux.setNroBloqueIzquierdo(nodoHnoIzquierdo.getUltimoRegistro()
+							.getNroBloqueDerecho());
+					aux.setNroBloqueDerecho(nodo.getPrimerRegistro()
+							.getNroBloqueIzquierdo());
+					nodoHnoIzquierdo.insertarRegistro(aux);
+					nodoPadre.getUltimoRegistro().setClave(
+							nodo.getPrimerRegistro().getClave());
+					nodo.removerRegistro(0);
 					
+				} else {
+					nodoHnoIzquierdo.insertarRegistro(nodo.getPrimerRegistro());
+					nodo.removerRegistro(0);
+					nodoPadre.getUltimoRegistro().setClave(
+							nodo.getPrimerRegistro().getClave());
 				}
-				nodoHnoIzquierdo.insertarRegistro(nodo.getPrimerRegistro());
-				nodo.removerRegistro(0);
-				nodoPadre.getUltimoRegistro().setClave(
-						nodo.getPrimerRegistro().getClave());
 				archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
 					.getNroBloque());
 				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
