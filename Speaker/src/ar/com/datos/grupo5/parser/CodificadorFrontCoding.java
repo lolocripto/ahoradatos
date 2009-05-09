@@ -28,7 +28,7 @@ public class CodificadorFrontCoding {
 		/*
 		 * Ordeno alfabeticamente, ver Collections.sort(listaPalabras);
 		 */
-/*		Iterator iterador = listaPalabras.iterator();
+		Iterator iterador = listaPalabras.iterator();
 		Collection<ClaveFrontCoding> claves = new ArrayList<ClaveFrontCoding>();
 		String anterior = new String();
 		while (iterador.hasNext()) {
@@ -37,12 +37,7 @@ public class CodificadorFrontCoding {
 			String termino = actual.substring(caracterescoincidentes, actual
 					.length());
 			int nroBloque = 0; /*ver de donde obtener el nro de bloque*/
-		/*
-			claves.add(new ClaveFrontCoding(caracterescoincidentes,
-					termino.length(), termino));
-			anterior = actual;
-		}
-		*/
+
 		return null;
 	}
 	
@@ -111,13 +106,14 @@ public class CodificadorFrontCoding {
 		
 		Collection<CFFTRS> listaConvertida = new ArrayList<CFFTRS>();
 		Iterator<RegistroFTRS> it = registros.iterator();
-		RegistroFTRS reg, regAnt;
+		RegistroFTRS reg;
 		ClaveFrontCoding cl;
 		
 		String ultimaPalabra = "";
 		
 		CFFTRS 	regResultante;
 		while (it.hasNext()) {
+
 			reg = it.next();
 			regResultante = new CFFTRS();
 			cl = reg.getClaveFrontCoding();
@@ -144,10 +140,7 @@ public class CodificadorFrontCoding {
 			}
 			//Asocio el termino descodificado al registro
 			regResultante.setRegistroAsociado(reg);
-			listaConvertida.add(regResultante);
-			
-			//El registro actual es el anterior al siguiente
-			regAnt = reg;
+			listaConvertida.add(regResultante);			
 		}
 		
 		return listaConvertida;
