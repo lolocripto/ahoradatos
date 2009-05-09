@@ -497,8 +497,7 @@ public final class BStar implements BTree {
 			Nodo nodoHnoIzquierdo = null;
 			Nodo nodoHnoDerecho = null;
 			
-			switch (pos) {
-			// Obtengo el hermano... Por DEFAULT USO EL MENOR 
+			switch (pos) { 
 			case Constantes.MENOR:
 				nodoHnoDerecho = new Nodo();
 				nroHno = nodoPadre.getPrimerRegistro().getNroBloqueDerecho();
