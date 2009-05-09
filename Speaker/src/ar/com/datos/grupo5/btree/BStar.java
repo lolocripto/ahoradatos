@@ -718,7 +718,9 @@ public final class BStar implements BTree {
 		
 		try {
 			archivo.cerrar();
-			secuencialSet.cerrar();
+			if (todos) {
+				secuencialSet.cerrar();
+			}
 			return true;
 		} catch (IOException e) {
 			LOG.error("", e);
