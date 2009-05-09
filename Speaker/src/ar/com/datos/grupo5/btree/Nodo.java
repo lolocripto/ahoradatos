@@ -343,6 +343,13 @@ public class Nodo {
 			nodoPadre.insertarRegistro(reg);
 			
 			reg = new RegistroNodo();
+			if (!this.isEsHoja()) {
+				// Liberar la clave de la nueva raiz de la raiz anterior
+				reg.setClave(nodoHermano.getUltimoRegistro().getClave());
+				removerRegistro(registros.size() - 1);
+			} else {
+				//reg.setClave(nodo.getPrimerRegistro().getClave());
+			}
 			reg.setClave(nuevoHermano.getPrimerRegistro().getClave());
 			reg.setNroBloqueIzquierdo(nodoHermano.getNroBloque());
 			reg.setNroBloqueDerecho(nuevoHermano.getNroBloque());
@@ -378,6 +385,13 @@ public class Nodo {
 			nodoPadre.insertarRegistro(reg);
 			
 			reg = new RegistroNodo();
+			if (!this.isEsHoja()) {
+				// Liberar la clave de la nueva raiz de la raiz anterior
+				reg.setClave(this.getUltimoRegistro().getClave());
+				removerRegistro(registros.size() - 1);
+			} else {
+				//reg.setClave(nodo.getPrimerRegistro().getClave());
+			}
 			reg.setClave(nuevoHermano.getPrimerRegistro().getClave());
 			reg.setNroBloqueIzquierdo(getNroBloque());
 			reg.setNroBloqueDerecho(nuevoHermano.getNroBloque());
