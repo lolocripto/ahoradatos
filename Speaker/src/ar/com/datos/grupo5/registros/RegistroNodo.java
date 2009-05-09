@@ -181,6 +181,9 @@ public class RegistroNodo {
 		return this.nroBloqueDerecho;
 	}
 	
+	public final void setPunteroBloque(int puntero){
+		this.nroBloqueDerecho = puntero;
+	}
 	/**
 	 * @return .
 	 */

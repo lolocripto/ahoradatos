@@ -12,6 +12,7 @@ import java.io.IOException;
 import ar.com.datos.grupo5.ClaveFrontCoding;
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.btree.Clave;
+import ar.com.datos.grupo5.trie.persistence.Contenedor;
 import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
@@ -38,6 +39,10 @@ public class RegistroFTRS extends RegistroNodo{
 		 */
 		public final Long getIdTermino() {
 			return idTermino;
+		}
+		
+		public RegistroFTRS(){
+			
 		}
 
 		/**
@@ -95,8 +100,25 @@ public class RegistroFTRS extends RegistroNodo{
 			return bos.toByteArray();
 		}
 		
-		@Override
-		public final void setBytes(final byte[] buffer, final int bloqueAnt) {
+		
+		
+		public final Contenedor getContenidoEmpaquetado(){
+			
+			Contenedor cont = new Contenedor();
+			cont.setDato(this.getBytes());
+			
+			return cont;
+			
+		}
+		
+		
+		public RegistroFTRS (Contenedor cont){
+			
+			this.setBytes(cont.getDato());
+			
+		}
+		
+		public final void setBytes(final byte[] buffer) {
 		
 			try {
 			
