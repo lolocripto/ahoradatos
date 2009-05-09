@@ -353,6 +353,16 @@ public class FTRSManager {
 		 * agregar al FTRS el termino con idTermino y con el 
 		 * offset a la lista en null.
 		 */
+		RegistroFTRS registro = new RegistroFTRS();
+		registro.setClave(new Clave(termino));
+		registro.setIdTermino(idTermino);
+		try {
+			this.arbolFTRS.insertar(registro);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 		this.insertarTermino(idTermino, termino);
 		
 		return idTermino;
@@ -369,11 +379,7 @@ public class FTRSManager {
 		NodoRS idTerminoIdDocumento;
 		Long idTermino = 0L;
 		
-		RegistroFTRS registroFtrs = null;
-		/*
-		 * Lo comente porque el arbol aun no esta y me complica las pruebas
-		TODO: RegistroFTRS registroFtrs = (RegistroFTRS) this.arbolFTRS.buscar(new Clave(termino));
-		*/
+		RegistroFTRS registroFtrs = (RegistroFTRS) this.arbolFTRS.buscar(new Clave(termino));
 		
 		/*
 		 * Si es nulo entonces no existe el termino en el ftrs
@@ -382,11 +388,14 @@ public class FTRSManager {
 		if (registroFtrs == null) {
 			//Se encarga de agregar el termino que no existe.
 			idTermino = this.agregaTermino(termino);
+			if (idTermino == null) {
+				return false;
+			}
 		}
 		
 		//Escribo el idTermino junto con el offsetDoc
 		idTerminoIdDocumento = new NodoRS(idTermino, offsetDoc);
-		try {//TODO: byte[] = idTerminoIdDocumento.getBytes();
+		try {
 			archivoTrabajo.write(idTerminoIdDocumento.getBytes(), 0,
 					idTerminoIdDocumento.getTamanio());
 		} catch (IOException e) {

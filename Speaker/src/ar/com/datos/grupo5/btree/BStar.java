@@ -132,6 +132,10 @@ public final class BStar implements BTree {
 		//Obtengo el nodo en el que podria estar la clave.
 		Nodo nodo = buscarNodo(clave);
 		
+		if (nodo == null) {
+			return null;
+		}
+		
 		//Verifico si la clave está.
 		int posReg = nodo.buscarRegistro(clave);
 		

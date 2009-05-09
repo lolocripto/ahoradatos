@@ -43,6 +43,10 @@ public class ListaEspacioLibre {
 		this.tamanio = tamanioExt;
 	}
 	
+	public void borrarLista() {
+			this.espacioLibrePorBloque.clear();
+	}
+	
 	/**
 	 * Se encarga de actualizar un nodo o agregar un nodo en la 
 	 * lista de espacios libres para mantener actualizada la lista.

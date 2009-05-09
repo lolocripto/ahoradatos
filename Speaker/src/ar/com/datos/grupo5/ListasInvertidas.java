@@ -618,7 +618,7 @@ public class ListasInvertidas {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		this.espacioLibre.borrarLista();
 		return true;
 	}
 	
@@ -1459,5 +1459,7 @@ public class ListasInvertidas {
 	public final Map<Long,Long> getRegistrosMovidos() {
 		return registrosMovidos;
 	}
+	
+
 }
 

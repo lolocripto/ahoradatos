@@ -356,12 +356,12 @@ public class Core {
 		try {
 			Iterator<IunidadDeHabla> iterador;
 			
-			//SimilitudDocumento simDocs = this.ranking.get(Integer.getInteger(indiceDocumento));
+			SimilitudDocumento simDocs = this.ranking.get(Integer.getInteger(indiceDocumento));
 			
 			// Mando a parsear el documento y obtengo un collection
 			try {
-				//this.documentManager.initReadSession(simDocs.getDocumento());
-				this.documentManager.initReadSession(8L);
+				this.documentManager.initReadSession(simDocs.getDocumento());
+				//this.documentManager.initReadSession(8L);
 				contenedor = this.parser.modoLecturaDocAlmacenado(this.documentManager);
 			} catch (Exception e) {
 				logger.error("Error al crear contenedor: " + e.getMessage(), e);
@@ -581,8 +581,9 @@ public class Core {
 		}
 
 		logger.debug("Abrio el archivo Audio");
-		
+				
 		this.ftrsManager.abrirArchivos();
+		
 		return true;
 	}
 	
@@ -622,9 +623,11 @@ public class Core {
 			  invocador.mensaje(mensaje);
 		  }
 		  this.documentManager.cerrarSesion();
-		  invocador.mensaje("Para reproducir el documento: playDocument <Nro del lista>");
+		  String documento = invocador.obtenerDatos("Elija el documento a reproducir: ");
+		  this.playDocument(invocador, documento);
 		
 		Float tiempoFinal = (float)(System.currentTimeMillis() - this.tiempoConsulta) / 1000;
 		return tiempoFinal.toString() + " segundos";
 	}
+
 }
