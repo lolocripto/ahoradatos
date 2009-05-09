@@ -34,9 +34,6 @@ public class TrieAdministrator {
 			raizProxy = PersistentNodeFactory.getNewProxy(persistencia.getNodo(raiz));
 			mitrie = new Trie(raizProxy);
 		}
-
-		
-		
 	}
 	
 	private void recuperarRegistroAdministrativo(){
@@ -64,8 +61,12 @@ public class TrieAdministrator {
 		System.out.println("palabra: " + pal + "  no encontrada se almacena");	
 		
 		this.mitrie.insert(pal, punt);
+		
+		this.recMemoria();   //
+		
 		return true;
 		}else{
+			this.recMemoria();   //
 			return false;
 		}
 		
@@ -76,11 +77,19 @@ public class TrieAdministrator {
 		PunteroSonido punt = this.mitrie.search(pal);
 		if (punt == null){
 			System.out.println("palabra no encontrada");
+			this.recMemoria();   //
 			return null;
 		}else{
-			System.out.println("palabra: " + pal + "  encontrada se devuelve puntero");	
+			System.out.println("palabra: " + pal + "  encontrada se devuelve puntero");
+			this.recMemoria();   //
 			return punt.getOffset();
 		}
+	}
+	
+	
+	private void recMemoria(){
+		persistencia.flush();
+		this.mitrie.recEspacio();
 	}
 	
 	

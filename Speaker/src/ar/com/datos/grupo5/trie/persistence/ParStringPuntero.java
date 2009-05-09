@@ -17,7 +17,7 @@ public class ParStringPuntero {
 	private Long numeroNodo;
 	
 	private Long codigoNull = new Long (999999999);
-	
+
 	
 	public ParStringPuntero(Long numeroNodo, String letraOpalabra) {
 		super();
@@ -38,7 +38,7 @@ public class ParStringPuntero {
 		
 		try {
 			Long punteroSerializado = dis.readLong();
-			if (punteroSerializado == this.codigoNull){
+			if (punteroSerializado.equals(this.codigoNull)){
 				this.numeroNodo = null;
 			}else{
 				

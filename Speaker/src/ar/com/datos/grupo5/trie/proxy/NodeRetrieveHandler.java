@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import ar.com.datos.grupo5.trie.core.INodo;
 import ar.com.datos.grupo5.trie.core.Nodo;
 import ar.com.datos.grupo5.trie.core.PunteroSonido;
+import ar.com.datos.grupo5.trie.core.Trie;
 import ar.com.datos.grupo5.trie.persistence.ParStringPuntero;
 import ar.com.datos.grupo5.trie.persistence.TrieNodeRegistry;
 import ar.com.datos.grupo5.trie.persistence.TriePersistenceImpl;
@@ -60,6 +61,8 @@ public class NodeRetrieveHandler implements InvocationHandler {
 		registroDelObjetoActual.listaDepunteros.add(psp);
 
 		registroDelObjetoActual.setDirty(true);
+		
+		TriePersistenceImpl.getPersistenceSession().agregarNodoSucio((Nodo)objetoRealActual);
 
 	}
 
@@ -99,6 +102,7 @@ public class NodeRetrieveHandler implements InvocationHandler {
 					Nodo miNodo;
 					miNodo = this.obtenerNodoDeDisco(objetoRealActual
 							.getRegistroAsociado().listaDepunteros.get(result));
+					
 					objetoRealActual.setNuevoHijo(PersistentNodeFactory
 							.getNewProxy(miNodo));
 

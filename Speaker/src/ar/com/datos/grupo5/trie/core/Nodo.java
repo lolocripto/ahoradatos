@@ -91,5 +91,9 @@ public class Nodo implements INodo{
 		this.registroAsociado = t;
 		
 	}
+	
+	public void recEspacio(){
+		this.hijo.clear();
+	}
 
 }

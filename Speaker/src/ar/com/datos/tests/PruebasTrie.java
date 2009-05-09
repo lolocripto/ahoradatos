@@ -47,17 +47,29 @@ public class PruebasTrie {
 		Long punt1 = new Long (12);
 		Long punt2 = new Long (23);
 		
-		ta.agregarPalabra(palabra1, punt1);
-		ta.agregarPalabra(palabra2, punt2);
+	//	ta.agregarPalabra(palabra1, punt1);
+	//	ta.agregarPalabra(palabra2, punt2);
 		
-		ta.agregarPalabra(palabra3, punt1);
-		ta.agregarPalabra(palabra4, punt2);
+	//	ta.agregarPalabra(palabra3, punt1);
+	//	ta.agregarPalabra(palabra4, punt2);
 		
 		Long c;
 		c= ta.buscarPalabra(palabra1);
+		
+		System.out.println(c);
+		
+		c=ta.buscarPalabra("cachanga");
+		System.out.println(c);
+		
+		c= ta.buscarPalabra("tet");
+		
 		System.out.println(c);
 		ta.buscarPalabra(palabra2);
+		c= ta.buscarPalabra(palabra3);
+		System.out.println(c);
+		
 		ta.buscarPalabra(palabra3);
+		ta.buscarPalabra("dfsadfsdfsdgfsgdfgdgdfgsdf");
 		ta.buscarPalabra(palabra4);
 		
 		

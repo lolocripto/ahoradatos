@@ -17,7 +17,7 @@ public class TestTextInterpreter {
 	
 
 
-		String ruta = "/home/zeke/Escritorio/arcpru/prueba4.txt";
+		String ruta = "/home/zeke/Escritorio/arcpru/prueba_nueva.txt";
 	
 		TextInterpreter ti = new TextInterpreter();
 		
@@ -25,7 +25,7 @@ public class TestTextInterpreter {
 		
 
 		
-		Collection<IunidadDeHabla> coleccion =null;
+	//	Collection<IunidadDeHabla> coleccion =null;
 
 		
 /* prueba lectura directa desde archivo ok!
@@ -40,17 +40,16 @@ public class TestTextInterpreter {
 		
 		
 		
-/* prueba modo lectura desde string ok!
- * 		
+/* string simple ok	
 
 		try {
-			coleccion = ti.modoLectura("hola como estas", false);
+			coleccion = ti.modoLectura("hola como ñaña deberíamos estas", false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		
-*/	
+*/		
+	
 		
 		
 /*	Prueba modo lectura desde documento almacenado Ok!
@@ -69,9 +68,9 @@ public class TestTextInterpreter {
 		
 */		
 		
-/*	prueba almacenar un nuevo archivo de texto...	Ok!
- * 		
-		dm.initWriteSession();
+//	prueba almacenar un nuevo archivo de texto...	Ok!
+ 		
+		dm.initDocWriteSession();
 		
 		Collection<IunidadDeHabla> coleccion =null;
 		
@@ -80,8 +79,7 @@ public class TestTextInterpreter {
 			coleccion = ti.modoCarga(ruta, true, dm);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-*/		
+		}		
 		Iterator<IunidadDeHabla> it = coleccion.iterator();
 		
 

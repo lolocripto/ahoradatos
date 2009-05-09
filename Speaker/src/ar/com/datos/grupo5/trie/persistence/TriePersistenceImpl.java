@@ -112,6 +112,7 @@ public class TriePersistenceImpl implements ITriePersistence {
 		}
 		
 		this.listaNodosSucios.clear();
+		this.cantNodosSucios =0;
 
 	}
 
