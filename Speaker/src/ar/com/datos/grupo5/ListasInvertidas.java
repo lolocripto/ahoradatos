@@ -325,6 +325,7 @@ public class ListasInvertidas {
 						this.nroBloque = bloqueAInsertar;
 						//Hay lugar en un bloque por lo tanto lo inserto
 						byte[] bytesTemporales;
+						byte[] datos;
 						try {
 							// Tengo el bloque al que voy a modificar.
 							bytesTemporales = this.archivo.leerBloque(bloqueAInsertar);
@@ -337,14 +338,16 @@ public class ListasInvertidas {
 							short primerRegistro = dis.readShort();
 							short espacioOcupado = dis.readShort();
 							
-							byte[] datos = new byte[espacioOcupado - tamanioControl + bytes.length];
+							ByteArrayOutputStream bos 
+							  = new ByteArrayOutputStream();  
+							DataOutputStream dos = new DataOutputStream(bos);
+
+							dos.write(bytesTemporales, tamanioControl, espacioOcupado - tamanioControl);
+							//System.arraycopy(bytesTemporales, tamanioControl,	datos, 0, espacioOcupado - tamanioControl);
 							
-							System.arraycopy(bytesTemporales, tamanioControl, 
-									datos, 0, espacioOcupado - tamanioControl);
-							
-							System.arraycopy(bytes, 0, datos, 
-									espacioOcupado-tamanioControl, bytes.length);
-							
+							dos.write(bytes, 0, bytes.length);
+//							System.arraycopy(bytes, 0, datos,espacioOcupado-tamanioControl, bytes.length);
+							datos = bos.toByteArray();
 							bytesTemporales = this.armarDatosBloque(siguiente,
 									datos, primerRegistro, 
 									(short) (tamanioControl + datos.length),
@@ -357,6 +360,10 @@ public class ListasInvertidas {
 							offsetEscritura += 	bytes.length;
 							
 						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							return false;
+						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 							return false;
@@ -866,40 +873,9 @@ public class ListasInvertidas {
 			//Calculo el nuevo offset lista
 			offsetListaSiguiente = (this.offsetLista + regInt.getTamanio() - this.tamanioControl);
 			
-			/*
-			 * TODO: Ver la utilidad del codido.
-			 * if (offsetListaSiguiente > Constantes.SIZE_OF_LIST_BLOCK) {
-			 * 	offsetListaSiguiente = Constantes.SIZE_OF_INDEX_BLOCK;
-			 * }
-			 */
 			regActualizado = new RegistroTerminoDocumentos();
 			regActualizado.setIdTermino(idTerminoExt);
 			regActualizado.setDatosDocumentos(listaExt);
-			/*
-			if (offsetListaSiguiente >= espacioOcupado && bloqueSiguiente == 0){
-				byte[] bytesAEscribir;
-				byte[] datos = regActualizado.getBytes();
-				//Armar datos
-				bytesAEscribir = this.armarDatosBloque(bloqueSiguiente, datos,
-						primerRegistro, 
-						(short) (this.tamanioControl + datos.length), 
-						0, datos.length);
-				
-				try {
-					this.archivo.escribirBloque(bytesAEscribir, nroBloqueExt);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				if (this.espacioLibre.buscarBloque(nroBloqueExt)) {
-					this.espacioLibre.actualizarListaEspacioLibre(nroBloqueExt, (short) (Constantes.SIZE_OF_LIST_BLOCK-bytesAEscribir.length));	
-				} else {
-					this.espacioLibre.setIndex(-1);
-					this.espacioLibre.actualizarListaEspacioLibre(nroBloqueExt, (short) (Constantes.SIZE_OF_LIST_BLOCK-bytesAEscribir.length));
-				}
-				return true;
-			}
-			*/
 			/* Se encarga de correr todas las listas actualizando la actual */
 			this.administrarBloquesAModificar(bloqueSiguiente, espacioOcupado,
 					primerRegistro, regActualizado, (short) offsetListaSiguiente,

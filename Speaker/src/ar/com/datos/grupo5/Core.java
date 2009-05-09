@@ -534,6 +534,7 @@ public class Core {
 			if (this.documentManager != null) {
 				this.documentManager.cerrarSesion();
 			}
+			this.ftrsManager.cerrarArchivos();
 			return true;
 
 		} catch (Exception e) {
