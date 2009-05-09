@@ -536,7 +536,7 @@ public final class BStar implements BTree {
 					nodoHnoDerecho.insertarRegistro(aux);
 					nodoPadre.getPrimerRegistro().setClave(
 							nodo.getUltimoRegistro().getClave());
-					nodo.removerRegistro(0);	
+					nodo.removerRegistro(nodo.getRegistros().size() - 1);	
 				} else {
 				nodoHnoDerecho.insertarRegistro(nodo.getUltimoRegistro());
 				nodoPadre.getPrimerRegistro().setClave(
