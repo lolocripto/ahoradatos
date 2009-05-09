@@ -20,7 +20,7 @@ public class PruebasTrie {
 		
 		TrieAdministrator ta = new TrieAdministrator();
 		
-/*		
+		
 		List<IunidadDeHabla> lista = Constantes.LISTA_STOP_WORDS;
 		
 		Iterator<IunidadDeHabla> it = lista.iterator();
@@ -30,11 +30,14 @@ public class PruebasTrie {
 		int i =0;
 		
 		while (it.hasNext()){
-			ta.agregarPalabra(it.next().getTextoEscrito(), punt1);
+			punt1 = ta.buscarPalabra(it.next().getTextoEscrito());
+			
+			System.out.println(punt1);
+			
 			i++;
 		}
 		
-*/
+
 		
 		
 		
@@ -44,8 +47,8 @@ public class PruebasTrie {
 		String palabra4 = "bienaventurado";
 		
 		
-		Long punt1 = new Long (12);
-		Long punt2 = new Long (23);
+//		Long punt1 = new Long (12);
+//		Long punt2 = new Long (23);
 		
 	//	ta.agregarPalabra(palabra1, punt1);
 	//	ta.agregarPalabra(palabra2, punt2);
