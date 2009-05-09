@@ -699,4 +699,12 @@ public class Nodo {
 		}
 		return false;
 	}
+	
+	/**
+	 * Redifinicion del toString.
+	 * @return toStringde los registros.
+	 */
+	public final String toString() {
+		return registros.toString();
+	}
 }

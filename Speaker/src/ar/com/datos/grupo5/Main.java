@@ -45,8 +45,8 @@ public final class Main {
 		try {
 			BTree tree = new BStar();
 			
-			Clave clave = new Clave();
-			RegistroNodo reg = new RegistroNodo();
+			Clave clave = null;
+			RegistroNodo reg = null;
 			
 			String[] claves = { "15", "30", "1", "10", "13", "50", "35", 
 								"20", "22", "40", "55", "60", "21", "24",
