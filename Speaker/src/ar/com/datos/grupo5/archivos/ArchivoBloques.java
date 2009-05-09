@@ -21,7 +21,7 @@ public class ArchivoBloques extends Directo {
 	/**
 	 * Tamanio del Bloque en disco.
 	 */
-	private static int  tamanio;
+	private int  tamanio;
 
 	/**
 	 * Constructor de la clase.
