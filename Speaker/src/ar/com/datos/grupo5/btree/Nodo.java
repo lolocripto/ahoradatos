@@ -329,12 +329,21 @@ public class Nodo {
 			// Si el nodo que voy a splitear no es hoja, entonces agrego el
 			// registro del nodo padre que lo apunta.
 			if (!esHoja) {
-				//RegistroNodo reg = nodoPadre.getRegistros().get(pos - 1);
-				// TODO Ver si hay que remover, si se hace, puede pinchar
-				// despues dado que a lo mejor no quedan registros y eso no se
-				// esta chequeando.
+				RegistroNodo reg = null; 
+				if (pos == Constantes.MENOR) {
+					reg = nodoPadre.getRegistros().get(0);
+				} else if (pos == Constantes.MAYOR) {
+					reg = nodoPadre.getRegistros().get(
+							nodoPadre.getRegistros().size() - 1);
+				} else {
+					reg = nodoPadre.getRegistros().get(pos - 1);
+				}
+				
+				/*TODO Ver si hay que remover, si se hace, puede pinchar
+				 despues dado que a lo mejor no quedan registros y eso no se
+				 esta chequeando.*/
 				//nodoPadre.removerRegistro(pos - 1);
-				//regs.add(reg);
+				regs.add(reg);
 			}
 			
 			//ahora lo cargo el hermano hasta la minima ocupacion
