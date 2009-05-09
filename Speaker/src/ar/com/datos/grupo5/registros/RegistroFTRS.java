@@ -41,6 +41,20 @@ public class RegistroFTRS extends RegistroNodo{
 		}
 
 		/**
+		 * @param idTerminoExt the idTermino to set
+		 */
+		public final void setClaveFrontCoding(ClaveFrontCoding claveFrontCodingExt) {
+			this.claveNodo = claveFrontCodingExt;
+		}
+
+		/**
+		 * @return the idTermino
+		 */
+		public final ClaveFrontCoding getClaveFonrtCoding() {
+			return this.claveNodo;
+		}
+
+		/**
 		 * @param bloqueListaInvertidaExt the bloqueListaInvertida to set
 		 */
 		public final void setBloqueListaInvertida(final Long bloqueListaInvertidaExt) {
