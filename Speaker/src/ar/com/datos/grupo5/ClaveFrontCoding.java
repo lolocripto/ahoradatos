@@ -1,6 +1,8 @@
 package ar.com.datos.grupo5;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -82,13 +84,10 @@ public class ClaveFrontCoding extends Clave {
 				Conversiones.intToArrayByte(this.longitudTermino);
 
 			byte[] claveBytes = this.termino.getBytes();
-			//byte[] longClave = Conversiones
 			
 			dos.write(caracateresCoincidentesBytes);
 			dos.write(longitudTerminoByte);
-//			dos.write(longClave);
 			dos.write(claveBytes);
-			//dos.write(Conversiones.intToArrayByte(nroBloqueDerecho));
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw e;
@@ -97,4 +96,29 @@ public class ClaveFrontCoding extends Clave {
 		return bos.toByteArray();
 	}
 	
+	/**
+	 * Método que llena los atributos a partir de lo contenido en el buffer.
+	 * @param buffer Cadena de Bytes leida en el archivo de bloques
+	 * @param bloqueAnt nro de bloque anterior.
+	 * @throws IOException .
+	 */
+	public void setBytes(final byte[] buffer, final int bloqueAnt)
+			throws IOException {
+		//TODO TESTEARLO YA!!!!!!!!!!
+	
+		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
+		DataInputStream dos = new DataInputStream(bis);
+		byte[] datos = null;
+		
+		try {
+			//Leo la longitud de la clave
+			this.caracteresCoincidentes = dos.readInt();
+			this.longitudTermino = dos.readInt();
+			datos = new byte[this.longitudTermino];
+			this.termino = new String(datos);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
 }
