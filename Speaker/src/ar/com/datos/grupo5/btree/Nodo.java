@@ -354,6 +354,13 @@ public class Nodo {
 			reg.setNroBloqueIzquierdo(nodoHermano.getNroBloque());
 			reg.setNroBloqueDerecho(nuevoHermano.getNroBloque());
 			nodoPadre.insertarRegistro(reg);
+			pos = nodoPadre.buscarRegistro(reg.getClave());
+			if (pos < nodoPadre.registros.size() - 1) {
+				RegistroNodo reg2 = new RegistroNodo();
+				reg2 = nodoPadre.removerRegistro(pos + 1);
+				reg2.setNroBloqueIzquierdo(reg.getNroBloqueDerecho());
+				nodoPadre.insertarRegistro(reg2);				
+			}
 			
 		} else {
 			while (nodoHermano.minIndiceCarga < nodoHermano.registros.size()) {
@@ -396,13 +403,14 @@ public class Nodo {
 			reg.setNroBloqueIzquierdo(getNroBloque());
 			reg.setNroBloqueDerecho(nuevoHermano.getNroBloque());
 			nodoPadre.insertarRegistro(reg);
-			
+			pos = nodoPadre.buscarRegistro(reg.getClave());
+			if (pos < nodoPadre.registros.size() - 1) {
+				RegistroNodo reg2 = new RegistroNodo();
+				reg2 = nodoPadre.removerRegistro(pos + 1);
+				reg2.setNroBloqueIzquierdo(reg.getNroBloqueDerecho());
+				nodoPadre.insertarRegistro(reg2);				
+			}			
 		}
-		// Si quedo en overflow, va a haber que splitear el padre
-		/*
-		  if (nodoPadre.isOverflow())
-			return nodoPadre;
-		*/
 		return nuevoHermano;
 	}
 	

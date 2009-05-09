@@ -508,6 +508,10 @@ public final class BStar implements BTree {
 				if (!nodoHnoDerecho.hayEspacio(reg.getBytes().length)) {
 					return false;
 				}
+				if (!nodo.isEsHoja()) {
+					// pasar la clave y el resto reasignar las referencias
+					
+				}
 				nodoHnoDerecho.insertarRegistro(nodo.getUltimoRegistro());
 				nodoPadre.getPrimerRegistro().setClave(
 					nodo.getUltimoRegistro().getClave());
@@ -528,6 +532,10 @@ public final class BStar implements BTree {
 				nodoHnoIzquierdo.setBytes(datos);
 				if (!nodoHnoIzquierdo.hayEspacio(reg.getBytes().length)) {
 					return false;
+				}
+				if (!nodo.isEsHoja()) {
+					// pasar la clave y el resto reasignar las referencias
+					
 				}
 				nodoHnoIzquierdo.insertarRegistro(nodo.getPrimerRegistro());
 				nodo.removerRegistro(0);
@@ -553,6 +561,10 @@ public final class BStar implements BTree {
 					
 					RegistroNodo regAux = nodo.removerRegistro(
 							nodo.getRegistros().size() - 1);
+					if (!nodo.isEsHoja()) {
+						// pasar la clave y el resto reasignar las referencias
+						
+					}
 					nodoHnoDerecho.insertarRegistro(regAux);
 					nodoPadre.getRegistros().get(pos).setClave(
 							regAux.getClave());
@@ -573,6 +585,10 @@ public final class BStar implements BTree {
 					if (nodoHnoIzquierdo.hayEspacio(reg.getBytes().length)) {
 						
 						RegistroNodo regAux = nodo.removerRegistro(0);
+						if (!nodo.isEsHoja()) {
+							// pasar la clave y el resto reasignar las referencias
+							
+						}
 						nodoHnoIzquierdo.insertarRegistro(regAux);
 						nodoPadre.getRegistros().get(pos).setClave(
 								regAux.getClave());
