@@ -234,12 +234,12 @@ public class Nodo {
 		System.out.println("Contenido del nodo: [" + nroBloque + "] Padre: ["
 				+ nroBloquePadre + "] FactMinCarga: " + minIndiceCarga 
 				+ " Esp. Total: " + espacioTotal + " Esp. Ocupado: "
-				+ espacioOcupado);
+				+ espacioOcupado + " Tiene Overflow: "+ isOverflow());
 		for (RegistroNodo reg : registros) {
 			System.out.println("==== " + reg.getClave().getClave()
 					+ " Puntero Izquierdo: [" + reg.getNroBloqueIzquierdo()
 					+ "] Puntero derecho: [" + reg.getNroBloqueDerecho()
-					+ "]");
+					+ "] ");
 		}
 	}
 	
@@ -504,6 +504,9 @@ public class Nodo {
 		int cantidad = 0;
 		byte[] datos = new byte[Constantes.SIZE_OF_INT];
 		RegistroNodo reg = null;
+		getRegistros().clear();
+		setEspacioOcupado(0);
+		setMinIndiceCarga(Constantes.MENOR);
 		registros = new ArrayList<RegistroNodo>();
 		
 		try {
