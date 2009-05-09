@@ -186,5 +186,11 @@ public class RegistroNodo {
 	public final int hashCode() {
 		return 0;
 	}
-	
+
+	/**
+	 * Redefinicion del toString. 
+	 */
+	public String toString() {
+		return claveNodo.getClave();
+	}
 }
