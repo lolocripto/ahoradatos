@@ -72,7 +72,7 @@ public class Nodo {
 		
 		nroBloquePadre = null;
 		registros = new ArrayList<RegistroNodo>();
-		this.overflow = false;
+		overflow = false;
 		minIndiceCarga = -1;
 		espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK
 				- Constantes.SIZE_OF_ADMIN_NODE_DATA;

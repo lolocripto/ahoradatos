@@ -322,9 +322,11 @@ public final class BStar implements BTree {
 					if (padre.getNroBloquePadre() < 0) {
 						return splitRaiz(padre);
 					} else {
-						//if (!pasarRegistro(padre)) {
+						RegistroNodo regAux = new RegistroNodo();
+						regAux = padre.getPrimerRegistro();
+						if (!pasarRegistro(padre, regAux)) {
 							padre = split(padre);
-						//}
+						}
 					}
 				}
 				
