@@ -83,23 +83,26 @@ public class RegistroFTRS extends RegistroNodo{
 		
 		@Override
 		public final void setBytes(final byte[] buffer, final int bloqueAnt) {
-			
+		
 			try {
-				super.setBytes(buffer, bloqueAnt);
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			int offset;
-			try {
-				offset = super.getBytes().length;
 			
-			ByteArrayInputStream bis = new ByteArrayInputStream(buffer, offset, buffer.length - offset);  
+			//genero los manipuladores del array de bytes
+			ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
 			DataInputStream dos = new DataInputStream(bis);
+			
+			int longClave = dos.readInt();
+			
+			byte[] clave = new byte[longClave];
+			
+			dos.read(clave);
+		
+			this.claveNodo = new ClaveFrontCoding(clave);
+			
 			this.idTermino = dos.readLong();
 			this.bloqueListaInvertida = dos.readLong();
+			
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
+				
 				e1.printStackTrace();
 				return;
 			}
