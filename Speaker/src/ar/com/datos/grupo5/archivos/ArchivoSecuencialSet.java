@@ -4,8 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
 
 import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.btree.Nodo;
 import ar.com.datos.grupo5.registros.RegistroAdmSecSet;
 
 public class ArchivoSecuencialSet {
@@ -59,8 +62,24 @@ public class ArchivoSecuencialSet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+	}
+	
+	
+	public void bloquesActualizados(Collection<Nodo>listaNodosActualizados){
+		
+		Iterator<Nodo> it = listaNodosActualizados.iterator();
 		
 		
+		while (it.hasNext()){
+			
+			
+			Nodo actual = it.next();
+			
+			actual.getRegistros();
+			
+			
+		}
 		
 		
 		
