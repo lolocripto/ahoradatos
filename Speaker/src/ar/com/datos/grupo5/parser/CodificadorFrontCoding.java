@@ -25,49 +25,56 @@ public class CodificadorFrontCoding {
 	public static Collection<RegistroFTRS> codificar(
 			final Collection<CFFTRS> listaPalabras) {
 
-		/*
-		 * Ordeno alfabeticamente, ver Collections.sort(listaPalabras);
-		 */
-		Iterator iterador = listaPalabras.iterator();
-		Collection<ClaveFrontCoding> claves = new ArrayList<ClaveFrontCoding>();
-		String anterior = new String();
-		while (iterador.hasNext()) {
-			String actual = iterador.next().toString();
-			int caracterescoincidentes = coincidentes(actual, anterior);
-			String termino = actual.substring(caracterescoincidentes, actual
-					.length());
-			int nroBloque = 0; /*ver de donde obtener el nro de bloque*/
-
-		return null;
-	}
-	
-
-	public static ClaveFrontCoding codificar(String palabraActual, String palabraAnteriorDecodificada){
-		/*
-		boolean seguir =true;
-		int pointer =0;
+		Collection<RegistroFTRS> registros = new ArrayList<RegistroFTRS>();
 		
-		while (seguir){
-		
-			 if( seguir= (palabraActual.charAt(pointer) == 
-				 palabraAnteriorDecodificada.charAt(pointer))){
-				 pointer++;
-			 }
+		Iterator<CFFTRS> it = listaPalabras.iterator();
+		String ultimaPalabra = "";
+		RegistroFTRS regGenerar;
+		CFFTRS reg;
+		ClaveFrontCoding clave;
+		while (it.hasNext()) {
+			reg = (CFFTRS) it.next();
+			regGenerar = new RegistroFTRS();
+			
+			if (registros.size() == 0) {
+				/*
+				 * Genero la primer palabra del front coding que es igual a la palabra.
+				 */
+				ultimaPalabra = reg.getPalabraDecodificada();
+				clave = new ClaveFrontCoding(
+							new Integer(0).byteValue(), 
+							new Integer(ultimaPalabra.getBytes().length).byteValue(), 
+							ultimaPalabra);
+				//Seteo los mismos datos que tenia antes
+				regGenerar.setClaveFrontCoding(clave);
+				if (reg.getRegistroAsociado() != null) {
+					regGenerar.setBloqueListaInvertida(reg.getRegistroAsociado().getBloqueListaInvertida());
+					regGenerar.setIdTermino(reg.getRegistroAsociado().getIdTermino());
+				}
+				
+			} else {
+				//Ya tengo elementos
+				String palabraActual = reg.getPalabraDecodificada();
+				
+				int caracterescoincidentes = coincidentes(palabraActual, ultimaPalabra);
+				
+				String termino = palabraActual.substring(caracterescoincidentes, palabraActual.length());
+				
+				clave = new ClaveFrontCoding(
+						new Integer(caracterescoincidentes).byteValue(), 
+						new Integer(termino.getBytes().length).byteValue(), 
+						termino);
+				
+				regGenerar.setClaveFrontCoding(clave);
+				if (reg.getRegistroAsociado() != null) {
+					regGenerar.setBloqueListaInvertida(reg.getRegistroAsociado().getBloqueListaInvertida());
+					regGenerar.setIdTermino(reg.getRegistroAsociado().getIdTermino());
+				}
+				ultimaPalabra = palabraActual;
+			}
 		}
-		
-		palabraActual.startsWith();
-		ClaveFrontCoding clave = new ClaveFrontCoding();
-		
-		*/
-		return null;
-	}
-	
-	
-	
-	//public static Collection<String> decodificar(Collecion registros FTRS)
-	
-
-	
+		return registros;
+	}	
 	
 	/**
 	 * Compara la cantidad de caracteres coincidentes en orden de s1, desde el
