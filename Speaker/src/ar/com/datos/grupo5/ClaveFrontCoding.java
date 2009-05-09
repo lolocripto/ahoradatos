@@ -102,7 +102,7 @@ public class ClaveFrontCoding extends Clave {
 	 * @param bloqueAnt nro de bloque anterior.
 	 * @throws IOException .
 	 */
-	public void setBytes(final byte[] buffer, final int bloqueAnt)
+	public void setBytes(final byte[] buffer)
 			throws IOException {
 		//TODO TESTEARLO YA!!!!!!!!!!
 	
