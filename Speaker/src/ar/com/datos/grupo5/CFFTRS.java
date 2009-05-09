@@ -39,5 +39,7 @@ public class CFFTRS {
 		return ((ClaveFrontCoding)this.registroAsociado.getClave()).getTermino();
 	}
 	
-	
+	public boolean equals(final CFFTRS reg) {
+		return this.palabraDecodificada.equals(reg.getPalabraDecodificada()); 
+	}
 }

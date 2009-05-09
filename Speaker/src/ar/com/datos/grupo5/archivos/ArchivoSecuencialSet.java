@@ -71,7 +71,7 @@ public class ArchivoSecuencialSet {
 	}
 	
 	
-	public void bloquesActualizados(Collection<Nodo>listaNodosActualizados){
+	public void bloquesActualizados(Collection<Nodo> listaNodosActualizados){
 		
 		Iterator<Nodo> it = listaNodosActualizados.iterator();
 		
