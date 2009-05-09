@@ -546,8 +546,8 @@ public final class BStar implements BTree {
 					// pasar la clave y el resto reasignar las referencias
 					RegistroNodo aux = new RegistroNodo();
 					aux.setClave(nodoPadre.getUltimoRegistro().getClave());
-					aux.setNroBloqueIzquierdo(nodoHnoIzquierdo.getUltimoRegistro()
-							.getNroBloqueDerecho());
+					aux.setNroBloqueIzquierdo(nodoHnoIzquierdo
+							.getUltimoRegistro().getNroBloqueDerecho());
 					aux.setNroBloqueDerecho(nodo.getPrimerRegistro()
 							.getNroBloqueIzquierdo());
 					nodoHnoIzquierdo.insertarRegistro(aux);
@@ -579,15 +579,26 @@ public final class BStar implements BTree {
 				nodoHnoDerecho.setBytes(archivo.leerBloque(nroHnoDerecho));
 				if (nodoHnoDerecho.hayEspacio(reg.getBytes().length)) {
 					
-					RegistroNodo regAux = nodo.removerRegistro(
-							nodo.getRegistros().size() - 1);
 					if (!nodo.isEsHoja()) {
 						// pasar la clave y el resto reasignar las referencias
-						
+						RegistroNodo aux = new RegistroNodo();
+						aux.setClave(nodoPadre.getRegistros().get(pos)
+								.getClave());
+						aux.setNroBloqueIzquierdo(nodo.getUltimoRegistro()
+								.getNroBloqueDerecho());
+						aux.setNroBloqueDerecho(nodoHnoDerecho.getPrimerRegistro()
+								.getNroBloqueIzquierdo());
+						nodoHnoDerecho.insertarRegistro(aux);
+						nodoPadre.getRegistros().get(pos).setClave(
+								nodo.getUltimoRegistro().getClave());
+						nodo.removerRegistro(nodo.getRegistros().size() - 1);	
+					} else {
+						RegistroNodo regAux = nodo.removerRegistro(
+								nodo.getRegistros().size() - 1);
+						nodoHnoDerecho.insertarRegistro(regAux);
+						nodoPadre.getRegistros().get(pos).setClave(
+								regAux.getClave());
 					}
-					nodoHnoDerecho.insertarRegistro(regAux);
-					nodoPadre.getRegistros().get(pos).setClave(
-							regAux.getClave());
 					archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
 							.getNroBloque());
 					archivo.escribirBloque(nodo.getBytes(), 
@@ -603,16 +614,24 @@ public final class BStar implements BTree {
 					nodoHnoIzquierdo.setBytes(
 							archivo.leerBloque(nroHnoIzquierdo));
 					if (nodoHnoIzquierdo.hayEspacio(reg.getBytes().length)) {
-						
-						RegistroNodo regAux = nodo.removerRegistro(0);
 						if (!nodo.isEsHoja()) {
-							// pasar la clave y el resto reasignar las referencias
-							
-						}
-						nodoHnoIzquierdo.insertarRegistro(regAux);
-						nodoPadre.getRegistros().get(pos).setClave(
+							RegistroNodo aux = new RegistroNodo();
+							aux.setClave(nodoPadre.getRegistros().get(pos)
+									.getClave());
+							aux.setNroBloqueIzquierdo(nodoHnoIzquierdo
+									.getUltimoRegistro().getNroBloqueDerecho());
+							aux.setNroBloqueDerecho(nodo.getPrimerRegistro()
+									.getNroBloqueIzquierdo());
+							nodoHnoIzquierdo.insertarRegistro(aux);
+							nodoPadre.getRegistros().get(pos).setClave(
+									nodo.getPrimerRegistro().getClave());
+							nodo.removerRegistro(0);
+						} else {
+							RegistroNodo regAux = nodo.removerRegistro(0);
+							nodoHnoIzquierdo.insertarRegistro(regAux);
+							nodoPadre.getRegistros().get(pos).setClave(
 								regAux.getClave());
-						
+						}
 						archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
 							.getNroBloque());
 						archivo.escribirBloque(nodo.getBytes(),
