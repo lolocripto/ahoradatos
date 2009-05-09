@@ -8,12 +8,13 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import ar.com.datos.grupo5.CFFTRS;
+import ar.com.datos.grupo5.parser.CodificadorFrontCoding;
 import ar.com.datos.grupo5.registros.RegistroFTRS;
 import ar.com.datos.grupo5.trie.persistence.Contenedor;
 
 public class BloqueFTRS {
 
-	private ArrayList<RegistroFTRS> listaTerminosFrontCodeados;
+	private Collection<RegistroFTRS> listaTerminosFrontCodeados;
 	
 	private ArrayList<CFFTRS> listaTerminosSinFrontCodear;
 	
@@ -26,6 +27,8 @@ public class BloqueFTRS {
 	}
 	
 	public BloqueFTRS (Collection<CFFTRS> lista){
+		//codifico la lista
+		this.listaTerminosFrontCodeados = CodificadorFrontCoding.codificar(lista);
 		
 	}
 	

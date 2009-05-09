@@ -14,8 +14,7 @@ public class CFFTRS {
 		
 	}
 	
-	
-	
+
 	public String getPalabraDecodificada() {
 		return palabraDecodificada;
 	}
