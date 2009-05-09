@@ -137,7 +137,7 @@ public final class BStar implements BTree {
 		//Obtengo el nodo en el que podria estar la clave.
 		Nodo nodo = buscarNodo(clave);
 		
-		if (nodo == null) {
+		if (nodo == null || nodoRaiz == null) {
 			return null;
 		}
 		
@@ -149,7 +149,6 @@ public final class BStar implements BTree {
 		switch (posReg) {
 		case Constantes.MENOR:
 		case Constantes.MAYOR:
-		case Constantes.NOEXISTE:
 			return null;
 		default:
 			if (nodo.getRegistros().get(posReg).getClave().equals(clave)) {
@@ -668,15 +667,21 @@ public final class BStar implements BTree {
 	}
 	
 	/**
-	 * 
-	 * @return si exito true.
+	 * Abre los dos archivos.
+	 * @param todos .
+	 * @return .
 	 */
-	private boolean abrirArchivos() {
+	private boolean abrirArchivos(final boolean todos) {
 		
 		try {
 			archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-			//archivo.crear(Constantes.ARCHIVO_ARBOL_BSTAR);
+			
+			if (todos) {
+				secuencialSet.abrir(
+						Constantes.ARCHIVO_ARBOL_BSTAR_SECUENCIAL_SET,
+						Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			}
 			
 			return true;
 			
@@ -691,10 +696,29 @@ public final class BStar implements BTree {
 	 * 
 	 * @return si exito true.
 	 */
-	private boolean cerrarArchivos() {
+	private boolean abrirArchivos() {
+		
+		return abrirArchivos(false);
+	}
+	
+	/**
+	 * 
+	 * @return .
+	 */
+	public boolean cerrarArchivos() {
+	
+		return cerrarArchivos(false);
+	}
+	
+	/**
+	 * @param todos .
+	 * @return si exito true.
+	 */
+	private boolean cerrarArchivos(final boolean todos) {
 		
 		try {
 			archivo.cerrar();
+			secuencialSet.cerrar();
 			return true;
 		} catch (IOException e) {
 			LOG.error("", e);
