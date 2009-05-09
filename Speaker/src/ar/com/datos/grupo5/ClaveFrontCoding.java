@@ -41,6 +41,7 @@ public class ClaveFrontCoding extends Clave {
 		this.longitudTermino = longitud;
 		this.termino = termino;
 	}
+	
 
 	public void setCaracteresCoincidentes(int caracteresCoincidentes) {
 		this.caracteresCoincidentes = caracteresCoincidentes;

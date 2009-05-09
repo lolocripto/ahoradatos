@@ -38,7 +38,35 @@ public class CodificadorFrontCoding {
 		}
 		return claves;
 	}
+	
 
+	public static ClaveFrontCoding codificar(String palabraActual, String palabraAnteriorDecodificada){
+		
+		boolean seguir =true;
+		int pointer =0;
+		
+		while (seguir){
+		
+			 if( seguir= (palabraActual.charAt(pointer) == 
+				 palabraAnteriorDecodificada.charAt(pointer))){
+				 pointer++;
+			 }
+		}
+		
+		palabraActual.startsWith();
+		ClaveFrontCoding clave = new ClaveFrontCoding();
+		
+		
+		
+	}
+	
+	
+	
+	//public static Collection<String> decodificar(Collecion registros FTRS)
+	
+
+	
+	
 	/**
 	 * Compara la cantidad de caracteres coincidentes en orden de s1, desde el
 	 * comienzo, de s2.

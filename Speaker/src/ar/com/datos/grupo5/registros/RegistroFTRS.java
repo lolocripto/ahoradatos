@@ -90,19 +90,23 @@ public class RegistroFTRS extends RegistroNodo{
 			ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
 			DataInputStream dos = new DataInputStream(bis);
 			
+			//leo la longitud de la clave para poder leerla
 			int longClave = dos.readInt();
 			
+			//leo la clave
 			byte[] clave = new byte[longClave];
-			
 			dos.read(clave);
 		
+			//instancio la clave con el array anterior
 			this.claveNodo = new ClaveFrontCoding(clave);
 			
+			//leo el id termino
 			this.idTermino = dos.readLong();
+			
+			//leo el puntero a la lista
 			this.bloqueListaInvertida = dos.readLong();
 			
 			} catch (IOException e1) {
-				
 				e1.printStackTrace();
 				return;
 			}
