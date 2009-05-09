@@ -325,6 +325,8 @@ public final class BStar implements BTree {
 						regAux = padre.getPrimerRegistro();
 						if (!pasarRegistro(padre, regAux)) {
 							padre = split(padre);
+						} else {
+							padre.setOverflow(false);
 						}
 					}
 				}

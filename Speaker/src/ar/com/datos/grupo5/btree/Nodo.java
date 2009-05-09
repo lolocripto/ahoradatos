@@ -528,6 +528,7 @@ public class Nodo {
 		setEspacioOcupado(0);
 		setMinIndiceCarga(Constantes.MENOR);
 		registros = new ArrayList<RegistroNodo>();
+		overflow = false;
 		
 		try {
 			//Leo el numero de bloque.
