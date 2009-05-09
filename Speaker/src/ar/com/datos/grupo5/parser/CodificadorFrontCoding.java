@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import ar.com.datos.grupo5.CFFTRS;
 import ar.com.datos.grupo5.ClaveFrontCoding;
 import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.grupo5.registros.RegistroFTRS;
 
 public class CodificadorFrontCoding {
 
@@ -17,13 +19,13 @@ public class CodificadorFrontCoding {
 	 * @param listaPalabras jj.
 	 * @return Collection de claves en FrontCoding.
 	 */
-	public static Collection<ClaveFrontCoding> codificar(
-			final Collection<IunidadDeHabla> listaPalabras) {
+	public static Collection<RegistroFTRS> codificar(
+			final Collection<CFFTRS> listaPalabras) {
 
 		/*
 		 * Ordeno alfabeticamente, ver Collections.sort(listaPalabras);
 		 */
-		Iterator iterador = listaPalabras.iterator();
+/*		Iterator iterador = listaPalabras.iterator();
 		Collection<ClaveFrontCoding> claves = new ArrayList<ClaveFrontCoding>();
 		String anterior = new String();
 		while (iterador.hasNext()) {
@@ -32,16 +34,18 @@ public class CodificadorFrontCoding {
 			String termino = actual.substring(caracterescoincidentes, actual
 					.length());
 			int nroBloque = 0; /*ver de donde obtener el nro de bloque*/
+		/*
 			claves.add(new ClaveFrontCoding(caracterescoincidentes,
 					termino.length(), termino));
 			anterior = actual;
 		}
-		return claves;
+		*/
+		return null;
 	}
 	
 
 	public static ClaveFrontCoding codificar(String palabraActual, String palabraAnteriorDecodificada){
-		
+		/*
 		boolean seguir =true;
 		int pointer =0;
 		
@@ -56,8 +60,8 @@ public class CodificadorFrontCoding {
 		palabraActual.startsWith();
 		ClaveFrontCoding clave = new ClaveFrontCoding();
 		
-		
-		
+		*/
+		return null;
 	}
 	
 	
@@ -99,8 +103,18 @@ public class CodificadorFrontCoding {
 	 * @param linea
 	 * @return
 	 */
-	public static Collection<String> decodificar(String linea) {
-		char[] caracteresLinea = linea.toCharArray();
+	public static Collection<CFFTRS> decodificar(Collection<RegistroFTRS> registros) {
+		//char[] caracteresLinea = linea.toCharArray();
+		/*
+		Iterator<RegistroFTRS> it = registros.iterator();
+		RegistroFTRS reg, regAnt;
+		ClaveFront cl, clAnt;
+		while (it.hasNext()) {
+			reg = it.next();
+			cl = reg.getClave();
+			if (reg.)
+			regAnt = reg;
+		}
 		int i = 0;
 		Collection<String> listaPalabras = new ArrayList<String>();
 		String terminoAnterior = new String();
@@ -120,11 +134,11 @@ public class CodificadorFrontCoding {
 				terminoCompleto = terminoActual;
 			}
 			i += longitud + 1;
-			listaPalabras.add(terminoCompleto);
+			listaPalabras.add(terminoCompletoll);
 			terminoAnterior = terminoCompleto;
 		}
-
-		return listaPalabras;
+*/
+		return null;
 	}
 
 }
