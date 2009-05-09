@@ -1,7 +1,12 @@
 package ar.com.datos.grupo5;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import ar.com.datos.grupo5.btree.Clave;
 import ar.com.datos.grupo5.parser.CodificadorFrontCoding;
+import ar.com.datos.grupo5.utils.Conversiones;
 
 public class ClaveFrontCoding extends Clave {
 
@@ -60,5 +65,36 @@ public class ClaveFrontCoding extends Clave {
 		return termino;
 	}
 
+	/**
+	 * @see ar.com.datos.grupo5.interfaces.Registro#toBytes()
+	 * @return los bytes que representan al registro.
+	 * @throws IOException ,
+	 */
+	public byte[] getBytes() throws IOException {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+		DataOutputStream dos = new DataOutputStream(bos);
+		try {
+			// TODO TESTEARME!!!!!!!!!
+			byte[] caracateresCoincidentesBytes =
+				Conversiones.intToArrayByte(caracteresCoincidentes);
+
+			byte[] longitudTerminoByte = 
+				Conversiones.intToArrayByte(this.longitudTermino);
+
+			byte[] claveBytes = this.termino.getBytes();
+			//byte[] longClave = Conversiones
+			
+			dos.write(caracateresCoincidentesBytes);
+			dos.write(longitudTerminoByte);
+//			dos.write(longClave);
+			dos.write(claveBytes);
+			//dos.write(Conversiones.intToArrayByte(nroBloqueDerecho));
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+		return bos.toByteArray();
+	}
 	
 }
