@@ -20,6 +20,14 @@ public class ClaveFrontCoding extends Clave {
 	 * Ver si seria una clave en vez de un String.
 	 */
 	private String termino;
+	
+	public ClaveFrontCoding(byte[] buffer) throws IOException {
+		try {
+			this.setBytes(buffer);
+		} catch (IOException e) {
+			throw e;
+		}
+	}
 	/**
 	 * Constructor.
 	 * @param caracteres
