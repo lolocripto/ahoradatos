@@ -234,6 +234,12 @@ public final class Constantes {
 	/**
 	 * Archivo para el arbol BStar.
 	 */
+	public static final String ARCHIVO_ARBOL_BSTAR_SECUENCIAL_SET = 
+		getXML("ARCHIVO_ARBOL_BSTAR_SECUENCIAL_SET");
+	
+	/**
+	 * Archivo para el arbol BStar.
+	 */
 	public static final Float FACTOR_CARGA_BLOQUES = Float.parseFloat(
 		getXML("FACTOR_CARGA_BLOQUES"));
 	
