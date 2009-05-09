@@ -36,6 +36,11 @@ public final class BStar implements BTree {
 	private ArchivoBloques archivo;
 	
 	/**
+	 * Archivo para el guardar lar referencias a las listas invertidas.
+	 */
+	private ArchivoBloques secuencialSet;
+	
+	/**
 	 * Nodo Actual.
 	 */
 	private Nodo nodoActual;

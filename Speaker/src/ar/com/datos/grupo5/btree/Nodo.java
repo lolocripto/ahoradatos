@@ -326,6 +326,12 @@ public class Nodo {
 			nodoHermano.getRegistros().clear();
 			nodoHermano.setEspacioOcupado(0);
 			
+			// Si el nodo que voy a splitear no es hoja, entonces agrego el
+			// registro del nodo padre que lo apunta.
+			if (esHoja) {
+				
+			}
+			
 			//ahora lo cargo el hermano hasta la minima ocupacion
 			nodoHermano.setMinIndiceCarga(Constantes.MENOR);
 			while ((regs.size() > 0) && (!nodoHermano.tieneCargaMinima())) {
