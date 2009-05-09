@@ -77,15 +77,18 @@ public class RegistroFTRS extends RegistroNodo{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
-			ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
-			DataInputStream dos = new DataInputStream(bis);
-			byte[] datos = null;
-			
+			int offset;
 			try {
-				//TODO:saltear la longitud del super!!
-			} catch (Exception e) {
-				e.printStackTrace();
+				offset = super.getBytes().length;
+			
+			ByteArrayInputStream bis = new ByteArrayInputStream(buffer, offset, buffer.length - offset);  
+			DataInputStream dos = new DataInputStream(bis);
+			this.idTermino = dos.readLong();
+			this.bloqueListaInvertida = dos.readLong();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				return;
 			}
 		}
 }

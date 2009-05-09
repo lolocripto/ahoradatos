@@ -144,6 +144,7 @@ public final class BStar implements BTree {
 		switch (posReg) {
 		case Constantes.MENOR:
 		case Constantes.MAYOR:
+		case Constantes.NOEXISTE:
 			return null;
 		default:
 			if (nodo.getRegistros().get(posReg).getClave().equals(clave)) {

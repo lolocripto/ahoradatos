@@ -120,7 +120,7 @@ public class Nodo {
 		int resultado = 0;
 		
 		if (registros.size() == 0) {
-			return 0;
+			return Constantes.NOEXISTE;
 		}
 		
 		// Si la clave es menor a la primera, no está.

@@ -379,6 +379,7 @@ public class FTRSManager {
 		NodoRS idTerminoIdDocumento;
 		Long idTermino = 0L;
 		
+		
 		RegistroFTRS registroFtrs = (RegistroFTRS) this.arbolFTRS.buscar(new Clave(termino));
 		
 		/*

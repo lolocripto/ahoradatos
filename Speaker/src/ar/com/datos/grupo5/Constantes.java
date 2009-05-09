@@ -33,6 +33,11 @@ public final class Constantes {
 	public static final Float FACTOR_CARGA_NODOS = new Float(0.66);
 	
 	/**
+	 * Para indicar que la clave no existe.
+	 */
+	public static final int NOEXISTE = -3;
+	
+	/**
 	 * Para indicar que la clave es mayor que la ultima del nodo.
 	 */
 	public static final int MAYOR = -2;
