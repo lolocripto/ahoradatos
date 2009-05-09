@@ -32,9 +32,14 @@ public class ArchivoSecuencialSet {
 		
 		//instancio el bloque administrativo
 		try {
-			byte[] aux = miArchivo.leerBloque(0);
 			
+			if (miArchivo.file.length() ==0){
+				this.regAdm = new RegistroAdmSecSet();
+			}else{
+			
+			byte[] aux = miArchivo.leerBloque(0);
 			this.regAdm = new RegistroAdmSecSet(aux);
+			}
 			
 		} catch (IOException e) {
 

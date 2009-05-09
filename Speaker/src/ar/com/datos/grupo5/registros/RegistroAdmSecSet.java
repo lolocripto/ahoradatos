@@ -18,6 +18,11 @@ public class RegistroAdmSecSet {
 		this.setBytes(tira);
 	}
 	
+	//constructor usado para la primera instanciacion
+	public RegistroAdmSecSet(){
+		this.cantBloques =0;
+	}
+	
 	
 	
 	public void setBytes(byte[] tiraBytes){
