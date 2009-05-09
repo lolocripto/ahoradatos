@@ -226,6 +226,12 @@ public final class Constantes {
 			getXML("SIZE_OF_LIST_BLOCK"));
 	
 	/**
+	 * Tamaño para los bloques del archivo de listas invertidas.
+	 */
+	public static final int SIZE_OF_SECUENCIAL_SET_BLOCK = Integer.parseInt(
+			getXML("SIZE_OF_SECUENCIAL_SET_BLOCK"));
+	
+	/**
 	 * Archivo para el arbol BStar.
 	 */
 	public static final String ARCHIVO_ARBOL_BSTAR = 

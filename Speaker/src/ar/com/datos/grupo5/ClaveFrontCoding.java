@@ -12,9 +12,9 @@ import ar.com.datos.grupo5.utils.Conversiones;
 
 public class ClaveFrontCoding extends Clave {
 
-	private int caracteresCoincidentes;
+	private byte caracteresCoincidentes;
 
-	private int longitudTermino;
+	private byte longitudTermino;
 
 	/**
 	 * Ver si seria una clave en vez de un String.
@@ -35,7 +35,7 @@ public class ClaveFrontCoding extends Clave {
 	 * @param longitud
 	 * @param termino
 	 */
-	public ClaveFrontCoding(final int caracteres, final int longitud,
+	public ClaveFrontCoding(final byte caracteres, final byte longitud,
 			final String termino) {
 		this.caracteresCoincidentes = caracteres;
 		this.longitudTermino = longitud;
@@ -43,7 +43,7 @@ public class ClaveFrontCoding extends Clave {
 	}
 	
 
-	public void setCaracteresCoincidentes(int caracteresCoincidentes) {
+	public void setCaracteresCoincidentes(byte caracteresCoincidentes) {
 		this.caracteresCoincidentes = caracteresCoincidentes;
 	}
 
@@ -51,7 +51,7 @@ public class ClaveFrontCoding extends Clave {
 		return caracteresCoincidentes;
 	}
 
-	public void setLongitudTermino(int longitud) {
+	public void setLongitudTermino(byte longitud) {
 		this.longitudTermino = longitud;
 	}
 
@@ -121,8 +121,8 @@ public class ClaveFrontCoding extends Clave {
 		
 		try {
 			//Leo la longitud de la clave
-			this.caracteresCoincidentes = dos.readInt();
-			this.longitudTermino = dos.readInt();
+			this.caracteresCoincidentes = dos.readByte();
+			this.longitudTermino = dos.readByte();
 			datos = new byte[this.longitudTermino];
 			this.termino = new String(datos);
 		} catch (IOException e) {
