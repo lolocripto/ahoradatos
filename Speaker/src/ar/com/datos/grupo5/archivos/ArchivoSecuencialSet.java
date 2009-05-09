@@ -4,12 +4,16 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import ar.com.datos.grupo5.ClaveFrontCoding;
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.btree.Nodo;
 import ar.com.datos.grupo5.registros.RegistroAdmSecSet;
+import ar.com.datos.grupo5.registros.RegistroFTRS;
+import ar.com.datos.grupo5.registros.RegistroNodo;
 
 public class ArchivoSecuencialSet {
 
@@ -70,22 +74,80 @@ public class ArchivoSecuencialSet {
 
 	}
 	
-	
-	public void bloquesActualizados(Collection<Nodo> listaNodosActualizados){
+
+	public void bloquesActualizados(Collection<Nodo>listaNodosActualizados, String nuevaPalabra, long PunteroNuevaPalabra, long IdTermino){
+
 		
+		
+		//genero un registro con la nueva palabra a agregar
+		RegistroFTRS registroNuevaPalabra = new RegistroFTRS();
+		registroNuevaPalabra.setIdTermino(IdTermino);
+		
+		ClaveFrontCoding cf = new ClaveFrontCoding();
+		cf.setTermino(nuevaPalabra);
+		
+		registroNuevaPalabra.setClave(cf);
+		
+		//---------------------
+		
+		
+		//genero una lista para almacenar todos los elementos a reacomodar
+		ArrayList<RegistroNodo> listaElementosAReacomodar = new ArrayList<RegistroNodo>();
+		
+		ArrayList<RegistroFTRS> listaRegistrosEnBloques = new ArrayList<RegistroFTRS>();
+		
+		//agrego el registro de la palabra recien ingresada
+		listaRegistrosEnBloques.add(registroNuevaPalabra);
+		
+		//obtengo un iterador sobre la lista de nodos actualizados
 		Iterator<Nodo> it = listaNodosActualizados.iterator();
-		
 		
 		while (it.hasNext()){
 			
-			
+			//obtengo el nodo actual
 			Nodo actual = it.next();
 			
-			actual.getRegistros();
+			//agrego todos los elementos que se han modificado en los nodos
+			listaElementosAReacomodar.addAll(actual.getRegistros());
 			
+			//agrego a la lista todos los elementos levantados de los bloques en disco
+			listaRegistrosEnBloques.addAll(this.obtenerListaElementosBloque(actual.getPunteroBloque()));
 			
 		}
+	}
+	
+	
+	public void escribirBloque (BloqueFTRS bloque, int numBloque){
 		
+		try {
+			this.miArchivo.escribirBloque(bloque.getBytes(), numBloque);
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	public BloqueFTRS leerBloque (int numeroBloque){
+		
+		try {
+			return new BloqueFTRS (this.miArchivo.leerBloque(numeroBloque));
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	
+	
+	private ArrayList<RegistroFTRS> obtenerListaElementosBloque(int numBloque){
+		
+		BloqueFTRS miBloque = this.leerBloque(numBloque);
+		
+		return (ArrayList<RegistroFTRS>) miBloque.getListaTerminosFrontCodeados();
 		
 		
 	}

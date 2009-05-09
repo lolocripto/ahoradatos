@@ -42,6 +42,10 @@ public class ClaveFrontCoding extends Clave {
 		this.termino = termino;
 	}
 	
+	public ClaveFrontCoding (){
+		
+	}
+	
 
 	public void setCaracteresCoincidentes(byte caracteresCoincidentes) {
 		this.caracteresCoincidentes = caracteresCoincidentes;
@@ -61,6 +65,7 @@ public class ClaveFrontCoding extends Clave {
 
 	public void setTermino(String termino) {
 		this.termino = termino;
+		this.longitudTermino = (byte)termino.length();
 	}
 
 	public String getTermino() {

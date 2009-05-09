@@ -14,21 +14,32 @@ import ar.com.datos.grupo5.trie.persistence.Contenedor;
 
 public class BloqueFTRS {
 
-	private Collection<RegistroFTRS> listaTerminosFrontCodeados;
+	private ArrayList<RegistroFTRS> listaTerminosFrontCodeados;
 	
-	private Collection<CFFTRS> listaTerminosSinFrontCodear;
+
+
+	private ArrayList<CFFTRS> listaTerminosSinFrontCodear;
 	
 	
 	public BloqueFTRS(byte[] chocloBytes){
 		this.setBytes(chocloBytes);
 	}
 	
-	public BloqueFTRS (Collection<CFFTRS> lista){
+	public BloqueFTRS (ArrayList<CFFTRS> lista){
 		//codifico la lista
 		
 		this.listaTerminosSinFrontCodear = lista;
-		this.listaTerminosFrontCodeados = CodificadorFrontCoding.codificar(lista);
+		this.listaTerminosFrontCodeados = (ArrayList<RegistroFTRS>) CodificadorFrontCoding.codificar(lista);
 		
+	}
+	
+	public Collection<RegistroFTRS> getListaTerminosFrontCodeados() {
+		return listaTerminosFrontCodeados;
+	}
+
+	public void setListaTerminosFrontCodeados(
+			ArrayList<RegistroFTRS> listaTerminosFrontCodeados) {
+		this.listaTerminosFrontCodeados = listaTerminosFrontCodeados;
 	}
 	
 	
@@ -77,7 +88,7 @@ public class BloqueFTRS {
 			RegistroFTRS rf = new RegistroFTRS(it.next());
 			listaTerminosFrontCodeados.add(rf);
 		}
-		this.listaTerminosSinFrontCodear = CodificadorFrontCoding
+		this.listaTerminosSinFrontCodear = (ArrayList<CFFTRS>) CodificadorFrontCoding
 		.decodificar(listaTerminosFrontCodeados);
 		
 	}
