@@ -64,7 +64,12 @@ public class Nodo {
 	 * El nodo padre.
 	 */
 	private Integer nroBloquePadre;
-
+	
+	/**
+	 * El Numero de Bloque del Secuencial Set.
+	 */
+	private Integer punteroBloque;
+	
 	/**
 	 * Constructor.
 	 */
@@ -715,5 +720,19 @@ public class Nodo {
 	 */
 	public final String toString() {
 		return registros.toString();
+	}
+
+	/**
+	 * @param punteroBloque the punteroBloque to set
+	 */
+	public void setPunteroBloque(Integer punteroBloque) {
+		this.punteroBloque = punteroBloque;
+	}
+
+	/**
+	 * @return the punteroBloque
+	 */
+	public Integer getPunteroBloque() {
+		return punteroBloque;
 	}
 }
