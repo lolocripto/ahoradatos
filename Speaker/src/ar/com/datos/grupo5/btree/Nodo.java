@@ -311,7 +311,7 @@ public class Nodo {
 		ArrayList<RegistroNodo> regs = new ArrayList<RegistroNodo>();
 		int pos = nodoPadre.buscarRegistro(nodoHermano
 				.getPrimerRegistro().getClave());
-	
+
 		if (siguiente) {
 			// -> El nuevo nodo es MAYOR que el nodo actual.
 			// Paso todos los regs hasta el que garantiza el 66% de ocupacion
@@ -698,6 +698,14 @@ public class Nodo {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Forma rapida para conocer la cantidad de registros.
+	 * @return La cantidad de registros.
+	 */
+	public final int getCantidadRegistros() {
+		return registros.size();
 	}
 	
 	/**
