@@ -9,6 +9,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import ar.com.datos.grupo5.ClaveFrontCoding;
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.btree.Clave;
 import ar.com.datos.grupo5.utils.Conversiones;
@@ -22,6 +23,8 @@ public class RegistroFTRS extends RegistroNodo{
 		private Long idTermino;
 		
 		private Long bloqueListaInvertida;
+		
+		private ClaveFrontCoding claveNodo;
 
 		/**
 		 * @param idTerminoExt the idTermino to set
@@ -56,8 +59,18 @@ public class RegistroFTRS extends RegistroNodo{
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 			DataOutputStream dos = new DataOutputStream(bos);
 			try {
-				byte[] superior = super.getBytes();	
-				dos.write(superior);
+				
+				//obtengo la clave del nodo
+				byte[] aux = this.claveNodo.getBytes();
+				
+				//escribo un int con su longitud
+				dos.writeInt(aux.length);
+				
+				//escribo el array de bytes auxiliar
+				dos.write(aux);
+				
+			//	byte[] superior = super.getBytes();	
+			//	dos.write(superior);
 				
 				dos.write(Conversiones.longToArrayByte(this.idTermino));
 				dos.write(Conversiones.longToArrayByte(this.bloqueListaInvertida));
