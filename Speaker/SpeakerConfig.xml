@@ -38,6 +38,8 @@
 	
 	<ARCHIVO_ARBOL_BSTAR>./arbolBStar.data</ARCHIVO_ARBOL_BSTAR>
 	
+	<ARCHIVO_ARBOL_BSTAR_SECUENCIAL_SET>./arbolBStarSecuencialSet.data</ARCHIVO_ARBOL_BSTAR_SECUENCIAL_SET>
+	
 	<ARCHIVO_TRIE>./arbolTrie.data</ARCHIVO_TRIE>
 	
 		<!--Tamanio del orden del Trie-->
