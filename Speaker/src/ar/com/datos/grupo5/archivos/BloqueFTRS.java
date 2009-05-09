@@ -16,10 +16,7 @@ public class BloqueFTRS {
 
 	private Collection<RegistroFTRS> listaTerminosFrontCodeados;
 	
-	private ArrayList<CFFTRS> listaTerminosSinFrontCodear;
-	
-	
-	
+	private Collection<CFFTRS> listaTerminosSinFrontCodear;
 	
 	
 	public BloqueFTRS(byte[] chocloBytes){
@@ -28,6 +25,8 @@ public class BloqueFTRS {
 	
 	public BloqueFTRS (Collection<CFFTRS> lista){
 		//codifico la lista
+		
+		this.listaTerminosSinFrontCodear = lista;
 		this.listaTerminosFrontCodeados = CodificadorFrontCoding.codificar(lista);
 		
 	}
@@ -77,13 +76,26 @@ public class BloqueFTRS {
 			
 			RegistroFTRS rf = new RegistroFTRS(it.next());
 			listaTerminosFrontCodeados.add(rf);
-			
 		}
+		this.listaTerminosSinFrontCodear = CodificadorFrontCoding
+		.decodificar(listaTerminosFrontCodeados);
+		
 	}
 	
-	
-	
-	
+	/**
+	 *  @param listaTerminosSinFrontCodear the listaTerminosSinFrontCodear to set
+	 */
+	public void setListaTerminosSinFrontCodear(
+				ArrayList<CFFTRS> listaTerminosSinFrontCodear) {
+			this.listaTerminosSinFrontCodear = listaTerminosSinFrontCodear;
+		}
+
+		/*
+		 * @return the listaTerminosSinFrontCodear
+		 */
+		public Collection<CFFTRS> getListaTerminosSinFrontCodear() {
+			return listaTerminosSinFrontCodear;
+		}
 	
 	
 	
