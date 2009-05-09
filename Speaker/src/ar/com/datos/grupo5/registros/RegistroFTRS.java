@@ -50,7 +50,7 @@ public class RegistroFTRS extends RegistroNodo{
 		/**
 		 * @return the idTermino
 		 */
-		public final ClaveFrontCoding getClaveFonrtCoding() {
+		public final ClaveFrontCoding getClaveFrontCoding() {
 			return this.claveNodo;
 		}
 

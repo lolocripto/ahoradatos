@@ -2,6 +2,9 @@ package ar.com.datos.grupo5.parser;
 
 //import gnu.java.beans.editors.StringEditor;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -105,40 +108,49 @@ public class CodificadorFrontCoding {
 	 */
 	public static Collection<CFFTRS> decodificar(Collection<RegistroFTRS> registros) {
 		//char[] caracteresLinea = linea.toCharArray();
-		/*
+		
+		Collection<CFFTRS> listaConvertida = new ArrayList<CFFTRS>();
 		Iterator<RegistroFTRS> it = registros.iterator();
 		RegistroFTRS reg, regAnt;
-		ClaveFront cl, clAnt;
+		ClaveFrontCoding cl;
+		
+		String ultimaPalabra = "";
+		
+		CFFTRS 	regResultante;
 		while (it.hasNext()) {
 			reg = it.next();
-			cl = reg.getClave();
-			if (reg.)
+			regResultante = new CFFTRS();
+			cl = reg.getClaveFrontCoding();
+			//Si no tiene caracteres igual entoces es la palabra completa
+			if (cl.getCaracteresCoincidentes() == 0) {
+				regResultante.setPalabraDecodificada(cl.getTermino());
+				ultimaPalabra = cl.getTermino();
+			} else {
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+				DataOutputStream dos = new DataOutputStream(bos);
+				
+				try {
+					dos.write(ultimaPalabra.getBytes(), 0, cl.getCaracteresCoincidentes());
+					dos.write(cl.getTermino().getBytes(), 0, cl.getLongitudTermino());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				ultimaPalabra = new String(bos.toByteArray());
+				regResultante.setPalabraDecodificada(bos.toString());
+				
+			}
+			//Asocio el termino descodificado al registro
+			regResultante.setRegistroAsociado(reg);
+			listaConvertida.add(regResultante);
+			
+			//El registro actual es el anterior al siguiente
 			regAnt = reg;
 		}
-		int i = 0;
-		Collection<String> listaPalabras = new ArrayList<String>();
-		String terminoAnterior = new String();
-		while (i < caracteresLinea.length) {
-			Character caracter = new Character(linea.charAt(i));
-			int caracteresCompartidos = Integer.parseInt(caracter.toString());
-			i++;
-			Character caracter2 = new Character(linea.charAt(i));
-			int longitud = Integer.parseInt(caracter2.toString());
-			String terminoActual = new String(caracteresLinea, i + 1, longitud);
-			String terminoCompleto = new String();
-			if (caracteresCompartidos != 0) {
-				terminoCompleto = terminoAnterior.substring(0,
-						caracteresCompartidos)
-						+ terminoActual;
-			} else {
-				terminoCompleto = terminoActual;
-			}
-			i += longitud + 1;
-			listaPalabras.add(terminoCompletoll);
-			terminoAnterior = terminoCompleto;
-		}
-*/
-		return null;
+		
+		return listaConvertida;
 	}
 
 }
