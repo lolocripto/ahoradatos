@@ -392,7 +392,7 @@ public class Nodo {
 			}
 			if (!this.isEsHoja()) {
 				// Liberar la clave de la nueva raiz de la raiz anterior
-				if (pos == Constantes.MAYOR)
+				if (pos == Constantes.MENOR)
 					pos = nodoPadre.registros.size() - 1;
 				RegistroNodo regAux = new RegistroNodo();
 				regAux = nodoPadre.registros.get(pos);
@@ -423,7 +423,7 @@ public class Nodo {
 				// Luego lleno el nodo con lo del hermano siguiente
 				regAux2 = regs.remove(0);
 				regAux2.setNroBloqueDerecho(nuevoHermano.getNroBloque());
-				regAux2.setNroBloqueIzquierdo(nodoHermano.getNroBloque());
+				regAux2.setNroBloqueIzquierdo(getNroBloque());
 				if (regs.size() == 0) {
 					nuevoHermano.insertarRegistro(regAux2);
 				}
