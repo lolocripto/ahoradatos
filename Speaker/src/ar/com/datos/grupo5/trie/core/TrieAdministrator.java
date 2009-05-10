@@ -88,8 +88,8 @@ public class TrieAdministrator {
 	
 	
 	private void recMemoria(){
-		persistencia.flush();
-		this.mitrie.recEspacio();
+	//	persistencia.flush();
+	//	this.mitrie.recEspacio();
 	}
 	
 	

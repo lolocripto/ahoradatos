@@ -26,13 +26,20 @@ public class PruebasTrie {
 		Iterator<IunidadDeHabla> it = lista.iterator();
 		
 		Long punt1 = new Long (97465);
+		Long punt2;
 		
 		int i =0;
 		
 		while (it.hasNext()){
-			punt1 = ta.buscarPalabra(it.next().getTextoEscrito());
 			
-			System.out.println(punt1);
+			
+			
+			IunidadDeHabla palabra = it.next();
+		//	ta.agregarPalabra(palabra.getTextoEscrito(), punt1);
+			
+			punt2 = ta.buscarPalabra(palabra.getTextoEscrito());
+			
+			System.out.println(punt2);
 			
 			i++;
 		}
@@ -40,7 +47,7 @@ public class PruebasTrie {
 
 		
 		
-		
+/*		
 		String palabra1 = "te";
 		String palabra2 = "bien";
 		String palabra3 = "teta";
@@ -74,7 +81,7 @@ public class PruebasTrie {
 		ta.buscarPalabra(palabra3);
 		ta.buscarPalabra("dfsadfsdfsdgfsgdfgdgdfgsdf");
 		ta.buscarPalabra(palabra4);
-		
+	*/	
 		
 		ta.terminarSesion();
 
