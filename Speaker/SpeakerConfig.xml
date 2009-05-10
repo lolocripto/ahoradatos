@@ -17,7 +17,7 @@
 	<DEFAULT_TEXT_INPUT_CHARSET>UTF-8</DEFAULT_TEXT_INPUT_CHARSET>
 		
 	<!--Tamanio del Bloque del archivo de Indice-->
-	<SIZE_OF_INDEX_BLOCK>64</SIZE_OF_INDEX_BLOCK>
+	<SIZE_OF_INDEX_BLOCK>512</SIZE_OF_INDEX_BLOCK>
 		
 	<!--Tamanio del Bloque del archivo de listas invertidas-->
 	<SIZE_OF_LIST_BLOCK>2048</SIZE_OF_LIST_BLOCK>

@@ -57,11 +57,6 @@ public final class Constantes {
 	 */
 	public static final int SIZE_OF_INDEX_BLOCK = Integer
 			.parseInt(getXML("SIZE_OF_INDEX_BLOCK"));
-
-	/**
-	 * Tamaño en bytes de la informacion administrativa del nodo.
-	 */
-	public static final int SIZE_OF_ADMIN_NODE_DATA = 12;
 	
 	/**
 	 * Tamaño del orden del  Trie.
@@ -90,6 +85,25 @@ public final class Constantes {
 	public static final int TAMANIO_BUFFER_LECTURA = Integer
 			.parseInt(getXML("TAMANIO_BUFFER_LECTURA"));
 	
+	/**
+         * Tamaño en bytes del char.
+	 */
+	public static final int SIZE_OF_CHAR = Character.SIZE / SIZE_OF_BYTE;
+	
+    	/**
+	* Tamaño en bytes del long.
+	 */
+	public static final int SIZE_OF_LONG = Long.SIZE / SIZE_OF_BYTE;
+	
+	/**
+	 * Tamaño en bytes del int.
+	 */
+	public static final int SIZE_OF_INT = Integer.SIZE / SIZE_OF_BYTE;
+	
+	/**
+         * Tamaño en bytes del short.
+	 */
+	public static final int SIZE_OF_SHORT = Short.SIZE / SIZE_OF_BYTE;	
 	
 	/**
 	 * Tamaño del buffer de escritura.
@@ -112,26 +126,11 @@ public final class Constantes {
 	 * Abrir un archivo para lectura y escritura.
 	 */
 	public static final String ABRIR_PARA_LECTURA_ESCRITURA = "rw";
-		
+
 	/**
-         * Tamaño en bytes del char.
+	 * Tamaño en bytes de la informacion administrativa del nodo.
 	 */
-	public static final int SIZE_OF_CHAR = Character.SIZE / SIZE_OF_BYTE;
-	
-    	/**
-	* Tamaño en bytes del long.
-	 */
-	public static final int SIZE_OF_LONG = Long.SIZE / SIZE_OF_BYTE;
-	
-	/**
-	 * Tamaño en bytes del int.
-	 */
-	public static final int SIZE_OF_INT = Integer.SIZE / SIZE_OF_BYTE;
-	
-	/**
-         * Tamaño en bytes del short.
-	 */
-	public static final int SIZE_OF_SHORT = Short.SIZE / SIZE_OF_BYTE;
+	public static final int SIZE_OF_ADMIN_NODE_DATA = 4 * SIZE_OF_INT;
 	
 	/**
 	 * Tamaño del buffer de lectura para la colección auto pagináble.
