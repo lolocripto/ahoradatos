@@ -588,10 +588,10 @@ public class Nodo {
 			//Leo el numero de bloque.
 			nroBloque = dos.readInt();
 			nroBloquePadre = dos.readInt();
+			punteroBloque = dos.readInt();
 			//espacioOcupado = dos.readInt();
 			//aLeer = espacioOcupado;
 			aLeer = dos.readInt();
-			punteroBloque = dos.readInt();
 			
 			// Leo el primer dato del primer registro,que es el numero de bloque
 			// izquierdo al que apunta.
