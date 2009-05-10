@@ -68,7 +68,7 @@ public class TestSecuencialSet3 {
 		Nodo1.setPunteroBloque(1);
 		Nodo2.setPunteroBloque(2);
 		
-		
+
 		ArrayList<Nodo> lista = new ArrayList<Nodo>();
 		
 		lista.add(Nodo1);
