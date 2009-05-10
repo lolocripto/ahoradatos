@@ -17,14 +17,21 @@ import ar.com.datos.grupo5.registros.RegistroNodo;
  */
 public class BSharp {
 	
-	
+	/**
+	 * Arbol B*.
+	 */
 	private BTree arbolBStar;
 	
+	/**
+	 * Archivo por bloques que almacena los registros 
+	 * de las hojas del arbol.
+	 */
 	private ArchivoSecuencialSet secuencialSet;
 	
 	
 	public BSharp() {
 		try {
+			//FIXME Agregar referencia al SecuencialSet
 			this.arbolBStar = new BStar();
 			this.secuencialSet = new ArchivoSecuencialSet();
 		} catch (Exception e) {
@@ -48,13 +55,22 @@ public class BSharp {
 		listaNodosActualizados = new ArrayList<Nodo>();
 		RegistroNodo reg = new RegistroNodo();
 		reg.setClave(new Clave(nuevaPalabraExt));
+		//FIXME Debe devolver la lista de nodosActualizados.
 		this.arbolBStar.insertar(reg);
 		this.secuencialSet.bloquesActualizados(listaNodosActualizados, nuevaPalabraExt, idTerminoExt, -1);
 		return false;
 	}
 
-	public boolean modificar(RegistroNodo registro) {
-		// TODO Auto-generated method stub
+	public boolean modificar(String palabraExt, long idTerminoExt, int offsetListaInvertida) {
+		try {
+			RegistroNodo nodo = this.arbolBStar.buscar(new Clave(palabraExt));
+			BloqueFTRS bloque = this.secuencialSet.leerBloque(nodo.getPunteroBloque());
+			RegistroFTRS registro = bloque.buscarRegistro(new Clave(palabraExt));
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
