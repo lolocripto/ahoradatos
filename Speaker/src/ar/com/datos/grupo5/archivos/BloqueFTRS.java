@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import ar.com.datos.grupo5.CFFTRS;
+import ar.com.datos.grupo5.ClaveFrontCoding;
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.btree.Clave;
 import ar.com.datos.grupo5.parser.CodificadorFrontCoding;
@@ -73,7 +74,7 @@ public class BloqueFTRS implements Comparable<BloqueFTRS>{
 	
 	
 	
-	public void generarListaTerminosFroncodeados(){
+	public void generarListaTerminosFroncodeados() {
 		this.listaTerminosFrontCodeados = (ArrayList<RegistroFTRS>) 
 		CodificadorFrontCoding.codificar(this.listaTerminosSinFrontCodear);
 	}
@@ -89,7 +90,7 @@ public class BloqueFTRS implements Comparable<BloqueFTRS>{
 	}
 	
 	
-	public byte[] getBytes(){
+	public byte[] getBytes() {
 		
 		//genero los manipuladores de bytes
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
@@ -106,7 +107,7 @@ public class BloqueFTRS implements Comparable<BloqueFTRS>{
 		Iterator<RegistroFTRS> it = listaTerminosFrontCodeados.iterator();
 		
 		//itero sobre la lista serializando los contenedores.
-		while(it.hasNext()){
+		while (it.hasNext()) {
 			try {
 				
 				dos.write(it.next().getContenidoEmpaquetado().serializar());
@@ -188,6 +189,18 @@ public class BloqueFTRS implements Comparable<BloqueFTRS>{
 			return listaTerminosSinFrontCodear;
 		}
 	
-	
+	public final RegistroFTRS buscarRegistro(Clave clave) {
+		
+		Iterator<CFFTRS> it;
+		it = this.listaTerminosSinFrontCodear.iterator();
+		CFFTRS nodo;
+		while (it.hasNext()) {
+			nodo = it.next();
+			if (clave.getClave().compareTo(nodo.getPalabraDecodificada()) == 0) {
+				return nodo.getRegistroAsociado();
+			}
+		}
+		return null;
+	}
 	
 }

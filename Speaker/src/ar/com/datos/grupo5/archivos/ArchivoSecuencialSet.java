@@ -8,6 +8,7 @@ import java.util.Iterator;
 import ar.com.datos.grupo5.CFFTRS;
 import ar.com.datos.grupo5.ClaveFrontCoding;
 import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.TerminoBloque;
 import ar.com.datos.grupo5.btree.Nodo;
 import ar.com.datos.grupo5.parser.CodificadorFrontCoding;
 import ar.com.datos.grupo5.registros.RegistroAdmSecSet;
@@ -51,7 +52,7 @@ public class ArchivoSecuencialSet {
 	}
 
 	/**
-	 * reserva un bloque libre y devuelve un long que es el numero de bloque
+	 * reserva un bloque libre y devuelve un long que es el numero de bloque.
 	 * 
 	 * @return
 	 */
@@ -61,7 +62,7 @@ public class ArchivoSecuencialSet {
 	}
 
 	/**
-	 * devuelve a cantidad de bloques usados sin reservar el espacio
+	 * devuelve a cantidad de bloques usados sin reservar el espacio.
 	 * 
 	 * @return
 	 */
@@ -84,43 +85,38 @@ public class ArchivoSecuencialSet {
 		}
 
 	}
-	
-	
-	public BloqueFTRS getSiguienteBloque (BloqueFTRS unBloque){
-		
-		if (unBloque.getPunteroAlSiguiente() == 0){
-			
+
+	public BloqueFTRS getSiguienteBloque(BloqueFTRS unBloque) {
+
+		if (unBloque.getPunteroAlSiguiente() == 0) {
+
 			System.out.println("dicho bloque no tiene siguiente");
 			return null;
-		}else{
-			
+		} else {
+
 			return this.leerBloque(unBloque.getPunteroAlSiguiente());
-			
+
 		}
-		
+
 	}
-	
-	
-	public BloqueFTRS getSiguienteBloque (int numeroBloque){
-		
-		
+
+	public BloqueFTRS getSiguienteBloque(int numeroBloque) {
+
 		BloqueFTRS bloqueOrigen = this.leerBloque(numeroBloque);
-		
-		if (bloqueOrigen == null){
+
+		if (bloqueOrigen == null) {
 			System.out.println("dicho bloque no tiene siguiente");
 			return null;
-		}else{
-			
-			if(bloqueOrigen.getPunteroAlSiguiente() == 0){
+		} else {
+
+			if (bloqueOrigen.getPunteroAlSiguiente() == 0) {
 				System.out.println("dicho bloque no tiene siguiente");
 				return null;
 			}
 			return this.leerBloque(bloqueOrigen.getPunteroAlSiguiente());
 		}
-		
+
 	}
-	
-	
 
 	/**
 	 * Actualiza en el SecuencialSet los bloques asociados a los nodos pasados
@@ -131,72 +127,75 @@ public class ArchivoSecuencialSet {
 	 * @param IdTermino
 	 * @param PunteroAlistaInv
 	 */
-	public void bloquesActualizados(ArrayList<Nodo> listaNodosActualizados,
+	public ArrayList<TerminoBloque> bloquesActualizados(ArrayList<Nodo> listaNodosActualizados,
 			String nuevaPalabra, long IdTermino, long PunteroAlistaInv) {
 
 		// esta logica sirve para la primera insercion del arbol
 		// RECOMENDARA QUE EL MISMO ARBOL CON LA PRIMER INSERCION LLAME AL
 		// METODO "PRIMERAINSERCION"
-		if (this.regAdm.ultimoBloqueUsado() == 1 && this.leerBloque(1)==null) {
+		ArrayList<TerminoBloque> terminoBloque = new ArrayList<TerminoBloque>();
+		if (this.regAdm.ultimoBloqueUsado() == 1 && this.leerBloque(1) == null) {
 
 			this.primeraInsercion(nuevaPalabra, IdTermino, PunteroAlistaInv);
-		}else{
+		} else {
 
-		// genero un registro con la nueva palabra que voy a arreglar
-		RegistroFTRS registroNuevaPalabra = new RegistroFTRS();
-		// le agrego el IdTermino
-		registroNuevaPalabra.setIdTermino(IdTermino);
+			// genero un registro con la nueva palabra que voy a arreglar
+			RegistroFTRS registroNuevaPalabra = new RegistroFTRS();
+			// le agrego el IdTermino
+			registroNuevaPalabra.setIdTermino(IdTermino);
 
-		// le agrego el puntero a la lista invertida
-		registroNuevaPalabra.setBloqueListaInvertida(PunteroAlistaInv);
+			// le agrego el puntero a la lista invertida
+			registroNuevaPalabra.setBloqueListaInvertida(PunteroAlistaInv);
 
-		// genero una nueva clave de frontcoding, aunque va a quedar vacia. y se
-		// la asigno al nuevo registro
-		ClaveFrontCoding cf = new ClaveFrontCoding();
-		registroNuevaPalabra.setClave(cf);
+			// genero una nueva clave de frontcoding, aunque va a quedar vacia.
+			// y se
+			// la asigno al nuevo registro
+			ClaveFrontCoding cf = new ClaveFrontCoding();
+			registroNuevaPalabra.setClave(cf);
 
-		// genero un objeto CFFTRS para manejar toda la info
-		CFFTRS objetoNuevo = new CFFTRS();
-		objetoNuevo.setPalabraDecodificada(nuevaPalabra);
-		objetoNuevo.setRegistroAsociado(registroNuevaPalabra);
+			// genero un objeto CFFTRS para manejar toda la info
+			CFFTRS objetoNuevo = new CFFTRS();
+			objetoNuevo.setPalabraDecodificada(nuevaPalabra);
+			objetoNuevo.setRegistroAsociado(registroNuevaPalabra);
 
-		// obtengo las listas de elementos decodificados
-		ArrayList<CFFTRS> listaBloquesDecodificada;
+			// obtengo las listas de elementos decodificados
+			ArrayList<CFFTRS> listaBloquesDecodificada;
 
-		// genero un array con para contener la lista de bloques sucios
-		ArrayList<Integer> listaDeBloquesSucios = new ArrayList<Integer>();
+			// genero un array con ints para contener la lista de bloques sucios
+			ArrayList<Integer> listaDeBloquesSucios = new ArrayList<Integer>();
 
-		// obtengo un iterador sobre la lista de nodos actualizados
-		Iterator<Nodo> it = listaNodosActualizados.iterator();
-		while (it.hasNext()) {
-			Nodo actual = it.next();
+			// obtengo un iterador sobre la lista de nodos actualizados
+			Iterator<Nodo> it = listaNodosActualizados.iterator();
+			while (it.hasNext()) {
+				Nodo actual = it.next();
 
-			// agrego el bloque sucio
-			listaDeBloquesSucios.add(actual.getPunteroBloque());
+				// agrego el bloque sucio
+				listaDeBloquesSucios.add(actual.getPunteroBloque());
+
+			}
+
+			listaBloquesDecodificada = this
+					.obtenerListaDesdeBloques(listaDeBloquesSucios);
+			// agrego el objeto nuevo que inserte al arbol
+			listaBloquesDecodificada.add(objetoNuevo);
+
+			// con los elementos de todos los bloques obtenidos, genero una
+			// lista
+			// con los nuevos bloques a almacenar
+			// y la obtengo redistribuyendo los registros traidos de disco
+			ArrayList<BloqueFTRS> listaBloquesAGuardar;
+			listaBloquesAGuardar = this.buscarYalmacenar(
+					listaNodosActualizados, listaBloquesDecodificada);
+
+			this.logicaOrdenamiento(listaBloquesAGuardar);
+
+			this.guardarListaDeBloques(listaBloquesAGuardar);
 
 		}
-
-		listaBloquesDecodificada = this
-				.obtenerListaDesdeBloques(listaDeBloquesSucios);
-		// agrego el objeto nuevo que inserte al arbol
-		listaBloquesDecodificada.add(objetoNuevo);
-
-		// con los elementos de todos los bloques obtenidos, genero una lista
-		// con los nuevos bloques a almacenar
-		// y la obtengo redistribuyendo los registros traidos de disco
-		ArrayList<BloqueFTRS> listaBloquesAGuardar;
-		listaBloquesAGuardar = this.buscarYalmacenar(listaNodosActualizados,
-				listaBloquesDecodificada);
-
-		this.logicaOrdenamiento(listaBloquesAGuardar);
-		
-		this.guardarListaDeBloques(listaBloquesAGuardar);
-
+		return terminoBloque;
 	}
-	}
-	
 
-	//creo que con esta funcion se garantiza que todo nodo tenga un siguiente
+	// creo que con esta funcion se garantiza que todo nodo tenga un siguiente
 	private void logicaOrdenamiento(ArrayList<BloqueFTRS> listaBloques) {
 		Collections.sort(listaBloques);
 
@@ -217,7 +216,7 @@ public class ArchivoSecuencialSet {
 	}
 
 	/**
-	 * La primera vez que se inserte un registro en el arbol
+	 * La primera vez que se inserte un registro en el arbol.
 	 * 
 	 * @param nuevaPalabra
 	 * @param IdTermino
@@ -371,19 +370,18 @@ public class ArchivoSecuencialSet {
 
 	public BloqueFTRS leerBloque(int numeroBloque) {
 
-		
 		long longitudArchivo = 0;
 		try {
 			longitudArchivo = this.miArchivo.file.length();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
-		if (longitudArchivo == 0 || this.regAdm.ultimoBloqueUsado() == 0){
-			
+
+		if (longitudArchivo == 0 || this.regAdm.ultimoBloqueUsado() == 0) {
+
 			return null;
 		}
-		
+
 		try {
 			Contenedor cont = Contenedor.rehidratar(this.miArchivo
 					.leerBloque(numeroBloque));
