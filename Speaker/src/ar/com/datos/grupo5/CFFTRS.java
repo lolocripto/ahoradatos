@@ -2,7 +2,7 @@ package ar.com.datos.grupo5;
 
 import ar.com.datos.grupo5.registros.RegistroFTRS;
 
-public class CFFTRS {
+public class CFFTRS implements Comparable<CFFTRS>{
 
 	
 	private RegistroFTRS registroAsociado;
@@ -15,6 +15,8 @@ public class CFFTRS {
 	}
 	
 
+	
+	
 	public String getPalabraDecodificada() {
 		return palabraDecodificada;
 	}
@@ -43,5 +45,11 @@ public class CFFTRS {
 		
 		CFFTRS cfftrs = (CFFTRS) obj;
 		return this.palabraDecodificada.equalsIgnoreCase(cfftrs.getPalabraDecodificada()); 
+	}
+
+	@Override
+	public int compareTo(CFFTRS o) {
+		
+		return this.palabraDecodificada.compareTo(o.palabraDecodificada);
 	}
 }
