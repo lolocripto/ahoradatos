@@ -214,21 +214,6 @@ public class Nodo {
 		}
 		return false;
 	}
-
-	
-	/**
-	 * @param registro the registro to set
-	 * @return .
-	 */
-	public final boolean pasarRegistro(final RegistroNodo registro) {
-		// FIXME
-		//TODO Solo aplica para los nodos hoja
-		if (this.nroBloquePadre == null) {
-				// Es el unico nodo -> Raiz SOLA!!!!!
-				return false;
-			} 
-		return false;
-	}
 	
 	/**
 	 * Para testear.
@@ -298,7 +283,7 @@ public class Nodo {
 	}
 	
 	/**
-	 * @param siguiente es el nodo con el cual lo tengo que tratar para dividir.
+	 * @param hayNodoDerecho es el nodo con el cual lo tengo que tratar para dividir.
 	 * @param nodoHermano es el hermano del nodo que tengo que splitear
 	 * @param nodoPadre El padre del nodo y su hermano
 	 * @param ultimoNroBloque .
@@ -306,7 +291,7 @@ public class Nodo {
 	 * @throws IOException ,
 	 */
 	public final Nodo split(final Nodo nodoHermano, final Nodo nodoPadre,
-			final boolean siguiente, final int ultimoNroBloque)
+			final boolean hayNodoDerecho, final int ultimoNroBloque)
 			throws IOException {
 		
 		Nodo nuevoHermano = new Nodo();
@@ -317,7 +302,7 @@ public class Nodo {
 		int pos = nodoPadre.buscarRegistro(nodoHermano
 				.getPrimerRegistro().getClave());
 
-		if (siguiente) {
+		if (hayNodoDerecho) {
 			// -> El nuevo nodo es MAYOR que el nodo actual.
 			// Paso todos los regs hasta el que garantiza el 66% de ocupacion
 			// Primero paso los del nodo actual
