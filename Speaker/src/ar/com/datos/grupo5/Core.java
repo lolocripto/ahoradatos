@@ -565,6 +565,7 @@ public class Core {
 		this.audioFileManager = new AudioFileManager();
 		this.documentManager = DocumentsManager.getInstance();
 		try {
+			this.diccionario = new Diccionario();
 			this.ftrsManager = new FTRSManager();
 		} catch (Exception e) {
 			System.out.println("No se ha podido crear el FTRS.");
@@ -594,7 +595,7 @@ public class Core {
 		try {
 
 			if (this.diccionario != null) {
-				this.diccionario.cerrar();
+				//this.diccionario.cerrar();
 			}
 			
 			if (this.audioFileManager != null) {
@@ -649,7 +650,7 @@ public class Core {
 			return false;
 		}
 		
-		this.diccionario = new Diccionario();
+		//this.diccionario = new Diccionario();
 
 		logger.debug("Abrio el archivo Audio");
 				
@@ -668,36 +669,41 @@ public class Core {
 	 * 		Devuelve un mensaje con el estado final del proceso.
 	 */
 	public final String query(final InterfazUsuario invocador, final String query) {
-		this.tiempoConsulta = System.currentTimeMillis();
-		
-		this.documentManager.initReadSession(0L);
-		Long cantidadDocs = this.documentManager.getCantidadDocsAlmacenados();
-		this.documentManager.cerrarSesion();
 		try {
-			ranking = this.ftrsManager.consultaRankeada(query, cantidadDocs);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.tiempoConsulta = System.currentTimeMillis();
+			
+			this.documentManager.initReadSession(0L);
+			Long cantidadDocs = this.documentManager.getCantidadDocsAlmacenados();
+			this.documentManager.cerrarSesion();
+			try {
+				ranking = this.ftrsManager.consultaRankeada(query, cantidadDocs);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//TODO: pasarle el filtro a las palabras
+			  Iterator<SimilitudDocumento> it;
+			  it = this.ranking.iterator();
+			  SimilitudDocumento nodo;
+			  Integer i = 1;
+			  invocador.mensaje("Seleccione un de los documentos para ser reproducido:");
+			  this.documentManager.initReadSession(0L);
+			  while (it.hasNext()) {
+				  nodo = it.next();
+				  String mensaje = i.toString() + ". " + this.documentManager.getNombreDoc(nodo.getDocumento());  
+				  invocador.mensaje(mensaje);
+				  i++;
+			  }
+			  this.documentManager.cerrarSesion();
+			  String documento = invocador.obtenerDatos("Elija el documento a reproducir: ");
+			  this.playDocumentInterno(invocador, documento);
+			
+			Float tiempoFinal = (float)(System.currentTimeMillis() - this.tiempoConsulta) / 1000;
+			return tiempoFinal.toString() + " segundos";
+		} catch (Exception e) {
+			logger.error("Error: " + e.getMessage(), e);
+			return "Error inesperado.";
 		}
-		//TODO: pasarle el filtro a las palabras
-		  Iterator<SimilitudDocumento> it;
-		  it = this.ranking.iterator();
-		  SimilitudDocumento nodo;
-		  Integer i = 1;
-		  invocador.mensaje("Seleccione un de los documentos para ser reproducido:");
-		  this.documentManager.initReadSession(0L);
-		  while (it.hasNext()) {
-			  nodo = it.next();
-			  String mensaje = i.toString() + ". " + this.documentManager.getNombreDoc(nodo.getDocumento());  
-			  invocador.mensaje(mensaje);
-			  i++;
-		  }
-		  this.documentManager.cerrarSesion();
-		  String documento = invocador.obtenerDatos("Elija el documento a reproducir: ");
-		  this.playDocumentInterno(invocador, documento);
-		
-		Float tiempoFinal = (float)(System.currentTimeMillis() - this.tiempoConsulta) / 1000;
-		return tiempoFinal.toString() + " segundos";
 	}
 
 }
