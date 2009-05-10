@@ -118,7 +118,7 @@ public class Core {
 				// Si no es StopWord entonces utilizo el Ftrs.
 				if (!elemento.isStopWord()) {
 					
-					this.ftrsManager.validarTermino(elemento.getEquivalenteFonetico(), offsetDoc);
+					this.ftrsManager.validarTermino(elemento.getTextoEscrito(), offsetDoc);
 					
 				}
 				
@@ -571,6 +571,7 @@ public class Core {
 			System.out.println("No se ha podido crear el FTRS.");
 		}
 		this.ranking = null;
+		this.diccionario = new Diccionario();
 	}
 	
 	/**
@@ -594,10 +595,6 @@ public class Core {
 		
 		try {
 
-			if (this.diccionario != null) {
-				//this.diccionario.cerrar();
-			}
-			
 			if (this.audioFileManager != null) {
 				this.audioFileManager.cerrar();
 			}
@@ -650,8 +647,6 @@ public class Core {
 			return false;
 		}
 		
-		//this.diccionario = new Diccionario();
-
 		logger.debug("Abrio el archivo Audio");
 				
 		this.ftrsManager.abrirArchivos();

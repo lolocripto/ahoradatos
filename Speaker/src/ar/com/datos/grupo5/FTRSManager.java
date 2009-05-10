@@ -327,7 +327,6 @@ public class FTRSManager {
 				idDocumento = nodo.getIdDocumento();
 				frecuencia = 0L;
 			}
-			this.archivoTrabajo.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -348,8 +347,7 @@ public class FTRSManager {
 			return;
 		}
 		
-		File file = new File(Constantes.ARCHIVO_TRABAJO);
-		file.delete();
+		
 	}
 
 	/**
@@ -469,6 +467,8 @@ public class FTRSManager {
 
 		try {
 			this.archivoTrabajo.close();
+			File file = new File(Constantes.ARCHIVO_TRABAJO);
+			file.delete();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
