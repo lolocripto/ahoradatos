@@ -149,28 +149,27 @@ public class TestSecuencialSet2 {
 	
 //-----------------
 	
+		Nodo1.getRegistros().add(reg11);
+		Nodo1.getRegistros().add(reg12);
+		Nodo1.getRegistros().add(reg13);
+		Nodo1.getRegistros().add(reg14);
 		
-		Nodo1.registros.add(reg11);
-		Nodo1.registros.add(reg12);
-		Nodo1.registros.add(reg13);
-		Nodo1.registros.add(reg14);
+		Nodo2.getRegistros().add(reg21);
+		Nodo2.getRegistros().add(reg22);
+		Nodo2.getRegistros().add(reg23);
+		Nodo2.getRegistros().add(reg24);
 		
-		Nodo2.registros.add(reg21);
-		Nodo2.registros.add(reg22);
-		Nodo2.registros.add(reg23);
-		Nodo2.registros.add(reg24);
+		Nodo3.getRegistros().add(reg31);
+		Nodo3.getRegistros().add(reg32);
+		Nodo3.getRegistros().add(reg33);
+		Nodo3.getRegistros().add(reg34);
 		
-		Nodo3.registros.add(reg31);
-		Nodo3.registros.add(reg32);
-		Nodo3.registros.add(reg33);
-		Nodo3.registros.add(reg34);
+		Nodo4.getRegistros().add(reg41);
+		Nodo4.getRegistros().add(reg42);
+		Nodo4.getRegistros().add(reg43);
+		Nodo4.getRegistros().add(reg44);
 		
-		Nodo4.registros.add(reg41);
-		Nodo4.registros.add(reg42);
-		Nodo4.registros.add(reg43);
-		Nodo4.registros.add(reg44);
-		
-		Nodo3.registros.add(regNuevo);
+		Nodo3.getRegistros().add(regNuevo);
 		
 	
 	

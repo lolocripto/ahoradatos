@@ -47,8 +47,8 @@ public class TestSecuencialSet3 {
 		
 //		Nodo1.registros.add(reg11);
 //		Nodo1.registros.add(reg12);
-		Nodo1.registros.add(reg13);
-		Nodo1.registros.add(reg14);
+		Nodo1.getRegistros().add(reg13);
+		Nodo1.getRegistros().add(reg14);
 		
 		Nodo1.setPunteroBloque(1);
 		
