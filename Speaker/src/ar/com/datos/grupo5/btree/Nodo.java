@@ -372,8 +372,8 @@ public class Nodo {
 					nuevoHermano.insertarRegistro(reg);
 				}
 				// Ahora tengo que cargar las claves en el padre, y listo!
-				nodoPadre.getRegistros().get(pos)
-				.setClave(nodoHermano.getPrimerRegistro().getClave());			
+				nodoPadre.getRegistros().get(pos).setClave(
+						nodoHermano.getPrimerRegistro().getClave());			
 				RegistroNodo reg = new RegistroNodo();
 				reg.setClave(nuevoHermano.getPrimerRegistro().getClave());
 				reg.setNroBloqueIzquierdo(nodoHermano.getNroBloque());

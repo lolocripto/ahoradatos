@@ -152,7 +152,6 @@ public final class BStar implements BTree {
 		int posReg = nodo.buscarRegistro(clave);
 		
 		cerrarArchivos();
-		
 		switch (posReg) {
 		case Constantes.MENOR:
 		case Constantes.MAYOR:
@@ -461,6 +460,9 @@ public final class BStar implements BTree {
 			Nodo nuevoHno = nodo.split(nodoHno, nodoPadre, false, ultimoBloque);
 			nodoActual = nuevoHno;
 		}
+		
+		Integer punteroBloque = new Long(secuencialSet.reservarBloqueLibre()).intValue();
+		nodoActual.setPunteroBloque(punteroBloque);
 		
 		ultimoBloque++;
 		
