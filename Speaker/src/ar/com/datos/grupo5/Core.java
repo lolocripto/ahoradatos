@@ -186,6 +186,7 @@ public class Core {
 						offsetRegistroAudio);
 				
 			}
+			this.documentManager.escribirOtroDocumento();
 			
 			this.ftrsManager.generarListasInvertidas();
 
