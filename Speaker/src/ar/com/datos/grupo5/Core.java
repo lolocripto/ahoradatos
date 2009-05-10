@@ -441,6 +441,10 @@ public class Core {
 						playWord(this.audioFileManager.leerAudio(offsetAudio));
 						audioManager.esperarFin();
 	
+					} else {
+						logger.debug("No se encontró la palabra ["
+								+ elemento.getEquivalenteFonetico()
+								+ "] en el diccionario.");
 					}
 				}
 			}

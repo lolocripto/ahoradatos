@@ -13,9 +13,6 @@ import java.util.Map;
 
 import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.btree.BSharp;
-import ar.com.datos.grupo5.btree.BStar;
-import ar.com.datos.grupo5.btree.BTree;
-import ar.com.datos.grupo5.btree.Clave;
 import ar.com.datos.grupo5.registros.RegistroFTRS;
 import ar.com.datos.grupo5.registros.RegistroNodo;
 import ar.com.datos.grupo5.registros.RegistroTerminoDocumentos;
