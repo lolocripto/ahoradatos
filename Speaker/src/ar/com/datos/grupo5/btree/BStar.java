@@ -455,6 +455,11 @@ public final class BStar implements BTree {
 				archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
 						.getNroBloque());
 			}
+			nodoAuxiliar.setBytes(archivo.leerBloque(nodo.getUltimoRegistro()
+					.getNroBloqueDerecho()));
+			nodoAuxiliar.setNroBloquePadre(nodo.getNroBloque());
+			archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
+					.getNroBloque());
 			for (RegistroNodo reg : nodoPadre.getRegistros()) {
 				nodoAuxiliar.setBytes(archivo.leerBloque(reg
 						.getNroBloqueIzquierdo()));
@@ -462,6 +467,11 @@ public final class BStar implements BTree {
 				archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
 						.getNroBloque());
 			}
+			nodoAuxiliar.setBytes(archivo.leerBloque(nodoPadre.getUltimoRegistro()
+					.getNroBloqueDerecho()));
+			nodoAuxiliar.setNroBloquePadre(nodoPadre.getNroBloque());
+			archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
+					.getNroBloque());
 			for (RegistroNodo reg : nodoHno.getRegistros()) {
 				nodoAuxiliar.setBytes(archivo.leerBloque(reg
 						.getNroBloqueIzquierdo()));
@@ -469,6 +479,23 @@ public final class BStar implements BTree {
 				archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
 						.getNroBloque());
 			}
+			nodoAuxiliar.setBytes(archivo.leerBloque(nodoHno.getUltimoRegistro()
+					.getNroBloqueDerecho()));
+			nodoAuxiliar.setNroBloquePadre(nodoHno.getNroBloque());
+			archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
+					.getNroBloque());
+			for (RegistroNodo reg : nodoActual.getRegistros()) {
+				nodoAuxiliar.setBytes(archivo.leerBloque(reg
+						.getNroBloqueIzquierdo()));
+				nodoAuxiliar.setNroBloquePadre(nodoActual.getNroBloque());
+				archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
+						.getNroBloque());
+			}
+			nodoAuxiliar.setBytes(archivo.leerBloque(nodoActual.getUltimoRegistro()
+					.getNroBloqueDerecho()));
+			nodoAuxiliar.setNroBloquePadre(nodoActual.getNroBloque());
+			archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
+					.getNroBloque());
 		}
 		archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
 		archivo.escribirBloque(nodoActual.getBytes(), nodoActual
