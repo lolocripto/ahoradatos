@@ -331,57 +331,98 @@ public class Nodo {
 			nodoHermano.getRegistros().clear();
 			nodoHermano.setEspacioOcupado(0);
 			
-			// Si el nodo que voy a splitear no es hoja, entonces agrego el
-			// registro del nodo padre que lo apunta.
-			if (!esHoja) {
-				RegistroNodo reg = null; 
-				if (pos == Constantes.MENOR) {
-					reg = nodoPadre.getRegistros().get(0);
-				} else if (pos == Constantes.MAYOR) {
-					reg = nodoPadre.getRegistros().get(
-							nodoPadre.getRegistros().size() - 1);
-				} else {
-					reg = nodoPadre.getRegistros().get(pos - 1);
-				}
-				
-				/*TODO Ver si hay que remover, si se hace, puede pinchar
-				 despues dado que a lo mejor no quedan registros y eso no se
-				 esta chequeando.*/
-				//nodoPadre.removerRegistro(pos - 1);
-				regs.add(reg);
-			}
-			
-			//ahora lo cargo el hermano hasta la minima ocupacion
-			nodoHermano.setMinIndiceCarga(Constantes.MENOR);
-			while ((regs.size() > 0) && (!nodoHermano.tieneCargaMinima())) {
-				RegistroNodo reg = regs.remove(0);
-				nodoHermano.insertarRegistro(reg);
-			}
-			// Luego lleno el nodo con lo del hermano siguiente
-			while (regs.size() > 0) {
-				RegistroNodo reg = regs.remove(0);
-				nuevoHermano.insertarRegistro(reg);
-			}
-			// Ahora tengo que cargar las claves en el padre, y listo!
-			nodoPadre.getRegistros().get(pos)
-			.setClave(nodoHermano.getPrimerRegistro().getClave());
-			
-			RegistroNodo reg = new RegistroNodo();
+			//FIXME: COPIPASTEADO DEL ELSE!!!!
 			if (!this.isEsHoja()) {
 				// Liberar la clave de la nueva raiz de la raiz anterior
-				reg.setClave(nodoHermano.getUltimoRegistro().getClave());
-				removerRegistro(registros.size() - 1);
+				if (pos == Constantes.MENOR) {
+					pos = nodoPadre.registros.size() - 1;
+				}
+				RegistroNodo regAux = new RegistroNodo();
+				regAux.setClave(nodoPadre.registros.get(pos).getClave());
+				
+				regAux.setNroBloqueDerecho(getPrimerRegistro()
+						.getNroBloqueIzquierdo());
+				regAux.setNroBloqueIzquierdo(nodoHermano
+						.getUltimoRegistro().getNroBloqueDerecho());
+				regs.add(regAux);
+				
+				RegistroNodo regAux2 = new RegistroNodo();
+				regAux2 = regs.remove(0);
+				if (!regAux.getClave().equals(regAux2.getClave())) {
+					//El que tiene que subir al padre no es el que estaba
+					nodoPadre.registros.get(pos).setClave(regAux2.getClave());
+					//Setearle a los hijos los padres
+				}
+				// ahora, tengo que vaciar el hno y llenarlo otra vez
+				regs.addAll(getRegistros());
+				getRegistros().clear();
+				setEspacioOcupado(0);
+				
+				//ahora lo cargo hasta la minima ocupacion
+				setMinIndiceCarga(Constantes.MENOR);
+				while ((regs.size() > 0) && (!tieneCargaMinima())) {
+					RegistroNodo reg = regs.remove(0);
+					insertarRegistro(reg);
+				}
+				// Luego lleno el nodo con lo del hermano siguiente
+				regAux = new RegistroNodo();
+				regAux2 = new RegistroNodo();
+				regAux2 = regs.remove(0);
+
+				if (regs.size() == 0) {
+					nuevoHermano.insertarRegistro(regAux2);
+					regAux2 = new RegistroNodo();
+					regAux2.setClave(getUltimoRegistro().getClave());
+					regAux2.setNroBloqueDerecho(nuevoHermano.getNroBloque());
+					regAux2.setNroBloqueIzquierdo(getNroBloque());
+					nodoPadre.insertarRegistro(regAux2);
+					removerRegistro(registros.size() - 1);
+				} else {
+					regAux = new RegistroNodo();
+					regAux.setClave(regAux2.getClave());
+					regAux.setNroBloqueDerecho(nuevoHermano.getNroBloque());
+					regAux.setNroBloqueIzquierdo(getNroBloque());
+					nodoPadre.insertarRegistro(regAux);
+				}
+				while (regs.size() > 0) {
+					RegistroNodo reg = regs.remove(0);
+					nuevoHermano.insertarRegistro(reg);
+				}
+				
 			} else {
-				//reg.setClave(nodo.getPrimerRegistro().getClave());
-			}
-			reg.setClave(nuevoHermano.getPrimerRegistro().getClave());
-			reg.setNroBloqueIzquierdo(nodoHermano.getNroBloque());
-			reg.setNroBloqueDerecho(nuevoHermano.getNroBloque());
-			nodoPadre.insertarRegistro(reg);
-			pos = nodoPadre.buscarRegistro(reg.getClave());
-			if (pos < nodoPadre.registros.size() - 1) {
-				nodoPadre.getRegistros().get(pos + 1)
-				.setNroBloqueIzquierdo(reg.getNroBloqueDerecho());				
+			
+				//ahora lo cargo el hermano hasta la minima ocupacion
+				nodoHermano.setMinIndiceCarga(Constantes.MENOR);
+				while ((regs.size() > 0) && (!nodoHermano.tieneCargaMinima())) {
+					RegistroNodo reg = regs.remove(0);
+					nodoHermano.insertarRegistro(reg);
+				}
+				// Luego lleno el nodo con lo del hermano siguiente
+				while (regs.size() > 0) {
+					RegistroNodo reg = regs.remove(0);
+					nuevoHermano.insertarRegistro(reg);
+				}
+				// Ahora tengo que cargar las claves en el padre, y listo!
+				nodoPadre.getRegistros().get(pos)
+				.setClave(nodoHermano.getPrimerRegistro().getClave());
+				
+				RegistroNodo reg = new RegistroNodo();
+				if (!this.isEsHoja()) {
+					// Liberar la clave de la nueva raiz de la raiz anterior
+					reg.setClave(nodoHermano.getUltimoRegistro().getClave());
+					removerRegistro(registros.size() - 1);
+				} else {
+					//reg.setClave(nodo.getPrimerRegistro().getClave());
+				}
+				reg.setClave(nuevoHermano.getPrimerRegistro().getClave());
+				reg.setNroBloqueIzquierdo(nodoHermano.getNroBloque());
+				reg.setNroBloqueDerecho(nuevoHermano.getNroBloque());
+				nodoPadre.insertarRegistro(reg);
+				pos = nodoPadre.buscarRegistro(reg.getClave());
+				if (pos < nodoPadre.registros.size() - 1) {
+					nodoPadre.getRegistros().get(pos + 1)
+					.setNroBloqueIzquierdo(reg.getNroBloqueDerecho());				
+				}
 			}
 			
 		} else {
