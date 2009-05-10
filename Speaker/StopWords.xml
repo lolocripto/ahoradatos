@@ -301,7 +301,6 @@
 <palabra>:</palabra>
 <palabra>?</palabra>
 <palabra>/</palabra>
-<palabra>\</palabra>
 <palabra>|</palabra>
 <palabra>$</palabra>
 <palabra>¿</palabra>
@@ -322,6 +321,5 @@
 <palabra>#</palabra>
 <palabra>@</palabra>
 <palabra>^</palabra>
-<palabra>"</palabra>
 <palabra>;</palabra>
 </stopwords>
