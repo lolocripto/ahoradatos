@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.Diccionario;
 import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.trie.core.TrieAdministrator;
 
@@ -20,6 +21,9 @@ public class PruebasTrie {
 		
 		TrieAdministrator ta = new TrieAdministrator();
 		
+		Diccionario dic = new Diccionario();
+		
+		
 		
 		List<IunidadDeHabla> lista = Constantes.LISTA_STOP_WORDS;
 		
@@ -30,20 +34,26 @@ public class PruebasTrie {
 		
 		int i =0;
 		
+	/*
 		while (it.hasNext()){
 			
-			
-			
 			IunidadDeHabla palabra = it.next();
-		//	ta.agregarPalabra(palabra.getTextoEscrito(), punt1);
 			
-			punt2 = ta.buscarPalabra(palabra.getTextoEscrito());
+			dic.agregar(palabra.getTextoEscrito(), punt1);
+
 			
-			System.out.println(punt2);
+		//	punt2 = ta.buscarPalabra(palabra.getTextoEscrito());
+			
+	//		System.out.println(punt2);
 			
 			i++;
 		}
+		*/
 		
+		
+		System.out.print("algunos "+dic.buscarPalabra("algunos"));
+		
+		System.out.print("ellos "+dic.buscarPalabra("ellos"));
 
 		
 		
@@ -83,9 +93,11 @@ public class PruebasTrie {
 		ta.buscarPalabra(palabra4);
 	*/	
 		
-		ta.terminarSesion();
+	//	ta.terminarSesion();
 
 //		System.out.println(i);
+		
+		dic.cerrar();
 		
 		System.out.println(l0);
 		

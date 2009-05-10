@@ -47,10 +47,13 @@ public class DocumentsManager {
 			singleton = new DocumentsManager();
 		}
 		return singleton;
-		
 	}
 	
 	public void initReadSession(Long offsetArchivo){
+		
+		if(this.archivo.getModoEnEjecucion() !=0){
+			this.archivo.terminarSession();
+		}
 		this.archivo.iniciarSession();
 		this.archivo.setDocumentToRead(offsetArchivo);
 	}
@@ -77,6 +80,11 @@ public class DocumentsManager {
 	}
 	
 	public void initDocWriteSession(){
+		
+		if(this.archivo.getModoEnEjecucion() !=0){
+			this.archivo.terminarSession();
+		}
+		
 		this.archivo.iniciarSession();
 		this.archivo.setDocumentToWrite();
 	}

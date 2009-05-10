@@ -28,6 +28,16 @@ public class ArchivoDocumentos extends Directo {
 
 	private byte modoEnEjecucion;  //0 esperando setear modo - 1 lectura - 2 escritura
 	
+	public byte getModoEnEjecucion() {
+		return modoEnEjecucion;
+	}
+
+
+	public void setModoEnEjecucion(byte modoEnEjecucion) {
+		this.modoEnEjecucion = modoEnEjecucion;
+	}
+
+
 	private byte codRedundancia = -128;
 	
 	private boolean masLineasLeer;

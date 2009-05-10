@@ -666,7 +666,6 @@ public class Core {
 	public final String query(final InterfazUsuario invocador, final String query) {
 		try {
 			this.tiempoConsulta = System.currentTimeMillis();
-			
 			this.documentManager.initReadSession(0L);
 			Long cantidadDocs = this.documentManager.getCantidadDocsAlmacenados();
 			this.documentManager.cerrarSesion();
