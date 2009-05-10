@@ -47,16 +47,17 @@ public class FTRSManager {
 
 	/**
 	 * Constructor.
+	 * @throws Exception 
 	 * 
 	 */
-	public FTRSManager() {
+	public FTRSManager() throws Exception {
 		try {
 			arbolFTRS = new BStar();
+//			arbolFTRS = new BSharp();
 			this.terminosGlobalesManager = new TerminosGlobales();
 			this.listasInvertidas = new ListasInvertidas();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		}
 	}
 

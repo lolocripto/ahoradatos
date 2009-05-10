@@ -55,6 +55,134 @@ public class TestArchivoSecuendial {
 	listaPalabras.add(reg);
 	
 	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codera");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codicia");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codiciar");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codiciosa");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codera");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codicia");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codiciar");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codiciosa");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codera");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codicia");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codiciar");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codiciosa");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codera");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codicia");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codiciar");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codiciosa");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codera");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codicia");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codiciar");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("codiciosa");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("dale");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("dar");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("digale");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("dale");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("dar");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("digale");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("dale");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("dar");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("digale");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("dale");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("dar");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
+	reg.setPalabraDecodificada("digale");
+	listaPalabras.add(reg);
+	
+	reg = new CFFTRS();
 	reg.setPalabraDecodificada("dale");
 	listaPalabras.add(reg);
 	
@@ -75,7 +203,8 @@ public class TestArchivoSecuendial {
 	bloque = archivo.leerBloque(1);
 	
 	//bloque = new BloqueFTRS();
-	
+
+
 	listaPalabras = bloque.getListaTerminosSinFrontCodear();
 
 	Iterator<CFFTRS> it1 = listaPalabras.iterator();
