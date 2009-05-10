@@ -3,7 +3,6 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 import ar.com.datos.grupo5.interfaces.Registro;
 

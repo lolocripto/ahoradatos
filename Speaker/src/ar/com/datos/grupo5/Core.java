@@ -342,12 +342,14 @@ public class Core {
 	 * @return devuelve un mensaje informando el estado final del proceso.
 	 */
 	public final String playDocument(final InterfazUsuario invocador,
-			final String indiceDocumento) {
+			final String rutaDocumento) {
 		
 		try {
+			
+			//TODO: buscar el indice del documento.
 			Iterator<IunidadDeHabla> iterador;
 			
-			SimilitudDocumento simDocs = this.ranking.get(Integer.parseInt(indiceDocumento));
+			SimilitudDocumento simDocs = this.ranking.get(Integer.parseInt(rutaDocumento));
 			
 			// Mando a parsear el documento y obtengo un collection
 			try {
