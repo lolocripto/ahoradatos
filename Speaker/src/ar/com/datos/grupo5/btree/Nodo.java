@@ -392,8 +392,9 @@ public class Nodo {
 			}
 			if (!this.isEsHoja()) {
 				// Liberar la clave de la nueva raiz de la raiz anterior
-				if (pos == Constantes.MENOR)
+				if (pos == Constantes.MENOR) {
 					pos = nodoPadre.registros.size() - 1;
+				}
 				RegistroNodo regAux = new RegistroNodo();
 				regAux = nodoPadre.registros.get(pos);
 				
