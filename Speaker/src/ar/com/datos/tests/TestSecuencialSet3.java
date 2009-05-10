@@ -21,12 +21,16 @@ public class TestSecuencialSet3 {
 		System.out.println(miArchivo.getCantBloquesUsados());
 		
 		Nodo Nodo1 = new Nodo();
+		Nodo Nodo2 = new Nodo();
+		
+		
 		
 		RegistroNodo reg11 = new RegistroNodo();
 		RegistroNodo reg12 = new RegistroNodo();
 		RegistroNodo reg13 = new RegistroNodo();
 		RegistroNodo reg14 = new RegistroNodo();
-
+		RegistroNodo reg15 = new RegistroNodo();
+		
 		
 		Clave clave1 = new Clave();
 		clave1.setClave("mandarina");
@@ -40,35 +44,45 @@ public class TestSecuencialSet3 {
 		Clave clave4 = new Clave();
 		clave4.setClave("soylanueva");
 		
+		Clave clave5 = new Clave();
+		clave5.setClave("soymasNueva");
+		
+		
 		reg11.setClave(clave1);
 		reg12.setClave(clave2);
 		reg13.setClave(clave3);
 		reg14.setClave(clave4);
+		reg15.setClave(clave5);
 		
-//		Nodo1.registros.add(reg11);
-//		Nodo1.registros.add(reg12);
-		Nodo1.getRegistros().add(reg13);
-		Nodo1.getRegistros().add(reg14);
+
+		
+		Nodo1.getRegistros().add(reg15);
+		Nodo1.getRegistros().add(reg11);
+		
+		
+		Nodo2.getRegistros().add(reg13);
+		Nodo2.getRegistros().add(reg12);
+		Nodo2.getRegistros().add(reg14);
+		
 		
 		Nodo1.setPunteroBloque(1);
+		Nodo2.setPunteroBloque(2);
 		
 		
 		ArrayList<Nodo> lista = new ArrayList<Nodo>();
 		
 		lista.add(Nodo1);
+		lista.add(Nodo2);
 	
 		
+		System.out.println("hago la modificacion de bloques");
 		
 		
+		miArchivo.reservarBloqueLibre();
 		
-		System.out.println(" hago la modificacion de bloques");
+		miArchivo.bloquesActualizados(lista, "soymasNueva", new Long(1), new Long(1));
 		
-		
-	//	miArchivo.reservarBloqueLibre();
-		
-		miArchivo.bloquesActualizados(lista, "mamadera", new Long(1), new Long(1));
-		
-	//	miArchivo.primeraInsercion( "soylanueva", new Long(1), new Long(1));
+	//	miArchivo.primeraInsercion( "mamadera", new Long(1), new Long(1));
 		
 		
 		
@@ -78,7 +92,7 @@ public class TestSecuencialSet3 {
 		
 		
 		
-	for (int i = 1; i < 2; i++) {
+	for (int i = 1; i < 3; i++) {
 			
 			BloqueFTRS bloque = miArchivo.leerBloque(i);
 			
@@ -101,17 +115,7 @@ public class TestSecuencialSet3 {
 		}
 		
 		miArchivo.cerrar();
-		
-		
-		
-		
+
 		}
-		
-		
-		
-		
-		
-		
-		
-		
+
 	}

@@ -335,7 +335,8 @@ public class ArchivoSecuencialSet {
 			int numBloq = it.next();
 
 			bloque = this.leerBloque(numBloq);
-
+			
+			if(bloque != null){
 			bloque.setNumeroBloque(numBloq);
 
 			// obtengo la lista de terminos comprimidos del bloque
@@ -348,7 +349,7 @@ public class ArchivoSecuencialSet {
 
 			// agregos todos los terminos descomprimidos en una lista de trabajo
 			listaParaDevolver.addAll(listaTerminosDesFrontcodeados);
-
+			}
 		}
 		return listaParaDevolver;
 
@@ -367,6 +368,21 @@ public class ArchivoSecuencialSet {
 
 	public BloqueFTRS leerBloque(int numeroBloque) {
 
+		long posAacceder = numeroBloque*Constantes.SIZE_OF_SECUENCIAL_SET_BLOCK;
+		
+		long tamanioArch =new Long(0);
+		try {
+			tamanioArch = this.miArchivo.file.length();
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		
+		
+		if( tamanioArch <= posAacceder){
+			return null;
+		}
+		
 		long longitudArchivo = 0;
 		try {
 			longitudArchivo = this.miArchivo.file.length();
