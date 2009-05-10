@@ -5,7 +5,7 @@ package ar.com.datos.grupo5.UnidadesDeExpresion;
  * 
  * @author LedZeppelin
  */
-public interface IunidadDeHabla extends Comparable{
+public interface IunidadDeHabla extends Comparable<IunidadDeHabla>{
 	
 	/**
 	 * Este método permite obtener la cadena a la que hace referencia el objeto.
@@ -93,7 +93,7 @@ public interface IunidadDeHabla extends Comparable{
 	 * @param o Objeto a comparar
 	 * @return -1 
 	 */
-	int compareTo(Object o); 
+	int compareTo(Palabra o); 
 	/**
 	 * Indica si es una Stop word
 	 * @return true si es stop word.

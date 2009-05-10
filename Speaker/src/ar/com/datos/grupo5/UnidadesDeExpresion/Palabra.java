@@ -141,9 +141,12 @@ public class Palabra implements IunidadDeHabla {
      * @return int >0 si el equivalente Fonetico de o es menor 
      *  <0 si es mayor y  0 si son iguales.
      */
-	public final int compareTo(final Object o) {
-		String eqiu = ((Palabra) o).getTextoEscrito();
-		return this.getTextoEscrito().compareTo(eqiu);
+	public int compareTo(Palabra o) {
+		
+		String otro = o.getTextoEscrito();
+		
+		return this.getTextoEscrito().compareTo(otro);
+		
 	}
 
 	public boolean isStopWord() {
@@ -151,6 +154,13 @@ public class Palabra implements IunidadDeHabla {
 	}
 	public void setStopWord(final boolean stopword) {
 		this.isStopWord = stopword;
+	}
+
+	@Override
+	public int compareTo(IunidadDeHabla o) {
+		String otro = o.getTextoEscrito();
+		
+		return this.getTextoEscrito().compareTo(otro);
 	}
 
 }

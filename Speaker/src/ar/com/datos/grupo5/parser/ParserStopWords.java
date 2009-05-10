@@ -23,9 +23,13 @@ public class ParserStopWords {
     public ParserStopWords() {
     	StopWords = Constantes.LISTA_STOP_WORDS;
     }
+    
 	public final Collection<IunidadDeHabla> filtroStopWords(final Collection<IunidadDeHabla> palabras) {
+		
 	    Collection<IunidadDeHabla> auxpalabras = palabras;
+	    
 	    auxpalabras.removeAll(StopWords);
+	    
 	    return auxpalabras;
 	    
 	}
