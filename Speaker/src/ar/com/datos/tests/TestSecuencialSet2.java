@@ -230,6 +230,8 @@ for (int i = 1; i < 5; i++) {
 		
 		BloqueFTRS bloque = miArchivo.leerBloque(i);
 		
+		System.out.println("bloque N:"+bloque.getNumeroBloque()+" puntero al siguiente:"+bloque.getPunteroAlSiguiente());
+		
 		Collection<CFFTRS> listaPalabras = bloque.getListaTerminosSinFrontCodear();
 
 		Iterator<CFFTRS> it1 = listaPalabras.iterator();

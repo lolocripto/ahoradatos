@@ -84,6 +84,43 @@ public class ArchivoSecuencialSet {
 		}
 
 	}
+	
+	
+	public BloqueFTRS getSiguienteBloque (BloqueFTRS unBloque){
+		
+		if (unBloque.getPunteroAlSiguiente() == 0){
+			
+			System.out.println("dicho bloque no tiene siguiente");
+			return null;
+		}else{
+			
+			return this.leerBloque(unBloque.getPunteroAlSiguiente());
+			
+		}
+		
+	}
+	
+	
+	public BloqueFTRS getSiguienteBloque (int numeroBloque){
+		
+		
+		BloqueFTRS bloqueOrigen = this.leerBloque(numeroBloque);
+		
+		if (bloqueOrigen == null){
+			System.out.println("dicho bloque no tiene siguiente");
+			return null;
+		}else{
+			
+			if(bloqueOrigen.getPunteroAlSiguiente() == 0){
+				System.out.println("dicho bloque no tiene siguiente");
+				return null;
+			}
+			return this.leerBloque(bloqueOrigen.getPunteroAlSiguiente());
+		}
+		
+	}
+	
+	
 
 	/**
 	 * Actualiza en el SecuencialSet los bloques asociados a los nodos pasados
@@ -100,10 +137,10 @@ public class ArchivoSecuencialSet {
 		// esta logica sirve para la primera insercion del arbol
 		// RECOMENDARA QUE EL MISMO ARBOL CON LA PRIMER INSERCION LLAME AL
 		// METODO "PRIMERAINSERCION"
-		if (this.regAdm.ultimoBloqueUsado() == 1) {
+		if (this.regAdm.ultimoBloqueUsado() == 1 && this.leerBloque(1)==null) {
 
 			this.primeraInsercion(nuevaPalabra, IdTermino, PunteroAlistaInv);
-		}
+		}else{
 
 		// genero un registro con la nueva palabra que voy a arreglar
 		RegistroFTRS registroNuevaPalabra = new RegistroFTRS();
@@ -155,6 +192,7 @@ public class ArchivoSecuencialSet {
 		
 		this.guardarListaDeBloques(listaBloquesAGuardar);
 
+	}
 	}
 	
 
@@ -333,6 +371,19 @@ public class ArchivoSecuencialSet {
 
 	public BloqueFTRS leerBloque(int numeroBloque) {
 
+		
+		long longitudArchivo = 0;
+		try {
+			longitudArchivo = this.miArchivo.file.length();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		if (longitudArchivo == 0 || this.regAdm.ultimoBloqueUsado() == 0){
+			
+			return null;
+		}
+		
 		try {
 			Contenedor cont = Contenedor.rehidratar(this.miArchivo
 					.leerBloque(numeroBloque));
