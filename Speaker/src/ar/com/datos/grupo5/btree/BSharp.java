@@ -1,5 +1,5 @@
 /**
- * 
+ * .
  */
 package ar.com.datos.grupo5.btree;
 
@@ -20,7 +20,7 @@ public class BSharp {
 	/**
 	 * Arbol B*.
 	 */
-	private BTree arbolBStar;
+	private BStar arbolBStar;
 	
 	/**
 	 * Archivo por bloques que almacena los registros 
@@ -28,20 +28,21 @@ public class BSharp {
 	 */
 	private ArchivoSecuencialSet secuencialSet;
 	
-	
+	/**
+	 * 
+	 */
 	public BSharp() {
 		try {
-			//FIXME Agregar referencia al SecuencialSet
 			this.arbolBStar = new BStar();
 			this.secuencialSet = new ArchivoSecuencialSet();
+			this.arbolBStar.setSecuencialSet(this.secuencialSet);
 		} catch (Exception e) {
 			System.out.println("Imposible inicialiar el Arbol BSharp.");
 		}
 	}
 
 	
-	public RegistroNodo buscar(String termino) throws IOException {
-		// TODO Auto-generated method stub
+	public RegistroFTRS buscar(String termino) throws IOException {
 		//Voy a buscar una maldita clave.
 		RegistroNodo nodo = this.arbolBStar.buscar(new Clave(termino));
 		int punteroABloqueRegistro = nodo.getPunteroBloque();
@@ -50,18 +51,17 @@ public class BSharp {
 	}
 
 	public boolean insertar(String nuevaPalabraExt, long idTerminoExt) throws IOException {
-		ArrayList<Nodo> listaNodosActualizados;
-		//FIXME: El siguiente new hay que borrarlo
-		listaNodosActualizados = new ArrayList<Nodo>();
 		RegistroNodo reg = new RegistroNodo();
 		reg.setClave(new Clave(nuevaPalabraExt));
-		//FIXME Debe devolver la lista de nodosActualizados.
-		this.arbolBStar.insertar(reg);
-		this.secuencialSet.bloquesActualizados(listaNodosActualizados, nuevaPalabraExt, idTerminoExt, -1);
+		if (this.arbolBStar.insertar(reg)) {
+			this.secuencialSet.bloquesActualizados(this.arbolBStar.getNodosModificados(), nuevaPalabraExt, idTerminoExt, -1);
+			return true;
+		}
 		return false;
 	}
-
-	public boolean modificar(String palabraExt, long idTerminoExt, int offsetListaInvertida) {
+	
+// Saque long idTerminoExt, 
+	public boolean modificar(String palabraExt, int offsetListaInvertida) {
 		try {
 			//Busco el nodo que contiene la clave que necesito.
 			RegistroNodo nodo = this.arbolBStar.buscar(new Clave(palabraExt));
@@ -82,11 +82,6 @@ public class BSharp {
 			e.printStackTrace();
 		}
 		return true;
-	}
-
-	public RegistroNodo siguiente() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	
