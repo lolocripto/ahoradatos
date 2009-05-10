@@ -16,6 +16,8 @@ public static void main (String[] args){
 		
 		Clave clave = new Clave();
 		clave.setClave("mandarina");
+		
+		long nuevo = new Long(0);
 
 		BloqueFTRS miBloque = miArchivo.leerBloque(1);
 		
