@@ -427,6 +427,8 @@ public class Nodo {
 				regAux2.setNroBloqueIzquierdo(getNroBloque());
 				if (regs.size() == 0) {
 					nuevoHermano.insertarRegistro(regAux2);
+					regAux2.setClave(getUltimoRegistro().getClave());
+					removerRegistro(registros.size() - 1);
 				}
 				while (regs.size() > 0) {
 					RegistroNodo reg = regs.remove(0);
