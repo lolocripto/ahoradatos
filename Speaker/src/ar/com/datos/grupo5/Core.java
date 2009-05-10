@@ -496,10 +496,6 @@ public class Core {
 			System.out.println("No se ha podido crear el FTRS.");
 		}
 		this.ranking = null;
-		/*
-		 * Abro el diccionario. 
-		 */
-		this.diccionario = new Diccionario();
 	}
 	
 	/**
@@ -578,6 +574,8 @@ public class Core {
 			invocador.mensaje("No se pudo abrir el archivo de audio.");
 			return false;
 		}
+		
+		this.diccionario = new Diccionario();
 
 		logger.debug("Abrio el archivo Audio");
 				
