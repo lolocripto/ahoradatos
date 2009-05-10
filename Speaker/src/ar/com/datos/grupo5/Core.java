@@ -518,11 +518,11 @@ public class Core {
 	private boolean cerrarArchivo(final InterfazUsuario invocador) {
 		
 		try {
-/*			
+
 			if (this.diccionario != null) {
 				this.diccionario.cerrar();
 			}
-			*/
+			
 			if (this.audioFileManager != null) {
 				this.audioFileManager.cerrar();
 			}

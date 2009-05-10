@@ -1,5 +1,6 @@
 package ar.com.datos.grupo5;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -217,6 +218,8 @@ public class FTRSManager {
 
 		mergeManager.ejecutarMerge();
 
+		
+		
 		long nRegistros = 0;
 		NodoRS nodo = new NodoRS();
 		byte[] dataNodo = new byte[nodo.getTamanio()];
@@ -327,16 +330,29 @@ public class FTRSManager {
 				idDocumento = nodo.getIdDocumento();
 				frecuencia = 0L;
 			}
+			this.archivoTrabajo.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			File file = new File(Constantes.ARCHIVO_TRABAJO);
+			file.delete();
+			return;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			File file = new File(Constantes.ARCHIVO_TRABAJO);
+			file.delete();
+			return;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			File file = new File(Constantes.ARCHIVO_TRABAJO);
+			file.delete();
+			return;
 		}
+		
+		File file = new File(Constantes.ARCHIVO_TRABAJO);
+		file.delete();
 	}
 
 	/**
