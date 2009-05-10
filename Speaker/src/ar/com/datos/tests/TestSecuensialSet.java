@@ -20,7 +20,6 @@ public class TestSecuensialSet {
 	ArchivoSecuencialSet miArchivo = new ArchivoSecuencialSet();
 		
 		
-		
 	//instancio una parva de objetos para guardar en el bloque
 	
 	
@@ -56,13 +55,6 @@ public class TestSecuensialSet {
 	reg.setPalabraDecodificada("mamacora");
 	listaPalabras1.add(reg);
 	
-	reg = new CFFTRS();
-	reg.setPalabraDecodificada("mandarota");
-	listaPalabras1.add(reg);
-	
-	reg = new CFFTRS();
-	reg.setPalabraDecodificada("cortina");
-	listaPalabras2.add(reg);
 	
 	reg = new CFFTRS();
 	reg.setPalabraDecodificada("corbata");
@@ -80,9 +72,6 @@ public class TestSecuensialSet {
 	reg.setPalabraDecodificada("camaron");
 	listaPalabras2.add(reg);
 	
-	reg = new CFFTRS();
-	reg.setPalabraDecodificada("lamina");
-	listaPalabras3.add(reg);
 	
 	reg = new CFFTRS();
 	reg.setPalabraDecodificada("lazarillo");
@@ -100,9 +89,6 @@ public class TestSecuensialSet {
 	reg.setPalabraDecodificada("lampara");
 	listaPalabras3.add(reg);
 	
-	reg = new CFFTRS();
-	reg.setPalabraDecodificada("fortuna");
-	listaPalabras4.add(reg);
 	
 	reg = new CFFTRS();
 	reg.setPalabraDecodificada("formalidad");
@@ -138,24 +124,48 @@ public class TestSecuensialSet {
 	lista.add(bloque3);
 	lista.add(bloque4);
 */	
-	
+/*	
 	miArchivo.escribirBloque(bloque1, 1);
 	miArchivo.escribirBloque(bloque2, 2);
 	miArchivo.escribirBloque(bloque3, 3);
 	miArchivo.escribirBloque(bloque4, 4);
+*/
+	
 
 	
-	BloqueFTRS bloque = miArchivo.leerBloque(1);
-	
-	Collection<RegistroFTRS> listaPalabras = bloque.getListaTerminosFrontCodeados();
+	for (int i = 1; i < 5; i++) {
+		
+		BloqueFTRS bloque = miArchivo.leerBloque(i);
+		
+		Collection<RegistroFTRS> lista = bloque.getListaTerminosFrontCodeados();
+		
+		Collection<CFFTRS> listaPalabras = bloque.getListaTerminosSinFrontCodear();
 
-	Iterator<RegistroFTRS> it1 = listaPalabras.iterator();
-	
-	RegistroFTRS reg2;
-	while (it1.hasNext()) {
-		 reg2 = it1.next();
-		 System.out.println(reg2.getClaveFrontCoding().getTermino());
+		Iterator<CFFTRS> it1 = listaPalabras.iterator();
+		Iterator<RegistroFTRS> it2 = lista.iterator();
+		
+		
+		System.out.println(" ");
+		System.out.println("Bloque: "+ i);
+		System.out.println(" ");
+		
+		CFFTRS reg2;
+		RegistroFTRS reg3;
+		while (it1.hasNext()) {
+			 reg2 = it1.next();
+			 reg3 = it2.next();
+			 
+			 System.out.println(reg2.getPalabraDecodificada());
+			 System.out.println(reg3.getPunteroBloque());
+			 System.out.println(reg2.getPalabraCodificada());
+			 System.out.println(reg3.getBloqueListaInvertida());
+			 System.out.println(reg3.getIdTermino());
+			 System.out.println(reg3.getClaveFrontCoding().getTermino());
+			 
+		}
+		System.out.println(" ");
 	}
+	
 	
 	
 	

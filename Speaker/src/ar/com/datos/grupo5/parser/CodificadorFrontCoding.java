@@ -131,6 +131,7 @@ public class CodificadorFrontCoding {
 			//Si no tiene caracteres igual entoces es la palabra completa
 			if (cl.getCaracteresCoincidentes() == 0) {
 				regResultante.setPalabraDecodificada(cl.getTermino());
+				
 				ultimaPalabra = cl.getTermino();
 			} else {
 				ByteArrayOutputStream bos = new ByteArrayOutputStream();  
@@ -147,6 +148,7 @@ public class CodificadorFrontCoding {
 				
 				ultimaPalabra = new String(bos.toByteArray());
 				regResultante.setPalabraDecodificada(bos.toString());
+				
 				
 			}
 			//Asocio el termino descodificado al registro

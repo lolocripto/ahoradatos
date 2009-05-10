@@ -58,7 +58,7 @@ public class Nodo {
 	/**
 	 * Lista de registros.
 	 */
-	private ArrayList< RegistroNodo > registros;
+	public ArrayList< RegistroNodo > registros;
 	
 	/**
 	 * El nodo padre.

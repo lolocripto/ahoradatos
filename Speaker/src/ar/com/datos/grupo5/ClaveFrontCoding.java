@@ -113,7 +113,7 @@ public class ClaveFrontCoding extends Clave {
 	 */
 	public void setBytes(final byte[] buffer)
 			throws IOException {
-		//TODO TESTEARLO YA!!!!!!!!!!
+		
 	
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
 		DataInputStream dos = new DataInputStream(bis);

@@ -175,7 +175,7 @@ public class ArchivoSecuencialSet {
 					nuevoBloque.getListaTerminosSinFrontCodear().add(objcf);
 					
 					//elimino el elemento de la lista
-					listaElementosRedistribuir.remove(i);
+					//listaElementosRedistribuir.remove(i);
 					
 				}
 			}
@@ -256,7 +256,12 @@ public class ArchivoSecuencialSet {
 		
 		try {
 			Contenedor cont = Contenedor.rehidratar(this.miArchivo.leerBloque(numeroBloque));
-			return new BloqueFTRS (cont.getDato());
+			
+			BloqueFTRS bloqueAdevolver = new BloqueFTRS(cont.getDato());
+			
+			bloqueAdevolver.setNumeroBloque(numeroBloque);
+			
+			return bloqueAdevolver;
 		} catch (IOException e) {
 			
 			e.printStackTrace();
