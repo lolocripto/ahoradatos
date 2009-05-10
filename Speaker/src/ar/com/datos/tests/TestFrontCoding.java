@@ -5,16 +5,11 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import ar.com.datos.grupo5.CFFTRS;
-import ar.com.datos.grupo5.ClaveFrontCoding;
-import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.parser.CodificadorFrontCoding;
-import ar.com.datos.grupo5.parser.ITextInput;
-import ar.com.datos.grupo5.parser.TextInterpreter;
 import ar.com.datos.grupo5.registros.RegistroFTRS;
 
 public class TestFrontCoding {
 	
-	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 		
 		Collection<CFFTRS> listaPalabras = new ArrayList<CFFTRS>();

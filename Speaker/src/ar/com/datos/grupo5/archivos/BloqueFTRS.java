@@ -101,7 +101,7 @@ public class BloqueFTRS {
 			this.listaTerminosSinFrontCodear = listaTerminosSinFrontCodear;
 		}
 
-		/*
+		/**
 		 * @return the listaTerminosSinFrontCodear
 		 */
 		public Collection<CFFTRS> getListaTerminosSinFrontCodear() {

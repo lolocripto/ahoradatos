@@ -42,7 +42,8 @@ public class RegistroFTRS extends RegistroNodo{
 		}
 		
 		public RegistroFTRS(){
-			
+			this.idTermino = 0L;
+			this.bloqueListaInvertida = 0L;
 		}
 
 		/**
