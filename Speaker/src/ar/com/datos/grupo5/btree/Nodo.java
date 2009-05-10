@@ -306,6 +306,11 @@ public class Nodo {
 			// -> El nuevo nodo es MAYOR que el nodo actual.
 			// Paso todos los regs hasta el que garantiza el 66% de ocupacion
 			// Primero paso los del nodo actual
+			RegistroNodo regAux = new RegistroNodo();
+			regAux.setNroBloqueDerecho(nodoHermano
+					.getPrimerRegistro().getNroBloqueIzquierdo());
+			regAux.setNroBloqueIzquierdo(getUltimoRegistro()
+					.getNroBloqueDerecho());
 			while (minIndiceCarga < registros.size()) {
 				RegistroNodo reg = removerRegistro(minIndiceCarga);
 				regs.add(reg);
@@ -316,13 +321,7 @@ public class Nodo {
 				if (pos == Constantes.MAYOR) {
 					pos = nodoPadre.registros.size() - 1;
 				}
-				RegistroNodo regAux = new RegistroNodo();
 				regAux.setClave(nodoPadre.registros.get(pos).getClave());
-				
-				regAux.setNroBloqueDerecho(nodoHermano
-						.getPrimerRegistro().getNroBloqueIzquierdo());
-				regAux.setNroBloqueIzquierdo(getUltimoRegistro()
-						.getNroBloqueIzquierdo());
 				regs.add(regAux);
 				
 				RegistroNodo regAux2 = new RegistroNodo();
@@ -356,7 +355,7 @@ public class Nodo {
 					regAux2.setNroBloqueDerecho(nuevoHermano.getNroBloque());
 					regAux2.setNroBloqueIzquierdo(nodoHermano.getNroBloque());
 					nodoPadre.insertarRegistro(regAux2);
-					removerRegistro(nodoHermano.registros.size() - 1);
+					nodoHermano.removerRegistro(nodoHermano.registros.size() - 1);
 				} else {
 					regAux = new RegistroNodo();
 					regAux.setClave(regAux2.getClave());
