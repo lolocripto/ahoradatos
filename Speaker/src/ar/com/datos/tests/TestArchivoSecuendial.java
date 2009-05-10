@@ -83,7 +83,7 @@ public class TestArchivoSecuendial {
 	CFFTRS reg2;
 	while (it1.hasNext()) {
 		 reg2 = it1.next();
-		 System.out.println(reg2.getPalabraDecodificada());
+		 System.out.println(reg2.getPalabraCodificada());
 	}
 }
 }

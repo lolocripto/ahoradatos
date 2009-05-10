@@ -9,6 +9,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import ar.com.datos.grupo5.CFFTRS;
 import ar.com.datos.grupo5.ClaveFrontCoding;
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.btree.Clave;
@@ -19,7 +20,7 @@ import ar.com.datos.grupo5.utils.Conversiones;
  * @author Led Zeppelin
  *
  */
-public class RegistroFTRS extends RegistroNodo{
+public class RegistroFTRS extends RegistroNodo {
 
 		private Long idTermino;
 		
@@ -103,6 +104,9 @@ public class RegistroFTRS extends RegistroNodo{
 		
 		
 		
+		
+		
+		
 		public final Contenedor getContenidoEmpaquetado(){
 			
 			Contenedor cont = new Contenedor();
@@ -147,5 +151,13 @@ public class RegistroFTRS extends RegistroNodo{
 				e1.printStackTrace();
 				return;
 			}
+		}
+		
+		@Override
+		public boolean equals(Object reg) {
+			
+			return ((RegistroFTRS)reg).claveNodo.getTermino().
+			equalsIgnoreCase(this.claveNodo.getTermino()) ;
+
 		}
 }

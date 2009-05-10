@@ -14,6 +14,7 @@ import ar.com.datos.grupo5.btree.Nodo;
 import ar.com.datos.grupo5.registros.RegistroAdmSecSet;
 import ar.com.datos.grupo5.registros.RegistroFTRS;
 import ar.com.datos.grupo5.registros.RegistroNodo;
+import ar.com.datos.grupo5.trie.persistence.Contenedor;
 
 public class ArchivoSecuencialSet {
 
@@ -120,8 +121,7 @@ public class ArchivoSecuencialSet {
 			
 		}
 		
-		
-		listaElementosEnNodos.indexOf(0);
+		listaElementosEnNodos.indexOf(registroNuevaPalabra);
 		
 		
 	}
@@ -142,7 +142,9 @@ public class ArchivoSecuencialSet {
 	public BloqueFTRS leerBloque (int numeroBloque){
 		
 		try {
-			return new BloqueFTRS (this.miArchivo.leerBloque(numeroBloque));
+			
+			Contenedor cont = Contenedor.rehidratar(this.miArchivo.leerBloque(numeroBloque));
+			return new BloqueFTRS (cont.getDato());
 		} catch (IOException e) {
 			
 			e.printStackTrace();

@@ -49,6 +49,10 @@ public class RegistroAdmSecSet {
 		return this.cantBloques;
 	}
 	
+	public long ultimoBloqueUsado (){
+		return this.cantBloques;
+	}
+	
 	
 	
 }

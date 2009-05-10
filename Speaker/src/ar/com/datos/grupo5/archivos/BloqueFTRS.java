@@ -83,6 +83,8 @@ public class BloqueFTRS {
 		
 		Iterator<Contenedor> it = listaConts.iterator();
 		
+		this.listaTerminosFrontCodeados = new ArrayList<RegistroFTRS>();
+		
 		while (it.hasNext()){
 			
 			RegistroFTRS rf = new RegistroFTRS(it.next());

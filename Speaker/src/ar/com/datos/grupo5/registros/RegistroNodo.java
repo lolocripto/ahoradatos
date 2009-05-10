@@ -159,7 +159,7 @@ public class RegistroNodo {
 	 * @return true si son iguales.
 	 */
 	@Override
-	public final boolean equals(final Object clave) {
+	public boolean equals(final Object clave) {
 		
 		if (clave instanceof String) {
 			String c = (String) clave;
