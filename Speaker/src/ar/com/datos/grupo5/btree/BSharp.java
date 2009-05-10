@@ -45,6 +45,9 @@ public class BSharp {
 	public RegistroFTRS buscar(String termino) throws IOException {
 		//Voy a buscar una maldita clave.
 		RegistroNodo nodo = this.arbolBStar.buscar(new Clave(termino));
+		if (nodo == null) {
+			return null;
+		}
 		int punteroABloqueRegistro = nodo.getPunteroBloque();
 		BloqueFTRS bloqueRegistrosFTRS = this.secuencialSet.leerBloque(punteroABloqueRegistro);
 		return bloqueRegistrosFTRS.buscarRegistro(new Clave(termino));
