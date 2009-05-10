@@ -202,9 +202,11 @@ public class Core {
 			cerrarArchivo(invocador);
 		} catch (SimpleAudioPlayerException e) {
 			logger.error("Error: " + e.getMessage());
+			this.diccionario.cerrar();
 			return "Error en dispositivo de audio";
 		} catch (Exception e) {
 			logger.error("Error: " + e.getMessage());
+			this.diccionario.cerrar();
 			return "Error inesperado";
 		}
 		
