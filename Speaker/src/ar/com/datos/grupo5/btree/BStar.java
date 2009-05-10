@@ -51,6 +51,11 @@ public final class BStar implements BTree {
 	private Nodo nodoRaiz;
 	
 	/**
+	 * Lista con los nodos hojas que se modificaron
+	 */
+	private ArrayList<Nodo> nodosModificados;
+
+	/**
 	 * Constructor.
 	 * @throws Exception .
 	 */
@@ -58,6 +63,7 @@ public final class BStar implements BTree {
 		nodoActual = null;
 		archivo = new ArchivoBloques(Constantes.SIZE_OF_INDEX_BLOCK);
 		nodoRaiz = null;
+		nodosModificados = new ArrayList<Nodo>();
 		
 		try {
 			if (abrirArchivos()) {
@@ -262,6 +268,7 @@ public final class BStar implements BTree {
 	 */
 	public boolean insertar(final RegistroNodo registro) throws IOException {
 		
+		ArrayList<Nodo> modificados = new ArrayList<Nodo>();
 		abrirArchivos();
 		if (nodoRaiz == null) {
 			
@@ -278,6 +285,9 @@ public final class BStar implements BTree {
 			
 			archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
 						.getNroBloque());
+			
+			nodosModificados.clear();
+			nodosModificados.add(nodoRaiz);
 			
 			cerrarArchivos();
 
@@ -298,6 +308,8 @@ public final class BStar implements BTree {
 		if (nodo.insertarRegistro(registro)) {
 			
 			this.nodoActual = nodo;
+			nodosModificados.clear();
+			nodosModificados.add(nodoActual);
 			
 		} else if (nodo.getNroBloquePadre() < 0) {
 			// Es la raiz.
@@ -393,6 +405,10 @@ public final class BStar implements BTree {
 			nodoAuxiliar.setNroBloquePadre(nodoActual.getNroBloque());
 			archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
 					.getNroBloque());
+		} else {
+			nodosModificados.clear();
+			nodosModificados.add(nodoActual);
+			nodosModificados.add(nodo);
 		}
 		archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
 				.getNroBloque());
@@ -504,6 +520,14 @@ public final class BStar implements BTree {
 			archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
 					.getNroBloque());
 		}
+		
+		// Guardo los nodos hojas modificados para pasarselos al secuencial set
+		if (nodo.isEsHoja()) {
+			nodosModificados.clear();
+			nodosModificados.add(nodo);
+			nodosModificados.add(nodoHno);
+		}
+		
 		return nodoPadre;
 	}
 	
@@ -530,7 +554,7 @@ public final class BStar implements BTree {
 	 */
 	public void listar() {
 		
-		try {
+		try { 
 			archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
 					Constantes.ABRIR_PARA_LECTURA);
 			
@@ -540,7 +564,10 @@ public final class BStar implements BTree {
 				nodoActual = new Nodo();
 				nodoActual.setBytes(archivo.leerBloque(i));
 				nodoActual.listar();
-				
+			}
+			System.out.println("Nodos modificados:");
+			for (Nodo nodo : nodosModificados) {
+				System.out.println(nodo.getNroBloque());
 			}
 			System.out.println("######################################");
 			
@@ -605,10 +632,13 @@ public final class BStar implements BTree {
 							nodoHnoIzquierdo.getNroBloque());
 					
 				} else {
-				nodoHnoDerecho.insertarRegistro(nodo.getUltimoRegistro());
-				nodoPadre.getPrimerRegistro().setClave(
-					nodo.getUltimoRegistro().getClave());
-				nodo.removerRegistro(nodo.getRegistros().size() - 1);
+					nodoHnoDerecho.insertarRegistro(nodo.getUltimoRegistro());
+					nodoPadre.getPrimerRegistro().setClave(
+						nodo.getUltimoRegistro().getClave());
+					nodo.removerRegistro(nodo.getRegistros().size() - 1);
+					nodosModificados.clear();
+					nodosModificados.add(nodo);
+					nodosModificados.add(nodoHnoDerecho);
 				}
 				archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
 					.getNroBloque());
@@ -656,6 +686,9 @@ public final class BStar implements BTree {
 					nodo.removerRegistro(0);
 					nodoPadre.getUltimoRegistro().setClave(
 							nodo.getPrimerRegistro().getClave());
+					nodosModificados.clear();
+					nodosModificados.add(nodo);
+					nodosModificados.add(nodoHnoIzquierdo);
 				}
 				archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
 					.getNroBloque());
@@ -704,6 +737,9 @@ public final class BStar implements BTree {
 						nodoHnoDerecho.insertarRegistro(regAux);
 						nodoPadre.getRegistros().get(pos).setClave(
 								regAux.getClave());
+						nodosModificados.clear();
+						nodosModificados.add(nodo);
+						nodosModificados.add(nodoHnoDerecho);
 					}
 					archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
 							.getNroBloque());
@@ -748,6 +784,9 @@ public final class BStar implements BTree {
 							nodoHnoIzquierdo.insertarRegistro(regAux);
 							nodoPadre.getRegistros().get(pos).setClave(
 								regAux.getClave());
+							nodosModificados.clear();
+							nodosModificados.add(nodo);
+							nodosModificados.add(nodoHnoIzquierdo);
 						}
 						archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
 							.getNroBloque());
@@ -766,7 +805,6 @@ public final class BStar implements BTree {
 					}
 				}
 			}
-		//return false;
 	}
 	
 	/**
@@ -830,5 +868,13 @@ public final class BStar implements BTree {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ArrayList<Nodo> getNodosModificados() {
+		return nodosModificados;
 	}
 }
