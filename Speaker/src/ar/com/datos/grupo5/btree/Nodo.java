@@ -310,10 +310,6 @@ public class Nodo {
 				RegistroNodo reg = removerRegistro(minIndiceCarga);
 				regs.add(reg);
 			}
-			// ahora, agrego todos los registros del hermano y lo vacio.
-			regs.addAll(nodoHermano.getRegistros());
-			nodoHermano.getRegistros().clear();
-			nodoHermano.setEspacioOcupado(0);
 			//FIXME: COPIPASTEADO DEL ELSE!!!!
 			if (!this.isEsHoja()) {
 				// Liberar la clave de la nueva raiz de la raiz anterior
