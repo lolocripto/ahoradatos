@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import ar.com.datos.grupo5.CFFTRS;
 import ar.com.datos.grupo5.ClaveFrontCoding;
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.btree.Nodo;
+import ar.com.datos.grupo5.parser.CodificadorFrontCoding;
 import ar.com.datos.grupo5.registros.RegistroAdmSecSet;
 import ar.com.datos.grupo5.registros.RegistroFTRS;
 import ar.com.datos.grupo5.registros.RegistroNodo;
@@ -75,58 +77,172 @@ public class ArchivoSecuencialSet {
 	}
 	
 
-	public void bloquesActualizados(Collection<Nodo>listaNodosActualizados, String nuevaPalabra, long IdTermino){
+	public void bloquesActualizados(ArrayList<Nodo>listaNodosActualizados, 
+			String nuevaPalabra, long IdTermino, long PunteroAlistaInv){
 
 		
-		//genero un registro con la nueva palabra a agregar
+		//genero un registro con la nueva palabra que voy a arreglar
 		RegistroFTRS registroNuevaPalabra = new RegistroFTRS();
+		//le agrego el IdTermino
 		registroNuevaPalabra.setIdTermino(IdTermino);
 		
-		ClaveFrontCoding cf = new ClaveFrontCoding();
-		cf.setTermino(nuevaPalabra);
+		//le agrego el puntero a la lista invertida
+		registroNuevaPalabra.setBloqueListaInvertida(PunteroAlistaInv);
 		
+		//genero una nueva clave de frontcoding, aunque va a quedar vacia. y se la asigno al nuevo registro
+		ClaveFrontCoding cf = new ClaveFrontCoding();
 		registroNuevaPalabra.setClave(cf);
 		
-		//---------------------
+		//genero un objeto CFFTRS para manejar toda la info
+		CFFTRS objetoNuevo = new CFFTRS();
+		objetoNuevo.setPalabraDecodificada(nuevaPalabra);
+		objetoNuevo.setRegistroAsociado(registroNuevaPalabra);
 		
 		
-		//genero una lista para almacenar todos los elementos a reacomodar
-		ArrayList<RegistroNodo> listaElementosEnNodos = new ArrayList<RegistroNodo>();
+		//genero un array con para contener la lista de bloques sucios
+		ArrayList<Integer>listaDeBloquesSucios = new ArrayList<Integer>();
 		
-		ArrayList<RegistroFTRS> listaRegistrosEnBloques = new ArrayList<RegistroFTRS>();
-		
-		//agrego el registro de la palabra recien ingresada
-		listaRegistrosEnBloques.add(registroNuevaPalabra);
 		
 		//obtengo un iterador sobre la lista de nodos actualizados
 		Iterator<Nodo> it = listaNodosActualizados.iterator();
+		while (it.hasNext()){
+			Nodo actual = it.next();
+			
+			//agrego el bloque sucio
+			listaDeBloquesSucios.add(actual.getPunteroBloque());
+
+		}
+		
+		//obtengo las listas de elementos decodificados
+		ArrayList<CFFTRS> listaBloquesDecodificada;
+		
+		listaBloquesDecodificada = this.obtenerListaDesdeBloques(listaDeBloquesSucios);
+		//agrego el objeto nuevo que inserte al arbol
+		listaBloquesDecodificada.add(objetoNuevo);
+		
+		
+		//con los elementos de todos los bloques obtenidos, genero una lista con los nuevos bloques a almacenar
+		//y la obtengo redistribuyendo los registros traidos de disco
+		ArrayList<BloqueFTRS> listaBloquesAGuardar;
+		listaBloquesAGuardar = this.buscarYalmacenar(listaNodosActualizados, listaBloquesDecodificada);
+		
+		this.guardarListaDeBloques(listaBloquesAGuardar);
+	
+		}
+
+	
+	
+	//desde una lista de nodos y una lista de elementos que deben distribuirse
+	//genera nuevos bloques con los elementos representados por cada nodo
+	private ArrayList<BloqueFTRS> buscarYalmacenar (ArrayList<Nodo> listaNodos, ArrayList<CFFTRS> listaElementosRedistribuir){
+		
+		
+		ArrayList<BloqueFTRS> listaDevolver = new ArrayList<BloqueFTRS>();
+		
+		
+		//pido un iterador
+		Iterator<Nodo> it = listaNodos.iterator();
 		
 		while (it.hasNext()){
 			
 			//obtengo el nodo actual
 			Nodo actual = it.next();
 			
-			//obtengo la lista del nodo actual
-			ArrayList<RegistroNodo> listaDelNodo =actual.getRegistros();
+			Iterator<RegistroNodo> itSobreRegNodo = actual.getRegistros().iterator();
+
+			BloqueFTRS nuevoBloque = new BloqueFTRS();
 			
-			//debo buscar en cada nodo de los modificados, cual es el que contiene el registroAgregado
-			listaDelNodo.indexOf(registroNuevaPalabra);
+			nuevoBloque.setNumeroBloque(actual.getPunteroBloque());
+			
+			CFFTRS objetoTemporario = new CFFTRS();
 			
 			
-			//agrego todos los elementos que se han modificado en los nodos
-			listaElementosEnNodos.addAll(listaDelNodo);
+			//itero sobre cada registro nodo
+			while (itSobreRegNodo.hasNext()){
+				
+				RegistroNodo unRegistroNodo = itSobreRegNodo.next();
+				
+				//tomo la palabra que devo buscar en la lista de elementos aredistribuir
+				String palabraParaBuscar = unRegistroNodo.getClave().getClave();
+				
+				//creo un objeto temporario solo para buscar
+				objetoTemporario.setPalabraDecodificada(palabraParaBuscar);
+				
+				//obtengo la posicion del elemento buscado
+				int i = listaElementosRedistribuir.indexOf(objetoTemporario);
+				
+				if (i != -1){
+					
+					CFFTRS objcf = listaElementosRedistribuir.get(i);
+					//agrego el elemento encontrado a la lista
+					nuevoBloque.getListaTerminosSinFrontCodear().add(objcf);
+					
+					//elimino el elemento de la lista
+					listaElementosRedistribuir.remove(i);
+					
+				}
+			}
 			
-			//agrego a la lista todos los elementos levantados de los bloques en disco
-			listaRegistrosEnBloques.addAll(this.obtenerListaElementosBloque(actual.getPunteroBloque()));
+			nuevoBloque.generarListaTerminosFroncodeados();
+			listaDevolver.add(nuevoBloque);
+
+	}
+		
+		return listaDevolver;
+	}
+	
+	
+	
+	private void guardarListaDeBloques(ArrayList<BloqueFTRS> listaBLoq){
+		
+		Iterator<BloqueFTRS> it = listaBLoq.iterator();
+		
+		while (it.hasNext()){
 			
+			BloqueFTRS actual = it.next();
+			this.escribirBloque(actual, actual.getNumeroBloque());
 		}
-		
-		listaElementosEnNodos.indexOf(registroNuevaPalabra);
-		
 		
 	}
 	
 	
+	
+	//devuelve una lista de palabras descodificadas desde varios bloques
+	private ArrayList<CFFTRS> obtenerListaDesdeBloques (ArrayList<Integer> listaBloques){
+		
+
+		ArrayList<CFFTRS> listaParaDevolver = new ArrayList<CFFTRS>();
+		
+		//obtengo el iterador sobre la lista de bloques sucios
+		Iterator<Integer> it = listaBloques.iterator();
+
+		BloqueFTRS bloque;
+		//itero sobre ella
+		while(it.hasNext()){
+			
+			int numBloq = it.next();
+			
+			bloque = this.leerBloque(numBloq);
+			
+			bloque.setNumeroBloque(numBloq);
+			
+			//obtengo la lista de terminos comprimidos del bloque
+			ArrayList<RegistroFTRS> listaTerminosFrontCodeados = (ArrayList<RegistroFTRS>) bloque.getListaTerminosFrontCodeados();
+			
+			//la descomprimo
+			ArrayList<CFFTRS> listaTerminosDesFrontcodeados = (ArrayList<CFFTRS>) CodificadorFrontCoding.
+			decodificar(listaTerminosFrontCodeados);
+			
+			//agregos todos los terminos descomprimidos en una lista de trabajo
+			listaParaDevolver.addAll(listaTerminosDesFrontcodeados);
+			
+		}
+		return listaParaDevolver;
+		
+	}
+	
+	
+
 	public void escribirBloque (BloqueFTRS bloque, int numBloque){
 		
 		try {
@@ -142,7 +258,6 @@ public class ArchivoSecuencialSet {
 	public BloqueFTRS leerBloque (int numeroBloque){
 		
 		try {
-			
 			Contenedor cont = Contenedor.rehidratar(this.miArchivo.leerBloque(numeroBloque));
 			return new BloqueFTRS (cont.getDato());
 		} catch (IOException e) {

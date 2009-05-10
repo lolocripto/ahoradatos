@@ -15,14 +15,26 @@ import ar.com.datos.grupo5.trie.persistence.Contenedor;
 public class BloqueFTRS {
 
 	private ArrayList<RegistroFTRS> listaTerminosFrontCodeados;
-	
-
-
 	private ArrayList<CFFTRS> listaTerminosSinFrontCodear;
 	
+	private int numeroBloque;
 	
+	
+	public int getNumeroBloque() {
+		return numeroBloque;
+	}
+
+	public void setNumeroBloque(int numeroBloque) {
+		this.numeroBloque = numeroBloque;
+	}
+
 	public BloqueFTRS(byte[] chocloBytes){
 		this.setBytes(chocloBytes);
+	}
+	
+	public BloqueFTRS(){
+		this.listaTerminosFrontCodeados = new ArrayList<RegistroFTRS>();
+		this.listaTerminosSinFrontCodear = new ArrayList<CFFTRS>();
 	}
 	
 	public BloqueFTRS (ArrayList<CFFTRS> lista){
@@ -40,6 +52,13 @@ public class BloqueFTRS {
 	public void setListaTerminosFrontCodeados(
 			ArrayList<RegistroFTRS> listaTerminosFrontCodeados) {
 		this.listaTerminosFrontCodeados = listaTerminosFrontCodeados;
+	}
+	
+	
+	
+	public void generarListaTerminosFroncodeados(){
+		this.listaTerminosFrontCodeados = (ArrayList<RegistroFTRS>) 
+		CodificadorFrontCoding.codificar(this.listaTerminosSinFrontCodear);
 	}
 	
 	
