@@ -275,7 +275,7 @@ public final class BStar implements BTree {
 			
 			//Creo la raiz e inserto el registro.
 			nodoRaiz = new Nodo();
-			Integer puntero = new Long(secuencialSet.reservarBloqueLibre()).intValue();
+			Integer puntero = secuencialSet.reservarBloqueLibre();
 			nodoRaiz.setPunteroBloque(puntero);
 			//El primero es hoja al pricipio.
 			nodoRaiz.setEsHoja(true);
@@ -411,7 +411,7 @@ public final class BStar implements BTree {
 					.getNroBloque());
 		} else {
 			nodoActual.setPunteroBloque(punteroBloque);
-			punteroBloque = new Long(secuencialSet.reservarBloqueLibre()).intValue();
+			punteroBloque = secuencialSet.reservarBloqueLibre();
 			nodo.setPunteroBloque(punteroBloque);
 			nodosModificados.clear();
 			nodosModificados.add(nodoActual);
@@ -463,8 +463,7 @@ public final class BStar implements BTree {
 			nodoActual = nuevoHno;
 		}
 		
-		Integer punteroBloque = new Long(secuencialSet.reservarBloqueLibre()).intValue();
-		nodoActual.setPunteroBloque(punteroBloque);
+		nodoActual.setPunteroBloque(secuencialSet.reservarBloqueLibre());
 		
 		ultimoBloque++;
 		
@@ -539,16 +538,6 @@ public final class BStar implements BTree {
 		}
 		
 		return nodoPadre;
-	}
-	
-	/**
-	 * true si lo modifica.
-	 * @param registro El registro que se quiere modificar.
-	 * @return true si lo modifica.
-	 */
-	public boolean modificar(final RegistroNodo registro) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	/**
@@ -822,7 +811,7 @@ public final class BStar implements BTree {
 	 * @param todos .
 	 * @return .
 	 */
-	private boolean abrirArchivos(final boolean todos) {
+	private boolean abrirArchivos() {
 		
 		try {
 			archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
@@ -838,34 +827,13 @@ public final class BStar implements BTree {
 	}
 	
 	/**
-	 * 
-	 * @return si exito true.
-	 */
-	private boolean abrirArchivos() {
-		
-		return abrirArchivos(false);
-	}
-	
-	/**
-	 * 
-	 * @return .
-	 */
-	public boolean cerrarArchivos() {
-	
-		return cerrarArchivos(false);
-	}
-	
-	/**
 	 * @param todos .
 	 * @return si exito true.
 	 */
-	private boolean cerrarArchivos(final boolean todos) {
+	private boolean cerrarArchivos() {
 		
 		try {
 			archivo.cerrar();
-			if (todos) {
-				//secuencialSet.cerrar();
-			}
 			return true;
 		} catch (IOException e) {
 			LOG.error("", e);

@@ -37,7 +37,7 @@ public interface BTree {
 	 * @param registro El registro que se quiere modificar.
 	 * @return true si lo modifica.
 	 */
-	boolean modificar(final RegistroNodo registro);
+	//boolean modificar(final RegistroNodo registro);
 	
 	/**
 	 * @return El registro siguiente. Null si no existe siguiente.
