@@ -313,8 +313,8 @@ public class Nodo {
 			//FIXME: COPIPASTEADO DEL ELSE!!!!
 			if (!this.isEsHoja()) {
 				// Liberar la clave de la nueva raiz de la raiz anterior
-				if (pos == Constantes.MENOR) {
-					pos = 0;
+				if (pos == Constantes.MAYOR) {
+					pos = nodoPadre.registros.size() - 1;
 				}
 				RegistroNodo regAux = new RegistroNodo();
 				regAux.setClave(nodoPadre.registros.get(pos).getClave());
