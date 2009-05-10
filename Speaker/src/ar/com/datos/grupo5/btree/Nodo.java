@@ -398,7 +398,8 @@ public class Nodo {
 				RegistroNodo regAux = new RegistroNodo();
 				regAux = nodoPadre.registros.get(pos);
 				
-				regAux.setNroBloqueDerecho(getPrimerRegistro().getNroBloqueIzquierdo());
+				regAux.setNroBloqueDerecho(getPrimerRegistro()
+						.getNroBloqueIzquierdo());
 				regAux.setNroBloqueIzquierdo(nodoHermano
 						.getUltimoRegistro().getNroBloqueDerecho());
 				regs.add(regAux);
@@ -423,18 +424,23 @@ public class Nodo {
 				}
 				// Luego lleno el nodo con lo del hermano siguiente
 				regAux2 = regs.remove(0);
-				regAux2.setNroBloqueDerecho(nuevoHermano.getNroBloque());
-				regAux2.setNroBloqueIzquierdo(getNroBloque());
+				regAux.setClave(regAux2.getClave());
 				if (regs.size() == 0) {
 					nuevoHermano.insertarRegistro(regAux2);
+					regAux2 = new RegistroNodo();
 					regAux2.setClave(getUltimoRegistro().getClave());
+					regAux2.setNroBloqueDerecho(nuevoHermano.getNroBloque());
+					regAux2.setNroBloqueIzquierdo(getNroBloque());
 					removerRegistro(registros.size() - 1);
 				}
 				while (regs.size() > 0) {
 					RegistroNodo reg = regs.remove(0);
 					nuevoHermano.insertarRegistro(reg);
 				}
-				nodoPadre.insertarRegistro(regAux2);
+				
+				regAux.setNroBloqueDerecho(nuevoHermano.getNroBloque());
+				regAux.setNroBloqueIzquierdo(getNroBloque());
+				nodoPadre.insertarRegistro(regAux);
 				
 			} else {
 				// ahora, tengo que vaciar el hno y llenarlo otra vez
