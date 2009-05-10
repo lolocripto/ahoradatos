@@ -396,7 +396,7 @@ public class Nodo {
 					pos = nodoPadre.registros.size() - 1;
 				}
 				RegistroNodo regAux = new RegistroNodo();
-				regAux = nodoPadre.registros.get(pos);
+				regAux.setClave(nodoPadre.registros.get(pos).getClave());
 				
 				regAux.setNroBloqueDerecho(getPrimerRegistro()
 						.getNroBloqueIzquierdo());
