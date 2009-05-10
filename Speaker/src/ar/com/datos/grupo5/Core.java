@@ -105,7 +105,7 @@ public class Core {
 			}
 						
 			Long offsetDoc = this.documentManager.getOffsetUltDoc();
-			this.documentManager.cerrarSesion();
+		
 			
 			IunidadDeHabla elemento;
 			iterador = contenedor.iterator();
@@ -363,7 +363,7 @@ public class Core {
 				this.documentManager.initReadSession(simDocs.getDocumento());
 				//this.documentManager.initReadSession(8L);
 				contenedor = this.parser.modoLecturaDocAlmacenado(this.documentManager);
-				this.documentManager.cerrarSesion();
+				
 			} catch (Exception e) {
 				logger.error("Error al crear contenedor: " + e.getMessage(), e);
 				return "Error inesperado, consulte al proveedor del software";
@@ -672,7 +672,7 @@ public class Core {
 			this.tiempoConsulta = System.currentTimeMillis();
 			this.documentManager.initReadSession(0L);
 			Long cantidadDocs = this.documentManager.getCantidadDocsAlmacenados();
-			this.documentManager.cerrarSesion();
+			
 			try {
 				ranking = this.ftrsManager.consultaRankeada(query, cantidadDocs);
 			} catch (IOException e) {
@@ -692,7 +692,7 @@ public class Core {
 				  invocador.mensaje(mensaje);
 				  i++;
 			  }
-			  this.documentManager.cerrarSesion();
+			 
 			  String documento = invocador.obtenerDatos("Elija el documento a reproducir: ");
 			  this.playDocumentInterno(invocador, documento);
 			
