@@ -356,7 +356,7 @@ public class Core {
 		try {
 			Iterator<IunidadDeHabla> iterador;
 			
-			SimilitudDocumento simDocs = this.ranking.get(Integer.getInteger(indiceDocumento));
+			SimilitudDocumento simDocs = this.ranking.get(Integer.parseInt(indiceDocumento));
 			
 			// Mando a parsear el documento y obtengo un collection
 			try {
@@ -612,7 +612,7 @@ public class Core {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		//TODO: pasarle el filtro a las palabras
 		  Iterator<SimilitudDocumento> it;
 		  it = this.ranking.iterator();
 		  SimilitudDocumento nodo;
@@ -621,10 +621,9 @@ public class Core {
 		  this.documentManager.initReadSession(0L);
 		  while (it.hasNext()) {
 			  nodo = it.next();
-			  //TODO: Ver una funcion para poder leer el nombre del documento 
-			  
 			  String mensaje = i.toString() + ". " + this.documentManager.getNombreDoc(nodo.getDocumento());  
 			  invocador.mensaje(mensaje);
+			  i++;
 		  }
 		  this.documentManager.cerrarSesion();
 		  String documento = invocador.obtenerDatos("Elija el documento a reproducir: ");

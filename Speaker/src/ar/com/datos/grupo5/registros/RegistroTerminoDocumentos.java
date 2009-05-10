@@ -412,18 +412,17 @@ public class RegistroTerminoDocumentos implements Registro {
 		ParFrecuenciaDocumento parTemporal = new ParFrecuenciaDocumento();
 		parTemporal.setOffsetDocumento(Offset);
 		long frecuencia = 0;
-		if (this.datosDocumentos.contains(parTemporal)) {
 			Iterator<ParFrecuenciaDocumento> iterador;
 			iterador = datosDocumentos.iterator();
 			ParFrecuenciaDocumento aux;
 			while (iterador.hasNext()) {
 				aux = iterador.next();
-				if (parTemporal.equals(aux)) {
+				if (parTemporal.getOffsetDocumento() == aux.getOffsetDocumento()) {
 					frecuencia = aux.getFrecuencia();
 					return frecuencia;
 				}
 			}
-		}
+		
 		return frecuencia;
 	}
 }
