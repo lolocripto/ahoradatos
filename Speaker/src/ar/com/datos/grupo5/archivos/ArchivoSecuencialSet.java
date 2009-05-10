@@ -8,7 +8,6 @@ import java.util.Iterator;
 import ar.com.datos.grupo5.CFFTRS;
 import ar.com.datos.grupo5.ClaveFrontCoding;
 import ar.com.datos.grupo5.Constantes;
-import ar.com.datos.grupo5.TerminoBloque;
 import ar.com.datos.grupo5.btree.Nodo;
 import ar.com.datos.grupo5.parser.CodificadorFrontCoding;
 import ar.com.datos.grupo5.registros.RegistroAdmSecSet;
@@ -127,13 +126,12 @@ public class ArchivoSecuencialSet {
 	 * @param IdTermino
 	 * @param PunteroAlistaInv
 	 */
-	public ArrayList<TerminoBloque> bloquesActualizados(ArrayList<Nodo> listaNodosActualizados,
+	public void bloquesActualizados(ArrayList<Nodo> listaNodosActualizados,
 			String nuevaPalabra, long IdTermino, long PunteroAlistaInv) {
 
 		// esta logica sirve para la primera insercion del arbol
 		// RECOMENDARA QUE EL MISMO ARBOL CON LA PRIMER INSERCION LLAME AL
 		// METODO "PRIMERAINSERCION"
-		ArrayList<TerminoBloque> terminoBloque = new ArrayList<TerminoBloque>();
 		if (this.regAdm.ultimoBloqueUsado() == 1 && this.leerBloque(1) == null) {
 
 			this.primeraInsercion(nuevaPalabra, IdTermino, PunteroAlistaInv);
@@ -192,7 +190,6 @@ public class ArchivoSecuencialSet {
 			this.guardarListaDeBloques(listaBloquesAGuardar);
 
 		}
-		return terminoBloque;
 	}
 
 	// creo que con esta funcion se garantiza que todo nodo tenga un siguiente
