@@ -57,7 +57,15 @@ public class ArchivoSecuencialSet {
 	 */
 	public int reservarBloqueLibre() {
 
-		return this.regAdm.reservarNuevoBloque();
+		
+		int devolver = this.regAdm.reservarNuevoBloque();
+		
+		try {
+			this.miArchivo.escribirBloque(this.regAdm.getBytes(), 0);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return devolver;
 	}
 
 	/**
@@ -74,9 +82,10 @@ public class ArchivoSecuencialSet {
 
 		// guardo el registro administrativo
 		try {
-			this.miArchivo.escribirBloque(this.regAdm.getBytes(), 0);
 			// cierro el archivo
+			if (this.miArchivo != null){
 			this.miArchivo.cerrar();
+			}
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
