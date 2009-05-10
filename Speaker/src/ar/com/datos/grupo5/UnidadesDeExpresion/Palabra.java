@@ -156,7 +156,6 @@ public class Palabra implements IunidadDeHabla {
 		this.isStopWord = stopword;
 	}
 
-	@Override
 	public int compareTo(IunidadDeHabla o) {
 		String otro = o.getTextoEscrito();
 		
