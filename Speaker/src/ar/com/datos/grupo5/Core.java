@@ -347,6 +347,75 @@ public class Core {
 	 *            direccion del archivo que va a ser leido.
 	 * @return devuelve un mensaje informando el estado final del proceso.
 	 */
+	private final String playDocumentInterno(final InterfazUsuario invocador,
+			final String indice) {
+		
+		try {
+			
+			//TODO: buscar el indice del documento.
+			Iterator<IunidadDeHabla> iterador;
+			
+			SimilitudDocumento simDocs = this.ranking.get(Integer.parseInt(indice));
+			
+			// Mando a parsear el documento y obtengo un collection
+			try {
+				this.documentManager.initReadSession(simDocs.getDocumento());
+				//this.documentManager.initReadSession(8L);
+				contenedor = this.parser.modoLecturaDocAlmacenado(this.documentManager);
+			} catch (Exception e) {
+				logger.error("Error al crear contenedor: " + e.getMessage(), e);
+				return "Error inesperado, consulte al proveedor del software";
+			}
+			
+			if (!abrirArchivo(invocador)) {
+				return "Intente denuevo";
+			}
+			
+			IunidadDeHabla elemento;
+			iterador = contenedor.iterator();
+			// Mientras tenga palabras para verificar consulto
+			while (iterador.hasNext()) {
+				
+				elemento = (IunidadDeHabla) iterador.next();
+				
+				// Si lo encontro sigo en el bucle
+				if (elemento.esPronunciable()) {
+
+				Long offsetAudio = this.diccionario
+					.buscarPalabra(elemento.getEquivalenteFonetico());
+
+				if (offsetAudio != null) {
+					invocador.mensajeSinSalto(elemento.getTextoEscrito() + " ");
+					playWord(this.audioFileManager.leerAudio(offsetAudio));
+					audioManager.esperarFin();
+				}
+
+				}
+			}
+			logger.debug("Sali de la funcion playDocument");
+
+			invocador.mensaje("");
+			cerrarArchivo(invocador);
+		} catch (SimpleAudioPlayerException e) {
+			logger.error("Error: " + e.getMessage());
+			return "Error en dispositivo de audio.";
+		} catch (Exception e) {
+			logger.error("Error : " + e.getMessage());
+			return "Error inesperado.";
+		}
+			
+		return "Reproduccion finalizada";
+	}
+
+	/**
+	 * Reproduce un documento entero.
+	 * 
+	 * @param invocador
+	 *            .
+	 * @param pathDocumento
+	 *            direccion del archivo que va a ser leido.
+	 * @return devuelve un mensaje informando el estado final del proceso.
+	 */
 	public final String playDocument(final InterfazUsuario invocador,
 			final String rutaDocumento) {
 		
@@ -355,13 +424,10 @@ public class Core {
 			//TODO: buscar el indice del documento.
 			Iterator<IunidadDeHabla> iterador;
 			
-			SimilitudDocumento simDocs = this.ranking.get(Integer.parseInt(rutaDocumento));
-			
 			// Mando a parsear el documento y obtengo un collection
 			try {
-				this.documentManager.initReadSession(simDocs.getDocumento());
 				//this.documentManager.initReadSession(8L);
-				contenedor = this.parser.modoLecturaDocAlmacenado(this.documentManager);
+				contenedor = this.parser.modoLectura(rutaDocumento, true);
 			} catch (Exception e) {
 				logger.error("Error al crear contenedor: " + e.getMessage(), e);
 				return "Error inesperado, consulte al proveedor del software";
@@ -628,7 +694,7 @@ public class Core {
 		  }
 		  this.documentManager.cerrarSesion();
 		  String documento = invocador.obtenerDatos("Elija el documento a reproducir: ");
-		  this.playDocument(invocador, documento);
+		  this.playDocumentInterno(invocador, documento);
 		
 		Float tiempoFinal = (float)(System.currentTimeMillis() - this.tiempoConsulta) / 1000;
 		return tiempoFinal.toString() + " segundos";
