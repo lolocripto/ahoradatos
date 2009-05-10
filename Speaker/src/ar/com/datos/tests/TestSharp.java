@@ -33,8 +33,10 @@ public class TestSharp {
 		
 		try {
 			
+			bonsai.modificar("culo", 69);
 			
-			System.out.println(bonsai.buscar("culo").getIdTermino());
+			
+			System.out.println(bonsai.buscar("culo").getBloqueListaInvertida());
 			
 			
 		} catch (IOException e) {
