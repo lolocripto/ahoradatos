@@ -573,7 +573,6 @@ public class Core {
 			System.out.println("No se ha podido crear el FTRS.");
 		}
 		this.ranking = null;
-		this.diccionario = new Diccionario();
 	}
 	
 	/**
