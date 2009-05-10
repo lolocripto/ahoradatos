@@ -370,7 +370,10 @@ public class Nodo {
 				}
 				
 			} else {
-			
+				// ahora, tengo que vaciar el hno y llenarlo otra vez
+				regs.addAll(nodoHermano.getRegistros());
+				nodoHermano.getRegistros().clear();
+				nodoHermano.setEspacioOcupado(0);
 				//ahora lo cargo el hermano hasta la minima ocupacion
 				nodoHermano.setMinIndiceCarga(Constantes.MENOR);
 				while ((regs.size() > 0) && (!nodoHermano.tieneCargaMinima())) {
