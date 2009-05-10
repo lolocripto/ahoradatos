@@ -7,11 +7,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 import ar.com.datos.grupo5.CFFTRS;
 import ar.com.datos.grupo5.ClaveFrontCoding;
-import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.registros.RegistroFTRS;
 
 public class CodificadorFrontCoding {
@@ -24,6 +24,9 @@ public class CodificadorFrontCoding {
 	 */
 	public static Collection<RegistroFTRS> codificar(
 			final Collection<CFFTRS> listaPalabras) {
+		
+		//ordeno el array para que el frontcoding labure mejor
+		Collections.sort(( ArrayList<CFFTRS>)listaPalabras);
 
 		Collection<RegistroFTRS> registros = new ArrayList<RegistroFTRS>();
 		
