@@ -376,6 +376,7 @@ public final class BStar implements BTree {
 	private boolean splitRaiz(final Nodo nodo) throws IOException {
 		
 		ArrayList<Nodo> nodos = nodo.splitRaiz(ultimoBloque);
+		Integer punteroBloque = nodoRaiz.getPunteroBloque();
 		nodoRaiz = nodos.get(0);
 		nodoActual = nodos.get(1);
 		ultimoBloque += 2;
@@ -408,6 +409,9 @@ public final class BStar implements BTree {
 			archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
 					.getNroBloque());
 		} else {
+			nodoActual.setPunteroBloque(punteroBloque);
+			punteroBloque = new Long(secuencialSet.reservarBloqueLibre()).intValue();
+			nodo.setPunteroBloque(punteroBloque);
 			nodosModificados.clear();
 			nodosModificados.add(nodoActual);
 			nodosModificados.add(nodo);
