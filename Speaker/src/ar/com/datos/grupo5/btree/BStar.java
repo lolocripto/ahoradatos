@@ -158,7 +158,9 @@ public final class BStar implements BTree {
 			return null;
 		default:
 			if (nodo.getRegistros().get(posReg).getClave().equals(clave)) {
-				return nodo.getRegistros().get(posReg);
+				RegistroNodo reg = nodo.getRegistros().get(posReg);
+				reg.setPunteroBloque(nodo.getPunteroBloque());
+				return reg;
 			} else {
 				return null;
 			}
