@@ -109,12 +109,17 @@ public class TestSecuensialSet {
 	
 	
 	BloqueFTRS bloque1 = new BloqueFTRS((ArrayList<CFFTRS>) listaPalabras1);
+	bloque1.setPunteroAlSiguiente(2);
+	
 	
 	BloqueFTRS bloque2 = new BloqueFTRS((ArrayList<CFFTRS>) listaPalabras2);
+	bloque2.setPunteroAlSiguiente(3);
 	
 	BloqueFTRS bloque3 = new BloqueFTRS((ArrayList<CFFTRS>) listaPalabras3);
+	bloque3.setPunteroAlSiguiente(4);
 	
 	BloqueFTRS bloque4 = new BloqueFTRS((ArrayList<CFFTRS>) listaPalabras4);
+	bloque4.setPunteroAlSiguiente(0);
 	
 /*	
 	ArrayList<BloqueFTRS> lista = new ArrayList<BloqueFTRS>();
@@ -124,18 +129,24 @@ public class TestSecuensialSet {
 	lista.add(bloque3);
 	lista.add(bloque4);
 */	
-/*	
+	
+	miArchivo.reservarBloqueLibre();
 	miArchivo.escribirBloque(bloque1, 1);
+	miArchivo.reservarBloqueLibre();
 	miArchivo.escribirBloque(bloque2, 2);
+	miArchivo.reservarBloqueLibre();
 	miArchivo.escribirBloque(bloque3, 3);
+	miArchivo.reservarBloqueLibre();
 	miArchivo.escribirBloque(bloque4, 4);
-*/
+
 	
 
 	
 	for (int i = 1; i < 5; i++) {
 		
 		BloqueFTRS bloque = miArchivo.leerBloque(i);
+		
+		System.out.println(bloque.getPunteroAlSiguiente());
 		
 		Collection<RegistroFTRS> lista = bloque.getListaTerminosFrontCodeados();
 		
@@ -168,7 +179,7 @@ public class TestSecuensialSet {
 	
 	
 	
-	
+	miArchivo.cerrar();
 	
 	}
 	
