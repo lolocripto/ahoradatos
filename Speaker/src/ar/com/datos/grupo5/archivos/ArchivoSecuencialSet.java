@@ -1,13 +1,10 @@
 package ar.com.datos.grupo5.archivos;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
-
 import ar.com.datos.grupo5.CFFTRS;
 import ar.com.datos.grupo5.ClaveFrontCoding;
 import ar.com.datos.grupo5.Constantes;
