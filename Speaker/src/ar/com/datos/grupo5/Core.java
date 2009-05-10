@@ -356,7 +356,7 @@ public class Core {
 			//TODO: buscar el indice del documento.
 			Iterator<IunidadDeHabla> iterador;
 			
-			SimilitudDocumento simDocs = this.ranking.get(Integer.parseInt(indice));
+			SimilitudDocumento simDocs = this.ranking.get(Integer.parseInt(indice) - 1);
 			
 			// Mando a parsear el documento y obtengo un collection
 			try {
@@ -402,7 +402,7 @@ public class Core {
 			logger.error("Error: " + e.getMessage());
 			return "Error en dispositivo de audio.";
 		} catch (Exception e) {
-			logger.error("Error : " + e.getMessage());
+			logger.error("Error : " + e.getMessage(), e);
 			return "Error inesperado.";
 		}
 			
