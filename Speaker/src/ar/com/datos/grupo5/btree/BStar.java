@@ -268,7 +268,6 @@ public final class BStar implements BTree {
 	 */
 	public boolean insertar(final RegistroNodo registro) throws IOException {
 		
-		ArrayList<Nodo> modificados = new ArrayList<Nodo>();
 		abrirArchivos();
 		if (nodoRaiz == null) {
 			
