@@ -421,6 +421,7 @@ public final class BStar implements BTree {
 		
 		Nodo nodoHno = new Nodo();
 		Nodo nodoPadre = new Nodo();
+		Nodo nodoAuxiliar = new Nodo();
 		nodoPadre
 				.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
 		int pos = nodoPadre.buscarRegistro(nodo.getPrimerRegistro()
@@ -446,7 +447,29 @@ public final class BStar implements BTree {
 		if (nodoPadre.getNroBloquePadre() < 0) {
 			nodoRaiz = nodoPadre;
 		}
-		
+		if (!nodo.isEsHoja()) {
+			for (RegistroNodo reg : nodo.getRegistros()) {
+				nodoAuxiliar.setBytes(archivo.leerBloque(reg
+						.getNroBloqueIzquierdo()));
+				nodoAuxiliar.setNroBloquePadre(nodo.getNroBloque());
+				archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
+						.getNroBloque());
+			}
+			for (RegistroNodo reg : nodoPadre.getRegistros()) {
+				nodoAuxiliar.setBytes(archivo.leerBloque(reg
+						.getNroBloqueIzquierdo()));
+				nodoAuxiliar.setNroBloquePadre(nodoPadre.getNroBloque());
+				archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
+						.getNroBloque());
+			}
+			for (RegistroNodo reg : nodoHno.getRegistros()) {
+				nodoAuxiliar.setBytes(archivo.leerBloque(reg
+						.getNroBloqueIzquierdo()));
+				nodoAuxiliar.setNroBloquePadre(nodoHno.getNroBloque());
+				archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
+						.getNroBloque());
+			}
+		}
 		archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
 		archivo.escribirBloque(nodoActual.getBytes(), nodoActual
 				.getNroBloque());
