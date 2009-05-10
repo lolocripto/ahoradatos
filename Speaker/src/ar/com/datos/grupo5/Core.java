@@ -495,7 +495,11 @@ public class Core {
 		this.parser = new TextInterpreter();
 		this.audioFileManager = new AudioFileManager();
 		this.documentManager = DocumentsManager.getInstance();
-		this.ftrsManager = new FTRSManager();
+		try {
+			this.ftrsManager = new FTRSManager();
+		} catch (Exception e) {
+			System.out.println("No se ha podido crear el FTRS.");
+		}
 		this.ranking = null;
 		/*
 		 * Abro el diccionario. 
