@@ -580,8 +580,12 @@ public class Core {
 	 * @param invocador .
 	 */
 	public final void quit(final InterfazUsuario invocador) {
-		this.diccionario.cerrar();
-		invocador.mensaje("gracias por usar TheSpeaker");
+		try {
+			this.diccionario.cerrar();
+			invocador.mensaje("gracias por usar TheSpeaker");
+		} catch (Exception e) {
+			
+		}
 	}
 	
 	/**
