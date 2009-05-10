@@ -23,31 +23,37 @@ public class TestStopWords {
 
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
-		String cadenaTexto = new String("Organización de Datos, entrega numero dos, viene jodida la mano che, si no nos ponemos las pilas esto explota");
+	//	String cadenaTexto = new String("Organización de Datos, entrega numero dos, viene jodida la mano che, si no nos ponemos las pilas esto explota");
+		
+		String cadenaTexto = new String("hola como estas");
+		
 		ITextInput tratadorDeTexto = new TextInterpreter();
 		Collection<IunidadDeHabla> palabras = new ArrayList();
 		
 		Iterator<IunidadDeHabla> it = Constantes.LISTA_STOP_WORDS.iterator();
 		
-		System.out.println("yuhuuu:  ");
-		
+	/*	
 		 while (it.hasNext()) {
 			String e = it.next().getTextoEscrito();
 			System.out.println(e);
 		}
-			
+	*/		
 		try {
 			//FIXME: LE agregue el ultimo parametro en null porque no compilaba.
-			Collection<IunidadDeHabla> texto = tratadorDeTexto.modoCarga(cadenaTexto, false,null);
+			Collection<IunidadDeHabla> texto = tratadorDeTexto.modoLectura(cadenaTexto, false);
+		/*	
 			ParserStopWords parser = new ParserStopWords();
 			Collection<IunidadDeHabla> filtradas = parser
 					.filtroStopWords(texto);
-			Collections.sort((List<IunidadDeHabla>) filtradas);
-			Iterator<IunidadDeHabla> iterador = filtradas.iterator();
+					
+					*/
+		//	Collections.sort((List<IunidadDeHabla>) filtradas);
+			Iterator<IunidadDeHabla> iterador = texto.iterator();
+			
 			while (iterador.hasNext()) {
 				IunidadDeHabla unidad = iterador.next();
-				String lapalabra = unidad.getEquivalenteFonetico();
-				System.out.println(lapalabra);
+				String lapalabra = unidad.getTextoEscrito();
+				System.out.println(lapalabra + "  es stop word?: " + unidad.isStopWord());
 			}
 
 		} catch (Exception e) {
