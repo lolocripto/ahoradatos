@@ -280,21 +280,22 @@ public class FTRSManager {
 								registro.getBloqueListaInvertida().intValue(), 
 								idTermino,
 								listaDatosDocumentos);
-						Map<Long, Long> registrosMovidos = this.listasInvertidas
+						ArrayList<TerminoBloque> registrosMovidos = this.listasInvertidas
 								.getRegistrosMovidos();
 
 						if (!registrosMovidos.isEmpty()) {
 							// Si no esta vacio entonces tengo que actualizar el
 							// FTRS
-							Iterator itr = registrosMovidos.entrySet().iterator();
+							Iterator<TerminoBloque> itr = registrosMovidos.iterator();
+							TerminoBloque tb;
 							while (itr.hasNext()) {
-								Map.Entry e = (Map.Entry) itr.next();
+								tb = itr.next();
 								// Map[idtermino,bloquenuevo]
 								termino = this.terminosGlobalesManager
-										.leerTermino((Long) e.getKey());
+										.leerTermino((Long) tb.getIdTermino());
 								// Actualizame el Termino "termino" con el
 								// bloque "e.getValue()"
-								this.arbolFTRS.modificar(termino, ((Long) e.getValue()).intValue());
+								this.arbolFTRS.modificar(termino, ((Long) tb.getBloque()).intValue());
 							}
 							// Borrar Map para no repetir
 							registrosMovidos.clear();

@@ -45,7 +45,7 @@ public class ListasInvertidas {
 	 * Lista que contiene los movimientos de los registros
 	 * de un bloque a otro.
 	 */
-	private Map<Long, Long> registrosMovidos;
+	private ArrayList registrosMovidos;
 	
 	/**
 	 * Tamaño que tiene el area de control.
@@ -410,6 +410,7 @@ public class ListasInvertidas {
 		this.espacioLibre = new ListaEspacioLibre(Constantes.SIZE_OF_LIST_BLOCK);
 		this.tamanioControl = Constantes.SIZE_OF_SHORT * 2 
 					+ Constantes.SIZE_OF_LONG;
+		this.registrosMovidos = new ArrayList<TerminoBloque>();
 	}
 	
 	/**
@@ -1160,7 +1161,8 @@ public class ListasInvertidas {
 						cantidadEscritaEnBuffer += (int) (regLista.getTamanioControl() + (cantidadNodosDisponibles * regLista.getTamanioNodo()));
 					} else {
 						//Escribo toda la lista en un auxiliar.
-						this.registrosMovidos.put(regLista.getIdTermino(),siguienteExt);
+						TerminoBloque tb = new TerminoBloque(regLista.getIdTermino(),siguienteExt);
+						this.registrosMovidos.add(tb);
 						try {
 							dosaux.write(datosNuevo, 0, datosNuevo.length);
 							continua = true;
@@ -1300,7 +1302,8 @@ public class ListasInvertidas {
 						cantidadEscritaEnBuffer += espacioCantidadNodos.intValue();
 					} else {
 						//Escribo toda la lista en un auxiliar.
-						this.registrosMovidos.put(regLista.getIdTermino(),siguienteExt );
+						TerminoBloque tb = new TerminoBloque(regLista.getIdTermino(),siguienteExt);
+						this.registrosMovidos.add(tb);
 						try {
 							dosaux.write(datosNuevo, 0, datosNuevo.length);
 						} catch (IOException e) {
@@ -1449,14 +1452,14 @@ public class ListasInvertidas {
 	 * @param registroMovidos the registroMovidos to set
 	 */
 	@SuppressWarnings("unused")
-	private void setRegistrosMovidos(Map<Long,Long> registroMovidos) {
+	private void setRegistrosMovidos(ArrayList<TerminoBloque> registroMovidos) {
 		this.registrosMovidos = registroMovidos;
 	}
 
 	/**
 	 * @return the registroMovidos
 	 */
-	public final Map<Long,Long> getRegistrosMovidos() {
+	public final ArrayList<TerminoBloque> getRegistrosMovidos() {
 		return registrosMovidos;
 	}
 	
