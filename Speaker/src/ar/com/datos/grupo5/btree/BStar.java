@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.archivos.ArchivoBloques;
+import ar.com.datos.grupo5.archivos.ArchivoSecuencialSet;
 import ar.com.datos.grupo5.registros.RegistroNodo;
 import ar.com.datos.grupo5.utils.Conversiones;
 
@@ -36,11 +37,6 @@ public final class BStar implements BTree {
 	private ArchivoBloques archivo;
 	
 	/**
-	 * Archivo para el guardar lar referencias a las listas invertidas.
-	 */
-	private ArchivoBloques secuencialSet;
-	
-	/**
 	 * Nodo Actual.
 	 */
 	private Nodo nodoActual;
@@ -55,6 +51,11 @@ public final class BStar implements BTree {
 	 */
 	private ArrayList<Nodo> nodosModificados;
 
+	/**
+	 * 
+	 */
+	private ArchivoSecuencialSet secuencialSet = null;
+	
 	/**
 	 * Constructor.
 	 * @throws Exception .
@@ -817,12 +818,6 @@ public final class BStar implements BTree {
 			archivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR,
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 			
-			if (todos) {
-				secuencialSet.abrir(
-						Constantes.ARCHIVO_ARBOL_BSTAR_SECUENCIAL_SET,
-						Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-			}
-			
 			return true;
 			
 		} catch (FileNotFoundException e) {
@@ -859,7 +854,7 @@ public final class BStar implements BTree {
 		try {
 			archivo.cerrar();
 			if (todos) {
-				secuencialSet.cerrar();
+				//secuencialSet.cerrar();
 			}
 			return true;
 		} catch (IOException e) {
@@ -875,5 +870,9 @@ public final class BStar implements BTree {
 	 */
 	public ArrayList<Nodo> getNodosModificados() {
 		return nodosModificados;
+	}
+
+	public void setSecuencialSet(ArchivoSecuencialSet secuencialSet) {
+		this.secuencialSet = secuencialSet;
 	}
 }
