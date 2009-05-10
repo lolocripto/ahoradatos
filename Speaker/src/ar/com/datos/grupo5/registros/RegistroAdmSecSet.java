@@ -8,10 +8,8 @@ import ar.com.datos.grupo5.utils.Conversiones;
 
 public class RegistroAdmSecSet {
 
-	private long cantBloques;
-	
-	
-	
+	private int cantBloques;
+
 	
 	public RegistroAdmSecSet(byte[] tira){
 		
@@ -31,7 +29,7 @@ public class RegistroAdmSecSet {
 		DataInputStream dos = new DataInputStream(bis);
 		
 		try {
-			this.cantBloques = dos.readLong();
+			this.cantBloques = dos.readInt();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -39,17 +37,16 @@ public class RegistroAdmSecSet {
 	
 	public byte[] getBytes (){
 		
-		return Conversiones.longToArrayByte(cantBloques);
-		
+		return Conversiones.intToArrayByte(cantBloques);
 	}
 	
-	public long reservarNuevoBloque (){
+	public int reservarNuevoBloque (){
 		
 		this.cantBloques++;
 		return this.cantBloques;
 	}
 	
-	public long ultimoBloqueUsado (){
+	public int ultimoBloqueUsado (){
 		return this.cantBloques;
 	}
 	

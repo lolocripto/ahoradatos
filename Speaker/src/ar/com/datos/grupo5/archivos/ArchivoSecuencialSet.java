@@ -55,7 +55,7 @@ public class ArchivoSecuencialSet {
 	 * 
 	 * @return
 	 */
-	public long reservarBloqueLibre() {
+	public int reservarBloqueLibre() {
 
 		return this.regAdm.reservarNuevoBloque();
 	}
@@ -65,7 +65,7 @@ public class ArchivoSecuencialSet {
 	 * 
 	 * @return
 	 */
-	public long getCantBloquesUsados() {
+	public int getCantBloquesUsados() {
 
 		return this.regAdm.ultimoBloqueUsado();
 	}
