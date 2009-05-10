@@ -351,7 +351,8 @@ public class Nodo {
 				if (regs.size() == 0) {
 					nuevoHermano.insertarRegistro(regAux2);
 					regAux2 = new RegistroNodo();
-					regAux2.setClave(nodoHermano.getUltimoRegistro().getClave());
+					regAux2.setClave(nodoHermano.getUltimoRegistro()
+							.getClave());
 					regAux2.setNroBloqueDerecho(nuevoHermano.getNroBloque());
 					regAux2.setNroBloqueIzquierdo(nodoHermano.getNroBloque());
 					nodoPadre.insertarRegistro(regAux2);
@@ -383,16 +384,8 @@ public class Nodo {
 				}
 				// Ahora tengo que cargar las claves en el padre, y listo!
 				nodoPadre.getRegistros().get(pos)
-				.setClave(nodoHermano.getPrimerRegistro().getClave());
-				
+				.setClave(nodoHermano.getPrimerRegistro().getClave());			
 				RegistroNodo reg = new RegistroNodo();
-				if (!this.isEsHoja()) {
-					// Liberar la clave de la nueva raiz de la raiz anterior
-					reg.setClave(nodoHermano.getUltimoRegistro().getClave());
-					removerRegistro(registros.size() - 1);
-				} else {
-					//reg.setClave(nodo.getPrimerRegistro().getClave());
-				}
 				reg.setClave(nuevoHermano.getPrimerRegistro().getClave());
 				reg.setNroBloqueIzquierdo(nodoHermano.getNroBloque());
 				reg.setNroBloqueDerecho(nuevoHermano.getNroBloque());

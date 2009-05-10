@@ -309,7 +309,7 @@ public final class BStar implements BTree {
 		} else {
 			//Intento pasar el registro.
 			//Si no puedo, veo con cual lo puedo Splitear
-			if (!pasarRegistro(nodo, registro)) {
+			if (!pasarRegistro(nodo)) {
 				
 				System.out.println("=====Split=======Nodo: "
 						+ nodo.getNroBloque() + "========");
@@ -323,9 +323,7 @@ public final class BStar implements BTree {
 										+ padre.getNroBloque() + "========");
 						return splitRaiz(padre);
 					} else {
-						RegistroNodo regAux = new RegistroNodo();
-						regAux = padre.getPrimerRegistro();
-						if (!pasarRegistro(padre, regAux)) {
+						if (!pasarRegistro(padre)) {
 							System.out
 									.println("=====Overflow Split=======Nodo: "
 											+ padre.getNroBloque() + "========");
@@ -560,10 +558,13 @@ public final class BStar implements BTree {
 	 * @return si exito true.
 	 * @throws IOException no pudo obtener el nodo
 	 */
-	private boolean pasarRegistro(final Nodo nodo, final RegistroNodo reg)
+	private boolean pasarRegistro(final Nodo nodo)
 			throws IOException {
 		
 			Nodo nodoPadre = new Nodo();
+			RegistroNodo reg = new RegistroNodo();
+			// Lo seteo aca SOLO para ver a cual le puede pasar, luego se cambia
+			reg  = nodo.getUltimoRegistro();
 			nodoPadre.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
 			//ahora nodo es el nodo padre del nodo que busque
 			int pos = nodoPadre.buscarRegistro(reg.getClave());
@@ -574,6 +575,7 @@ public final class BStar implements BTree {
 			
 			switch (pos) { 
 			case Constantes.MENOR:
+				//Tiene que pasarlo al de la izquierda
 				nodoHnoDerecho = new Nodo();
 				nroHno = nodoPadre.getPrimerRegistro().getNroBloqueDerecho();
 				datos = archivo.leerBloque(nroHno);
@@ -616,14 +618,16 @@ public final class BStar implements BTree {
 				if (nodoPadre.getNroBloquePadre() < 0) {
 					nodoRaiz = nodoPadre;
 				}
-				System.out.println("=====PasarRegistro=======Nodo: "
+				System.out.println("=====PasarRegistroMENOR=======Nodo: "
 						+ nodo.getNroBloque() + "========");
 				return true;
 			case Constantes.MAYOR:
+				//Tiene que pasarlo al de la izquierda
 				nodoHnoIzquierdo = new Nodo();
 				nroHno = nodoPadre.getUltimoRegistro().getNroBloqueIzquierdo();
 				datos = archivo.leerBloque(nroHno);
-				nodoHnoIzquierdo.setBytes(datos);
+				nodoHnoIzquierdo.setBytes(datos);	
+				reg  = nodo.getPrimerRegistro();
 				if (!nodoHnoIzquierdo.hayEspacio(reg.getBytes().length)) {
 					return false;
 				}
@@ -661,10 +665,11 @@ public final class BStar implements BTree {
 				if (nodoPadre.getNroBloquePadre() < 0) {
 					nodoRaiz = nodoPadre;
 				}
-				System.out.println("=====SplitRaiz=======Nodo: "
+				System.out.println("=====PasarRegistroMAYOR=======Nodo: "
 						+ nodo.getNroBloque() + "========");
 				return true;
 			default:
+				//Puede pasarlo a cualquiera, empiezo probando por el IZQUIERDO
 				int nroHnoDerecho = nodoPadre.getRegistros().get(pos)
 						.getNroBloqueDerecho();
 				int nroHnoIzquierdo = nodoPadre.getRegistros().get(pos - 1)
@@ -709,13 +714,15 @@ public final class BStar implements BTree {
 					if (nodoPadre.getNroBloquePadre() < 0) {
 						nodoRaiz = nodoPadre;
 					}
-					System.out.println("=====SplitRaiz=======Nodo: "
+					System.out.println("=====PasarRegistroDefaultMayor=======Nodo: "
 							+ nodo.getNroBloque() + "========");
 					return true;
 				} else {
 					nodoHnoIzquierdo = new Nodo();
+					reg = nodo.getPrimerRegistro();
 					nodoHnoIzquierdo.setBytes(
 							archivo.leerBloque(nroHnoIzquierdo));
+					reg = nodo.getUltimoRegistro();
 					if (nodoHnoIzquierdo.hayEspacio(reg.getBytes().length)) {
 						if (!nodo.isEsHoja()) {
 							RegistroNodo aux = new RegistroNodo();
@@ -751,7 +758,7 @@ public final class BStar implements BTree {
 						if (nodoPadre.getNroBloquePadre() < 0) {
 							nodoRaiz = nodoPadre;
 						}
-						System.out.println("=====SplitRaiz=======Nodo: "
+						System.out.println("=====PasarRegistroDefaultMenor=======Nodo: "
 								+ nodo.getNroBloque() + "========");
 						return true;
 					} else {
