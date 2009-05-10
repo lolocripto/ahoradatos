@@ -68,7 +68,7 @@ public class Nodo {
 	/**
 	 * El Numero de Bloque del Secuencial Set.
 	 */
-	private Integer punteroBloque;
+	private Integer punteroBloque = 0;
 	
 	/**
 	 * Constructor.
@@ -83,19 +83,6 @@ public class Nodo {
 				- Constantes.SIZE_OF_ADMIN_NODE_DATA;
 		espacioOcupado = 0;
 	}
-	
-	/**
-	 * Constructor.
-	 * @param nodo Nodo padre.
-	 */
-	/*public Nodo(final Nodo nodo) {
-		
-		nroBloqueSiguiente = null;
-		nroBloqueAnterior = null;
-		nroBloquePadre = nodo;
-		registros = new ArrayList<RegistroNodo>();
-		espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK;
-	}	*/
 	
 	/**********************
 	 * Metodos
@@ -535,17 +522,17 @@ public class Nodo {
 		
 		try {			
 			
-			byte[] longDatos = Conversiones.intToArrayByte(nroBloque);
 			//Nro de bloque
+			byte[] longDatos = Conversiones.intToArrayByte(nroBloque);
 			dos.write(longDatos, 0, longDatos.length);
-			longDatos = Conversiones.intToArrayByte(nroBloquePadre);
 			//Nro de bloque del padre
+			longDatos = Conversiones.intToArrayByte(nroBloquePadre);
 			dos.write(longDatos, 0, longDatos.length);
-			longDatos = Conversiones.intToArrayByte(espacioOcupado);
-			
-			//LOG.debug("Espacio ocupado: " + espacioOcupado);
-			
+			//Nro de bloque en el secuencialSet
+			longDatos = Conversiones.intToArrayByte(punteroBloque);
+			dos.write(longDatos, 0, longDatos.length);
 			//Espacio ocupado del nodo.
+			longDatos = Conversiones.intToArrayByte(espacioOcupado);
 			dos.write(longDatos, 0, longDatos.length);
 			
 			byte[] regBytes = null;
@@ -604,6 +591,7 @@ public class Nodo {
 			//espacioOcupado = dos.readInt();
 			//aLeer = espacioOcupado;
 			aLeer = dos.readInt();
+			punteroBloque = dos.readInt();
 			
 			// Leo el primer dato del primer registro,que es el numero de bloque
 			// izquierdo al que apunta.

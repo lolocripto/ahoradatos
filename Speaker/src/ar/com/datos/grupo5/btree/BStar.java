@@ -274,6 +274,8 @@ public final class BStar implements BTree {
 			
 			//Creo la raiz e inserto el registro.
 			nodoRaiz = new Nodo();
+			Integer puntero = new Long(secuencialSet.reservarBloqueLibre()).intValue();
+			nodoRaiz.setPunteroBloque(puntero);
 			//El primero es hoja al pricipio.
 			nodoRaiz.setEsHoja(true);
 			nodoRaiz.setNroBloque(Constantes.NRO_BLOQUE_RAIZ);
