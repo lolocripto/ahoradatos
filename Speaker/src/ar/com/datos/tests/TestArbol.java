@@ -3,6 +3,7 @@ package ar.com.datos.tests;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Main;
+import ar.com.datos.grupo5.archivos.ArchivoSecuencialSet;
 import ar.com.datos.grupo5.btree.BStar;
 import ar.com.datos.grupo5.btree.BTree;
 import ar.com.datos.grupo5.btree.Clave;
@@ -19,6 +20,8 @@ public class TestArbol {
 		
 		try {
 			BTree tree = new BStar();
+			ArchivoSecuencialSet sec = new ArchivoSecuencialSet();
+			((BStar) tree).setSecuencialSet(sec);
 			
 			Clave clave = null;
 			RegistroNodo reg = null;
