@@ -189,7 +189,7 @@ public class Core {
 			
 			this.ftrsManager.generarListasInvertidas();
 
-			cerrarArchivo(invocador);
+			//cerrarArchivo(invocador);
 		} catch (SimpleAudioPlayerException e) {
 			logger.error("Error: " + e.getMessage());
 		
@@ -397,7 +397,7 @@ public class Core {
 			logger.debug("Sali de la funcion playDocument");
 
 			invocador.mensaje("");
-			cerrarArchivo(invocador);
+			//cerrarArchivo(invocador);
 		} catch (SimpleAudioPlayerException e) {
 			logger.error("Error: " + e.getMessage());
 			return "Error en dispositivo de audio.";
@@ -462,7 +462,7 @@ public class Core {
 			logger.debug("Sali de la funcion playDocument");
 
 			invocador.mensaje("");
-			cerrarArchivo(invocador);
+			//cerrarArchivo(invocador);
 		} catch (SimpleAudioPlayerException e) {
 			logger.error("Error: " + e.getMessage());
 			return "Error en dispositivo de audio.";
