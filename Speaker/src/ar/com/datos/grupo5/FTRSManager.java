@@ -461,6 +461,8 @@ public class FTRSManager {
 			e.printStackTrace();
 			return false;
 		}
+		
+		this.arbolFTRS.cerrar();
 		return true;
 	}
 	
