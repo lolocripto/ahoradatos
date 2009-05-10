@@ -685,7 +685,7 @@ public class Core {
 			  SimilitudDocumento nodo;
 			  Integer i = 1;
 			  invocador.mensaje("Seleccione un de los documentos para ser reproducido:");
-			  this.documentManager.initReadSession(0L);
+		//	  this.documentManager.initReadSession(0L);
 			  while (it.hasNext()) {
 				  nodo = it.next();
 				  String mensaje = i.toString() + ". " + this.documentManager.getNombreDoc(nodo.getDocumento());  
