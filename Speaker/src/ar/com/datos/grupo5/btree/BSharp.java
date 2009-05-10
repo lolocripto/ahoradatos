@@ -63,15 +63,25 @@ public class BSharp {
 
 	public boolean modificar(String palabraExt, long idTerminoExt, int offsetListaInvertida) {
 		try {
+			//Busco el nodo que contiene la clave que necesito.
 			RegistroNodo nodo = this.arbolBStar.buscar(new Clave(palabraExt));
+			//Busco el bloque donde supuestamente se encuentra el termino buscado.
 			BloqueFTRS bloque = this.secuencialSet.leerBloque(nodo.getPunteroBloque());
+			//busco el registro dentro del bloque.
 			RegistroFTRS registro = bloque.buscarRegistro(new Clave(palabraExt));
-			
+			if (registro != null) {
+				//Seteo el nuevo bloque para las lista invertida del termino.
+				registro.setBloqueListaInvertida((long) offsetListaInvertida);
+				//Grabo el bloque con los nuevos datos.
+				this.secuencialSet.escribirBloque(bloque, nodo.getPunteroBloque());
+			} else {
+				return false;
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
+		return true;
 	}
 
 	public RegistroNodo siguiente() {
