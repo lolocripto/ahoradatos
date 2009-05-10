@@ -56,7 +56,7 @@ public class TestSecuencialSet3 {
 		
 
 		
-		Nodo1.getRegistros().add(reg15);
+	//	Nodo1.getRegistros().add(reg15);
 		Nodo1.getRegistros().add(reg11);
 		
 		
@@ -72,7 +72,7 @@ public class TestSecuencialSet3 {
 		ArrayList<Nodo> lista = new ArrayList<Nodo>();
 		
 		lista.add(Nodo1);
-		lista.add(Nodo2);
+//		lista.add(Nodo2);
 	
 		
 		System.out.println("hago la modificacion de bloques");
@@ -80,7 +80,7 @@ public class TestSecuencialSet3 {
 		
 		miArchivo.reservarBloqueLibre();
 		
-		miArchivo.bloquesActualizados(lista, "soymasNueva", new Long(1), new Long(1));
+		miArchivo.bloquesActualizados(lista, "mandarina", new Long(1), new Long(1));
 		
 	//	miArchivo.primeraInsercion( "mamadera", new Long(1), new Long(1));
 		
@@ -88,11 +88,10 @@ public class TestSecuencialSet3 {
 		
 		System.out.println(" termine la modificacion");
 		
+
 		
 		
-		
-		
-	for (int i = 1; i < 3; i++) {
+	for (int i = 1; i < 2; i++) {
 			
 			BloqueFTRS bloque = miArchivo.leerBloque(i);
 			
