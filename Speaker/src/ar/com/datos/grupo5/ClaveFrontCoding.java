@@ -90,17 +90,10 @@ public class ClaveFrontCoding extends Clave {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
 		try {
-			// TODO TESTEARME!!!!!!!!!
-			byte[] caracateresCoincidentesBytes =
-				Conversiones.intToArrayByte(caracteresCoincidentes);
-
-			byte[] longitudTerminoByte = 
-				Conversiones.intToArrayByte(this.longitudTermino);
-
 			byte[] claveBytes = this.termino.getBytes();
 			
-			dos.write(caracateresCoincidentesBytes);
-			dos.write(longitudTerminoByte);
+			dos.write(caracteresCoincidentes);
+			dos.write(longitudTermino);
 			dos.write(claveBytes);
 		} catch (IOException e) {
 			e.printStackTrace();
