@@ -87,14 +87,16 @@ public class ClaveFrontCoding extends Clave {
 	 * @throws IOException ,
 	 */
 	public byte[] getBytes() throws IOException {
+		
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
+		
 		try {
-			byte[] claveBytes = this.termino.getBytes();
 			
 			dos.write(caracteresCoincidentes);
 			dos.write(longitudTermino);
-			dos.write(claveBytes);
+			dos.write(termino.getBytes());
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw e;
@@ -115,13 +117,16 @@ public class ClaveFrontCoding extends Clave {
 	
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
 		DataInputStream dos = new DataInputStream(bis);
+		
 		byte[] datos = null;
 		
 		try {
 			//Leo la longitud de la clave
 			this.caracteresCoincidentes = dos.readByte();
 			this.longitudTermino = dos.readByte();
+			
 			datos = new byte[this.longitudTermino];
+			dos.read(datos);
 			this.termino = new String(datos);
 		} catch (IOException e) {
 			e.printStackTrace();
