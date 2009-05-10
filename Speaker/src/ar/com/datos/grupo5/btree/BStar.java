@@ -447,6 +447,15 @@ public final class BStar implements BTree {
 		if (nodoPadre.getNroBloquePadre() < 0) {
 			nodoRaiz = nodoPadre;
 		}
+		archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
+		archivo.escribirBloque(nodoActual.getBytes(), nodoActual
+				.getNroBloque());
+		if (!nodoPadre.isOverflow()) {
+			archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
+					.getNroBloque());
+		}
+		archivo.escribirBloque(nodoHno.getBytes(), nodoHno
+				.getNroBloque());
 		if (!nodo.isEsHoja()) {
 			for (RegistroNodo reg : nodo.getRegistros()) {
 				nodoAuxiliar.setBytes(archivo.leerBloque(reg
@@ -497,16 +506,6 @@ public final class BStar implements BTree {
 			archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
 					.getNroBloque());
 		}
-		archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
-		archivo.escribirBloque(nodoActual.getBytes(), nodoActual
-				.getNroBloque());
-		if (!nodoPadre.isOverflow()) {
-			archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
-					.getNroBloque());
-		}
-		archivo.escribirBloque(nodoHno.getBytes(), nodoHno
-				.getNroBloque());
-		
 		return nodoPadre;
 	}
 	
