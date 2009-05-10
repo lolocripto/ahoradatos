@@ -58,7 +58,6 @@ public class ArchivoSecuencialSet {
 	}
 	
 	
-	
 	public void cerrar(){
 		
 		//guardo el registro administrativo
@@ -75,9 +74,8 @@ public class ArchivoSecuencialSet {
 	}
 	
 
-	public void bloquesActualizados(Collection<Nodo>listaNodosActualizados, String nuevaPalabra, long PunteroNuevaPalabra, long IdTermino){
+	public void bloquesActualizados(Collection<Nodo>listaNodosActualizados, String nuevaPalabra, long IdTermino){
 
-		
 		
 		//genero un registro con la nueva palabra a agregar
 		RegistroFTRS registroNuevaPalabra = new RegistroFTRS();
@@ -92,7 +90,7 @@ public class ArchivoSecuencialSet {
 		
 		
 		//genero una lista para almacenar todos los elementos a reacomodar
-		ArrayList<RegistroNodo> listaElementosAReacomodar = new ArrayList<RegistroNodo>();
+		ArrayList<RegistroNodo> listaElementosEnNodos = new ArrayList<RegistroNodo>();
 		
 		ArrayList<RegistroFTRS> listaRegistrosEnBloques = new ArrayList<RegistroFTRS>();
 		
@@ -107,20 +105,32 @@ public class ArchivoSecuencialSet {
 			//obtengo el nodo actual
 			Nodo actual = it.next();
 			
+			//obtengo la lista del nodo actual
+			ArrayList<RegistroNodo> listaDelNodo =actual.getRegistros();
+			
+			//debo buscar en cada nodo de los modificados, cual es el que contiene el registroAgregado
+			listaDelNodo.indexOf(registroNuevaPalabra);
+			
+			
 			//agrego todos los elementos que se han modificado en los nodos
-			listaElementosAReacomodar.addAll(actual.getRegistros());
+			listaElementosEnNodos.addAll(listaDelNodo);
 			
 			//agrego a la lista todos los elementos levantados de los bloques en disco
 			listaRegistrosEnBloques.addAll(this.obtenerListaElementosBloque(actual.getPunteroBloque()));
 			
 		}
+		
+		
+		listaElementosEnNodos.indexOf(0);
+		
+		
 	}
 	
 	
 	public void escribirBloque (BloqueFTRS bloque, int numBloque){
 		
 		try {
-			this.miArchivo.escribirBloque(bloque.getBytes(), numBloque);
+			this.miArchivo.escribirBloqueSalteado(bloque.getBytes(), numBloque);
 		} catch (IOException e) {
 			
 			e.printStackTrace();
