@@ -156,7 +156,7 @@ public class TestSecuensialSet {
 			 reg3 = it2.next();
 			 
 			 System.out.println(reg2.getPalabraDecodificada());
-			 System.out.println(reg3.getPunteroBloque());
+			 System.out.println(reg3.getBloqueListaInvertida());
 			 System.out.println(reg2.getPalabraCodificada());
 			 System.out.println(reg3.getBloqueListaInvertida());
 			 System.out.println(reg3.getIdTermino());

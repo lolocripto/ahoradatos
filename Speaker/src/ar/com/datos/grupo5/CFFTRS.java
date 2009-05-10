@@ -38,7 +38,7 @@ public class CFFTRS implements Comparable<CFFTRS>{
 	
 	public String getPalabraCodificada(){
 		
-		return ((ClaveFrontCoding)this.registroAsociado.getClave()).getTermino();
+		return this.registroAsociado.getClaveFrontCoding().getTermino();
 	}
 	
 	public boolean equals (Object obj) {
