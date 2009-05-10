@@ -449,15 +449,14 @@ public class Core {
 				// Si lo encontro sigo en el bucle
 				if (elemento.esPronunciable()) {
 
-				Long offsetAudio = this.diccionario
-					.buscarPalabra(elemento.getEquivalenteFonetico());
-
-				if (offsetAudio != null) {
-					invocador.mensajeSinSalto(elemento.getTextoEscrito() + " ");
-					playWord(this.audioFileManager.leerAudio(offsetAudio));
-					audioManager.esperarFin();
-				}
-
+					Long offsetAudio = this.diccionario
+						.buscarPalabra(elemento.getEquivalenteFonetico());
+	
+					if (offsetAudio != null) {
+						invocador.mensajeSinSalto(elemento.getTextoEscrito() + " ");
+						playWord(this.audioFileManager.leerAudio(offsetAudio));
+						audioManager.esperarFin();
+					}
 				}
 			}
 			logger.debug("Sali de la funcion playDocument");
