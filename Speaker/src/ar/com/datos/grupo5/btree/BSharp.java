@@ -6,6 +6,8 @@ package ar.com.datos.grupo5.btree;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import sun.security.x509.CertAndKeyGen;
+
 import ar.com.datos.grupo5.archivos.ArchivoSecuencialSet;
 import ar.com.datos.grupo5.archivos.BloqueFTRS;
 import ar.com.datos.grupo5.registros.RegistroFTRS;
@@ -85,6 +87,11 @@ public class BSharp {
 			e.printStackTrace();
 		}
 		return true;
+	}
+	
+	
+	public void cerrar(){
+		this.secuencialSet.cerrar();
 	}
 	
 	
