@@ -63,10 +63,12 @@ public class TrieAdministrator {
 		this.mitrie.insert(pal, punt);
 		
 		this.recMemoria();   //
+		this.persistencia.flush();
 		
 		return true;
 		}else{
 			this.recMemoria();   //
+			this.persistencia.flush();
 			return false;
 		}
 		
