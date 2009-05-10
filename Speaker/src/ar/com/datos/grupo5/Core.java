@@ -221,7 +221,7 @@ public class Core {
 			+ "Caracteristicas: carga un documento reproduciendo las "
 			+ "palabras reconocidas \n"
 			+ "Uso: playDocument <\"path_absoluto_del_documento\"> \n"
-			+ "Ej: load \"/home/usuario/Escritorio/prueba.txt\" \n\n"
+			+ "Ej: playDocument \"/home/usuario/Escritorio/prueba.txt\" \n\n"
 
 			+ "Funcion: playText \n"
 			+ "Caracteristicas: reproduce el texto ingresado, omitiendo las "
@@ -238,8 +238,14 @@ public class Core {
 			+ "Caracteristicas: muestra los comandos disponibles para su ejecución \n"
 			+ "Uso: help \n" + "Ej: help \n\n"
 
-			+ "Funcion: fin \n" + "Caracteristicas: sale del programa \n"
-			+ "Uso: fin \n" + "Ej: fin \n\n";
+			+ "Funcion: query \n" 
+			+ "Caracteristicas: Ejecuta una consulta en el indice \n"
+			+ "Uso: query <\"texto ingresado\"> \n"
+			+ "Ej: query \"hola como estas\" \n\n"
+
+			+ "Funcion: fin \n" 
+			+ "Caracteristicas: sale del programa \n"
+			+ "Uso: fin \n" + "Ej: fin \n\n";	
 		
 		this.clear(invocador);
 		invocador.mensaje(mensaje);
