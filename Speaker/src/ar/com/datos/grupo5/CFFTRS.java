@@ -47,7 +47,6 @@ public class CFFTRS implements Comparable<CFFTRS>{
 		return this.palabraDecodificada.equalsIgnoreCase(cfftrs.getPalabraDecodificada()); 
 	}
 
-	@Override
 	public int compareTo(CFFTRS o) {
 		
 		return this.palabraDecodificada.compareTo(o.palabraDecodificada);
