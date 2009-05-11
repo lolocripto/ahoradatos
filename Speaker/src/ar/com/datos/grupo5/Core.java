@@ -713,4 +713,41 @@ public class Core {
 		}
 	}
 
+
+
+	@Override
+	protected void finalize() throws Throwable {
+		try {
+
+			if (this.audioFileManager != null) {
+				this.audioFileManager.cerrar();
+			}
+			if (this.documentManager != null) {
+				this.documentManager.cerrarSesion();
+			}
+			this.ftrsManager.cerrarArchivos();
+			
+
+		} catch (Exception e) {
+			
+			try {
+				if (this.audioFileManager != null) {
+					this.audioFileManager.cerrar();
+				}
+			} catch (Exception g) {
+				
+			}
+			try {
+				if (this.documentManager != null) {
+					this.documentManager.cerrarSesion();
+				}
+			} catch (Exception g) {
+			
+			}
+			
+			this.ftrsManager.cerrarArchivos();
+			
+		}
+		super.finalize();
+	}	
 }
