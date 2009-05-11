@@ -114,7 +114,7 @@ public class FTRSManager {
 		ArrayList<ParPesoGlobalTermino> pesoTerminoListas = new ArrayList<ParPesoGlobalTermino>();
 		int cantidadTerminos = terminosConsulta.length;
 
-		this.abrirArchivos();
+		//this.abrirArchivos();
 		
 		// Leo las listas invertidas de los terminos de la consulta.
 		RegistroTerminoDocumentos regTermDocs;
@@ -193,7 +193,7 @@ public class FTRSManager {
 
 		Collections.sort((List<SimilitudDocumento>) listResultado);
 
-		this.cerrarArchivos();
+		//this.cerrarArchivos();
 		return listResultado;
 	}
 
