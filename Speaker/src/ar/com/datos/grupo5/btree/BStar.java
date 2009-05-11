@@ -136,7 +136,6 @@ public final class BStar implements BTree {
 	 * @throws IOException .
 	 */
 	public RegistroNodo buscar(final Clave clave) throws IOException {
-		//FIXME: Revisar.
 		
 		//Abro el archivo.
 		abrirArchivos();
@@ -300,7 +299,6 @@ public final class BStar implements BTree {
 		Nodo nodo = buscarNodo(registro.getClave());
 		//Si ya existe, no inserto.
 		if (nodo.existeClave(registro.getClave())) {
-			//FIXME creo que esta bien, seria para no insertar duplicados.
 			cerrarArchivos();
 			LOG.debug("No se inserto en el elemento ["
 					+ registro.getClave().getClave()
@@ -573,7 +571,6 @@ public final class BStar implements BTree {
 			archivo.cerrar();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

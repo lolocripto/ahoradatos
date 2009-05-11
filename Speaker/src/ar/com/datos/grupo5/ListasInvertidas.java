@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 import ar.com.datos.grupo5.archivos.ArchivoBloques;
 import ar.com.datos.grupo5.registros.RegistroTerminoDocumentos;
 
-//TODO: Excepciones, falta tirar las excepciones
 /**
  * Clase que administra la inserción, modificación y busqueda de las listas
  * invertidas en un archivo por bloques.
@@ -359,11 +358,9 @@ public class ListasInvertidas {
 							offsetEscritura += 	bytes.length;
 							
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 							return false;
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 							return false;
 						}
@@ -844,7 +841,6 @@ public class ListasInvertidas {
 		try {
 			this.datosLeidosPorBloque = this.archivo.leerBloque(nroBloqueExt);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -882,7 +878,6 @@ public class ListasInvertidas {
 					nroBloqueExt);
 		
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -1426,7 +1421,6 @@ public class ListasInvertidas {
 						}
 					}
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					return null;
 				}
 				

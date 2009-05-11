@@ -88,7 +88,6 @@ public class ArchivoSecuencialSet {
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -383,7 +382,6 @@ public class ArchivoSecuencialSet {
 		try {
 			tamanioArch = this.miArchivo.file.length();
 		} catch (IOException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 		

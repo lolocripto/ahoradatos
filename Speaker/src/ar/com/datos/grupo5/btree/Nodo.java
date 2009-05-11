@@ -246,7 +246,6 @@ public class Nodo {
 		nuevaRaiz.setNroBloque(Constantes.NRO_BLOQUE_RAIZ);
 		nuevaRaiz.setEsHoja(false);
 		
-		// TODO Terminar Metodo
 		// Llenar nodo hno (nodo)
 		while (minIndiceCarga < registros.size()) {
 			RegistroNodo reg = removerRegistro(minIndiceCarga);
@@ -302,7 +301,7 @@ public class Nodo {
 				RegistroNodo reg = removerRegistro(minIndiceCarga);
 				regs.add(reg);
 			}
-			//FIXME: COPIPASTEADO DEL ELSE!!!!
+
 			if (!this.isEsHoja()) {
 				// Liberar la clave de la nueva raiz de la raiz anterior
 				if (pos == Constantes.MAYOR) {

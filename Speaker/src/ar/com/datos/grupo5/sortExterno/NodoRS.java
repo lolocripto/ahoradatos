@@ -65,7 +65,6 @@ public class NodoRS {
 		this.tamanio = Constantes.SIZE_OF_LONG * 2;
 	}
 
-	//TODO: Creo que necesito el equals
 	/**
 	 * Comparar es una funcion que devuelve: 0 si this = NRS 1 si this > NRS -1 si
 	 * this < NRS Siempre y cuando tenga flag == 0 sino devuelve 2 (si esta mal).

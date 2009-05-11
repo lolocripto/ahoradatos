@@ -228,7 +228,7 @@ public class RegistroTerminoDocumentos implements Registro {
 	 * @param offset id del termino que se busca.
 	 */
 	public final void setBytes(final byte[] buffer, final Long offset) {
-		// TODO Ver el tamaño de cantidadDocumentos en todos lados
+
 		int offsetByte = 0;
 		ParFrecuenciaDocumento parFD = null;
 		

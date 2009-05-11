@@ -16,9 +16,7 @@ public class NodoParticion {
 	 * Cantidad de Registros en la particion.
 	 */
 	private long nRegistros;
-	
-	//TODO: Evaluar la posibilidad de 
-	//cambiar de String a bytes
+ 
 	/**
 	 * Particion.
 	 */

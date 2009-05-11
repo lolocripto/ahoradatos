@@ -70,7 +70,6 @@ public class RegistroTrie extends RegistroNodo {
 				dos.write(longdatos, 0, longdatos.length);
 				moreBytes -= longdatos.length;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

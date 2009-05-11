@@ -59,7 +59,6 @@ public class RegistroNodo {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
 		try {
-			// TODO TESTEARME!!!!!!!!!
 			byte[] claveBytes = claveNodo.getClave().getBytes();
 			byte[] longClave = Conversiones
 					.shortToArrayByte(claveBytes.length);
@@ -88,7 +87,6 @@ public class RegistroNodo {
 	 */
 	public void setBytes(final byte[] buffer, final int bloqueAnt)
 			throws IOException {
-		//TODO TESTEARLO YA!!!!!!!!!!
 		//Leo el numero de bloque Anterior.
 		setNroBloqueIzquierdo(bloqueAnt);
 		

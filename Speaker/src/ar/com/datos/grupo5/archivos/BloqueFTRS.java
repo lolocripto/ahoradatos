@@ -153,7 +153,6 @@ public class BloqueFTRS implements Comparable<BloqueFTRS>{
 		try {
 			dos.read(aux);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

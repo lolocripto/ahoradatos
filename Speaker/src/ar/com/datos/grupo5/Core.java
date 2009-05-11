@@ -354,7 +354,6 @@ public class Core {
 		
 		try {
 			
-			//TODO: buscar el indice del documento.
 			Iterator<IunidadDeHabla> iterador;
 			
 			SimilitudDocumento simDocs = this.ranking.get(Integer.parseInt(indice) - 1);
@@ -424,7 +423,6 @@ public class Core {
 		
 		try {
 			
-			//TODO: buscar el indice del documento.
 			Iterator<IunidadDeHabla> iterador;
 			
 			// Mando a parsear el documento y obtengo un collection
@@ -681,7 +679,6 @@ public class Core {
 				ranking = this.ftrsManager.consultaRankeada(query, cantidadDocs);
 				tiempoFinal = (float)(System.currentTimeMillis() - this.tiempoConsulta) / 1000;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			if (this.ranking == null) {

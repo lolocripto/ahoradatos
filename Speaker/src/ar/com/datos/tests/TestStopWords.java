@@ -32,22 +32,9 @@ public class TestStopWords {
 		
 		Iterator<IunidadDeHabla> it = Constantes.LISTA_STOP_WORDS.iterator();
 		
-	/*	
-		 while (it.hasNext()) {
-			String e = it.next().getTextoEscrito();
-			System.out.println(e);
-		}
-	*/		
 		try {
-			//FIXME: LE agregue el ultimo parametro en null porque no compilaba.
 			Collection<IunidadDeHabla> texto = tratadorDeTexto.modoLectura(cadenaTexto, false);
-		/*	
-			ParserStopWords parser = new ParserStopWords();
-			Collection<IunidadDeHabla> filtradas = parser
-					.filtroStopWords(texto);
-					
-					*/
-		//	Collections.sort((List<IunidadDeHabla>) filtradas);
+	
 			Iterator<IunidadDeHabla> iterador = texto.iterator();
 			
 			while (iterador.hasNext()) {

@@ -137,7 +137,6 @@ public class FTRSManager {
 							regTermDocs.getCantidadDocumentos()));
 			pesoGlobalPorTermino.setRegTermDocs(regTermDocs);
 
-			// FIXME: Si no encuentra el termino paso de largo, no?
 			if (regTermDocs != null) {
 				pesoTerminoListas.add(pesoGlobalPorTermino);
 			}
@@ -177,7 +176,6 @@ public class FTRSManager {
 			while (it.hasNext() && cantidadDocumentosSeleccionados < Constantes.TOP_RANKING) {
 				parFD = it.next();
 				simDocs = new SimilitudDocumento();
-				//TODO: Verificar que no este repetido
 				if (!repitoElemento(listResultado,parFD.getOffsetDocumento())) {
 					simDocs.setDocumento(parFD.getOffsetDocumento());
 					cantidadDocumentosSeleccionados++;
@@ -323,7 +321,6 @@ public class FTRSManager {
 				//TODO: que pasa si no viene un registro, entonces el termino no existe
 				// no deberia pasar nunca eso.
 				
-				//FIXME: De donde salio ESTO.
 				RegistroTerminoDocumentos regTerminoDocumentos = new RegistroTerminoDocumentos();
 
 				// regTerminoDocumentos.
@@ -333,19 +330,16 @@ public class FTRSManager {
 				frecuencia = 0L;
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			File file = new File(Constantes.ARCHIVO_TRABAJO);
 			file.delete();
 			return;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			File file = new File(Constantes.ARCHIVO_TRABAJO);
 			file.delete();
 			return;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			File file = new File(Constantes.ARCHIVO_TRABAJO);
 			file.delete();
@@ -363,7 +357,6 @@ public class FTRSManager {
 	 *            Termino a agregar.
 	 */
 	private Long agregaTermino(final String termino) {
-		// TODO Auto-generated method stub
 		// Pasar el parser
 		Long idTermino = this.terminosGlobalesManager.agregar(termino);
 		/*
@@ -373,7 +366,6 @@ public class FTRSManager {
 		try {
 			this.arbolFTRS.insertar(termino, idTermino);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -413,7 +405,6 @@ public class FTRSManager {
 			archivoTrabajo.write(idTerminoIdDocumento.getBytes(), 0,
 					idTerminoIdDocumento.getTamanio());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -443,11 +434,9 @@ public class FTRSManager {
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA); 
 			this.archivoTrabajo.setLength(0L);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -477,7 +466,6 @@ public class FTRSManager {
 			File file = new File(Constantes.ARCHIVO_TRABAJO);
 			file.delete();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}

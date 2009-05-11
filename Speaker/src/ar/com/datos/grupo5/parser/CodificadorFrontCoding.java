@@ -141,7 +141,6 @@ public class CodificadorFrontCoding {
 					dos.write(ultimaPalabra.getBytes(), 0, cl.getCaracteresCoincidentes());
 					dos.write(cl.getTermino().getBytes(), 0, cl.getLongitudTermino());
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				

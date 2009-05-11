@@ -9,7 +9,6 @@ import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.interfaces.Registro;
 import ar.com.datos.grupo5.utils.Conversiones;
 
-//TODO: Ver comentarios, JAVADOC
 /**
  * Esta Clase implementa la interfaz del registro para audio.
  * 
