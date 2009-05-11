@@ -17,7 +17,7 @@ public class TestTextInterpreter {
 	
 
 
-		String ruta = "/home/zeke/Escritorio/arcpru/prueba_nueva.txt";
+		String ruta = "/home/zeke/Escritorio/test.txt";
 	
 		TextInterpreter ti = new TextInterpreter();
 		

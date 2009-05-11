@@ -23,8 +23,6 @@ public class PruebasTrie {
 		
 		Diccionario dic = new Diccionario();
 		
-		
-		
 		List<IunidadDeHabla> lista = Constantes.LISTA_STOP_WORDS;
 		
 		Iterator<IunidadDeHabla> it = lista.iterator();
