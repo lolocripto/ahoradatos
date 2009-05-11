@@ -64,7 +64,7 @@ public class AdministrationRegistry {
 			cantNodosUsados = dis.readLong();
 			profundidadActual = dis.readInt();
 		} catch (IOException e) {
-			System.out.println("no se ha podido recuperar el registro Administrativo del trie");
+	//		System.out.println("no se ha podido recuperar el registro Administrativo del trie");
 			e.printStackTrace();
 		}
 		
