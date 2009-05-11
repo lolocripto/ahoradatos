@@ -126,7 +126,7 @@ public class FTRSManager {
 
 			// Si no lo encuentra devuelve null
 			if (registroFtrs == null) {
-				return null;
+				continue;
 			}
 
 			regTermDocs = this.listasInvertidas.leerLista(registroFtrs
