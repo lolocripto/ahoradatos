@@ -59,7 +59,11 @@ public class BSharp {
 		RegistroNodo reg = new RegistroNodo();
 		reg.setClave(new Clave(nuevaPalabraExt));
 		if (this.arbolBStar.insertar(reg)) {
-			this.secuencialSet.bloquesActualizados(this.arbolBStar.getNodosModificados(), nuevaPalabraExt, idTerminoExt, -1);
+			ArrayList<Nodo> lista = this.arbolBStar.getNodosModificados();
+			
+			System.out.println(" elems pasados al sec: "+lista.size());
+			
+			this.secuencialSet.bloquesActualizados(lista, nuevaPalabraExt, idTerminoExt, -1);
 			return true;
 		}
 		return false;

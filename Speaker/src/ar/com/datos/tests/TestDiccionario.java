@@ -50,7 +50,7 @@ public class TestDiccionario {
 */		
 		
 		
-	
+/*	
 		int i =0;
 		Long puntero;
 		
@@ -73,7 +73,7 @@ public class TestDiccionario {
 		}
 		System.out.println(dic.cantNodosUsados());
 
-	
+*/	
 		
 /*		
 
@@ -90,6 +90,18 @@ public class TestDiccionario {
 		}
 	
 */	
+	
+		
+		while (it.hasNext()){
+			
+			
+			String texto = it.next().getTextoEscrito();
+			System.out.print(texto+"    ");
+		
+			
+		}
+		
+		
 		
 
 	}

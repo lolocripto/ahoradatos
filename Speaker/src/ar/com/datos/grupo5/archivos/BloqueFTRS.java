@@ -81,10 +81,11 @@ public class BloqueFTRS implements Comparable<BloqueFTRS>{
 	
 	
 	public int compareTo(BloqueFTRS blo) {
+	
 		
 		String este = this.listaTerminosSinFrontCodear.get(0).getPalabraDecodificada();
 		
-		String elotro = blo.listaTerminosSinFrontCodear.get(0).getPalabraCodificada();
+		String elotro = blo.listaTerminosSinFrontCodear.get(0).getPalabraDecodificada();
 		
 		return este.compareTo(elotro);
 	}

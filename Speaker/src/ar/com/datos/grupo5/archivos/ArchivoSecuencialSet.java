@@ -202,6 +202,7 @@ public class ArchivoSecuencialSet {
 
 	// creo que con esta funcion se garantiza que todo nodo tenga un siguiente
 	private void logicaOrdenamiento(ArrayList<BloqueFTRS> listaBloques) {
+		
 		Collections.sort(listaBloques);
 
 		Iterator<BloqueFTRS> it = listaBloques.iterator();
