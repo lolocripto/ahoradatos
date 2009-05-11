@@ -677,6 +677,7 @@ public class Core {
 			Long cantidadDocs = this.documentManager.getCantidadDocsAlmacenados();
 			
 			try {
+				ftrsManager.abrirArchivos();
 				ranking = this.ftrsManager.consultaRankeada(query, cantidadDocs);
 				tiempoFinal = (float)(System.currentTimeMillis() - this.tiempoConsulta) / 1000;
 			} catch (IOException e) {
@@ -684,26 +685,35 @@ public class Core {
 				e.printStackTrace();
 			}
 			if (this.ranking == null) {
-				invocador.mensaje("No se encuentrarón documentos.");
+				invocador.mensaje("No se encontraron documentos.");
 				this.documentManager.cerrarSesion();
 				return tiempoFinal.toString() + " segundos";
 			}
-			//TODO: pasarle el filtro a las palabras
-			  Iterator<SimilitudDocumento> it;
-			  it = this.ranking.iterator();
-			  SimilitudDocumento nodo;
-			  Integer i = 1;
-			  invocador.mensaje("Seleccione un de los documentos para ser reproducido:");
-			  while (it.hasNext()) {
-				  nodo = it.next();
-				  String mensaje = i.toString() + ". " + this.documentManager.getNombreDoc(nodo.getDocumento());  
-				  invocador.mensaje(mensaje);
-				  i++;
-			  }
-			 
-			  String documento = invocador.obtenerDatos("Elija el documento a reproducir: ");
-			  this.playDocumentInterno(invocador, documento);
-			
+			// TODO: pasarle el filtro a las palabras
+			Iterator<SimilitudDocumento> it;
+			it = this.ranking.iterator();
+			SimilitudDocumento nodo;
+			Integer i = 1;
+			invocador.mensaje("Seleccione un de los documentos para ser reproducido:");
+			while (it.hasNext()) {
+				nodo = it.next();
+				String mensaje = i.toString()
+						+ ". "
+						+ this.documentManager
+								.getNombreDoc(nodo.getDocumento());
+				invocador.mensaje(mensaje);
+				i++;
+			}
+
+			String documento = invocador
+					.obtenerDatos("Elija el documento a reproducir: ");
+			try {
+				Integer.parseInt(documento);
+			} catch (Exception e) {
+				return "Opcion incorecta.";
+			}
+			this.playDocumentInterno(invocador, documento);
+
 			this.documentManager.cerrarSesion();
 			return tiempoFinal.toString() + " segundos";
 		} catch (Exception e) {
