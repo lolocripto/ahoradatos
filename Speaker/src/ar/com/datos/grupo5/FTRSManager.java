@@ -119,7 +119,7 @@ public class FTRSManager {
 		// Leo las listas invertidas de los terminos de la consulta.
 		RegistroTerminoDocumentos regTermDocs;
 		ParPesoGlobalTermino pesoGlobalPorTermino;
-		
+		int cantidadTerminosEncontrados = 0;
 		for (int i = 0; i < cantidadTerminos; i++) {
 			// Busco el termino
 			RegistroFTRS registroFtrs = arbolFTRS.buscar(terminosConsulta[i]);
@@ -128,7 +128,7 @@ public class FTRSManager {
 			if (registroFtrs == null) {
 				continue;
 			}
-
+			cantidadTerminosEncontrados++;
 			regTermDocs = this.listasInvertidas.leerLista(registroFtrs
 					.getIdTermino(), registroFtrs.getBloqueListaInvertida());
 
@@ -147,6 +147,8 @@ public class FTRSManager {
 		
 		if (pesoTerminoListas.size() == 0) {
 			return null;
+		} else {
+			cantidadTerminos = cantidadTerminosEncontrados;
 		}
 		
 		// ordeno por pesoGlobal
