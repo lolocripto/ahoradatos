@@ -89,8 +89,8 @@ public class ArchivoDocumentos extends Directo {
 				
 		}
 			catch (Exception e) {
-			System.out
-					.println("no se ha podido abrir el archivo de documentos");
+			//	System.out
+			//		.println("no se ha podido abrir el archivo de documentos"), e);
 			e.printStackTrace();
 		}
 	}
@@ -111,14 +111,14 @@ public class ArchivoDocumentos extends Directo {
 			//hago el chequeo del modo de ejecucion, si se trata mal puede corromperse el archivo
 			if (this.modoEnEjecucion != 0){
 				
-				System.out.println("el archivo de documentos no esta preparado para lectura");
+			//	System.out.println("el archivo de documentos no esta preparado para lectura");
 				return false;
 			}
 			
 			//verifico que no quiera posicionarme mas alla de los limites del archivo,
 			//es una verificacion para evitar que se corrompa.
 			if (file.length() < offset){
-				System.out.println("se ha querido posicionar mas alla de los limites del archivo");
+			//	System.out.println("se ha querido posicionar mas alla de los limites del archivo");
 				return false;
 			}else {
 				
@@ -135,7 +135,7 @@ public class ArchivoDocumentos extends Directo {
 			this.longitudDoc = this.file.readLong();
 			
 			if (this.longitudDoc ==0){
-				System.out.println("el documento tenia extension cero");
+			//	System.out.println("el documento tenia extension cero");
 				return false;
 			}
 			this.masLineasLeer = true;
@@ -167,7 +167,7 @@ public class ArchivoDocumentos extends Directo {
 			}
 			}
 	        catch (IOException e) {
-			System.out.println("no se ha podido posicionar el documento en el archivo");
+		//	System.out.println("no se ha podido posicionar el documento en el archivo");
 			e.printStackTrace();
 			return false;
 		}
@@ -182,9 +182,12 @@ public class ArchivoDocumentos extends Directo {
 		try{
 			
 			if (this.modoEnEjecucion != 0){
-				System.out.println("el archivo de documentos no esta preparado para lectura");
+		//		System.out.println("el archivo de documentos no esta preparado para lectura");
 				return false;
 			}
+			
+			this.guardarCantDocs();
+			
 			//me posiciono en el final del documento
 			this.file.seek(this.file.length());
 			//cargo el offset del documento (la siguiente posicion a la ultima utilizada) en una variable local
@@ -211,7 +214,7 @@ public class ArchivoDocumentos extends Directo {
 			return true;
 			
 		}catch (Exception e){
-			System.out.println("no se ha podido setear el documento de archivos en modo escritura");
+		//	System.out.println("no se ha podido setear el documento de archivos en modo escritura");
 			e.printStackTrace();
 			return false;
 		}
@@ -223,7 +226,7 @@ public class ArchivoDocumentos extends Directo {
 		this.NombreDoc = nombre;
 		
 		if (this.modoEnEjecucion !=2 ){
-			System.out.println("no se puede setear el nombre en este modo de ejecucion");
+		//	System.out.println("no se puede setear el nombre en este modo de ejecucion");
 			return false;
 		}
 		
@@ -234,7 +237,7 @@ public class ArchivoDocumentos extends Directo {
 		
 		//se verifica la longitud
 		if (longitudNOmbre > 32){
-			System.out.println("El nombre del archivo es demasiado largo, se corta");
+		//	System.out.println("El nombre del archivo es demasiado largo, se corta");
 			//corto hasta el caracter anterior al maximo
 			nombre.substring(0, 30);
 			//agrego el caracter de cortado 
@@ -256,7 +259,7 @@ public class ArchivoDocumentos extends Directo {
 			return true;
 			
 		} catch (IOException e) {
-			System.out.println("No se ha podido almacenar el nombre");
+		//	System.out.println("No se ha podido almacenar el nombre");
 			e.printStackTrace();
 			return false;
 		}
@@ -296,7 +299,7 @@ public class ArchivoDocumentos extends Directo {
 				return nombre;
 				
 			} catch (IOException e) {
-				System.out.println("no se ha podido recuperar el nombre");
+			//	System.out.println("no se ha podido recuperar el nombre");
 				e.printStackTrace();
 				return null;
 			}
@@ -325,12 +328,12 @@ public class ArchivoDocumentos extends Directo {
 				this.file.writeUTF(linea);
 				return true;
 			} catch (IOException e) {
-				System.out.println("no se ha podido escribir la linea");
+		//		System.out.println("no se ha podido escribir la linea");
 				e.printStackTrace();
 				return false;
 			}
 		}else {
-			System.out.println("no se ha podido escribir la linea, el documento noe estaba en modo escritura");
+		//	System.out.println("no se ha podido escribir la linea, el documento noe estaba en modo escritura");
 			return false;
 		}
 	}
@@ -366,12 +369,12 @@ public class ArchivoDocumentos extends Directo {
 				}
 				return linea;
 			} catch (IOException e) {
-				System.out.println("no se ha podido leer la linea");
+		//		System.out.println("no se ha podido leer la linea");
 				e.printStackTrace();
 				return null;
 			}
 		}else{
-			System.out.println("no se ha podido leer la linea, el archivo no estaba en modo lectura");
+	//		System.out.println("no se ha podido leer la linea, el archivo no estaba en modo lectura");
 			return null;
 		}
 	}
@@ -409,15 +412,15 @@ public class ArchivoDocumentos extends Directo {
 				this.file.seek(this.offsetLastDoc);
 				//y almaceno su longitud, porque al empezar la escritura solo reserve el espacio
 				this.file.writeLong(this.longitudDoc);
-				
+			/*	
 				//me posiciono en la ubicacion cero, y reescribo el campo de cantidad de documentos
 				this.file.seek(0);
 				this.file.writeLong(this.cantDocsAlmacenados + 1);
-				
+			*/	
 				this.modoEnEjecucion = 0;
 				
 			} catch (IOException e) {
-				System.out.println("no se ha podido cerrar el archivo de documentos");
+		//		System.out.println("no se ha podido cerrar el archivo de documentos");
 				e.printStackTrace();
 			}
 		}else {
@@ -428,7 +431,7 @@ public class ArchivoDocumentos extends Directo {
 		try {
 			this.cerrar();
 		} catch (IOException e) {
-			System.out.println("no se ha podido cerrar el archivo de documentos");
+		//	System.out.println("no se ha podido cerrar el archivo de documentos");
 			e.printStackTrace();
 		}
 	}
