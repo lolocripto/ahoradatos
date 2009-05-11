@@ -689,31 +689,34 @@ public class Core {
 				this.documentManager.cerrarSesion();
 				return tiempoFinal.toString() + " segundos";
 			}
-			// TODO: pasarle el filtro a las palabras
-			Iterator<SimilitudDocumento> it;
-			it = this.ranking.iterator();
-			SimilitudDocumento nodo;
-			Integer i = 1;
-			invocador.mensaje("Seleccione un de los documentos para ser reproducido:");
-			while (it.hasNext()) {
-				nodo = it.next();
-				String mensaje = i.toString()
-						+ ". "
-						+ this.documentManager
-								.getNombreDoc(nodo.getDocumento());
-				invocador.mensaje(mensaje);
-				i++;
-			}
 
-			String documento = invocador
-					.obtenerDatos("Elija el documento a reproducir: ");
-			try {
-				Integer.parseInt(documento);
-			} catch (Exception e) {
-				return "Opcion incorecta.";
-			}
-			this.playDocumentInterno(invocador, documento);
-
+			//TODO: pasarle el filtro a las palabras
+			  Iterator<SimilitudDocumento> it;
+			  it = this.ranking.iterator();
+			  SimilitudDocumento nodo;
+			  Integer i = 1;
+			  invocador.mensaje("Seleccione un de los documentos para ser reproducido:");
+			  while (it.hasNext()) {
+				  nodo = it.next();
+				  String mensaje = i.toString() + ". " + this.documentManager.getNombreDoc(nodo.getDocumento());  
+				  invocador.mensaje(mensaje);
+				  i++;
+			  }
+			 int opcion = 0;
+			 String documento = "";
+			 
+			  while (opcion < 1 && opcion > Constantes.TOP_RANKING){
+				  documento = invocador.obtenerDatos("Elija el documento a reproducir: ");
+				  try {
+					  opcion = Integer.parseInt(documento);
+				  } catch (NumberFormatException e) {
+					  invocador.mensaje("Opción incorrecta. Intente nuevamente.");
+				  }  
+			  }
+			  
+			  
+			  this.playDocumentInterno(invocador, documento);
+			
 			this.documentManager.cerrarSesion();
 			return tiempoFinal.toString() + " segundos";
 		} catch (Exception e) {
