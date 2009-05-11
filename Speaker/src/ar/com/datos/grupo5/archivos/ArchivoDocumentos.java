@@ -381,6 +381,18 @@ public class ArchivoDocumentos extends Directo {
 	}
 	
 	
+	public void guardarCantDocs(){
+		try {
+			this.file.seek(0);
+			this.file.writeLong(this.cantDocsAlmacenados + 1);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 	public void terminarSession (){
 		
 		if (this.modoEnEjecucion ==2){
