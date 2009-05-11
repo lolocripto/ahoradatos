@@ -122,7 +122,6 @@ public class FTRSManager {
 		
 		for (int i = 0; i < cantidadTerminos; i++) {
 			// Busco el termino
-			
 			RegistroFTRS registroFtrs = arbolFTRS.buscar(terminosConsulta[i]);
 
 			// Si no lo encuentra devuelve null
