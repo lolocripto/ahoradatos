@@ -116,6 +116,13 @@ public class DocumentsManager {
 	}
 	
 	
+	@Override
+	protected void finalize() throws Throwable {
+		this.cerrarSesion();
+		super.finalize();
+	}
+
+
 	public void cerrarSesion(){
 		this.archivo.terminarSession();
 	}
