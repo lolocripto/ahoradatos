@@ -699,10 +699,10 @@ public class Core {
 				  invocador.mensaje(mensaje);
 				  i++;
 			  }
-			 int opcion = 0;
-			 String documento = "";
+			 int opcion = -1;
+			 String documento = "0";
 			 
-			  while (opcion < 1 && opcion > Constantes.TOP_RANKING){
+			  while (opcion < 1 || opcion > (i-1)){
 				  documento = invocador.obtenerDatos("Elija el documento a reproducir: ");
 				  try {
 					  opcion = Integer.parseInt(documento);
