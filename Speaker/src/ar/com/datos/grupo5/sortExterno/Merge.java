@@ -211,29 +211,51 @@ public class Merge {
 		
 				while (salida == 0) {
 					comp = nodo1.comparar(nodo2);
-					if (comp == -1 || comp == 0) {
-						if (i1 < cantidadRegistrosfP1) {
-							dataNodo = nodo1.getBytes();
-							fParticion3.write(dataNodo, 0, dataNodo.length);
-							finArchivo1 = fParticion1.read(dataNodo, 0, dataNodo.length);
-							nodo1 = new NodoRS();
-							nodo1.setBytes(dataNodo);
-							i1++;
-						} else {
-							nodo1.setIdDocumento(10000000L);
-						}
-					} else {
-						if (i2 < cantidadRegistrosfP2) {
-							dataNodo = nodo2.getBytes();
-							fParticion3.write(dataNodo, 0, dataNodo.length);
-							finArchivo2 = fParticion2.read(dataNodo, 0, dataNodo.length);
-							nodo2 = new NodoRS();
-							nodo2.setBytes(dataNodo);
-							i2++;
-						} else {
-							nodo2.setIdDocumento(10000000L);
-						}
+					switch(comp) {
+					case 0:
+							if( nodo1.getIdDocumento() == 10000000L && nodo2.getIdDocumento() == 10000000L) {
+								salida = 1;
+							} else {
+								if (i1 < cantidadRegistrosfP1) {
+									dataNodo = nodo1.getBytes();
+									fParticion3.write(dataNodo, 0, dataNodo.length);
+									finArchivo1 = fParticion1.read(dataNodo, 0, dataNodo.length);
+									nodo1 = new NodoRS();
+									nodo1.setBytes(dataNodo);
+									i1++;
+								} else {
+									nodo1.setIdDocumento(10000000L);
+								}
+							}
+						break;
+					case 1:
+							if (i1 < cantidadRegistrosfP1) {
+								dataNodo = nodo1.getBytes();
+								fParticion3.write(dataNodo, 0, dataNodo.length);
+								finArchivo1 = fParticion1.read(dataNodo, 0, dataNodo.length);
+								nodo1 = new NodoRS();
+								nodo1.setBytes(dataNodo);
+								i1++;
+							} else {
+								nodo1.setIdDocumento(10000000L);
+							}
+						break;
+					case -1:
+							if (i2 < cantidadRegistrosfP2) {
+								dataNodo = nodo2.getBytes();
+								fParticion3.write(dataNodo, 0, dataNodo.length);
+								finArchivo2 = fParticion2.read(dataNodo, 0, dataNodo.length);
+								nodo2 = new NodoRS();
+								nodo2.setBytes(dataNodo);
+								i2++;
+							} else {
+								nodo2.setIdDocumento(10000000L);
+							}
+						break;
+						default:
+							break;
 					}
+					
 					//Simulo los end of file
 					if (finArchivo1 == -1 && finArchivo2 == -1) {
 						salida = 1;
