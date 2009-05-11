@@ -679,6 +679,12 @@ public class Core {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			if (this.ranking == null) {
+				invocador.mensaje("No se encuentrarón documentos.");
+				Float tiempoFinal = (float)(System.currentTimeMillis() - this.tiempoConsulta) / 1000;
+				this.documentManager.cerrarSesion();
+				return tiempoFinal.toString() + " segundos";
+			}
 			//TODO: pasarle el filtro a las palabras
 			  Iterator<SimilitudDocumento> it;
 			  it = this.ranking.iterator();
