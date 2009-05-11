@@ -28,8 +28,8 @@ public class ArchivoSecuencialSet {
 			miArchivo.abrir(Constantes.ARCHIVO_ARBOL_BSTAR_SECUENCIAL_SET,
 					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 		} catch (FileNotFoundException e) {
-			System.out
-					.println("no se ha podido abrir el archivo de secuencialsetBstar");
+		//	System.out
+		//			.println("no se ha podido abrir el archivo de secuencialsetBstar");
 			e.printStackTrace();
 		}
 
@@ -98,7 +98,7 @@ public class ArchivoSecuencialSet {
 
 		if (unBloque.getPunteroAlSiguiente() == 0) {
 
-			System.out.println("dicho bloque no tiene siguiente");
+	//		System.out.println("dicho bloque no tiene siguiente");
 			return null;
 		} else {
 
@@ -113,12 +113,12 @@ public class ArchivoSecuencialSet {
 		BloqueFTRS bloqueOrigen = this.leerBloque(numeroBloque);
 
 		if (bloqueOrigen == null) {
-			System.out.println("dicho bloque no tiene siguiente");
+		//	System.out.println("dicho bloque no tiene siguiente");
 			return null;
 		} else {
 
 			if (bloqueOrigen.getPunteroAlSiguiente() == 0) {
-				System.out.println("dicho bloque no tiene siguiente");
+	//			System.out.println("dicho bloque no tiene siguiente");
 				return null;
 			}
 			return this.leerBloque(bloqueOrigen.getPunteroAlSiguiente());
