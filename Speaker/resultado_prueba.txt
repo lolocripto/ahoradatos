@@ -1,0 +1,77 @@
+> load test.txt
+> Para ingresar el audio para la palabra: hola
+> Para iniciar la grabación ingrese la tecla i y luego enter: i
+> Para detener la grabación ingrese la tecla f y luego enter: f
+> La grabación ha sido correcta? S/N: s
+> Para ingresar el audio para la palabra: diccionario
+> Para iniciar la grabación ingrese la tecla i y luego enter: i
+> Para detener la grabación ingrese la tecla f y luego enter: f
+> La grabación ha sido correcta? S/N: s
+> Para ingresar el audio para la palabra: complejo
+> Para iniciar la grabación ingrese la tecla i y luego enter: i
+> Para detener la grabación ingrese la tecla f y luego enter: f
+> La grabación ha sido correcta? S/N: s
+> Las palabras han sido correctamente ingresadas.
+> load test2.txt
+> Para ingresar el audio para la palabra: loco
+> Para iniciar la grabación ingrese la tecla i y luego enter: i
+> Para detener la grabación ingrese la tecla f y luego enter: f
+> La grabación ha sido correcta? S/N: s
+> Para ingresar el audio para la palabra: .
+> Para iniciar la grabación ingrese la tecla i y luego enter: i
+> Para detener la grabación ingrese la tecla f y luego enter: f
+> La grabación ha sido correcta? S/N: s
+> Para ingresar el audio para la palabra: como
+> Para iniciar la grabación ingrese la tecla i y luego enter: i
+> Para detener la grabación ingrese la tecla f y luego enter: f
+> La grabación ha sido correcta? S/N: s
+> Para ingresar el audio para la palabra: estas
+> Para iniciar la grabación ingrese la tecla i y luego enter: i
+> Para detener la grabación ingrese la tecla f y luego enter: f
+> La grabación ha sido correcta? S/N: s
+> Para ingresar el audio para la palabra: ?
+> Para iniciar la grabación ingrese la tecla i y luego enter: i
+> Para detener la grabación ingrese la tecla f y luego enter: f
+> La grabación ha sido correcta? S/N: s
+> Las palabras han sido correctamente ingresadas.
+> load test3.txt
+> Para ingresar el audio para la palabra: arbol
+> Para iniciar la grabación ingrese la tecla i y luego enter: i
+> Para detener la grabación ingrese la tecla f y luego enter: f
+> La grabación ha sido correcta? S/N: s
+> Para ingresar el audio para la palabra: ,
+> Para iniciar la grabación ingrese la tecla i y luego enter: i
+> Para detener la grabación ingrese la tecla f y luego enter: f
+> La grabación ha sido correcta? S/N: s
+> Para ingresar el audio para la palabra: pero
+> Para iniciar la grabación ingrese la tecla i y luego enter: i
+> Para detener la grabación ingrese la tecla f y luego enter: f
+> La grabación ha sido correcta? S/N: s
+> Para ingresar el audio para la palabra: saliendo
+> Para iniciar la grabación ingrese la tecla i y luego enter: i
+> Para detener la grabación ingrese la tecla f y luego enter: f
+> La grabación ha sido correcta? S/N: s
+> Las palabras han sido correctamente ingresadas.
+> query hola
+> Seleccione un de los documentos para ser reproducido:
+> 1. test.txt
+> 2. test2.txt
+> Elija el documento a reproducir: 1
+hola diccionario complejo > 
+> 0.0080 segundos
+> query loco
+> Seleccione un de los documentos para ser reproducido:
+> 1. test3.txt
+> 2. test2.txt
+> Elija el documento a reproducir: 1
+arbol loco pero estas saliendo > 
+> 0.0020 segundos
+> query "hola loco"
+> Seleccione un de los documentos para ser reproducido:
+> 1. test3.txt
+> 2. test.txt
+> 3. test2.txt
+> Elija el documento a reproducir: 1
+arbol loco pero estas saliendo > 
+> 0.0030 segundos
+> fin
