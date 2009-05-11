@@ -142,11 +142,12 @@ public class ArchivoDocumentos extends Directo {
 			
 			byte lecturaDeCod = this.file.readByte();
 			
+		/*
 			if (lecturaDeCod !=this.codRedundancia){
 				System.out.println("ha fallado la comprobacion de redundancia del archivo");
 				return false;
 			}
-			
+		*/	
 			//obtengo el nombre del archivo
 			
 			//genero un array auxiliar con la longitud reservada para el nombre
