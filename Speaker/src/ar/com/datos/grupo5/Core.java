@@ -118,9 +118,8 @@ public class Core {
 				
 				// Si no es StopWord entonces utilizo el Ftrs.
 				if (!elemento.isStopWord()) {
-					
-					this.ftrsManager.validarTermino(elemento.getTextoEscrito(), offsetDoc);
-					
+					ftrsManager.validarTermino(elemento
+							.getTextoEscrito(), offsetDoc);
 				}
 				
 				/*
