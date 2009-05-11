@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -995,7 +996,8 @@ public class ListasInvertidas {
 			for (int i = 0; i < bloquesRegAnterior; i++) { 
 
 				
-				offsetListaSiguiente -= (offsetFinal - offsetInicial);
+				offsetListaSiguiente = (short) (offsetListaSiguiente - offsetFinal);
+				offsetListaSiguiente = (short) (offsetListaSiguiente - (short) offsetInicial);
 				
 				//armo el bloque a insertar
 				datosBloque = this.armarDatosBloque(siguienteExt, datosAnteriores, primerRegistro, espacioOcupado, offsetInicial, offsetFinal);
@@ -1102,7 +1104,9 @@ public class ListasInvertidas {
 				dos.write(datosAnteriores, offsetInicial, datosAnteriores.length - offsetInicial);
 				cantidadEscritaEnBuffer += datosAnteriores.length - offsetInicial;
 				primerRegistro = (short) (datosAnteriores.length - offsetInicial);
-				offsetListaSiguiente -= (datosAnteriores.length - offsetInicial);
+				offsetListaSiguiente = (short) (offsetListaSiguiente - datosAnteriores.length);
+				offsetListaSiguiente = (short) (offsetListaSiguiente - offsetInicial);
+				
 			} catch (IOException e1) {
 				// Error al escribir datos
 				return 1L;
@@ -1431,6 +1435,7 @@ public class ListasInvertidas {
 				//No hay mas listas porque cambie de bloque
 				masListas = false;
 			} else {
+
 				offsetSiguienteLista += new Integer( (Constantes.SIZE_OF_LONG + Constantes.SIZE_OF_INT 
 							+ (Constantes.SIZE_OF_LONG * reg.getCantidadDocumentos() * 2))).shortValue();
 				if (offsetSiguienteLista >= (espacioOcupado - tamanioControl)) {
