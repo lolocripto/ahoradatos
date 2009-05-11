@@ -88,6 +88,9 @@ public class BSharp {
 		return true;
 	}
 	
+	public void listar() {
+		this.arbolBStar.listar();
+	}
 	
 	public void cerrar(){
 		this.secuencialSet.cerrar();

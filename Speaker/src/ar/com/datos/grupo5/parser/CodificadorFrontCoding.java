@@ -96,7 +96,7 @@ public class CodificadorFrontCoding {
 		int cantidad = 0;
 		int i = 0;
 		while (coincidentes
-				&& (i < caracteresS1.length - 1 || i < caracteresS2.length - 1)) {
+				&& (i < (caracteresS1.length - 1) && i < (caracteresS2.length - 1))) {
 			coincidentes = (caracteresS1[i] == caracteresS2[i]);
 			if (coincidentes) {
 				cantidad++;
