@@ -399,6 +399,8 @@ public class FTRSManager {
 			if (idTermino == null) {
 				return false;
 			}
+		} else {
+			idTermino = registroFtrs.getIdTermino();
 		}
 
 		// Escribo el idTermino junto con el offsetDoc

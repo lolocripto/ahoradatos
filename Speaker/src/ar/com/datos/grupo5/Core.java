@@ -673,7 +673,6 @@ public class Core {
 			this.tiempoConsulta = System.currentTimeMillis();
 			this.documentManager.initReadSession(0L);
 			Long cantidadDocs = this.documentManager.getCantidadDocsAlmacenados();
-			
 			try {
 				ranking = this.ftrsManager.consultaRankeada(query, cantidadDocs);
 			} catch (IOException e) {
@@ -686,7 +685,6 @@ public class Core {
 			  SimilitudDocumento nodo;
 			  Integer i = 1;
 			  invocador.mensaje("Seleccione un de los documentos para ser reproducido:");
-		//	  this.documentManager.initReadSession(0L);
 			  while (it.hasNext()) {
 				  nodo = it.next();
 				  String mensaje = i.toString() + ". " + this.documentManager.getNombreDoc(nodo.getDocumento());  
@@ -698,9 +696,11 @@ public class Core {
 			  this.playDocumentInterno(invocador, documento);
 			
 			Float tiempoFinal = (float)(System.currentTimeMillis() - this.tiempoConsulta) / 1000;
+			this.documentManager.cerrarSesion();
 			return tiempoFinal.toString() + " segundos";
 		} catch (Exception e) {
 			logger.error("Error: " + e.getMessage(), e);
+			this.documentManager.cerrarSesion();
 			return "Error inesperado.";
 		}
 	}
