@@ -145,6 +145,10 @@ public class FTRSManager {
 
 		}
 		
+		if (pesoTerminoListas.size() == 0) {
+			return null;
+		}
+		
 		// ordeno por pesoGlobal
 		Collections.sort((List<ParPesoGlobalTermino>) pesoTerminoListas);
 
