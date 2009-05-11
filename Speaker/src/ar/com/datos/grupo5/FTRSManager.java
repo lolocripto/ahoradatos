@@ -175,7 +175,7 @@ public class FTRSManager {
 			it = regTermDocs.getDatosDocumentos().iterator();
 			ParFrecuenciaDocumento parFD;
 			// Busco hasta que tenga X documentos, la X es el Ranking
-			while (it.hasNext() && cantidadDocumentos < Constantes.TOP_RANKING) {
+			while (it.hasNext() && cantidadDocumentosSeleccionados < Constantes.TOP_RANKING) {
 				parFD = it.next();
 				simDocs = new SimilitudDocumento();
 				//TODO: Verificar que no este repetido

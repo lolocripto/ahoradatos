@@ -93,7 +93,7 @@ public class Core {
 				return "No se pudo abrir el archivo: " + pathDocumento;
 			} catch (Exception e) {
 				logger.error("Error al crear contenedor: " + e.getMessage(), e);
-				return "Error inesperado";
+				return "Error inesperado, consulte al proveedor del software";
 			}
 			
 			logger.debug("tengo el contenedor de palabras.");
