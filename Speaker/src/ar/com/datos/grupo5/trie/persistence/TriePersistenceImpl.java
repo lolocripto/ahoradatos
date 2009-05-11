@@ -12,7 +12,7 @@ public class TriePersistenceImpl implements ITriePersistence {
 	ArrayList<Nodo> listaNodosSucios;
 	private int cantNodosSucios;
 	private int autoFlush = Constantes.AUTO_FLUSH_AT;
-	
+
 
 	static private TriePersistenceImpl singleton = null;
 
@@ -31,7 +31,6 @@ public class TriePersistenceImpl implements ITriePersistence {
 	}
 
 	static public TriePersistenceImpl getPersistenceSession() {
-
 		return singleton;
 	}
 	
@@ -50,9 +49,8 @@ public class TriePersistenceImpl implements ITriePersistence {
 		Nodo unNodo;
 		// creo un nuevo nodo con el valor del char pasado por parametro
 		unNodo = new Nodo(i);
-		// agrego al nodo un numero que voy a obtener del registro de
-		// administracion
-		unNodo.setNumeroNodo(AdministrationRegistry.sumarUnNodo());
+		// agrego al nodo un numero de bloque nuevo
+		unNodo.setNumeroNodo(this.tah.BloqueParaNuevoNodo());
 		// creo un registro que lo represente
 		TrieNodeRegistry t = new TrieNodeRegistry(unNodo);
 		
@@ -60,7 +58,6 @@ public class TriePersistenceImpl implements ITriePersistence {
 		this.agregarNodoSucio(unNodo);
 		
 		return unNodo;
-
 	}
 	
 	public Nodo nuevoNodo(String i) {
@@ -68,15 +65,13 @@ public class TriePersistenceImpl implements ITriePersistence {
 		Nodo unNodo;
 		// creo un nuevo nodo con el valor del char pasado por parametro
 		unNodo = new Nodo(i);
-		// agrego al nodo un numero que voy a obtener del registro de
-		// administracion
-		unNodo.setNumeroNodo(AdministrationRegistry.sumarUnNodo());
+		// agrego al nodo un numero que voy a obtener d
+		unNodo.setNumeroNodo(this.tah.BloqueParaNuevoNodo());
 		// creo un registro que lo represente
 		TrieNodeRegistry t = new TrieNodeRegistry(unNodo);
 		
 		t.setDirty(true);
 		this.agregarNodoSucio(unNodo);
-		
 		return unNodo;
 
 	}

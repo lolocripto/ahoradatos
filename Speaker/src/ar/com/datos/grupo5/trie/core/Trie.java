@@ -101,8 +101,4 @@ public class Trie {
 		return null;
 	}
 	
-	public void recEspacio(){
-		this.root.recEspacio();
-	}
-	
 }

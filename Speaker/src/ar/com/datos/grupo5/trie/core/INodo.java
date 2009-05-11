@@ -28,7 +28,6 @@ public interface INodo {
 		
 		public void setRegistroAsociado(TrieNodeRegistry t);
 		
-		public void recEspacio();
 
 	}
 

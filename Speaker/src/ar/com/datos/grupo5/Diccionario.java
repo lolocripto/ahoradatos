@@ -14,7 +14,7 @@ public class Diccionario {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger  = Logger.getLogger(Diccionario.class);
+	private static Logger LOG  = Logger.getLogger(Diccionario.class);
 
 	private TrieAdministrator ta;
 	
@@ -24,6 +24,10 @@ public class Diccionario {
 	 */
 	public Diccionario() {
 		this.ta = new TrieAdministrator();
+	}
+	
+	public int cantNodosUsados (){
+		return this.ta.cantNodos();
 	}
 	
 	/**

@@ -369,7 +369,9 @@ public class Core {
 			}
 			
 			if (!abrirArchivo(invocador)) {
+				
 				return "Intente denuevo";
+				
 			}
 			
 			IunidadDeHabla elemento;

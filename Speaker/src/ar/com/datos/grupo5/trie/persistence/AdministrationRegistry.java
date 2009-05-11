@@ -6,33 +6,49 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.utils.Conversiones;
 
 public class AdministrationRegistry {
 
-	private static long cantNodosUsados;
-	private static int profundidadActual;
+	private long cantNodosUsados;
+	private int profundidadActual;
 	
 	
-	public static void setProfundidadActual(int profundidadActual) {
-		AdministrationRegistry.profundidadActual = profundidadActual;
+	
+	public AdministrationRegistry() {
+		this.cantNodosUsados =0;
+		this.profundidadActual = Constantes.SIZE_OF_TRIE;
+	}
+	
+	public AdministrationRegistry(byte[] tiraBytes) {
+		this.hidratar(tiraBytes);
 	}
 
-	public static long sumarUnNodo(){
+	public AdministrationRegistry(Contenedor cont) {
+		this.hidratar(cont);
+	}
+	
+	
+	public void setProfundidadActual(int profundidadActual) {
+		this.profundidadActual = profundidadActual;
+	}
+
+	public long sumarUnNodo(){
 		
 		cantNodosUsados++;
 		return cantNodosUsados;
 	}
 	
-	public static long getCantidadNodosExistentes(){
+	public long getCantidadNodosExistentes(){
 		return cantNodosUsados;
 	}
 	
-	public static void setCantNodos(long cant){
+	public void setCantNodos(long cant){
 		cantNodosUsados = cant;
 	}
 	
-	public static Contenedor getPaqueteSerializado(){
+	public Contenedor getPaqueteSerializado(){
 		
 		Contenedor cont = new Contenedor();
 		
@@ -51,11 +67,11 @@ public class AdministrationRegistry {
 		return cont;
 	}
 	
-	public static int getProfundidadCreacionTrie(){
+	public int getProfundidadCreacionTrie(){
 		return profundidadActual;
 	}
 	
-	public static void hidratar (byte[] datosSerializados){
+	private void hidratar (byte[] datosSerializados){
 		
 		ByteArrayInputStream bis = new ByteArrayInputStream(datosSerializados);  
 		DataInputStream dis = new DataInputStream(bis);
@@ -70,7 +86,7 @@ public class AdministrationRegistry {
 		
 	}
 	
-	public static void hidratar (Contenedor cont){
+	private void hidratar (Contenedor cont){
 		hidratar(cont.getDato());
 	}
 	
