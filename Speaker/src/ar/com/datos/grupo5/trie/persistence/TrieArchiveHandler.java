@@ -29,7 +29,7 @@ public class TrieArchiveHandler {
 			AdministrationRegistry.hidratar(cont);
 			
 		} catch (Exception e) {
-			System.out.println("no se puede abrir el archivo de trie");
+		//	System.out.println("no se puede abrir el archivo de trie");
 			e.printStackTrace();
 		}
 	}
@@ -42,7 +42,7 @@ public class TrieArchiveHandler {
 			miArchivo.cerrar();
 			
 		} catch (IOException e) {
-			System.out.println("no se ha podido cerrar el archivo de trie");
+		//	System.out.println("no se ha podido cerrar el archivo de trie");
 			e.printStackTrace();
 		}
 		
@@ -56,7 +56,7 @@ public class TrieArchiveHandler {
 		try {
 			miArchivo.escribirBloque(AdministrationRegistry.getPaqueteSerializado().serializar(), 0);
 		} catch (IOException e) {
-			System.out.println("no se ha podido inicializar el archivo de trie");
+		//	System.out.println("no se ha podido inicializar el archivo de trie");
 			e.printStackTrace();
 		}
 		
@@ -64,26 +64,26 @@ public class TrieArchiveHandler {
 	
 	public void guardarNodo(TrieNodeRegistry registroNodo){
 		
-		System.out.println("se guarda el nodo numero: "+registroNodo.getNroNodo());
+	//	System.out.println("se guarda el nodo numero: "+registroNodo.getNroNodo());
 		
 		//genero un array auxiliar
 		byte[] aux;
 		//lo cargo con el contenido del nodo serializado
 		aux = registroNodo.getPaqueteSerializado().serializar();
 		
-		System.out.println("de tamaño: "+aux.length);
+	//	System.out.println("de tamaño: "+aux.length);
 		
 		//verifico que no exceda el limite del bloque
 		if (this.tamanioBloque < aux.length){
 			
-			System.out.println("no se ha podido guardar el nodo en el trie por ser demasiado grande");
+		//	System.out.println("no se ha podido guardar el nodo en el trie por ser demasiado grande");
 
 		}else{ //si no excede intento guardarlo
 	
 		try {
 			miArchivo.escribirBloqueSalteado(aux, (int)registroNodo.getNroNodo());
 		} catch (IOException e) {
-			System.out.println("no se ha podido guardar el nodo en el trie");
+	//		System.out.println("no se ha podido guardar el nodo en el trie");
 			e.printStackTrace();
 		}
 		}
@@ -109,7 +109,7 @@ public class TrieArchiveHandler {
 			return tnr;
 			
 		} catch (IOException e) {
-			System.out.println("no se ha podido recuperar el nodo del archivo de trie");
+	//		System.out.println("no se ha podido recuperar el nodo del archivo de trie");
 			e.printStackTrace();
 		}
 		return null;
@@ -132,7 +132,7 @@ public class TrieArchiveHandler {
 			AdministrationRegistry.hidratar(cont);
 			
 		} catch (IOException e) {
-			System.out.println("no se ha podido recuperar el nodo del archivo de trie");
+	//		System.out.println("no se ha podido recuperar el nodo del archivo de trie");
 			e.printStackTrace();
 		}
 		
@@ -150,14 +150,14 @@ public class TrieArchiveHandler {
 		//verifico que no exceda el limite del bloque
 		if (this.tamanioBloque < aux.length){
 			
-			System.out.println("no se ha podido guardar el nodo en el trie por ser demasiado grande");
+	//		System.out.println("no se ha podido guardar el nodo en el trie por ser demasiado grande");
 
 		}else{ //si no excede intento guardarlo
 	
 		try {
 			miArchivo.escribirBloqueSalteado(aux, 0);
 		} catch (IOException e) {
-			System.out.println("no se ha podido guardar el nodo en el trie");
+	//		System.out.println("no se ha podido guardar el nodo en el trie");
 			e.printStackTrace();
 		}
 		}
