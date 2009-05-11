@@ -1431,8 +1431,8 @@ public class ListasInvertidas {
 				//No hay mas listas porque cambie de bloque
 				masListas = false;
 			} else {
-				offsetSiguienteLista += (short) (Constantes.SIZE_OF_LONG + Constantes.SIZE_OF_INT 
-							+ (Constantes.SIZE_OF_LONG * reg.getCantidadDocumentos() * 2));
+				offsetSiguienteLista += new Integer( (Constantes.SIZE_OF_LONG + Constantes.SIZE_OF_INT 
+							+ (Constantes.SIZE_OF_LONG * reg.getCantidadDocumentos() * 2))).shortValue();
 				if (offsetSiguienteLista >= (espacioOcupado - tamanioControl)) {
 					masListas = false;
 				}
