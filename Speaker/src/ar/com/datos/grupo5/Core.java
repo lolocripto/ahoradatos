@@ -101,7 +101,7 @@ public class Core {
 				return "Intente denuevo";
 			}
 						
-			Long offsetDoc = this.documentManager.getOffsetUltDoc();
+			Long offsetDoc = DocumentsManager.getInstance().getOffsetUltDoc();
 		
 			
 			IunidadDeHabla elemento;
@@ -182,7 +182,6 @@ public class Core {
 						offsetRegistroAudio);
 				
 			}
-			//this.documentManager.escribirOtroDocumento();
 			
 			this.ftrsManager.generarListasInvertidas();
 
@@ -560,7 +559,6 @@ public class Core {
 		this.audioManager = new AudioManager();
 		this.parser = new TextInterpreter();
 		this.audioFileManager = new AudioFileManager();
-		this.documentManager = DocumentsManager.getInstance();
 		try {
 			this.diccionario = new Diccionario();
 			this.ftrsManager = new FTRSManager();
