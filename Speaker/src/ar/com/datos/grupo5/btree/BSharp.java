@@ -6,8 +6,6 @@ package ar.com.datos.grupo5.btree;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import sun.security.x509.CertAndKeyGen;
-
 import ar.com.datos.grupo5.archivos.ArchivoSecuencialSet;
 import ar.com.datos.grupo5.archivos.BloqueFTRS;
 import ar.com.datos.grupo5.registros.RegistroFTRS;
@@ -67,6 +65,7 @@ public class BSharp {
 			//No existe, armo la clave y la intento insertar.
 			reg = new RegistroNodo();
 			reg.setClave(new Clave(nuevaPalabraExt));
+
 			
 			if (this.arbolBStar.insertar(reg)) {
 				//Se pudo insertar, por lo tanto ahora modifico el SecuencialSer.
@@ -84,6 +83,7 @@ public class BSharp {
 			//la clave ya existia, pero hacia afuera solo importa que este en el arbol.
 			return true;
 		}
+
 	}
 	
 // Saque long idTerminoExt, 
