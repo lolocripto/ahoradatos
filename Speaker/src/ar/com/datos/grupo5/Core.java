@@ -87,10 +87,7 @@ public class Core {
 			// Cargo el parser con el documento en modo aprendizaje
 			try {
 				//Inicio la grabación del documento.
-				this.documentManager.initDocWriteSession();
-				contenedor = this.parser.modoCarga(pathDocumento, true, this.documentManager);
-			} catch (FileNotFoundException e) {
-				return "No se pudo abrir el archivo: " + pathDocumento;
+				contenedor = this.parser.modolecturaYalmacenamiento(pathDocumento);
 			} catch (Exception e) {
 				logger.error("Error al crear contenedor: " + e.getMessage(), e);
 				return "Error inesperado, consulte al proveedor del software";
@@ -185,7 +182,7 @@ public class Core {
 						offsetRegistroAudio);
 				
 			}
-			this.documentManager.escribirOtroDocumento();
+			//this.documentManager.escribirOtroDocumento();
 			
 			this.ftrsManager.generarListasInvertidas();
 
@@ -359,9 +356,8 @@ public class Core {
 			
 			// Mando a parsear el documento y obtengo un collection
 			try {
-				this.documentManager.initReadSession(simDocs.getDocumento());
-				//this.documentManager.initReadSession(8L);
-				contenedor = this.parser.modoLecturaDocAlmacenado(this.documentManager);
+
+				contenedor = this.parser.modoLecturaDocAlmacenado(simDocs.getDocumento());
 				
 			} catch (Exception e) {
 				logger.error("Error al crear contenedor: " + e.getMessage(), e);
@@ -429,7 +425,7 @@ public class Core {
 			// Mando a parsear el documento y obtengo un collection
 			try {
 				//this.documentManager.initReadSession(8L);
-				contenedor = this.parser.modoLectura(rutaDocumento, true);
+				contenedor = this.parser.modoLecturaSinAlmacenamiento(rutaDocumento, true);
 			} catch (Exception e) {
 				logger.error("Error al crear contenedor: " + e.getMessage(), e);
 				return "Error inesperado, consulte al proveedor del software";
@@ -490,7 +486,7 @@ public class Core {
 			// Mando a parsear el documento y obtengo un collection
 			try {
 	
-				contenedor = this.parser.modoLectura(textoAReproducir, false);
+				contenedor = this.parser.modoLecturaSinAlmacenamiento(textoAReproducir, false);
 			} catch (Exception e) {
 				logger.error("Error al crear contenedor: " + e.getMessage(), e);
 			}
