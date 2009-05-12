@@ -121,7 +121,7 @@ public class RegistroNodo {
 	 * @return the claveNodo
 	 */
 	public final Clave getClave() {
-		return claveNodo;
+		return this.claveNodo;
 	}
 
 	/**

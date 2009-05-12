@@ -58,7 +58,7 @@ public class Nodo {
 	/**
 	 * Lista de registros.
 	 */
-	private ArrayList< RegistroNodo > registros;
+	public ArrayList< RegistroNodo > registros;
 	
 	/**
 	 * El nodo padre.
@@ -355,6 +355,9 @@ public class Nodo {
 				}
 				
 			} else {
+				if (pos == Constantes.MENOR) {
+					pos = 0;
+				}
 				// ahora, tengo que vaciar el hno y llenarlo otra vez
 				regs.addAll(nodoHermano.getRegistros());
 				nodoHermano.getRegistros().clear();
@@ -462,8 +465,13 @@ public class Nodo {
 				}
 				// Ahora tengo que cargar las claves en el padre, y listo!
 				pos = nodoPadre.buscarRegistro(getPrimerRegistro().getClave());
-				nodoPadre.getRegistros().get(pos)
-				.setClave(getPrimerRegistro().getClave());
+				if (pos == Constantes.MENOR) {
+					pos = 0;
+				} else if(pos == Constantes.MAYOR) {
+					pos = nodoPadre.getCantidadRegistros() - 1; 
+				}
+				nodoPadre.getRegistros().get(pos).setClave(
+						getPrimerRegistro().getClave());
 				
 				RegistroNodo reg = new RegistroNodo();
 	
