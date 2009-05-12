@@ -239,7 +239,7 @@ public class Merge {
 								i1++;
 							} else {
 								nodo1.setIdDocumento(10000000L);
-								nodo1.setIdTermino(0L);
+								nodo1.setIdTermino(0L); //TODO mirar esta modificación, ahora no palma por loop, pero hay que chequear si no afecta
 							}
 						break;
 					case -1:
