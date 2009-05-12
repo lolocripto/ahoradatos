@@ -178,7 +178,6 @@ public class Merge {
 	 * Une dos porticiones.
 	 */
 	private void unirDosPaticiones() {
-		
 		int salida = 0, i1 = 0, i2 = 0, comp;
 		int finArchivo1 = 0;
 		int finArchivo2 = 0;
@@ -252,6 +251,7 @@ public class Merge {
 								i2++;
 							} else {
 								nodo2.setIdDocumento(10000000L);
+								nodo2.setIdTermino(0L); //TODO mirar esta modificación, ahora no palma por loop, pero hay que chequear si no afecta
 							}
 						break;
 						default:
