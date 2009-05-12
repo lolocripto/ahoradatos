@@ -64,8 +64,6 @@ public class TestArbolBSharp {
 			}
 
 
-/*			
->>>>>>> .r827
 			it = lista2.iterator();
 			while (it.hasNext()) {
 				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
@@ -86,16 +84,7 @@ public class TestArbolBSharp {
 				
 				
 			}
-			*/
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
 			
 			
 	/*		
@@ -108,12 +97,7 @@ public class TestArbolBSharp {
 				} else {
 					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + Integer.toString(i));
 				}
-<<<<<<< .mine
-				Thread.sleep(50);
-				tree.listar();
-=======
-			//	tree.listar();
->>>>>>> .r807
+
 				lista.add(cadena);
 			}
 			tree.listar();
