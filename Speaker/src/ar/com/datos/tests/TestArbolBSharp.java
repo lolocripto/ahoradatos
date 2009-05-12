@@ -36,7 +36,7 @@ public class TestArbolBSharp {
 			
 			Collection<IunidadDeHabla> lista2 = null;
 			
-			lista2 = tx.modoLectura("/home/zeke/Escritorio/prueba", true);
+			lista2 = tx.modoLecturaSinAlmacenamiento("/home/zeke/Escritorio/prueba", true);
 			
 			Iterator<IunidadDeHabla> it;
 			
