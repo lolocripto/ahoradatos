@@ -131,16 +131,18 @@ public class Core {
 				
 				
 				// Si no encontro la palabra pido ingresar el audio
-				String mensaje = new String(
-						"Para ingresar el audio para la palabra: "
-								+ elemento.getTextoEscrito());
-
+				String mensaje; 
 				String respuesta = "0";
-				invocador.mensaje(mensaje);
 
 				int resultado;
 				//pido que grabe hasta que sea correcta la grabación
 				while (!respuesta.equalsIgnoreCase("S")) {
+					
+					mensaje = new String(
+							"Para ingresar el audio para la palabra: "
+							+ elemento.getTextoEscrito());
+					
+					invocador.mensaje(mensaje);
 					
 					// Protocolo de Grabación
 					resultado = this.iniciarGrabacion(invocador);
@@ -149,6 +151,7 @@ public class Core {
 						case -1:
 							return "Operacion cancelada.";
 						case -2:
+							respuesta = "N";
 							continue;
 						default:
 					}
@@ -162,8 +165,13 @@ public class Core {
 							return "Operacion cancelada.";
 						default:
 					}
+					try {
+						this.playWord();	
+					} catch (SimpleAudioPlayerException e) {
+						respuesta = "N";
+						continue;
+					}
 					
-					this.playWord();
 				    
 				    mensaje = "La grabación ha sido correcta? S/N: ";
 				    respuesta = invocador.obtenerDatos(mensaje);
@@ -181,11 +189,7 @@ public class Core {
 			this.ftrsManager.generarListasInvertidas();
 
 			//cerrarArchivo(invocador);
-		} catch (SimpleAudioPlayerException e) {
-			logger.error("Error: " + e.getMessage());
-		
-			return "Error en dispositivo de audio";
-		} catch (Exception e) {
+		}  catch (Exception e) {
 			logger.error("Error: " + e.getMessage());
 			
 			return "Error inesperado";
@@ -202,7 +206,7 @@ public class Core {
 	 * @param invocador .
 	 */
 	public final void help(final InterfazUsuario invocador) {
-		
+		//TODO: Actualizar Help
 		String mensaje = "Funcion: load \n"
 			+ "Caracteristicas: carga un documento para almacenar las palabras "
 			+ "desconocidas \n"
