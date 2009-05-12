@@ -367,6 +367,8 @@ public class Nodo {
 			} else {
 				if (pos == Constantes.MENOR) {
 					pos = 0;
+				} else if(pos == Constantes.MAYOR) {
+					pos = nodoPadre.getCantidadRegistros() - 1; 
 				}
 				// ahora, tengo que vaciar el hno y llenarlo otra vez
 				regs.addAll(nodoHermano.getRegistros());
@@ -396,6 +398,9 @@ public class Nodo {
 				reg.setNroBloqueDerecho(nuevoHermano.getNroBloque());
 				nodoPadre.insertarRegistro(reg);
 				pos = nodoPadre.buscarRegistro(reg.getClave());
+				if(pos == Constantes.MAYOR) {
+					pos = nodoPadre.getCantidadRegistros() - 1; 
+				}
 				if (pos < nodoPadre.registros.size() - 1) {
 					nodoPadre.getRegistros().get(pos + 1)
 					.setNroBloqueIzquierdo(reg.getNroBloqueDerecho());				
@@ -502,6 +507,9 @@ public class Nodo {
 				reg.setNroBloqueDerecho(nuevoHermano.getNroBloque());
 				nodoPadre.insertarRegistro(reg);
 				pos = nodoPadre.buscarRegistro(reg.getClave());
+				if(pos == Constantes.MAYOR) {
+					pos = nodoPadre.getCantidadRegistros() - 1; 
+				}
 				if (pos < nodoPadre.registros.size() - 1) {
 					nodoPadre.getRegistros().get(pos + 1)
 					.setNroBloqueIzquierdo(reg.getNroBloqueDerecho());

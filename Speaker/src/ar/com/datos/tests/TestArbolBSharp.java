@@ -39,7 +39,7 @@ public class TestArbolBSharp {
 			
 			Collection<IunidadDeHabla> lista2 = null;
 			
-			lista2 = tx.modoLecturaSinAlmacenamiento("/home/zeke/Escritorio/prueba", true);
+			lista2 = tx.modoLecturaSinAlmacenamiento("palabras.txt", true);
 			//lista2 = tx.modoLecturaSinAlmacenamiento("/home/xxvkue/Desktop/prueba", true);
 			
 			Iterator<IunidadDeHabla> it;
@@ -47,7 +47,7 @@ public class TestArbolBSharp {
 			it = lista2.iterator();
 			
 			int u =0;
-/*
+
 			while (it.hasNext()) {
 				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
 				
@@ -63,7 +63,7 @@ public class TestArbolBSharp {
 				tree.listar();
 				
 			}
-*/
+
 			it = lista2.iterator();
 			while (it.hasNext()) {
 				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
@@ -87,7 +87,7 @@ public class TestArbolBSharp {
 
 			
 			
-	/*		
+			
 			
 			RegistroFTRS reg = new RegistroFTRS();
 			
@@ -102,7 +102,7 @@ public class TestArbolBSharp {
 				System.out.println("se encontro la palabra: " + cadena + " puntero: " + reg.getBloqueListaInvertida());
 			}
 			
-		*/	
+			
 			
 			
 			
@@ -127,7 +127,7 @@ public class TestArbolBSharp {
 				lista.add(cadena);
 			}
 			tree.listar();
-	*/		
+			
 			
 /*			
 			System.exit(0);

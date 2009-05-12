@@ -446,7 +446,7 @@ public final class BStar implements BTree {
 		int pos = nodoPadre.buscarRegistro(nodo.getPrimerRegistro()
 				.getClave());
 		if ((pos < nodoPadre.getRegistros().size() - 1)
-				&& (pos != Constantes.MAYOR)&& (pos != Constantes.MENOR)) {
+				&& (pos != Constantes.MAYOR)) {
 			nodoHno.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(
 					pos + 1).getNroBloqueDerecho()));
 			Nodo nuevoHno = nodo.split(nodoHno, nodoPadre, true, ultimoBloque);
@@ -454,9 +454,6 @@ public final class BStar implements BTree {
 		} else {
 			if (pos == Constantes.MAYOR) {
 				pos = nodoPadre.getRegistros().size() - 1;
-			}
-			if (pos == Constantes.MENOR) {
-				pos = 0;
 			}
 			nodoHno.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(
 					pos).getNroBloqueIzquierdo()));
