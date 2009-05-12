@@ -27,6 +27,9 @@ public class TestArbolBSharp {
 
 		int cantidad = 300;
 		try {
+			
+			
+			
 			BSharp tree = new BSharp();
 			String palabraVieja = "algo";
 			ArrayList<String> lista = new ArrayList<String>();

@@ -32,7 +32,7 @@
 	</logger>
 
 	<root>
-		<level value="ERROR" />
+		<level value="ERROR, DEBUG" />
 		<appender-ref ref="FILELOGGER" />
 		<appender-ref ref="ConsoleAppender" />
 	</root>
