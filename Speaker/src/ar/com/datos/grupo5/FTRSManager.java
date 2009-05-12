@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.btree.BSharp;
 import ar.com.datos.grupo5.registros.RegistroFTRS;
@@ -43,6 +45,11 @@ public class FTRSManager {
 	 */
 	private RandomAccessFile archivoTrabajo;
 
+	/**
+	 * Logger para la clase.
+	 */
+	private static Logger logger = Logger.getLogger(FTRSManager.class);
+	
 	/**
 	 * Constructor.
 	 * 

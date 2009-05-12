@@ -36,6 +36,7 @@ public class DocumentsManager {
 	private DocumentsManager() {
 		try {
 			this.archivo = new ArchivoDocs();
+			this.offsetUltDocEscrito = 0;
 		} catch (Exception e) {
 			
 			e.printStackTrace();

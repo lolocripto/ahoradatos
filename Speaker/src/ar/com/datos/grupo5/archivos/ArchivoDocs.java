@@ -38,15 +38,19 @@ public class ArchivoDocs {
     public int getCantidadDocs(){
     	
     	int adevolver = 0;
+    	
     	try {
-    		//guardo la posicion actual
-    		long posOriginal = this.miArchivo.file.getFilePointer();
-    		//voy al cero para leer la cantidad de documentos
-			this.miArchivo.posicionar(0);
-			adevolver = this.miArchivo.file.readInt();
-			//vuelvo a la posicion original
-			this.miArchivo.file.seek(posOriginal);
-			
+    		if (this.miArchivo.file.length() == 0) {
+    			adevolver = 0;
+    		} else {
+	    		//guardo la posicion actual
+	    		long posOriginal = this.miArchivo.file.getFilePointer();
+	    		//voy al cero para leer la cantidad de documentos
+				this.miArchivo.posicionar(0);
+				adevolver = this.miArchivo.file.readInt();
+				//vuelvo a la posicion original
+				this.miArchivo.file.seek(posOriginal);
+    		}
 		} catch (IOException e) {
 			LOG.error("no se pudo leer la cantidad de documentos",e);
 			e.printStackTrace();

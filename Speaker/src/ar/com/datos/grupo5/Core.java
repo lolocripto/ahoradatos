@@ -562,7 +562,7 @@ public class Core {
 			this.diccionario = new Diccionario();
 			this.ftrsManager = new FTRSManager();
 		} catch (Exception e) {
-			System.out.println("No se ha podido crear el FTRS.");
+			this.logger.debug("No se ha podido crear el FTRS.");
 		}
 		this.ranking = null;
 	}
@@ -658,7 +658,9 @@ public class Core {
 			this.tiempoConsulta = System.currentTimeMillis();
 			DocumentsManager.getInstance().initReadSession(0L);
 			Long cantidadDocs = DocumentsManager.getInstance().getCantidadDocsAlmacenados();
-			
+			if (cantidadDocs == 0) {
+				return "No hay documentos cargados al sistema";
+			}
 			try {
 				ftrsManager.abrirArchivos();
 				ranking = this.ftrsManager.consultaRankeada(query, cantidadDocs);

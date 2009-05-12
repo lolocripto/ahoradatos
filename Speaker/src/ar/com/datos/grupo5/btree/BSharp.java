@@ -6,6 +6,9 @@ package ar.com.datos.grupo5.btree;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
+import ar.com.datos.grupo5.FTRSManager;
 import ar.com.datos.grupo5.archivos.ArchivoSecuencialSet;
 import ar.com.datos.grupo5.archivos.BloqueFTRS;
 import ar.com.datos.grupo5.registros.RegistroFTRS;
@@ -29,6 +32,12 @@ public class BSharp {
 	private ArchivoSecuencialSet secuencialSet;
 	
 	/**
+	 * Logger para la clase.
+	 */
+	private static Logger logger = Logger.getLogger(FTRSManager.class);
+	
+	
+	/**
 	 * 
 	 */
 	public BSharp() {
@@ -37,7 +46,7 @@ public class BSharp {
 			this.secuencialSet = new ArchivoSecuencialSet();
 			this.arbolBStar.setSecuencialSet(this.secuencialSet);
 		} catch (Exception e) {
-			System.out.println("Imposible inicialiar el Arbol BSharp.");
+			logger.debug("Imposible inicializar el Arbol BSharp.");
 		}
 	}
 
