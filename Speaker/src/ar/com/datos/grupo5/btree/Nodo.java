@@ -125,12 +125,12 @@ public class Nodo {
 				.getClave()) > 0) {
 			return Constantes.MAYOR;
 		}
-		/* TODO: FIXME:
+		// TODO: FIXME:
 		if (clave.compareTo(registros.get(registros.size() - 1) 
 				.getClave()) == 0 && !this.esHoja) {
 			return Constantes.MAYOR;
 		}
-		*/
+		
 		//Recorro los nodos en busca de la clave.
 		for (RegistroNodo reg : this.registros) {
 			pos++;
