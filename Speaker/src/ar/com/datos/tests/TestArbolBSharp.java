@@ -63,7 +63,9 @@ public class TestArbolBSharp {
 				
 			}
 
+
 /*			
+>>>>>>> .r827
 			it = lista2.iterator();
 			while (it.hasNext()) {
 				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
