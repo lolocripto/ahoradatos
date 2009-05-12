@@ -56,14 +56,32 @@ public class BSharp {
 	}
 
 	public boolean insertar(String nuevaPalabraExt, long idTerminoExt) throws IOException {
-		RegistroNodo reg = new RegistroNodo();
-		reg.setClave(new Clave(nuevaPalabraExt));
-		if (this.arbolBStar.insertar(reg)) {
-			ArrayList<Nodo> lista = this.arbolBStar.getNodosModificados();
+		RegistroNodo reg;
+		//Busco si existe la clave primero!!
+		Clave claveABuscar = new Clave(nuevaPalabraExt);
+		
+		reg = this.arbolBStar.buscar(claveABuscar);
+		
+		//si no existe la inserto, en caso contrario
+		if (reg == null) {
+			//No existe, armo la clave y la intento insertar.
+			reg = new RegistroNodo();
+			reg.setClave(new Clave(nuevaPalabraExt));
 			
-			System.out.println(" elems pasados al sec: "+lista.size());
-			
-			this.secuencialSet.bloquesActualizados(lista, nuevaPalabraExt, idTerminoExt, -1);
+			if (this.arbolBStar.insertar(reg)) {
+				//Se pudo insertar, por lo tanto ahora modifico el SecuencialSer.
+				ArrayList<Nodo> lista = this.arbolBStar.getNodosModificados();
+				
+				System.out.println(" elems pasados al sec: "+lista.size());
+				
+				this.secuencialSet.bloquesActualizados(lista, nuevaPalabraExt, idTerminoExt, -1);
+				return true;
+			} else {
+				//no se pudo insertar
+				return false;
+			}
+		} else {
+			//la clave ya existia, pero hacia afuera solo importa que este en el arbol.
 			return true;
 		}
 		return false;
