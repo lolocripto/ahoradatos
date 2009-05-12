@@ -223,12 +223,27 @@ public final class Constantes {
 	 */
 	public static final int SIZE_OF_LIST_BLOCK = Integer.parseInt(
 			getXML("SIZE_OF_LIST_BLOCK"));
+
+	/**
+	 * Define el tamaño del Bloque del Secuencial Set, en función del
+	 * tamaño del de bloque del árbol
+	 * @return El valor del tamaño del bloque
+	 */
+	private static final int loadSecuencialSetBlockSize() {
+		int tamanio = Integer.parseInt(
+				getXML("SIZE_OF_SECUENCIAL_SET_BLOCK"));
+		if (tamanio ==2 * SIZE_OF_INDEX_BLOCK) {
+			return 2 * SIZE_OF_INDEX_BLOCK;
+		} else {
+			return 2 * SIZE_OF_INDEX_BLOCK;
+		}
+	}
 	
 	/**
 	 * Tamaño para los bloques del archivo de listas invertidas.
 	 */
-	public static final int SIZE_OF_SECUENCIAL_SET_BLOCK = Integer.parseInt(
-			getXML("SIZE_OF_SECUENCIAL_SET_BLOCK"));
+	public static final int SIZE_OF_SECUENCIAL_SET_BLOCK = 
+		loadSecuencialSetBlockSize();
 	
 	/**
 	 * Archivo para el arbol BStar.

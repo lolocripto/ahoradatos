@@ -716,6 +716,8 @@ public final class BStar implements BTree {
 				return true;
 			default:
 				//Puede pasarlo a cualquiera, empiezo probando por el IZQUIERDO
+				if (pos == 0)
+					pos++;
 				int nroHnoDerecho = nodoPadre.getRegistros().get(pos)
 						.getNroBloqueDerecho();
 				int nroHnoIzquierdo = nodoPadre.getRegistros().get(pos - 1)
