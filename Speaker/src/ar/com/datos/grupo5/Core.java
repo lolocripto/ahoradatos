@@ -86,8 +86,12 @@ public class Core {
 			} catch (Exception e) {
 				logger.error("Error al crear contenedor: " + e.getMessage(), e);
 				return "Error inesperado, consulte al proveedor del software";
+			} 
+			/*catch (FileNotFoundException e) {
+				logger.error("Error al crear contenedor: " + e.getMessage(), e);
+				return "El archivo solicitado no existe.";
 			}
-			
+			*/
 			logger.debug("tengo el contenedor de palabras.");
 			
 			Long offsetRegistroAudio;
@@ -151,7 +155,8 @@ public class Core {
 						case -1:
 							return "Operacion cancelada.";
 						case -2:
-							respuesta = "N";
+							this.logger.debug("error, resultado = -2. respuesta es N, pide el termino de nuevo.");
+						//	respuesta = "N";
 							continue;
 						default:
 					}
@@ -165,12 +170,12 @@ public class Core {
 							return "Operacion cancelada.";
 						default:
 					}
-					try {
+					//try {
 						this.playWord();	
-					} catch (SimpleAudioPlayerException e) {
-						respuesta = "N";
-						continue;
-					}
+					//} catch (SimpleAudioPlayerException e) {
+//						respuesta = "N";
+						//continue;
+					//}
 					
 				    
 				    mensaje = "La grabación ha sido correcta? S/N: ";
