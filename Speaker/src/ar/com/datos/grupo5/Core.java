@@ -42,11 +42,6 @@ public class Core {
 	private AudioManager audioManager;
 	
 	/**
-	 * Se encarga de manejar los documentos en disco.
-	 */
-	private DocumentsManager documentManager;
-	
-	/**
 	 * 
 	 */
 	private AudioFileManager audioFileManager;
@@ -597,9 +592,6 @@ public class Core {
 			if (this.audioFileManager != null) {
 				this.audioFileManager.cerrar();
 			}
-			if (this.documentManager != null) {
-				this.documentManager.cerrarSesion();
-			}
 			this.ftrsManager.cerrarArchivos();
 			return true;
 
@@ -612,13 +604,7 @@ public class Core {
 			} catch (Exception g) {
 				invocador.mensaje("Error al cerrar el archivo de audio.");
 			}
-			try {
-				if (this.documentManager != null) {
-					this.documentManager.cerrarSesion();
-				}
-			} catch (Exception g) {
-				invocador.mensaje("Error al cerrar el archivo de documentos.");
-			}
+
 			
 			invocador.mensaje("Error al cerrar el archivo de diccionario.");
 			
@@ -666,8 +652,8 @@ public class Core {
 		Float tiempoFinal = new Float(0.0);
 		try {
 			this.tiempoConsulta = System.currentTimeMillis();
-			this.documentManager.initReadSession(0L);
-			Long cantidadDocs = this.documentManager.getCantidadDocsAlmacenados();
+			DocumentsManager.getInstance().initReadSession(0L);
+			Long cantidadDocs = DocumentsManager.getInstance().getCantidadDocsAlmacenados();
 			
 			try {
 				ftrsManager.abrirArchivos();
@@ -678,7 +664,7 @@ public class Core {
 			}
 			if (this.ranking == null) {
 				invocador.mensaje("No se encontraron documentos.");
-				this.documentManager.cerrarSesion();
+				DocumentsManager.getInstance().cerrarSesion();
 				return tiempoFinal.toString() + " segundos";
 			}
 
@@ -690,7 +676,7 @@ public class Core {
 			  invocador.mensaje("Seleccione un de los documentos para ser reproducido:");
 			  while (it.hasNext()) {
 				  nodo = it.next();
-				  String mensaje = i.toString() + ". " + this.documentManager.getNombreDoc(nodo.getDocumento());  
+				  String mensaje = i.toString() + ". " + DocumentsManager.getInstance().getNombreDoc(nodo.getDocumento());  
 				  invocador.mensaje(mensaje);
 				  i++;
 			  }
@@ -709,11 +695,11 @@ public class Core {
 			  
 			  this.playDocumentInterno(invocador, documento);
 			
-			this.documentManager.cerrarSesion();
+			DocumentsManager.getInstance().cerrarSesion();
 			return tiempoFinal.toString() + " segundos";
 		} catch (Exception e) {
 			logger.error("Error: " + e.getMessage(), e);
-			this.documentManager.cerrarSesion();
+			DocumentsManager.getInstance().cerrarSesion();
 			return "Error inesperado.";
 		}
 	}
@@ -727,9 +713,9 @@ public class Core {
 			if (this.audioFileManager != null) {
 				this.audioFileManager.cerrar();
 			}
-			if (this.documentManager != null) {
-				this.documentManager.cerrarSesion();
-			}
+			
+			DocumentsManager.getInstance().cerrarSesion();
+			
 			this.ftrsManager.cerrarArchivos();
 			
 
@@ -742,13 +728,8 @@ public class Core {
 			} catch (Exception g) {
 				
 			}
-			try {
-				if (this.documentManager != null) {
-					this.documentManager.cerrarSesion();
-				}
-			} catch (Exception g) {
-			
-			}
+
+			DocumentsManager.getInstance().cerrarSesion();
 			
 			this.ftrsManager.cerrarArchivos();
 			
