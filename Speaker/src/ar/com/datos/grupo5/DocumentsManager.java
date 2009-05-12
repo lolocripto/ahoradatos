@@ -5,6 +5,7 @@ package ar.com.datos.grupo5;
 
 import org.apache.log4j.Logger;
 
+import ar.com.datos.grupo5.archivos.ArchivoDocs;
 import ar.com.datos.grupo5.archivos.ArchivoDocumentos;
 
 
@@ -14,11 +15,12 @@ import ar.com.datos.grupo5.archivos.ArchivoDocumentos;
  */
 public class DocumentsManager {
 
+	long offsetUltDocEscrito;
 
 	/**
 	 * Objeto que maneja las operaciones sobre archivos.
 	 */
-	private ArchivoDocumentos archivo;
+	private ArchivoDocs archivo;
 	
 	/**
 	 * Atributo para administrar el nivel de logueo mediante Log4j.
@@ -33,7 +35,7 @@ public class DocumentsManager {
 	 */
 	private DocumentsManager() {
 		try {
-			this.archivo = new ArchivoDocumentos();
+			this.archivo = new ArchivoDocs();
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -51,20 +53,11 @@ public class DocumentsManager {
 	
 	public void initReadSession(Long offsetArchivo){
 		
-		if(this.archivo.getModoEnEjecucion() !=0){
-			this.archivo.terminarSession();
-		}
-		this.archivo.iniciarSession();
-		this.archivo.setDocumentToRead(offsetArchivo);
-	}
-	
-	
-	public long getLongDocUltDoc(){
-		return this.archivo.getLongitudDoc();
+		this.archivo.documentToRead(offsetArchivo);
 	}
 	
 	public long getOffsetUltDoc(){
-		return this.archivo.getOffsetLastDoc();
+		return this.offsetUltDocEscrito;
 	}
 	
 	/**
@@ -75,56 +68,35 @@ public class DocumentsManager {
 		
 		if (this.archivo.masLineasParaLeer()){
 		return this.archivo.leerLinea();
-		}
+		}else{
 		return null;
-	}
-	
-	public void initDocWriteSession(){
-		
-		if(this.archivo.getModoEnEjecucion() !=0){
-			this.archivo.terminarSession();
 		}
+	}
+	
+	public void initDocWriteSession(String nombre, long longitud){
 		
-		this.archivo.iniciarSession();
-		this.archivo.setDocumentToWrite();
-	}
-	
-	
-	public void escribirOtroDocumento(){
-		this.cerrarSesion();
-		this.initDocWriteSession();
-	}
-	
-	public boolean setNombreDoc(String nombreDoc){
-		return this.archivo.setCurrentDocName(nombreDoc);
+		this.offsetUltDocEscrito = this.archivo.documentToWrite(nombre, longitud);
 	}
 	
 	public Long getCantidadDocsAlmacenados(){
-		return this.archivo.getCantDocsAlmacenados();
+		return (long) this.archivo.getCantidadDocs();
 	}
 	
 	/*
 	 * Para usar esta funcion debe haberse iniciado una sesion de lectura
 	 */
 	public String getNombreDoc(Long offsetDoc){
-		return this.archivo.getDocName(offsetDoc);
+		
+		return this.archivo.nombreDoc(offsetDoc);
 		
 	}
 	
 	public void escribirLinea(String linea){	
 		this.archivo.escribirLinea(linea);
 	}
-	
-	
-	@Override
-	protected void finalize() throws Throwable {
-		this.cerrarSesion();
-		super.finalize();
-	}
-
 
 	public void cerrarSesion(){
-		this.archivo.terminarSession();
+		this.archivo.cerrarArchivo();
 	}
 	
 }

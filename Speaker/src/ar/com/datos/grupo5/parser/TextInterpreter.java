@@ -13,19 +13,46 @@ import ar.com.datos.grupo5.DocumentsManager;
 public class TextInterpreter implements ITextInput {
 
 
-	public Collection<IunidadDeHabla> modoCarga(String rutaOlinea,
-			boolean esArchivo, DocumentsManager docMan) throws Exception {
+	/**
+	 * En este modo se lee de un archivo o string sin almacenarlo en un charset diferente
+	 * a UTF8
+	 */
+	public Collection<IunidadDeHabla> modoLecturaCambioCharset(String rutaOlinea,
+			boolean esArchivo, String Charset) throws Exception {
 
-		Parser miparser = new Parser(rutaOlinea, esArchivo, docMan);
+		Parser miparser = new Parser(rutaOlinea, esArchivo, Charset);
 		if (esArchivo) {
 			return miparser.listar();
 		} else {
 			return miparser.simpleString();
 		}
 	}
+	
+
+	/**
+	 * en este modo se lee un archivo cuya ruta es pasada por parametro y el mismo
+	 * se almacena para posterior reproduccion
+	 * @param rutaArchivo
+	 * @return
+	 */
+	public Collection<IunidadDeHabla> modolecturaYalmacenamiento (String rutaArchivo){
+		
+
+		Parser miparser = null;
+		try {
+			miparser = new Parser(rutaArchivo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return miparser.listar();
+		
+	}
 
 
-	public Collection<IunidadDeHabla> modoLectura(String rutaOlinea,
+	/**
+	 * en este modo, se lee sobre un archivo o string pero el mismo no se almacena
+	 */
+	public Collection<IunidadDeHabla> modoLecturaSinAlmacenamiento(String rutaOlinea,
 			boolean esArchivo) throws Exception {
 
 		Parser miparser = new Parser(rutaOlinea, esArchivo);
@@ -36,9 +63,15 @@ public class TextInterpreter implements ITextInput {
 		}
 	}
 	
-	public Collection<IunidadDeHabla> modoLecturaDocAlmacenado(DocumentsManager doc){
+	/**
+	 * en este modo se lee directamente desde un documento almacenado, pasando
+	 * por parametro el offset del mismo
+	 * @param offset
+	 * @return
+	 */
+	public Collection<IunidadDeHabla> modoLecturaDocAlmacenado(long offset){
 		
-		Parser miParser = new Parser(doc);
+		Parser miParser = new Parser(offset);
 		return miParser.listar();
 	}
 	

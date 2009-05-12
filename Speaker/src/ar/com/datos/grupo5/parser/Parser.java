@@ -34,11 +34,6 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 	private File archivo;
 	
 	/**
-	 * Atributo para administrar el nivel de logueo mediante Log4j.
-	 */
-	private static Logger milogueador = Logger.getLogger(Parser.class);
-	
-	/**
 	 * Buffer de lectura de archivo de texto.
 	 */
 	private BufferedReader buffer;
@@ -65,6 +60,8 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 						  //sin almacenar | 4- constructor sin almacenamiento con otro charset
 	
 	private DocumentsManager docMan;
+	
+	private static Logger LOG = Logger.getLogger(Parser.class);
 
 	 /**
 	 * Constructor. Toma una cadena o archivo y realiza el procesado. Si es una
@@ -75,20 +72,21 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 	 * @throws Exception 
 	 * @throws Exception 
 	 */
-	public Parser(final String rutaOlinea, boolean esArchivo, DocumentsManager doc) throws Exception { //constructor para almacenamiento
+	public Parser(final String rutaOlinea) throws Exception { //constructor para almacenamiento
 
 		this.modo = 1;
-		this.docMan = doc;
-		if (esArchivo) {
-			this.bArchivo = true;
-			this.rutaArchivo = rutaOlinea;
-			this.archivo = new File(rutaArchivo);
-			milogueador = Logger.getLogger(Parser.class);
+		this.docMan = DocumentsManager.getInstance();
+		
+		this.bArchivo = true;
+		this.rutaArchivo = rutaOlinea;
+		this.archivo = new File(rutaArchivo);
+		//inicio el archivo a escribir
+		this.docMan.initDocWriteSession(archivo.getName(), archivo.length());
 
 			if (!archivo.exists()) {
 				FileNotFoundException e = new FileNotFoundException(
 						"No existe el archivo pasado al Parser");
-				milogueador.error("no existe el archivo", e);
+				LOG.error("no existe el archivo", e);
 				throw e;
 			}
 			
@@ -98,24 +96,28 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 						Constantes.DEFAULT_TEXT_INPUT_CHARSET);
 				buffer = new BufferedReader(isr);
 			} catch (Exception e) {
-				milogueador.error("Error: " + e.getMessage());
+				LOG.error("Error: " + e.getMessage());
 				throw e;
 			}
-			doc.setNombreDoc(this.archivo.getName());
-
-		} else {
-			esArchivo = false;
-			lineaSimple = rutaOlinea;
-		}
-
+	}
+	
+	
+	public long offsetUltArchivoGuardado(){
 		
+		if (this.docMan != null){
+			return this.docMan.getOffsetUltDoc();
+		}
+		LOG.error("Se ha preguntado por el offset de un archivo guardado sin iniciar la sesion del administrador de documentos ");
+		return 0;
 	}
 
 	
 	
-	public Parser (DocumentsManager doc){ //constructor de lectura sobre doc almacenado
+	public Parser (long offset){ //constructor de lectura sobre doc almacenado
+		
 		this.modo =2;
-		this.docMan = doc;
+		this.docMan = DocumentsManager.getInstance();
+		this.docMan.initReadSession(offset);
 		
 	}
 	
@@ -128,19 +130,18 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 	 * @throws Exception 
 	 * @throws Exception 
 	 */
-	public Parser(final String rutaOlinea, boolean esArchivo) throws Exception { //constructor de lectura sobre string
+	public Parser(final String rutaOlinea, boolean esArchivo) throws Exception { //constructor de lectura sobre string o archivo sin almacenar
 
 		this.modo = 3;
 		if (esArchivo) {
 			this.bArchivo = true;
 			this.rutaArchivo = rutaOlinea;
 			this.archivo = new File(rutaArchivo);
-			milogueador = Logger.getLogger(Parser.class);
 
 			if (!archivo.exists()) {
 				FileNotFoundException e = new FileNotFoundException(
 						"No existe el archivo pasado al Parser");
-				milogueador.error("no existe el archivo", e);
+				LOG.error("no existe el archivo", e);
 				throw e;
 			}
 			
@@ -150,7 +151,7 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 						Constantes.DEFAULT_TEXT_INPUT_CHARSET);
 				buffer = new BufferedReader(isr);
 			} catch (Exception e) {
-				milogueador.error("Error: " + e.getMessage());
+				LOG.error("Error: " + e.getMessage());
 				throw e;
 			}
 			
@@ -183,10 +184,9 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 			esArchivo = true;
 			this.rutaArchivo = rutaOlinea;
 			File archivo = new File(rutaArchivo);
-			milogueador = Logger.getLogger(Parser.class);
 
 			if (!archivo.exists()) {
-				milogueador.error("no existe el archivo",
+				LOG.error("no existe el archivo",
 						new FileNotFoundException(
 								"No existe el archivo pasado al Parser"));
 			}
@@ -195,7 +195,7 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 				InputStreamReader isr = new InputStreamReader(fis, charset);
 				buffer = new BufferedReader(isr);
 			} catch (Exception e) {
-				milogueador
+				LOG
 						.error("Error al crear el parser: " + e.getMessage());
 				throw e;
 			}
@@ -244,11 +244,12 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 		while ((linea != null) && (linea.isEmpty())) {
 			linea = docMan.leerLinea();
 		}
+		
 		if (linea != null) {
 			this.moreLines = true;
 			return linea;
 		} else {
-			moreLines = false;
+			this.moreLines = false;
 			return null;
 		}
 	}
@@ -268,7 +269,6 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 			} catch (IOException e) {
 				e.printStackTrace();
 				this.moreLines = false;
-				docMan.cerrarSesion();
 				return null;
 			}
 		}
@@ -279,7 +279,6 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 			
 		} else {
 			moreLines = false;
-			docMan.cerrarSesion();
 			return null;
 		}
 		

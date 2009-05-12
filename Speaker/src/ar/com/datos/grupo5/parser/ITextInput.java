@@ -18,42 +18,38 @@ import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 public interface ITextInput  {
 
 	/**
-	 * Método que permite obtener una colección de palabras para verificar su
-	 * presencia en disco.
-	 * 
-	 * @param rutaOlinea .
-	 *            ruta absoluta del archivo de carga
-	 * @param esArchivo .
-	 * @param docMan debe pasarse un objeto DocumentManager con la session de escritura iniciada.
-	 * @return Colección de objetos "palabra"
-	 * @throws Exception .
-	 */
-	Collection<IunidadDeHabla> modoCarga(String rutaOlinea, boolean esArchivo, DocumentsManager docMan)
-			throws Exception;
-	
-	/**
-	 * Método que permite obtener una colección ordenada de palabras para su
-	 * reproducción.
-	 * 
-	 * @param rutaOlinea 
-	 *            String que contiene una ruta absoluta de archivo a reproducir,
-	 *            ó bien directamente un string con texto a ser reproducido.
+	 * Lee de un string o archivo con un charset modificado, por defecto se toma UTF8
+	 * @param rutaOlinea
 	 * @param esArchivo
-	 *            boolean que permite decidir si el String pasado por parámetro
-	 *            es un archivo o un texto.
-	 * @return Se devuelve una colección ordenada con los elementos a
-	 *         pronunciarse
-	 * @throws Exception .
+	 * @param Charset
+	 * @return
+	 * @throws Exception
 	 */
-	Collection<IunidadDeHabla> modoLectura(String rutaOlinea, boolean esArchivo)
-			throws Exception;
-	
+	public Collection<IunidadDeHabla> modoLecturaCambioCharset(String rutaOlinea,
+			boolean esArchivo, String Charset) throws Exception;
 	
 	/**
-	 * 
-	 * @param doc Debe pasarse un objeto DocumentManager con la sesion de lectura iniciada
+	 * Lee de un archivo y almacena su contenido para futuros accesos
+	 * @param rutaArchivo
 	 * @return
 	 */
-	public Collection<IunidadDeHabla> modoLecturaDocAlmacenado(DocumentsManager doc);
+	public Collection<IunidadDeHabla> modolecturaYalmacenamiento (String rutaArchivo);
+	
+	/**
+	 * lee de un archivo o string pero no almacena su contenido.
+	 * @param rutaOlinea
+	 * @param esArchivo
+	 * @return
+	 * @throws Exception
+	 */
+	public Collection<IunidadDeHabla> modoLecturaSinAlmacenamiento(String rutaOlinea,
+			boolean esArchivo) throws Exception;
+	
+	/**
+	 * lee desde un documento almacenado
+	 * @param offset offset del documento almacenado
+	 * @return coleccion con palabras
+	 */
+	public Collection<IunidadDeHabla> modoLecturaDocAlmacenado(long offset);
 	
 }
