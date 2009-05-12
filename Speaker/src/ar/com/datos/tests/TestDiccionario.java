@@ -1,14 +1,10 @@
 package ar.com.datos.tests;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.sun.corba.se.impl.ior.NewObjectKeyTemplateBase;
-
 import ar.com.datos.grupo5.Diccionario;
 import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
-import ar.com.datos.grupo5.parser.Parser;
 import ar.com.datos.grupo5.parser.TextInterpreter;
 
 public class TestDiccionario {
@@ -19,7 +15,7 @@ public class TestDiccionario {
 	public static void main(String[] args) {
 		
 
-		String ruta = "/home/zeke/Escritorio/largo.txt";
+		String ruta = "/home/gabriel/workspace/prueba1.txt";
 		
 		Diccionario dic = new Diccionario();
 	
@@ -96,6 +92,8 @@ public class TestDiccionario {
 			
 			
 			String texto = it.next().getTextoEscrito();
+			dic.agregar(texto,new Long(texto.length()));
+			System.out.print("p="+dic.buscarPalabra(texto));
 			System.out.print(texto+"    ");
 		
 			
