@@ -34,16 +34,12 @@ public class TextInterpreter implements ITextInput {
 	 * se almacena para posterior reproduccion
 	 * @param rutaArchivo
 	 * @return
+	 * @throws Exception 
 	 */
-	public Collection<IunidadDeHabla> modolecturaYalmacenamiento (String rutaArchivo){
+	public Collection<IunidadDeHabla> modolecturaYalmacenamiento (String rutaArchivo) throws Exception{
 		
-
 		Parser miparser = null;
-		try {
-			miparser = new Parser(rutaArchivo);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		miparser = new Parser(rutaArchivo);
 		return miparser.listar();
 		
 	}
