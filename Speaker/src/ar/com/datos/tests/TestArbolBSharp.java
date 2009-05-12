@@ -24,6 +24,7 @@ public class TestArbolBSharp {
 	private static Logger logger = Logger.getLogger(Main.class);
 	
 	public static void main(final String[] args) {
+
 		int cantidad = 300;
 		try {
 			BSharp tree = new BSharp();
@@ -103,10 +104,15 @@ public class TestArbolBSharp {
 				} else {
 					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + Integer.toString(i));
 				}
+<<<<<<< .mine
+				Thread.sleep(50);
+				tree.listar();
+=======
 			//	tree.listar();
+>>>>>>> .r807
 				lista.add(cadena);
 			}
-			
+			tree.listar();
 	*/		
 			
 /*			
