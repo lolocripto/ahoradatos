@@ -27,7 +27,7 @@
 	</logger>
 	
 	<logger name="ar.com.datos">
-		<level value="ERROR" />
+		<level value="ERROR,DEBUG" />
 		<appender-ref ref="FILELOGGER" />
 	</logger>
 
