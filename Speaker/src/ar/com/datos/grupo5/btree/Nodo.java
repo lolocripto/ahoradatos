@@ -212,6 +212,7 @@ public class Nodo {
 				+ nroBloquePadre + "] FactMinCarga: " + minIndiceCarga 
 				+ " Esp. Total: " + espacioTotal + " Esp. Ocupado: "
 				+ espacioOcupado + " Tiene Overflow: " + isOverflow());
+		System.out.println("Apunta al bloque numero: " + punteroBloque);
 		for (RegistroNodo reg : registros) {
 			System.out.println("==== " + reg.getClave().getClave()
 					+ " Puntero Izquierdo: [" + reg.getNroBloqueIzquierdo()
