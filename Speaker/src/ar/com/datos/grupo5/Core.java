@@ -422,7 +422,6 @@ public class Core {
 			
 			// Mando a parsear el documento y obtengo un collection
 			try {
-				//this.documentManager.initReadSession(8L);
 				contenedor = this.parser.modoLecturaSinAlmacenamiento(rutaDocumento, true);
 			} catch (Exception e) {
 				logger.error("Error al crear contenedor: " + e.getMessage(), e);
@@ -656,7 +655,6 @@ public class Core {
 		Float tiempoFinal = new Float(0.0);
 		try {
 			this.tiempoConsulta = System.currentTimeMillis();
-			DocumentsManager.getInstance().initReadSession(0L);
 			Long cantidadDocs = DocumentsManager.getInstance().getCantidadDocsAlmacenados();
 			if (cantidadDocs == 0) {
 				return "No hay documentos cargados al sistema";
@@ -670,7 +668,6 @@ public class Core {
 			}
 			if (this.ranking == null) {
 				invocador.mensaje("No se encontraron documentos.");
-				DocumentsManager.getInstance().cerrarSesion();
 				return tiempoFinal.toString() + " segundos";
 			}
 
@@ -701,11 +698,9 @@ public class Core {
 			  
 			  this.playDocumentInterno(invocador, documento);
 			
-			DocumentsManager.getInstance().cerrarSesion();
 			return tiempoFinal.toString() + " segundos";
 		} catch (Exception e) {
 			logger.error("Error: " + e.getMessage(), e);
-			DocumentsManager.getInstance().cerrarSesion();
 			return "Error inesperado.";
 		}
 	}
@@ -720,7 +715,6 @@ public class Core {
 				this.audioFileManager.cerrar();
 			}
 			
-			DocumentsManager.getInstance().cerrarSesion();
 			
 			this.ftrsManager.cerrarArchivos();
 			
@@ -734,8 +728,6 @@ public class Core {
 			} catch (Exception g) {
 				
 			}
-
-			DocumentsManager.getInstance().cerrarSesion();
 			
 			this.ftrsManager.cerrarArchivos();
 			
