@@ -64,7 +64,6 @@ public class TestArbolBSharp {
 				
 			}
 */
-/*
 			it = lista2.iterator();
 			while (it.hasNext()) {
 				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
@@ -86,9 +85,9 @@ public class TestArbolBSharp {
 				tree.listar();
 			}
 
-*/			
 			
 			
+	/*		
 			
 			RegistroFTRS reg = new RegistroFTRS();
 			
@@ -103,7 +102,7 @@ public class TestArbolBSharp {
 				System.out.println("se encontro la palabra: " + cadena + " puntero: " + reg.getBloqueListaInvertida());
 			}
 			
-			
+		*/	
 			
 			
 			
