@@ -49,6 +49,9 @@ public class BSharp {
 			return null;
 		}
 		int punteroABloqueRegistro = nodo.getPunteroBloque();
+		
+		System.out.println("el secuencial intenta acceder al bloque: " + punteroABloqueRegistro);
+		
 		BloqueFTRS bloqueRegistrosFTRS = this.secuencialSet.leerBloque(punteroABloqueRegistro);
 		return bloqueRegistrosFTRS.buscarRegistro(new Clave(termino));
 	}
