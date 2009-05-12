@@ -391,14 +391,7 @@ public class ArchivoSecuencialSet {
 			return null;
 		}
 		
-		long longitudArchivo = 0;
-		try {
-			longitudArchivo = this.miArchivo.file.length();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-		if (longitudArchivo == 0 || this.regAdm.ultimoBloqueUsado() == 0) {
+		if (tamanioArch == 0 || this.regAdm.ultimoBloqueUsado() == 0) {
 
 			return null;
 		}
