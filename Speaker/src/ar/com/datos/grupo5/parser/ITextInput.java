@@ -32,8 +32,9 @@ public interface ITextInput  {
 	 * Lee de un archivo y almacena su contenido para futuros accesos
 	 * @param rutaArchivo
 	 * @return
+	 * @throws Exception 
 	 */
-	public Collection<IunidadDeHabla> modolecturaYalmacenamiento (String rutaArchivo);
+	public Collection<IunidadDeHabla> modolecturaYalmacenamiento (String rutaArchivo) throws Exception;
 	
 	/**
 	 * lee de un archivo o string pero no almacena su contenido.
