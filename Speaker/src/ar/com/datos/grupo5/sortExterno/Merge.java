@@ -211,11 +211,12 @@ public class Merge {
 		
 				while (salida == 0) {
 					comp = nodo1.comparar(nodo2);
-					switch(comp) {
+				switch(comp) {
 					case 0:
-							if( nodo1.getIdDocumento() == 10000000L && nodo2.getIdDocumento() == 10000000L) {
+						if( nodo1.getIdDocumento() == 10000000L && nodo2.getIdDocumento() == 10000000L) {
 								salida = 1;
 							} else {
+						
 								if (i1 < cantidadRegistrosfP1) {
 									dataNodo = nodo1.getBytes();
 									fParticion3.write(dataNodo, 0, dataNodo.length);
@@ -238,6 +239,7 @@ public class Merge {
 								i1++;
 							} else {
 								nodo1.setIdDocumento(10000000L);
+								nodo1.setIdTermino(0L);
 							}
 						break;
 					case -1:
@@ -328,5 +330,6 @@ public class Merge {
 			e.printStackTrace();
 		}
 	}
+	
 
 }

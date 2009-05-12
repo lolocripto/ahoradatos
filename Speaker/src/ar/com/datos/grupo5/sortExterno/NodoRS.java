@@ -74,28 +74,23 @@ public class NodoRS {
 	 */
 	public final int comparar(final NodoRS nRS) {
 		if (this.flag == 1 && nRS.getFlag() == 0) return 1;
-		else
 		if ((nRS.getFlag()==1)&&(this.flag==0)) return -1;
-		else
 		if ((nRS.getFlag()==1)&&(this.flag==1)) return 0;
-		else
-		if ((nRS.getFlag()==0)&&(this.flag==0))
-		{
-			if (this.idTermino == nRS.getIdTermino() && this.idDocumento == nRS.getIdDocumento())
-				return 0;
-			else if (this.idTermino > nRS.getIdTermino())
-					return 1;
-			     else if (this.idTermino < nRS.getIdTermino())
-							return -1;
-					  else if (this.idTermino == nRS.getIdTermino() && this.idDocumento > nRS.getIdDocumento())
-								return 1;
-							else if ((this.idTermino==nRS.getIdTermino())&&(this.idDocumento<nRS.getIdDocumento()))
-									return -1;
-								else return 2;
-		}	
-		else return 2;		
+		if ((nRS.getFlag()==0)&&(this.flag==0)) {
+		   int comp = this.idTermino.compareTo(nRS.getIdTermino());
+		   int compi2;
+		if (comp != 0) {
+		//	System.out.println("it1="+this.getIdTermino()+" it2="+nRS.getIdTermino());
+			   return comp;
+		   }
+		   else
+			   compi2 = this.idDocumento.compareTo(nRS.getIdDocumento());
+			  // System.out.println("compi2 dio "+compi2+" d1="+this.getIdDocumento()+" d2="+nRS.getIdDocumento());
+			   return compi2;
+		}
+		
+        return 2;
 	}
-
 	/**
 	 * @param flagExt the flag to set
 	 */
@@ -190,4 +185,5 @@ public class NodoRS {
 	public int getTamanio() {
 		return tamanio;
 	}
+	
 }
