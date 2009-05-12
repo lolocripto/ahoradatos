@@ -84,7 +84,6 @@ public class BSharp {
 			//la clave ya existia, pero hacia afuera solo importa que este en el arbol.
 			return true;
 		}
-		return false;
 	}
 	
 // Saque long idTerminoExt, 
