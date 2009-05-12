@@ -28,16 +28,6 @@ public class ArchivoDocumentos extends Directo {
 
 	private byte modoEnEjecucion;  //0 esperando setear modo - 1 lectura - 2 escritura
 	
-	public byte getModoEnEjecucion() {
-		return modoEnEjecucion;
-	}
-
-
-	public void setModoEnEjecucion(byte modoEnEjecucion) {
-		this.modoEnEjecucion = modoEnEjecucion;
-	}
-
-
 	private byte codRedundancia = -128;
 	
 	private boolean masLineasLeer;
@@ -67,6 +57,17 @@ public class ArchivoDocumentos extends Directo {
 	public ArchivoDocumentos() {
 	
 	}
+	
+	
+	public byte getModoEnEjecucion() {
+		return modoEnEjecucion;
+	}
+
+
+	public void setModoEnEjecucion(byte modoEnEjecucion) {
+		this.modoEnEjecucion = modoEnEjecucion;
+	}
+
 	
 	
 	public void iniciarSession(){
@@ -107,14 +108,13 @@ public class ArchivoDocumentos extends Directo {
 	 */
 	public boolean setDocumentToRead(Long offset){
 		try {
-			
+
 			//hago el chequeo del modo de ejecucion, si se trata mal puede corromperse el archivo
 			if (this.modoEnEjecucion != 0){
 				
 			//	System.out.println("el archivo de documentos no esta preparado para lectura");
 				return false;
 			}
-			
 			//verifico que no quiera posicionarme mas alla de los limites del archivo,
 			//es una verificacion para evitar que se corrompa.
 			if (file.length() < offset){
