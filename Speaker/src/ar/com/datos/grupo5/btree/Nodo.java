@@ -313,6 +313,10 @@ public class Nodo {
 				RegistroNodo regAux2 = new RegistroNodo();
 				regAux2 = regs.remove(0);
 				if (!regAux.getClave().equals(regAux2.getClave())) {
+					int espacio = nodoPadre.getEspacioOcupado();
+					espacio += diferenciaClaves(nodoPadre.getRegistros().get(
+						pos), regAux2);
+					nodoPadre.setEspacioOcupado(espacio);
 					//El que tiene que subir al padre no es el que estaba
 					nodoPadre.registros.get(pos).setClave(regAux2.getClave());
 					//Setearle a los hijos los padres
@@ -373,6 +377,10 @@ public class Nodo {
 					RegistroNodo reg = regs.remove(0);
 					nuevoHermano.insertarRegistro(reg);
 				}
+				int espacio = nodoPadre.getEspacioOcupado();
+				espacio += diferenciaClaves(nodoPadre.getRegistros().get(
+					pos), nodoHermano.getPrimerRegistro());
+				nodoPadre.setEspacioOcupado(espacio);
 				// Ahora tengo que cargar las claves en el padre, y listo!
 				nodoPadre.getRegistros().get(pos).setClave(
 						nodoHermano.getPrimerRegistro().getClave());			
@@ -411,6 +419,10 @@ public class Nodo {
 				RegistroNodo regAux2 = new RegistroNodo();
 				regAux2 = regs.remove(0);
 				if (!regAux.getClave().equals(regAux2.getClave())) {
+					int espacio = nodoPadre.getEspacioOcupado();
+					espacio += diferenciaClaves(nodoPadre.getRegistros().get(
+						pos), regAux2);
+					nodoPadre.setEspacioOcupado(espacio);
 					nodoPadre.registros.get(pos).setClave(regAux2.getClave());
 				}
 				// ahora, tengo que vaciar el hno y llenarlo otra vez
@@ -470,6 +482,10 @@ public class Nodo {
 				} else if(pos == Constantes.MAYOR) {
 					pos = nodoPadre.getCantidadRegistros() - 1; 
 				}
+				int espacio = nodoPadre.getEspacioOcupado();
+				espacio += diferenciaClaves(nodoPadre.getRegistros().get(
+					pos), getPrimerRegistro());
+				nodoPadre.setEspacioOcupado(espacio);
 				nodoPadre.getRegistros().get(pos).setClave(
 						getPrimerRegistro().getClave());
 				
@@ -487,6 +503,11 @@ public class Nodo {
 			}
 		}
 		return nuevoHermano;
+	}
+	
+	public int diferenciaClaves(RegistroNodo regOld, RegistroNodo regNew) {
+		return regNew.getClave().getClave().getBytes().length
+				- regOld.getClave().getClave().getBytes().length;
 	}
 	
 	/**

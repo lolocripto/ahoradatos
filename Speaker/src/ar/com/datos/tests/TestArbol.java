@@ -94,7 +94,7 @@ public class TestArbol {
 				clave.setClave(cadena);
 				reg = new RegistroNodo();
 				reg.setClave(clave);
-				if (u == 27) {
+				if (u == 84) {
 					int a = 0;
 					a = 1;
 				}
