@@ -76,7 +76,7 @@ public class TestArbol {
 			
 			Collection<IunidadDeHabla> lista2 = null;
 			
-			lista2 = tx.modoLectura("d:\\palabras.txt", true);
+			lista2 = tx.modoLecturaSinAlmacenamiento("d:\\palabras.txt", true);
 			
 			Iterator<IunidadDeHabla> it;
 			

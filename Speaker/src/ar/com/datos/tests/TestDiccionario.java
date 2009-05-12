@@ -28,7 +28,7 @@ public class TestDiccionario {
 		Collection<IunidadDeHabla> lista =null;
 		
 		try {
-			lista = ti.modoLectura(ruta, true);
+			lista = ti.modoLecturaSinAlmacenamiento(ruta, true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -70,13 +70,12 @@ public class TestTextInterpreter {
 		
 //	prueba almacenar un nuevo archivo de texto...	Ok!
  		
-		dm.initDocWriteSession();
 		
 		Collection<IunidadDeHabla> coleccion =null;
 		
 		
 		try {
-			coleccion = ti.modoCarga(ruta, true, dm);
+			coleccion = ti.modolecturaYalmacenamiento(ruta);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		

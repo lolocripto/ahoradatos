@@ -33,7 +33,7 @@ public class TestStopWords {
 		Iterator<IunidadDeHabla> it = Constantes.LISTA_STOP_WORDS.iterator();
 		
 		try {
-			Collection<IunidadDeHabla> texto = tratadorDeTexto.modoLectura(cadenaTexto, false);
+			Collection<IunidadDeHabla> texto = tratadorDeTexto.modoLecturaSinAlmacenamiento(cadenaTexto, false);
 	
 			Iterator<IunidadDeHabla> iterador = texto.iterator();
 			
