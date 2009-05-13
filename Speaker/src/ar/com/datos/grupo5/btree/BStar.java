@@ -229,30 +229,27 @@ public final class BStar implements BTree {
 				break;
 			//Encontré la clave que buscaba o una mayor.
 			default:
-				//Veo si lo que recupere el igual o mayor.
-				if (nodoActual.getRegistros().size() == 0) {
+				//Si es hoja, lo devuelvo.
+				if (nodoActual.isEsHoja()) {
 					return nodoActual;
-				}
-				if (nodoActual.getRegistros().get(posReg).getClave().equals(
-						clave) && nodoActual.isEsHoja()) {
-					
-					return nodoActual;
-				} else { // Es mayor.
-					if (!nodoActual.isEsHoja()) {
+				} else {
+					Clave claveAux = nodoActual.getRegistros().get(posReg).getClave();
+					if (clave.compareTo(claveAux) >= 0) {
 						nroBloque = nodoActual.getRegistros().get(posReg)
-								.getNroBloqueIzquierdo();
-						nodoAux = new Nodo();
-						try {
-							nodoAux.setBytes(archivo
-									.leerBloque(nroBloque));
-						} catch (IOException e) {
-							e.printStackTrace();
-							throw e;
-						}
-						nodoActual = nodoAux;
+								.getNroBloqueDerecho();
 					} else {
-						return nodoActual;
+						nroBloque = nodoActual.getRegistros().get(posReg)
+						.getNroBloqueIzquierdo();
 					}
+					nodoAux = new Nodo();
+					try {
+						nodoAux.setBytes(archivo
+								.leerBloque(nroBloque));
+					} catch (IOException e) {
+						e.printStackTrace();
+						throw e;
+					}
+					nodoActual = nodoAux;
 				}
 			}
 		}
