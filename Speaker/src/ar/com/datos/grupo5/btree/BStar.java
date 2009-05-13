@@ -534,6 +534,7 @@ public final class BStar implements BTree {
 			nodosModificados.clear();
 			nodosModificados.add(nodo);
 			nodosModificados.add(nodoHno);
+			nodosModificados.add(nodoActual);
 		}
 		
 		return nodoPadre;
