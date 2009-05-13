@@ -61,7 +61,7 @@ public class TestSortExternoMerge {
 			
 			
 		//	creo 1000 nodos con palabras: 100 palabras random diferentes posibles distribuidas uniformemente entre 10 documentos
-			for (int i = 0; i < 1000; i++) {
+			for (int i = 0; i < 10000; i++) {
 				
 				Random r = new Random();
 				
@@ -72,7 +72,7 @@ public class TestSortExternoMerge {
 				System.out.println(" ");
 				
 				nodo.setIdTermino(termino);
-				nodo.setIdDocumento(new Long(0));
+				nodo.setIdDocumento(doc);
 				
 				System.out.print("guardados:");
 				System.out.print("termino: "+nodo.getIdTermino()+" ");
