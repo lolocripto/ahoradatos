@@ -143,14 +143,13 @@ public class ReplacementSelection {
 		NodoRS nodoI, nodoJ;
 		j = this.listaNodo.iterator();
 		i = this.listaNodo.iterator();
-		nodoI = i.next();
 		nodoJ = j.next();
 		while (i.hasNext()) {
+			nodoI = i.next();
 			comp = nodoI.comparar(nodoJ);
 			if (comp == -1) {
 				nodoJ = nodoI;
 			}
-			nodoI = i.next();
 		}
 		return nodoJ;
 	}
