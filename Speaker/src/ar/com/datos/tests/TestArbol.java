@@ -89,7 +89,7 @@ public class TestArbol {
 				
 				cadena = iunidadDeHabla.getTextoEscrito();
 				
-				System.out.println(cadena);
+				//System.out.println(cadena);
 				clave = new Clave();
 				clave.setClave(cadena);
 				reg = new RegistroNodo();
@@ -106,7 +106,7 @@ public class TestArbol {
 				u++;
 				//tree.listar();
 			}
-			tree.listar();
+			//tree.listar();
 			
 		} catch (Exception e) {
 			logger.error("Error: " + e);

@@ -340,6 +340,7 @@ public final class BStar implements BTree {
 							System.out
 									.println("=====Overflow Split=======Nodo: "
 											+ padre.getNroBloque() + "========");
+							padre.setOverflow(false);
 							padre = split(padre);
 						} else {
 							padre.setOverflow(false);
@@ -615,6 +616,9 @@ public final class BStar implements BTree {
 							.getNroBloqueDerecho());
 					aux.setNroBloqueDerecho(nodoHnoDerecho.getPrimerRegistro()
 							.getNroBloqueIzquierdo());
+					if (!nodoHnoDerecho.hayEspacio(aux.getBytes().length)) {
+						return false;
+					}
 					nodoHnoDerecho.insertarRegistro(aux);
 					int espacio = nodoPadre.getEspacioOcupado();
 					espacio += diferenciaClaves(nodoPadre.getPrimerRegistro(), nodo
@@ -633,6 +637,9 @@ public final class BStar implements BTree {
 							nodoHnoIzquierdo.getNroBloque());
 					
 				} else {
+					if (!nodoHnoDerecho.hayEspacio(nodo.getUltimoRegistro().getBytes().length)) {
+						return false;
+					}
 					nodoHnoDerecho.insertarRegistro(nodo.getUltimoRegistro());
 					int espacio = nodoPadre.getEspacioOcupado();
 					espacio += diferenciaClaves(nodoPadre.getPrimerRegistro(), nodo
@@ -674,6 +681,9 @@ public final class BStar implements BTree {
 							.getUltimoRegistro().getNroBloqueDerecho());
 					aux.setNroBloqueDerecho(nodo.getPrimerRegistro()
 							.getNroBloqueIzquierdo());
+					if (!nodoHnoIzquierdo.hayEspacio(aux.getBytes().length)) {
+						return false;
+					}
 					nodoHnoIzquierdo.insertarRegistro(aux);
 					int espacio = nodoPadre.getEspacioOcupado();
 					espacio += diferenciaClaves(nodoPadre.getUltimoRegistro(), nodo
@@ -691,6 +701,9 @@ public final class BStar implements BTree {
 							nodoHnoDerecho.getNroBloque());
 					
 				} else {
+					if (!nodoHnoIzquierdo.hayEspacio(nodo.getPrimerRegistro().getBytes().length)) {
+						return false;
+					}
 					nodoHnoIzquierdo.insertarRegistro(nodo.getPrimerRegistro());
 					nodo.removerRegistro(0);
 					int espacio = nodoPadre.getEspacioOcupado();
@@ -735,6 +748,9 @@ public final class BStar implements BTree {
 								.getNroBloqueDerecho());
 						aux.setNroBloqueDerecho(nodoHnoDerecho
 								.getPrimerRegistro().getNroBloqueIzquierdo());
+						if (!nodoHnoDerecho.hayEspacio(aux.getBytes().length)) {
+							return false;
+						}
 						nodoHnoDerecho.insertarRegistro(aux);
 						int espacio = nodoPadre.getEspacioOcupado();
 						espacio += diferenciaClaves(nodoPadre.getRegistros().get(
@@ -753,6 +769,9 @@ public final class BStar implements BTree {
 					} else {
 						RegistroNodo regAux = nodo.removerRegistro(
 								nodo.getRegistros().size() - 1);
+						if (!nodoHnoDerecho.hayEspacio(regAux.getBytes().length)) {
+							return false;
+						}
 						nodoHnoDerecho.insertarRegistro(regAux);
 						int espacio = nodoPadre.getEspacioOcupado();
 						espacio += diferenciaClaves(nodoPadre.getRegistros().get(
@@ -791,6 +810,9 @@ public final class BStar implements BTree {
 									.getUltimoRegistro().getNroBloqueDerecho());
 							aux.setNroBloqueDerecho(nodo.getPrimerRegistro()
 									.getNroBloqueIzquierdo());
+							if (!nodoHnoIzquierdo.hayEspacio(aux.getBytes().length)) {
+								return false;
+							}
 							nodoHnoIzquierdo.insertarRegistro(aux);
 							int espacio = nodoPadre.getEspacioOcupado();
 							espacio += diferenciaClaves(nodoPadre.getRegistros().get(
@@ -808,6 +830,9 @@ public final class BStar implements BTree {
 									nodoHnoDerecho.getNroBloque());
 						} else {
 							RegistroNodo regAux = nodo.removerRegistro(0);
+							if (!nodoHnoIzquierdo.hayEspacio(regAux.getBytes().length)) {
+								return false;
+							}
 							nodoHnoIzquierdo.insertarRegistro(regAux);
 							int espacio = nodoPadre.getEspacioOcupado();
 							espacio += diferenciaClaves(nodoPadre.getRegistros().get(

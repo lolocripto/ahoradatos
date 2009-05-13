@@ -708,6 +708,9 @@ public class Nodo {
 	 */
 	public final void setEspacioOcupado(final int espacio) {
 		this.espacioOcupado = espacio;
+		if (espacioOcupado > espacioTotal) {
+			Logger.getLogger(this.getClass()).debug("mierda!!");
+		}
 	}
 	
 	/**
@@ -770,6 +773,10 @@ public class Nodo {
 	 * @return the overflow
 	 */
 	public final boolean isOverflow() {
+		
+		if (espacioOcupado > espacioTotal) {
+			return true;
+		}
 		return overflow;
 	}
 	
