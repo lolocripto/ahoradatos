@@ -201,13 +201,15 @@ public class NodoRS implements Comparable<NodoRS> {
 	}
 
 	/**
-	 * Comparar es una funcion que devuelve: 0 si this = NRS 1 si this > NRS -1
-	 * si this < NRS Siempre y cuando tenga flag == 0 sino devuelve 2 (si esta
-	 * mal).
 	 * 
-	 * @param nRS
-	 *            c
-	 * @return 0
+	 * Devuelve 1 si this es mayor al argumento, 0 si son iguales y -1 si this
+	 * es menor que el argumento.
+	 * Se compara primero por numero de termino y en caso de igualdad por numero
+	 * de documento.
+	 * 
+	 * @param nRS objeto argumento
+	 *            
+	 * @return 1= this mayor | 0=iguales | -1=this menor
 	 */
 	public int compareTo(NodoRS nRS) {
 
