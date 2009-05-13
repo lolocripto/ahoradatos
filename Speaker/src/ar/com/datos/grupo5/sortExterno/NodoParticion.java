@@ -5,7 +5,7 @@ package ar.com.datos.grupo5.sortExterno;
  * @version 1.0
  * @created 04-May-2009 04:15:26 p.m.
  */
-public class NodoParticion {
+public class NodoParticion implements Comparable<NodoParticion>{
 
 	/**
 	 * flag.
@@ -87,5 +87,37 @@ public class NodoParticion {
 	public final String getParticion() {
 		return particion;
 	}
+	
+	public int compareTo(NodoParticion o) {
+		
+		long result;
+		result = this.nRegistros - o.nRegistros;
+
+		if (result>0){
+			return 1;
+		}else{
+			if (result <0){
+				return -1;
+			}else{
+				return 0;
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
