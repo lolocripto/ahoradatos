@@ -59,8 +59,11 @@ public class TestArbolBSharp {
 				} else {
 					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
 				}
+				
+				if (u == 235) {
+					tree.listar();					
+				}
 				u++;
-				//tree.listar();
 				
 			}
 
