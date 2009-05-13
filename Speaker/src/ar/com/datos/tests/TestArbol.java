@@ -1,19 +1,11 @@
 package ar.com.datos.tests;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Main;
-import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.archivos.ArchivoSecuencialSet;
-import ar.com.datos.grupo5.btree.BSharp;
 import ar.com.datos.grupo5.btree.BStar;
-import ar.com.datos.grupo5.btree.BTree;
 import ar.com.datos.grupo5.btree.Clave;
-import ar.com.datos.grupo5.parser.TextInterpreter;
 import ar.com.datos.grupo5.registros.RegistroNodo;
 
 public class TestArbol {
@@ -43,8 +35,8 @@ public class TestArbol {
 			
 			String[] claves = {
 					"15", "30", "1", "10", "13", "50", "35", 
-					"20", "22", "40", "55", "23"/*, "21", "24",
-					"25", "26", "43", "45", "23", "17", "241",
+					"20", "22", "40", "55", "23", "21"/*, "24",
+					"25", "26"/*, "43", "45", "23", "17", "241",
 					"242", "37", "38", "16", "41", "47", "68",
 					"34", "48", "100", "200", "150", "151", "44",*/
 					};
