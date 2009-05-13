@@ -186,7 +186,13 @@ public class NodoRS implements Comparable<NodoRS> {
 		return tamanio;
 	}
 
-	@Override
+	/**
+	 * Comparar es una funcion que devuelve: 0 si this = NRS 1 si this > NRS -1 si
+	 * this < NRS Siempre y cuando tenga flag == 0 sino devuelve 2 (si esta mal).
+	 * 
+	 * @param nRS c
+	 * @return 0
+	 */
 	public int compareTo(NodoRS nRS) {
 		if (this.flag == 1 && nRS.getFlag() == 0) return 1;
 		if ((nRS.getFlag()==1)&&(this.flag==0)) return -1;
