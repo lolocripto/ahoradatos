@@ -8,7 +8,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Random;
 
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.sortExterno.Merge;
@@ -30,6 +32,8 @@ public class TestSortExternoMerge {
 		String arch = "./archivoTrabajo.data";
 
 		RandomAccessFile f;
+		
+		
 		try {
 		
 			//File file = new File(arch);
@@ -42,59 +46,23 @@ public class TestSortExternoMerge {
 			/* 1Alberto 2Cesar 3Ernesto 4Bartolo 5Demian */
 			/* 3 documentos */
 			
-			nodo.setIdTermino(1L);
-			nodo.setIdDocumento(1L);
-			f.write(nodo.getBytes());
 			
-			nodo.setIdTermino(2L);
-			nodo.setIdDocumento(1L);
-			f.write(nodo.getBytes());
+			Random r = new Random();
 			
-			nodo.setIdTermino(3L);
-			nodo.setIdDocumento(2L);
-			f.write(nodo.getBytes());
+			r.nextInt(100);
 			
-			nodo.setIdTermino(1L);
-			nodo.setIdDocumento(2L);
-			f.write(nodo.getBytes());
-			
-			nodo.setIdTermino(4L);
-			nodo.setIdDocumento(2L);
-			f.write(nodo.getBytes());
-			
-			nodo.setIdTermino(5L);
-			nodo.setIdDocumento(2L);
-			f.write(nodo.getBytes());
-			
-			nodo.setIdTermino(4L);
-			nodo.setIdDocumento(3L);
-			f.write(nodo.getBytes());
-			
-			nodo.setIdTermino(5L);
-			nodo.setIdDocumento(3L);
-			f.write(nodo.getBytes());
-			
-			nodo.setIdTermino(1L);
-			nodo.setIdDocumento(3L);
-			f.write(nodo.getBytes());
-			
-			nodo.setIdTermino(3L);
-			nodo.setIdDocumento(4L);
-			f.write(nodo.getBytes());
-			
-			nodo.setIdTermino(1L);
-			nodo.setIdDocumento(4L);
-			f.write(nodo.getBytes());
-			
-			nodo.setIdTermino(4L);
-			nodo.setIdDocumento(4L);
-			f.write(nodo.getBytes());
-			
-			nodo.setIdTermino(5L);
-			nodo.setIdDocumento(4L);
-			f.write(nodo.getBytes());
+			//creo 1000 nodos con palabras: 100 palabras random diferentes posibles distribuidas uniformemente entre 10 documentos
+			for (int i = 0; i < 1000; i++) {
+				
+				nodo.setIdTermino((long)r.nextInt(100));
+				nodo.setIdDocumento((long)r.nextInt(10));
+				f.write(nodo.getBytes());
+				
+			}
 			
 			f.close();
+			
+			
 			
 			ReplacementSelection RP = new ReplacementSelection(arch);
 			RP.ordenar();
@@ -103,6 +71,12 @@ public class TestSortExternoMerge {
 			ArrayList<String> LP = (ArrayList<String>) RP.getListaParticiones();
 			Merge M = new Merge(LP,RP.getArch()); 
 			M.ejecutarMerge();
+			
+			
+			
+			
+			
+			
 				
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
