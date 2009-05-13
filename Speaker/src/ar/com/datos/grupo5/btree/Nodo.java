@@ -125,9 +125,9 @@ public class Nodo {
 				.getClave()) > 0) {
 			return Constantes.MAYOR;
 		}
-		// TODO: FIXME:
+
 		if (clave.compareTo(registros.get(registros.size() - 1) 
-				.getClave()) == 0 && !this.esHoja) {
+				.getClave()) == 0) {
 			return Constantes.MAYOR;
 		}
 		

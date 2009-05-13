@@ -234,7 +234,7 @@ public final class BStar implements BTree {
 					return nodoActual;
 				}
 				if (nodoActual.getRegistros().get(posReg).getClave().equals(
-						clave)) {
+						clave) && nodoActual.isEsHoja()) {
 					
 					return nodoActual;
 				} else { // Es mayor.

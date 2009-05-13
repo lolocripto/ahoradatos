@@ -104,7 +104,7 @@ public class TestArbol {
 					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
 				}
 				u++;
-				tree.listar();
+				//tree.listar();
 			}
 			tree.listar();
 			
