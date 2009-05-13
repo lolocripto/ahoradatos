@@ -231,10 +231,10 @@ public class ReplacementSelection {
 	 * @return cantidad de particiones.
 	 */
 	public final int ordenar() {
-		int flag, desc, comp;
+	//	int flag, desc, comp;
 		long nRegistros, cont = 0;
 		NodoRS nodo = new NodoRS();
-		NodoRS nodo1 = new NodoRS();
+	//	NodoRS nodo1 = new NodoRS();
 		NodoRS menor;
 		byte[] dataNodo = new byte[nodo.getTamanio()];
 		Integer particionNumero = new Integer(1);
@@ -258,8 +258,8 @@ public class ReplacementSelection {
 					//4.1-creo Pi
 					String nombreParticion = new String(this.arch + "part" + particionNumero.toString()); 
 					p = new RandomAccessFile(nombreParticion,Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-					flag = 0;
-					while (!nodoRSCongelado() && !nodoRSVacio() && flag == 0) {
+					
+					while (!nodoRSCongelado() && !nodoRSVacio()) {
 						
 						//4.2-tomo el menor del buffer con flag en disponible
 						menor = obtenerMenorNodo();
@@ -276,7 +276,6 @@ public class ReplacementSelection {
 							cont++;
 							
 						} else {
-							flag = 1;
 							//Guardo los nodos que aun siguen disponibles.
 							guardarDisponibles(p);
 							
