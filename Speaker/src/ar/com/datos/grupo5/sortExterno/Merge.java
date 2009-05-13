@@ -84,6 +84,7 @@ public class Merge {
 			unirDosPaticiones();
 			cant = obtenerCantidadParticiones();
 		}
+		System.out.println("sale del loop");
 		//renombro archivo original
 		if (cant == 1) {
 
@@ -210,6 +211,8 @@ public class Merge {
 		
 				while (salida == 0) {
 					comp = nodo1.comparar(nodo2);
+					System.out.println("lup!"+comp+"t1="+nodo1.getIdTermino()+" t2="+nodo2.getIdTermino()+" d1="+nodo1.getIdDocumento()+" d2="+nodo2.getIdDocumento());
+					System.out.println("i1="+i1+" i2="+i2+" cantp1="+cantidadRegistrosfP1+" cantp2="+cantidadRegistrosfP2);
 				switch(comp) {
 					case 0:
 						if( nodo1.getIdDocumento() == 10000000L && nodo2.getIdDocumento() == 10000000L) {
@@ -238,7 +241,7 @@ public class Merge {
 								i1++;
 							} else {
 								nodo1.setIdDocumento(10000000L);
-								nodo1.setIdTermino(0L); //TODO mirar esta modificación, ahora no palma por loop, pero hay que chequear si no afecta
+								nodo1.setIdTermino(-1L); //TODO mirar esta modificación, ahora no palma por loop, pero hay que chequear si no afecta
 							}
 						break;
 					case -1:
@@ -251,7 +254,7 @@ public class Merge {
 								i2++;
 							} else {
 								nodo2.setIdDocumento(10000000L);
-								nodo2.setIdTermino(0L); //TODO mirar esta modificación, ahora no palma por loop, pero hay que chequear si no afecta
+								nodo2.setIdTermino(-1L); //TODO mirar esta modificación, ahora no palma por loop, pero hay que chequear si no afecta
 							}
 						break;
 						default:
