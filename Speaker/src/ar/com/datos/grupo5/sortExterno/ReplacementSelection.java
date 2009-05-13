@@ -44,6 +44,7 @@ public class ReplacementSelection {
 	 */
 	private int memoria;
 	
+	private RandomAccessFile archivoTrabajo;
 	/**
 	 * Cantidad de nodos que entran en la memoria asignada.
 	 */
@@ -154,7 +155,7 @@ public class ReplacementSelection {
 	/**
 	 * Realiza la carga inicial de la lista de elementos disponibles.
 	 */
-	public final int cargarInicialListaDisponibles(final long nRegistros, final RandomAccessFile archivoTrabajo) {
+	public final int cargarInicialListaDisponibles(final long nRegistros) {
 		
 		NodoRS nodo = new NodoRS();
 		byte[] dataNodo = new byte[nodo.getTamanio()];
@@ -175,6 +176,55 @@ public class ReplacementSelection {
 		}
 		return cantidadNodosCargados;
 	}
+	
+	
+	
+	public final void agregarNuevoNodo(final NodoRS menor) {
+		int comp;
+		NodoRS nodo = new NodoRS();
+		byte[] dataNodo = new byte[nodo.getTamanio()];
+		try {
+			archivoTrabajo.read(dataNodo, 0, dataNodo.length);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		nodo.setBytes(dataNodo); //idT,idD,fdt
+
+		//4.4.1-si reg(f) <= grabado -> congelado
+		comp = nodo.compareTo(menor);
+		if (comp == -1 || comp == 0) {
+			this.listaNodoCongelados.add(nodo);
+		}
+		//4.4.2-si reg(f) > grabado -> disponible
+		if (comp == 1) {
+			this.listaNodoDisponibles.add(nodo);
+		}
+	}
+	
+	public final void guardarDisponibles(final RandomAccessFile particionActual) {
+		NodoRS menor = new NodoRS();
+		int desc = cuantosDisponibles();
+		byte[] dataNodo = new byte[menor.getTamanio()];
+		
+		//guardo los disponibles que quedaron en la particion 
+		for (int j = 0; j < desc; j++) {
+			menor = obtenerMenorNodo();
+			//4.3-lo grabo en Pi y lo elimino de listaNodo
+			dataNodo = menor.getBytes();
+			try {
+				particionActual.write(dataNodo, 0, dataNodo.length);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return;
+			}
+			this.listaNodoDisponibles.remove(menor);
+		}
+
+	}
+	
 	/**
 	 * Metodo que se encarga de ordenar lo elementos leidos y
 	 * generar las particiones.
@@ -195,13 +245,13 @@ public class ReplacementSelection {
 		
 		//2-abro el archivo
 		try {
-			RandomAccessFile archivoTrabajo = new RandomAccessFile(arch,Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			archivoTrabajo = new RandomAccessFile(arch,Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 			if (archivoTrabajo != null) {
 				//Cantidad de regsitros en el archivo
 				nRegistros = archivoTrabajo.length() / nodo.getTamanio();
 				archivoTrabajo.seek(0);
 				
-				cont = cargarInicialListaDisponibles(nRegistros, archivoTrabajo);
+				cont = cargarInicialListaDisponibles(nRegistros);
 				
 				while (!nodoRSCongelado() && !nodoRSVacio()) {
 					//4-arranca el bucle (mientras el buffer no este vacio ni congelado)
@@ -213,36 +263,23 @@ public class ReplacementSelection {
 						
 						//4.2-tomo el menor del buffer con flag en disponible
 						menor = obtenerMenorNodo();
+						
 						//4.3-lo grabo en Pi y lo elimino de listaNodo
 						dataNodo = menor.getBytes();
 						p.write(dataNodo, 0, dataNodo.length);
 						this.listaNodoDisponibles.remove(menor);
+						
 						//4.4-leo el siguiente del archivo f
 						if (cont < nRegistros) {
-							nodo1 = new NodoRS();
-							archivoTrabajo.read(dataNodo, 0, dataNodo.length);
-							nodo1.setBytes(dataNodo); //idT,idD,fdt
+							//Levanto un nuevo nodo para la particion actual
+							agregarNuevoNodo(menor);
 							cont++;
-							//4.4.1-si reg(f) <= grabado -> congelado
-							comp = nodo1.compareTo(menor);
-							if (comp == -1 || comp == 0) {
-								this.listaNodoCongelados.add(nodo1);
-							}
-							//4.4.2-si reg(f) > grabado -> disponible
-							if (comp == 1) {
-								this.listaNodoDisponibles.add(nodo1);
-							}
+							
 						} else {
 							flag = 1;
-							desc = cuantosDisponibles();
-							//guardo los disponibles que quedaron en la particion 
-							for (int j = 0; j < desc; j++) {
-								menor = obtenerMenorNodo();
-								//4.3-lo grabo en Pi y lo elimino de listaNodo
-								dataNodo = menor.getBytes();
-								p.write(dataNodo, 0, dataNodo.length);
-								this.listaNodoDisponibles.remove(menor);
-							}
+							//Guardo los nodos que aun siguen disponibles.
+							guardarDisponibles(p);
+							
 						}
 					}
 					//5-cierro Pi y registro que la guarde
