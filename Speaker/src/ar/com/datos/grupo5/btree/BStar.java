@@ -251,6 +251,31 @@ public final class BStar implements BTree {
 					}
 					nodoActual = nodoAux;
 				}
+				//Veo si lo que recupere el igual o mayor.
+//				if (nodoActual.getRegistros().size() == 0) {
+//					return nodoActual;
+//				}
+//				if (nodoActual.getRegistros().get(posReg).getClave().equals(
+//						clave)) {
+//					
+//					return nodoActual;
+//				} else { // Es mayor.
+//					if (!nodoActual.isEsHoja()) {
+//						nroBloque = nodoActual.getRegistros().get(posReg)
+//								.getNroBloqueIzquierdo();
+//						nodoAux = new Nodo();
+//						try {
+//							nodoAux.setBytes(archivo
+//									.leerBloque(nroBloque));
+//						} catch (IOException e) {
+//							e.printStackTrace();
+//							throw e;
+//						}
+//						nodoActual = nodoAux;
+//					} else {
+//						return nodoActual;
+//					}
+//				}
 			}
 		}
 		return nodoActual;
@@ -337,7 +362,6 @@ public final class BStar implements BTree {
 							System.out
 									.println("=====Overflow Split=======Nodo: "
 											+ padre.getNroBloque() + "========");
-							padre.setOverflow(false);
 							padre = split(padre);
 						} else {
 							padre.setOverflow(false);
@@ -603,7 +627,9 @@ public final class BStar implements BTree {
 				nroHno = nodoPadre.getPrimerRegistro().getNroBloqueDerecho();
 				datos = archivo.leerBloque(nroHno);
 				nodoHnoDerecho.setBytes(datos);
-				
+				if (!nodoHnoDerecho.hayEspacio(reg.getBytes().length)) {
+					return false;
+				}
 				if (!nodo.isEsHoja()) {
 					// pasar la clave y el resto reasignar las referencias
 					RegistroNodo aux = new RegistroNodo();
@@ -674,7 +700,9 @@ public final class BStar implements BTree {
 				datos = archivo.leerBloque(nroHno);
 				nodoHnoIzquierdo.setBytes(datos);	
 				reg  = nodo.getPrimerRegistro();
-
+				if (!nodoHnoIzquierdo.hayEspacio(reg.getBytes().length)) {
+					return false;
+				}
 				if (!nodo.isEsHoja()) {
 					// pasar la clave y el resto reasignar las referencias
 					RegistroNodo aux = new RegistroNodo();
@@ -747,7 +775,6 @@ public final class BStar implements BTree {
 						.getNroBloqueIzquierdo();
 				nodoHnoDerecho = new Nodo();
 				nodoHnoDerecho.setBytes(archivo.leerBloque(nroHnoDerecho));
-				
 				if (nodoHnoDerecho.hayEspacio(reg.getBytes().length)) {
 					
 					if (!nodo.isEsHoja()) {
@@ -858,14 +885,14 @@ public final class BStar implements BTree {
 							}
 							nodoHnoIzquierdo.insertarRegistro(regAux);
 							int espacio = nodoPadre.getEspacioOcupado();
+							//FIXME: Aca decia pos, puse pos - 1
 							espacio += diferenciaClaves(nodoPadre.getRegistros().get(
-								pos), regAux);
+								pos-1), regAux);
 							nodoPadre.setEspacioOcupado(espacio);
 							if (nodoPadre.isOverflow()) {
-								int a = 1;
-								a = 3;
+								LOG.debug("Error, nodo en overflow.");
 							}
-							nodoPadre.getRegistros().get(pos).setClave(
+							nodoPadre.getRegistros().get(pos-1).setClave(
 								regAux.getClave());
 							nodosModificados.clear();
 							nodosModificados.add(nodo);

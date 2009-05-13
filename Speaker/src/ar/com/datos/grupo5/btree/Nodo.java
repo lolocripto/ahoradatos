@@ -125,6 +125,11 @@ public class Nodo {
 				.getClave()) > 0) {
 			return Constantes.MAYOR;
 		}
+		// TODO: FIXME:
+		if (clave.compareTo(registros.get(registros.size() - 1) 
+				.getClave()) == 0 && !this.esHoja) {
+			return Constantes.MAYOR;
+		}
 		
 		//Recorro los nodos en busca de la clave.
 		for (RegistroNodo reg : this.registros) {
@@ -336,11 +341,9 @@ public class Nodo {
 				// Luego lleno el nodo con lo del hermano siguiente
 				regAux = new RegistroNodo();
 				regAux2 = new RegistroNodo();
-				
+				regAux2 = regs.remove(0);
 
 				if (regs.size() == 0) {
-					regAux2 = nodoHermano.removerRegistro(nodoHermano.
-							registros.size() - 1);
 					nuevoHermano.insertarRegistro(regAux2);
 					regAux2 = new RegistroNodo();
 					regAux2.setClave(nodoHermano.getUltimoRegistro()
@@ -350,7 +353,6 @@ public class Nodo {
 					nodoPadre.insertarRegistro(regAux2);
 					nodoHermano.removerRegistro(nodoHermano.registros.size() - 1);
 				} else {
-					regAux2 = regs.remove(0);
 					regAux = new RegistroNodo();
 					regAux.setClave(regAux2.getClave());
 					regAux.setNroBloqueDerecho(nuevoHermano.getNroBloque());
@@ -365,8 +367,8 @@ public class Nodo {
 			} else {
 				if (pos == Constantes.MENOR) {
 					pos = 0;
-				}else if (pos == Constantes.MAYOR) {
-					pos = nodoPadre.registros.size() - 1;
+				} else if(pos == Constantes.MAYOR) {
+					pos = nodoPadre.getCantidadRegistros() - 1; 
 				}
 				// ahora, tengo que vaciar el hno y llenarlo otra vez
 				regs.addAll(nodoHermano.getRegistros());
@@ -378,12 +380,6 @@ public class Nodo {
 					RegistroNodo reg = regs.remove(0);
 					nodoHermano.insertarRegistro(reg);
 				}
-				if (regs.size() == 0) {
-					RegistroNodo reg = new RegistroNodo();
-					reg = nodoHermano.removerRegistro(nodoHermano.
-							getRegistros().size() - 1);
-					nuevoHermano.insertarRegistro(reg);
-				} 
 				// Luego lleno el nodo con lo del hermano siguiente
 				while (regs.size() > 0) {
 					RegistroNodo reg = regs.remove(0);
@@ -421,8 +417,6 @@ public class Nodo {
 				// Liberar la clave de la nueva raiz de la raiz anterior
 				if (pos == Constantes.MENOR) {
 					pos = 0;
-				}else if (pos == Constantes.MAYOR) {
-					pos = nodoPadre.registros.size() - 1;
 				}
 				RegistroNodo regAux = new RegistroNodo();
 				regAux.setClave(nodoPadre.registros.get(pos).getClave());
@@ -455,8 +449,8 @@ public class Nodo {
 				// Luego lleno el nodo con lo del hermano siguiente
 				regAux = new RegistroNodo();
 				regAux2 = new RegistroNodo();
+				regAux2 = regs.remove(0);
 				if (regs.size() == 0) {
-					regAux2 = removerRegistro(registros.size() - 1);
 					nuevoHermano.insertarRegistro(regAux2);
 					regAux2 = new RegistroNodo();
 					regAux2.setClave(getUltimoRegistro().getClave());
@@ -465,7 +459,6 @@ public class Nodo {
 					nodoPadre.insertarRegistro(regAux2);
 					removerRegistro(registros.size() - 1);
 				} else {
-					regAux2 = regs.remove(0);
 					regAux = new RegistroNodo();
 					regAux.setClave(regAux2.getClave());
 					regAux.setNroBloqueDerecho(nuevoHermano.getNroBloque());
@@ -488,12 +481,6 @@ public class Nodo {
 					RegistroNodo reg = regs.remove(0);
 					insertarRegistro(reg);
 				}
-				if (regs.size() == 0) {
-					RegistroNodo reg = new RegistroNodo();
-					reg = removerRegistro(nodoHermano.getRegistros().
-							size() - 1);
-					nuevoHermano.insertarRegistro(reg);
-				} 
 				// Luego lleno el nodo con lo del hermano siguiente
 				while (regs.size() > 0) {
 					RegistroNodo reg = regs.remove(0);
@@ -591,10 +578,8 @@ public class Nodo {
 			dos.write(longDatos, 0, longDatos.length);
 			
 			if (espacioOcupado > espacioTotal) {
-				Logger.getLogger(this.getClass()).debug(
-						"Voy a grabar un nodo con overflow.");
+				LOG.debug("Error !!!!!!!!!!!!!!!!!!!!!!!!!!! Nodo en overflow");
 			}
-			
 			byte[] regBytes = null;
 			int offset = 0;
 			//Serializo todos los registros.
@@ -726,9 +711,6 @@ public class Nodo {
 	 */
 	public final void setEspacioOcupado(final int espacio) {
 		this.espacioOcupado = espacio;
-		if (espacioOcupado > espacioTotal) {
-			Logger.getLogger(this.getClass()).debug("mierda!!");
-		}
 	}
 	
 	/**
@@ -791,7 +773,6 @@ public class Nodo {
 	 * @return the overflow
 	 */
 	public final boolean isOverflow() {
-		
 		if (espacioOcupado > espacioTotal) {
 			return true;
 		}
