@@ -34,7 +34,7 @@ public class TestArbolBSharp {
 			String palabraVieja = "algo";
 			ArrayList<String> lista = new ArrayList<String>();
 			String cadena = "";
-		
+			
 			TextInterpreter tx = new TextInterpreter();
 			
 			Collection<IunidadDeHabla> lista2 = null;
