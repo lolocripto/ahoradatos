@@ -116,7 +116,7 @@ public class TestCoreListasInvertidas {
 			while (iterador.hasNext()) {
 
 				elemento = iterador.next();
-				logger.debug("Termino: " + elemento.getTextoEscrito());
+		//		logger.debug("Termino: " + elemento.getTextoEscrito());
 				
 				// Si no es StopWord entonces utilizo el Ftrs.
 				if (!elemento.isStopWord()) {
@@ -133,11 +133,11 @@ public class TestCoreListasInvertidas {
 				 */
 				if (this.diccionario.buscarPalabra(elemento
 						.getEquivalenteFonetico()) != null) {
-					logger.debug("existe en el archivo de texto.");
+				//	logger.debug("existe en el archivo de texto.");
 					continue;
 				}
 				
-				logger.debug("No esta en el archivo de texto.");
+			//	logger.debug("No esta en el archivo de texto.");
 				
 				
 				// Si no encontro la palabra pido ingresar el audio
@@ -200,6 +200,7 @@ public class TestCoreListasInvertidas {
 				*/
 			}
 			
+			System.out.println("entro a generar listas invertidas");
 			this.ftrsManager.generarListasInvertidas();
 
 			//cerrarArchivo(invocador);
