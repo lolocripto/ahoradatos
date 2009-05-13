@@ -213,7 +213,7 @@ public class Merge {
 				nodo2.setBytes(dataNodo);
 		
 				while (salida == 0 && cantidadRegistrosfP1 > 0 && cantidadRegistrosfP2 > 0) {
-					comp = nodo1.comparar(nodo2);
+					comp = nodo1.compareTo(nodo2);
 			//		System.out.println("lup!"+comp+"t1="+nodo1.getIdTermino()+" t2="+nodo2.getIdTermino()+" d1="+nodo1.getIdDocumento()+" d2="+nodo2.getIdDocumento());
 			//		System.out.println("i1="+i1+" i2="+i2+" cantp1="+cantidadRegistrosfP1+" cantp2="+cantidadRegistrosfP2);
 				switch(comp) {

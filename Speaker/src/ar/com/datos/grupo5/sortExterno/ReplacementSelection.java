@@ -224,14 +224,12 @@ public class ReplacementSelection {
 							nodo1.setBytes(dataNodo); //idT,idD,fdt
 							cont++;
 							//4.4.1-si reg(f) <= grabado -> congelado
-							comp = nodo1.comparar(menor);
+							comp = nodo1.compareTo(menor);
 							if (comp == -1 || comp == 0) {
-								nodo1.setFlag(1);
 								this.listaNodoCongelados.add(nodo1);
 							}
 							//4.4.2-si reg(f) > grabado -> disponible
 							if (comp == 1) {
-								nodo1.setFlag(0);
 								this.listaNodoDisponibles.add(nodo1);
 							}
 						} else {
