@@ -234,7 +234,7 @@ public class Merge {
 								}
 							}
 						break;
-					case 1://Nodo1 es menor a nodo2
+					case -1://Nodo1 menor a nodo2
 							if (i1 < cantidadRegistrosfP1) {
 								dataNodo = nodo1.getBytes();
 								fParticion3.write(dataNodo, 0, dataNodo.length);
@@ -247,7 +247,7 @@ public class Merge {
 								nodo1.setIdTermino(-1L); //TODO mirar esta modificación, ahora no palma por loop, pero hay que chequear si no afecta
 							}
 						break;
-					case -1: //nodo1 mayor nodo2
+					case 1: //nodo1 mayor nodo2
 							if (i2 < cantidadRegistrosfP2) {
 								dataNodo = nodo2.getBytes();
 								fParticion3.write(dataNodo, 0, dataNodo.length);
