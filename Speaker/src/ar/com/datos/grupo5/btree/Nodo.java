@@ -595,6 +595,11 @@ public class Nodo {
 			longDatos = Conversiones.intToArrayByte(espacioOcupado);
 			dos.write(longDatos, 0, longDatos.length);
 			
+			if (espacioOcupado > espacioTotal) {
+				Logger.getLogger(this.getClass()).debug(
+						"Voy a grabar un nodo con overflow.");
+			}
+			
 			byte[] regBytes = null;
 			int offset = 0;
 			//Serializo todos los registros.
