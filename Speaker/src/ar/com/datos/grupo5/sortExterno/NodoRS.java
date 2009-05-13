@@ -14,7 +14,7 @@ import ar.com.datos.grupo5.utils.Conversiones;
  * @version 1.0
  * @created 04-May-2009 04:15:57 p.m.
  */
-public class NodoRS {
+public class NodoRS implements Comparable<NodoRS> {
 
 	/**
 	 * 0 - disponible 1 - congelado.
@@ -184,6 +184,27 @@ public class NodoRS {
 	 */
 	public int getTamanio() {
 		return tamanio;
+	}
+
+	@Override
+	public int compareTo(NodoRS nRS) {
+		if (this.flag == 1 && nRS.getFlag() == 0) return 1;
+		if ((nRS.getFlag()==1)&&(this.flag==0)) return -1;
+		if ((nRS.getFlag()==1)&&(this.flag==1)) return 0;
+		if ((nRS.getFlag()==0)&&(this.flag==0)) {
+		   int comp = this.idTermino.compareTo(nRS.getIdTermino());
+		   int compi2;
+		if (comp != 0) {
+		//	System.out.println("it1="+this.getIdTermino()+" it2="+nRS.getIdTermino());
+			   return comp;
+		   }
+		   else
+			   compi2 = this.idDocumento.compareTo(nRS.getIdDocumento());
+			  // System.out.println("compi2 dio "+compi2+" d1="+this.getIdDocumento()+" d2="+nRS.getIdDocumento());
+			   return compi2;
+		}
+		
+        return 2;
 	}
 	
 }
