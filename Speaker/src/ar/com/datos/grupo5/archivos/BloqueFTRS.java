@@ -9,9 +9,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
+
 import ar.com.datos.grupo5.CFFTRS;
 import ar.com.datos.grupo5.ClaveFrontCoding;
 import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.FTRSManager;
 import ar.com.datos.grupo5.btree.Clave;
 import ar.com.datos.grupo5.parser.CodificadorFrontCoding;
 import ar.com.datos.grupo5.registros.RegistroFTRS;
@@ -25,6 +28,8 @@ public class BloqueFTRS implements Comparable<BloqueFTRS>{
 	private int numeroBloque;
 	
 	private int punteroAlSiguiente;
+	
+	private static Logger LOG = Logger.getLogger(BloqueFTRS.class);
 	
 	
 	public int getPunteroAlSiguiente() {
@@ -135,6 +140,9 @@ public class BloqueFTRS implements Comparable<BloqueFTRS>{
 	public void setBytes (byte[] tiraBytes){
 		
 		int longitud = tiraBytes.length;
+		
+		
+		LOG.debug("longitud de bytes del bloque a levantarse: "+ longitud);
 		
 		//genero los manipuladores del array de bytes
 		ByteArrayInputStream bis = new ByteArrayInputStream(tiraBytes);  

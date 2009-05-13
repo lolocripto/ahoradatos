@@ -60,7 +60,7 @@ public class TestArbolBSharp {
 					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
 				}
 				u++;
-				tree.listar();
+				//tree.listar();
 				
 			}
 
@@ -82,7 +82,7 @@ public class TestArbolBSharp {
 				}
 				u++;
 				
-				tree.listar();
+			//	tree.listar();
 			}
 
 			

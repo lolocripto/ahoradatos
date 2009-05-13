@@ -5,6 +5,7 @@ package ar.com.datos.grupo5.btree;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
@@ -34,7 +35,7 @@ public class BSharp {
 	/**
 	 * Logger para la clase.
 	 */
-	private static Logger logger = Logger.getLogger(FTRSManager.class);
+	private static Logger LOG = Logger.getLogger(FTRSManager.class);
 	
 	
 	/**
@@ -46,7 +47,7 @@ public class BSharp {
 			this.secuencialSet = new ArchivoSecuencialSet();
 			this.arbolBStar.setSecuencialSet(this.secuencialSet);
 		} catch (Exception e) {
-			logger.debug("Imposible inicializar el Arbol BSharp.");
+			LOG.debug("Imposible inicializar el Arbol BSharp.");
 		}
 	}
 
@@ -59,7 +60,7 @@ public class BSharp {
 		}
 		int punteroABloqueRegistro = nodo.getPunteroBloque();
 		
-		System.out.println("el secuencial intenta acceder al bloque: " + punteroABloqueRegistro);
+		LOG.debug("el secuencial intenta acceder al bloque: " + punteroABloqueRegistro);
 		
 		BloqueFTRS bloqueRegistrosFTRS = this.secuencialSet.leerBloque(punteroABloqueRegistro);
 		return bloqueRegistrosFTRS.buscarRegistro(new Clave(termino));
@@ -83,7 +84,26 @@ public class BSharp {
 				//Se pudo insertar, por lo tanto ahora modifico el SecuencialSer.
 				ArrayList<Nodo> lista = this.arbolBStar.getNodosModificados();
 				
-				System.out.println(" elems pasados al sec: "+lista.size());
+				
+				Iterator<Nodo> it = lista.iterator();
+				LOG.debug("en esta iteracion el secuencial intenta acceder a los bloques: ");
+				
+				while (it.hasNext()) {
+				
+				Nodo unnodo = it.next();
+				
+				if (unnodo.getPunteroBloque() == 16){
+					
+					int entroaca = 0;
+				}
+					
+				LOG.debug("bloque: " +unnodo.getPunteroBloque());
+					
+				}
+				
+				LOG.debug("fin listado bloques ");
+				
+			//	System.out.println(" elems pasados al sec: "+lista.size());
 				
 				this.secuencialSet.bloquesActualizados(lista, nuevaPalabraExt, idTerminoExt, -1);
 				return true;
