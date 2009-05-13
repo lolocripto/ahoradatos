@@ -320,6 +320,8 @@ public class ListasInvertidas {
 					 */
 					bloqueAInsertar = this.espacioLibre.buscarEspacio((short) tamanioRegistro);
 					
+					logger.debug("tengo una lista que voy a insertar en el bloque: "+bloqueAInsertar);
+					
 					if (bloqueAInsertar != -1) {
 						this.nroBloque = bloqueAInsertar;
 						//Hay lugar en un bloque por lo tanto lo inserto
