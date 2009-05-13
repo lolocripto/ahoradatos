@@ -40,18 +40,26 @@ public class TestArbol {
 //					"242", "37", "38", "16", "41", "47", "68",
 //					"34", "48", "100", "200", "150", "151", "44",
 //					};
+			
+			String[] claves = {
+					"15", "30", "1", "10", "13", "50", "35", 
+					"20", "22", "40", "55", "23"/*, "21", "24",
+					"25", "26", "43", "45", "23", "17", "241",
+					"242", "37", "38", "16", "41", "47", "68",
+					"34", "48", "100", "200", "150", "151", "44",*/
+					};
 				
-//			for (int i = 0; i < claves.length; i++) {
-//				
-//				clave = new Clave();
-//				reg = new RegistroNodo();
-//				
-//				System.out.println("Inserto [" + claves[i] + "]");
-//				clave.setClave(claves[i]);
-//				reg.setClave(clave);
-//				tree.insertar(reg);
-//				tree.listar();
-//			}
+			for (int i = 0; i < claves.length; i++) {
+				
+				clave = new Clave();
+				reg = new RegistroNodo();
+				
+				System.out.println("Inserto [" + claves[i] + "]");
+				clave.setClave(claves[i]);
+				reg.setClave(clave);
+				tree.insertar(reg);
+				tree.listar();
+			}
 //			int cantidad = 500;
 //			String claveStr = "";
 //			for (int i = 0; i < cantidad; i++) {
@@ -68,45 +76,45 @@ public class TestArbol {
 //				//tree.listar();
 //			}
 //			tree.listar();
-			String palabraVieja = "algo";
-			ArrayList<String> lista = new ArrayList<String>();
-			String cadena = "";
-		
-			TextInterpreter tx = new TextInterpreter();
-			
-			Collection<IunidadDeHabla> lista2 = null;
-			
-			lista2 = tx.modoLecturaSinAlmacenamiento("ES.txt", true);
-			
-			Iterator<IunidadDeHabla> it;
-			
-			it = lista2.iterator();
-			
-			int u =0;
-			
-			while (it.hasNext()) {
-				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
-				
-				cadena = iunidadDeHabla.getTextoEscrito();
-				
-				//System.out.println(cadena);
-				clave = new Clave();
-				clave.setClave(cadena);
-				reg = new RegistroNodo();
-				reg.setClave(clave);
-				if (u == 84) {
-					int a = 0;
-					a = 1;
-				}
-				if (tree.insertar(reg)) {
-					System.out.println("Insertada la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
-				} else {
-					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
-				}
-				u++;
-				//tree.listar();
-			}
-			//tree.listar();
+//			String palabraVieja = "algo";
+//			ArrayList<String> lista = new ArrayList<String>();
+//			String cadena = "";
+//		
+//			TextInterpreter tx = new TextInterpreter();
+//			
+//			Collection<IunidadDeHabla> lista2 = null;
+//			
+//			lista2 = tx.modoLecturaSinAlmacenamiento("d:\\palabras.txt", true);
+//			
+//			Iterator<IunidadDeHabla> it;
+//			
+//			it = lista2.iterator();
+//			
+//			int u =0;
+//			
+//			while (it.hasNext()) {
+//				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
+//				
+//				cadena = iunidadDeHabla.getTextoEscrito();
+//				
+//				System.out.println(cadena);
+//				clave = new Clave();
+//				clave.setClave(cadena);
+//				reg = new RegistroNodo();
+//				reg.setClave(clave);
+//				if (u == 84) {
+//					int a = 0;
+//					a = 1;
+//				}
+//				if (tree.insertar(reg)) {
+//					System.out.println("Insertada la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
+//				} else {
+//					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
+//				}
+//				u++;
+//				tree.listar();
+//			}
+//			tree.listar();
 			
 		} catch (Exception e) {
 			logger.error("Error: " + e);
