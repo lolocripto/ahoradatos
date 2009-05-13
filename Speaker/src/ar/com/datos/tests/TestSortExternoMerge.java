@@ -47,15 +47,29 @@ public class TestSortExternoMerge {
 			/* 3 documentos */
 			
 			
-			Random r = new Random();
+			//Random r = new Random();
 			
-			r.nextInt(100);
+			//r.nextInt(100);
 			
 			//creo 1000 nodos con palabras: 100 palabras random diferentes posibles distribuidas uniformemente entre 10 documentos
 			for (int i = 0; i < 1000; i++) {
 				
-				nodo.setIdTermino((long)r.nextInt(100));
-				nodo.setIdDocumento((long)r.nextInt(10));
+				Random r = new Random();
+				
+				long termino = (long)r.nextInt(100);
+				long doc = (long)r.nextInt(10);
+				
+				System.out.print("generados: " +termino + " " + doc);
+				System.out.println(" ");
+				
+				nodo.setIdTermino(termino);
+				nodo.setIdDocumento(doc);
+				
+				System.out.print("guardados:");
+				System.out.print("termino: "+nodo.getIdTermino()+" ");
+				System.out.print("documento: "+nodo.getIdDocumento()+ " ");;
+				
+				System.out.println(" ");
 				f.write(nodo.getBytes());
 				
 			}
@@ -74,6 +88,26 @@ public class TestSortExternoMerge {
 			
 			
 			
+			
+			
+			
+			f = new RandomAccessFile(arch,
+					Constantes.ABRIR_PARA_LECTURA);
+		
+			NodoRS nodolectura = new NodoRS();
+			
+			
+			byte[] aux = new byte[16];
+			
+			for (int i = 0; i < 1000; i++) {
+				
+				f.read(aux);
+				
+				nodolectura.setBytes(aux);
+				System.out.print("termino: "+nodo.getIdTermino()+" ");
+				System.out.print("documento: "+nodo.getIdDocumento()+ " ");;
+				System.out.println(" ");
+			}
 			
 			
 			
