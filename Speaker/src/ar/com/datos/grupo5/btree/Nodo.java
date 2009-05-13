@@ -125,11 +125,6 @@ public class Nodo {
 				.getClave()) > 0) {
 			return Constantes.MAYOR;
 		}
-
-		if (clave.compareTo(registros.get(registros.size() - 1) 
-				.getClave()) == 0) {
-			return Constantes.MAYOR;
-		}
 		
 		//Recorro los nodos en busca de la clave.
 		for (RegistroNodo reg : this.registros) {
