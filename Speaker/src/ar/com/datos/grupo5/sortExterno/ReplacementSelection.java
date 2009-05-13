@@ -3,6 +3,8 @@ package ar.com.datos.grupo5.sortExterno;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -138,20 +140,11 @@ public class ReplacementSelection {
 	 */
 	private NodoRS obtenerMenorNodo() {
 		
-		int comp;
-		Iterator<NodoRS> i, j;
-		NodoRS nodoI, nodoJ;
-		j = this.listaNodo.iterator();
-		i = this.listaNodo.iterator();
-		nodoJ = j.next();
-		while (i.hasNext()) {
-			nodoI = i.next();
-			comp = nodoI.comparar(nodoJ);
-			if (comp == -1) {
-				nodoJ = nodoI;
-			}
-		}
-		return nodoJ;
+//		Comparator<NodoRS> comp = Collections.reverseOrder();
+//		
+//		Collections.sort(this.listaNodo, comp);
+		
+		return Collections.min(this.listaNodo);
 	}
 
 	/**
