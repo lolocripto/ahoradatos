@@ -113,7 +113,7 @@ public class Merge {
 			//para cada particion calculo la cantidad de registros que tiene
 			try {
 				file = new RandomAccessFile(nodo,
-						Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+						Constantes.ABRIR_PARA_LECTURA);
 				
 				nRegistros = file.length() / nodoRS.getTamanio();
 				file.close();
