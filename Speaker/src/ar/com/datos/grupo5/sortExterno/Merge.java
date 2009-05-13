@@ -230,7 +230,8 @@ public class Merge {
 									nodo1.setBytes(dataNodo);
 									i1++;
 								} else {
-									nodo1.setIdDocumento(10000000L);
+									nodo1.setIdDocumento(Long.MAX_VALUE);
+									nodo1.setIdTermino(Long.MAX_VALUE);
 								}
 							}
 						break;
@@ -243,8 +244,8 @@ public class Merge {
 								nodo1.setBytes(dataNodo);
 								i1++;
 							} else {
-								nodo1.setIdDocumento(10000000L);
-								nodo1.setIdTermino(-1L); //TODO mirar esta modificación, ahora no palma por loop, pero hay que chequear si no afecta
+								nodo1.setIdDocumento(Long.MAX_VALUE);
+								nodo1.setIdTermino(Long.MAX_VALUE); //TODO mirar esta modificación, ahora no palma por loop, pero hay que chequear si no afecta
 							}
 						break;
 					case 1: //nodo1 mayor nodo2
@@ -256,8 +257,8 @@ public class Merge {
 								nodo2.setBytes(dataNodo);
 								i2++;
 							} else {
-								nodo2.setIdDocumento(10000000L);
-								nodo2.setIdTermino(-1L); //TODO mirar esta modificación, ahora no palma por loop, pero hay que chequear si no afecta
+								nodo2.setIdDocumento(Long.MAX_VALUE);
+								nodo2.setIdTermino(Long.MAX_VALUE);//TODO mirar esta modificación, ahora no palma por loop, pero hay que chequear si no afecta
 							}
 						break;
 						default:
