@@ -104,8 +104,8 @@ public class TestSortExternoMerge {
 				f.read(aux);
 				
 				nodolectura.setBytes(aux);
-				System.out.print("termino: "+nodo.getIdTermino()+" ");
-				System.out.print("documento: "+nodo.getIdDocumento()+ " ");;
+				System.out.print("termino: "+nodolectura.getIdTermino()+" ");
+				System.out.print("documento: "+nodolectura.getIdDocumento()+ " ");;
 				System.out.println(" ");
 			}
 			
