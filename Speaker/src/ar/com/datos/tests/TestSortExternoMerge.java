@@ -40,10 +40,10 @@ public class TestSortExternoMerge {
 			//file.delete();
 			
 			
-//			f = new RandomAccessFile(arch,
-//					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
-//		
-//			NodoRS nodo = new NodoRS();
+			f = new RandomAccessFile(arch,
+					Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+		
+			NodoRS nodo = new NodoRS();
 	
 			
 			
@@ -60,30 +60,30 @@ public class TestSortExternoMerge {
 			
 			
 			
-			//creo 1000 nodos con palabras: 100 palabras random diferentes posibles distribuidas uniformemente entre 10 documentos
-//			for (int i = 0; i < 1000; i++) {
-//				
-//				Random r = new Random();
-//				
-//				long termino = (long)r.nextInt(100);
-//				long doc = (long)r.nextInt(10);
-//				
-//				System.out.print("generados: " +termino + " " + doc);
-//				System.out.println(" ");
-//				
-//				nodo.setIdTermino(termino);
-//				nodo.setIdDocumento(new Long(0));
-//				
-//				System.out.print("guardados:");
-//				System.out.print("termino: "+nodo.getIdTermino()+" ");
-//				System.out.print("documento: "+nodo.getIdDocumento()+ " ");;
-//				
-//				System.out.println(" ");
-//				f.write(nodo.getBytes());
-//				
-//			}
-//			
-//			f.close();
+		//	creo 1000 nodos con palabras: 100 palabras random diferentes posibles distribuidas uniformemente entre 10 documentos
+			for (int i = 0; i < 1000; i++) {
+				
+				Random r = new Random();
+				
+				long termino = (long)r.nextInt(100);
+				long doc = (long)r.nextInt(10);
+				
+				System.out.print("generados: " +termino + " " + doc);
+				System.out.println(" ");
+				
+				nodo.setIdTermino(termino);
+				nodo.setIdDocumento(new Long(0));
+				
+				System.out.print("guardados:");
+				System.out.print("termino: "+nodo.getIdTermino()+" ");
+				System.out.print("documento: "+nodo.getIdDocumento()+ " ");;
+				
+				System.out.println(" ");
+				f.write(nodo.getBytes());
+				
+			}
+			
+			f.close();
 			
 			
 			
