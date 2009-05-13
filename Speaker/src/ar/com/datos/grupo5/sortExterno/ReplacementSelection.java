@@ -26,7 +26,12 @@ public class ReplacementSelection {
 	/**
 	 * Lista con los pares idTermino - Documento.
 	 */
-	private List<NodoRS> listaNodo;
+	private List<NodoRS> listaNodoDisponibles;
+	
+	/**
+	 * Lista de nodos Congelados 
+	 */
+	private List<NodoRS> listaNodoCongelados;
 	
 	/**
 	 * Lista de particiones generadas.
@@ -48,7 +53,8 @@ public class ReplacementSelection {
 	 * Contructor de copia por defecto.
 	 */
 	public ReplacementSelection() {
-		this.listaNodo = new ArrayList<NodoRS>();
+		this.listaNodoDisponibles = new ArrayList<NodoRS>();
+		this.listaNodoCongelados = new ArrayList<NodoRS>();
 		this.listaParticiones = new ArrayList<String>();
 	}
 	
@@ -64,7 +70,8 @@ public class ReplacementSelection {
 	public ReplacementSelection(final String archExt) {
 		this.arch = archExt;
 		this.memoria = Constantes.TAMANIO_BUFFER_REPLACEMENT_SELECTION;
-		this.listaNodo = new ArrayList<NodoRS>();
+		this.listaNodoDisponibles = new ArrayList<NodoRS>();
+		this.listaNodoCongelados = new ArrayList<NodoRS>();
 		this.listaParticiones = new ArrayList<String>();
 	}
 	
@@ -74,6 +81,7 @@ public class ReplacementSelection {
 	 */
 	private int cuantosDisponibles() {
 		
+		/*
 		Iterator<NodoRS> it;
 		NodoRS nodo;
 		
@@ -86,7 +94,8 @@ public class ReplacementSelection {
 				cont++;
 			}
 		}
-		return cont;
+		*/
+		return this.listaNodoDisponibles.size();
 	}
 
 	/**
@@ -95,15 +104,8 @@ public class ReplacementSelection {
 	 */
 	private void hacerDisponible() {
 		
-		Iterator<NodoRS> it;
-		NodoRS nodo;
-		
-		it = this.listaNodo.iterator();
-		
-		while (it.hasNext()) {
-			nodo = it.next();
-			nodo.setFlag(0);
-		}
+		this.listaNodoDisponibles.addAll(this.listaNodoCongelados);
+		this.listaNodoCongelados.clear();
 	}
 	
 	/**
@@ -114,6 +116,7 @@ public class ReplacementSelection {
 	 */
 	private boolean nodoRSCongelado() {
 		
+		/*
 		int cantCongelada = 0;
 		Iterator<NodoRS> it = this.listaNodo.iterator();
 		NodoRS nodo;
@@ -123,7 +126,8 @@ public class ReplacementSelection {
 				cantCongelada++;	
 			}
 		}
-		return (cantCongelada == this.cantidadNodos);
+		*/
+		return (this.listaNodoDisponibles.isEmpty());
 	}
 
 	/**
@@ -131,7 +135,7 @@ public class ReplacementSelection {
 	 * @return True si no tiene más elementos. False si aún tiene.
 	 */
 	private boolean nodoRSVacio() {
-		return this.listaNodo.isEmpty();
+		return this.listaNodoDisponibles.isEmpty();
 	}
 
 	/**
@@ -144,9 +148,33 @@ public class ReplacementSelection {
 //		
 //		Collections.sort(this.listaNodo, comp);
 		
-		return Collections.min(this.listaNodo);
+		return Collections.min(this.listaNodoDisponibles);
 	}
 
+	/**
+	 * Realiza la carga inicial de la lista de elementos disponibles.
+	 */
+	public final int cargarInicialListaDisponibles(final long nRegistros, final RandomAccessFile archivoTrabajo) {
+		
+		NodoRS nodo = new NodoRS();
+		byte[] dataNodo = new byte[nodo.getTamanio()];
+		int cantidadNodosCargados = 0;
+		
+		
+		for (int i = 0; i < this.cantidadNodos && i < nRegistros; i++) {
+			try {
+				archivoTrabajo.read(dataNodo, 0, dataNodo.length);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				return cantidadNodosCargados;
+			}
+			nodo.setBytes(dataNodo);
+			this.listaNodoDisponibles.add(nodo);
+			nodo = new NodoRS();
+			cantidadNodosCargados++;
+		}
+		return cantidadNodosCargados;
+	}
 	/**
 	 * Metodo que se encarga de ordenar lo elementos leidos y
 	 * generar las particiones.
@@ -169,16 +197,11 @@ public class ReplacementSelection {
 		try {
 			RandomAccessFile archivoTrabajo = new RandomAccessFile(arch,Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 			if (archivoTrabajo != null) {
+				//Cantidad de regsitros en el archivo
 				nRegistros = archivoTrabajo.length() / nodo.getTamanio();
 				archivoTrabajo.seek(0);
-				//3-cargo por primera vez el buffer(Lista de NodoRS)
-				for (int i = 0; i < this.cantidadNodos && i < nRegistros; i++) {
-					archivoTrabajo.read(dataNodo, 0, dataNodo.length);
-					nodo.setBytes(dataNodo);
-					this.listaNodo.add(nodo);
-					nodo = new NodoRS();
-					cont++;
-				}
+				
+				cont = cargarInicialListaDisponibles(nRegistros, archivoTrabajo);
 				
 				while (!nodoRSCongelado() && !nodoRSVacio()) {
 					//4-arranca el bucle (mientras el buffer no este vacio ni congelado)
@@ -193,7 +216,7 @@ public class ReplacementSelection {
 						//4.3-lo grabo en Pi y lo elimino de listaNodo
 						dataNodo = menor.getBytes();
 						p.write(dataNodo, 0, dataNodo.length);
-						this.listaNodo.remove(menor);
+						this.listaNodoDisponibles.remove(menor);
 						//4.4-leo el siguiente del archivo f
 						if (cont < nRegistros) {
 							nodo1 = new NodoRS();
@@ -204,12 +227,12 @@ public class ReplacementSelection {
 							comp = nodo1.comparar(menor);
 							if (comp == -1 || comp == 0) {
 								nodo1.setFlag(1);
-								this.listaNodo.add(nodo1);
+								this.listaNodoCongelados.add(nodo1);
 							}
 							//4.4.2-si reg(f) > grabado -> disponible
 							if (comp == 1) {
 								nodo1.setFlag(0);
-								this.listaNodo.add(nodo1);
+								this.listaNodoDisponibles.add(nodo1);
 							}
 						} else {
 							flag = 1;
@@ -220,7 +243,7 @@ public class ReplacementSelection {
 								//4.3-lo grabo en Pi y lo elimino de listaNodo
 								dataNodo = menor.getBytes();
 								p.write(dataNodo, 0, dataNodo.length);
-								this.listaNodo.remove(menor);
+								this.listaNodoDisponibles.remove(menor);
 							}
 						}
 					}

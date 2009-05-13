@@ -80,6 +80,7 @@ public class Merge {
 		generarCantidadesRegistrosPorArchivo();
 		int cant = obtenerCantidadParticiones();
 		while (cant > 1) {
+			System.out.println("Cantidad de particiones faltantes: " + Integer.toString(cant));
 			obtenerDosPaticionesMenores();
 			unirDosPaticiones();
 			cant = obtenerCantidadParticiones();
@@ -146,6 +147,8 @@ public class Merge {
 		int salida;
 		NodoParticion nodoParticion;
 		
+		System.out.println("Voy a obtener dos particiones menores");
+		
 		for (int i = 0; i < 2; i++) {
 			//busco el menor con flag == 0
 			it = listaNodoParticion.iterator();
@@ -188,7 +191,7 @@ public class Merge {
 		String nombreNuevaParticion;
 		byte[] dataNodo = new byte[nodo1.getTamanio()];
 		
-		
+		System.out.println("Voy a unir las dos particiones menores");
 		try {
 			RandomAccessFile fParticion1 = new RandomAccessFile(nombreParticion1,Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 			RandomAccessFile fParticion2 = new RandomAccessFile(nombreParticion2,Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
@@ -209,7 +212,7 @@ public class Merge {
 				fParticion2.read(dataNodo, 0, dataNodo.length);
 				nodo2.setBytes(dataNodo);
 		
-				while (salida == 0) {
+				while (salida == 0 && cantidadRegistrosfP1 > 0 && cantidadRegistrosfP2 > 0) {
 					comp = nodo1.comparar(nodo2);
 			//		System.out.println("lup!"+comp+"t1="+nodo1.getIdTermino()+" t2="+nodo2.getIdTermino()+" d1="+nodo1.getIdDocumento()+" d2="+nodo2.getIdDocumento());
 			//		System.out.println("i1="+i1+" i2="+i2+" cantp1="+cantidadRegistrosfP1+" cantp2="+cantidadRegistrosfP2);
@@ -231,7 +234,7 @@ public class Merge {
 								}
 							}
 						break;
-					case 1:
+					case 1://Nodo1 es menor a nodo2
 							if (i1 < cantidadRegistrosfP1) {
 								dataNodo = nodo1.getBytes();
 								fParticion3.write(dataNodo, 0, dataNodo.length);
@@ -244,7 +247,7 @@ public class Merge {
 								nodo1.setIdTermino(-1L); //TODO mirar esta modificación, ahora no palma por loop, pero hay que chequear si no afecta
 							}
 						break;
-					case -1:
+					case -1: //nodo1 mayor nodo2
 							if (i2 < cantidadRegistrosfP2) {
 								dataNodo = nodo2.getBytes();
 								fParticion3.write(dataNodo, 0, dataNodo.length);
@@ -299,6 +302,7 @@ public class Merge {
 		while (it.hasNext() && salida == 0) {
 			nodoParticion = it.next();
 			if (nodoParticion.getParticion().compareTo(nombreParticion2) == 0) {
+				System.out.println("Borro el archivo: " + nodoParticion.getParticion());
 				this.listaNodoParticion.remove(nodoParticion);
 				salida = 1;
 			}
