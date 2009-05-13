@@ -108,7 +108,7 @@ public class BloqueFTRS implements Comparable<BloqueFTRS>{
 			e1.printStackTrace();
 		}
 		
-		
+		this.generarListaTerminosFroncodeados();
 		//obtengo un iterador de la lista de registros
 		Iterator<RegistroFTRS> it = listaTerminosFrontCodeados.iterator();
 		
