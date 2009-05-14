@@ -759,7 +759,6 @@ public final class BStar implements BTree {
 		} else {
 			regParaBajar = padre.getRegistros().get(posPadre);
 		}
-		RegistroNodo regParaSubir = null;
 		
 		//Veo si tengo espacio para bajar la clave.
 		//TODO: Ver lo del tamaño del registro en el nodo.
@@ -767,7 +766,7 @@ public final class BStar implements BTree {
 			return false;
 		}
 
-		regParaSubir = izquierdo.getUltimoRegistro();
+		RegistroNodo regParaSubir = izquierdo.getUltimoRegistro();
 		
 		if (!padre.hayEspacio(regParaSubir.getBytes().length)) {
 			return false;
@@ -786,7 +785,12 @@ public final class BStar implements BTree {
 		RegistroNodo removido = izquierdo.removerRegistro(izquierdo.getCantidadRegistros() - 1 );
 		
 		//Actualizo el padre
-		regParaBajar.setClave(removido.getClave());
+		if (izquierdo.isEsHoja()){
+			padre.getRegistros().get(posPadre).setClave(removido.getClave());
+		} else {
+			regParaBajar.setClave(removido.getClave());
+		}
+		
 		if (!izquierdo.isEsHoja()) {
 			regNuevo.setNroBloqueDerecho(nuevoNroBloque);
 			regNuevo.setNroBloqueIzquierdo(removido.getNroBloqueDerecho());
