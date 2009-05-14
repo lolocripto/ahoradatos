@@ -485,9 +485,9 @@ public final class BStar implements BTree {
 				nuevoHno = nodo.split(nodoHNO, nodoPadre, false, ultimoBloque);
 				break;
 			default:
-				// Primero evaluo el IZQ
-				nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueIzquierdo()));
-				nuevoHno = nodo.split(nodoHNO, nodoPadre, false, ultimoBloque); 
+				// Primero evaluo el DER
+				nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueDerecho()));
+				nuevoHno = nodo.split(nodoHNO, nodoPadre, true, ultimoBloque); 
 			}
 		nodoActual = nuevoHno;
 		nodoActual.setPunteroBloque(secuencialSet.reservarBloqueLibre());
@@ -651,8 +651,9 @@ public final class BStar implements BTree {
 		} else {
 			regParaSubir = derecho.getPrimerRegistro();
 		}
-		
-		if (!padre.hayEspacio(regParaSubir.getBytes().length)) {
+		// ESTO ESTA MAL, PORQUE SE PERMUTA LA CLAVE, NO SE AGREGA
+		int espacio = diferenciaClaves(regParaBajar,regParaSubir);
+		if (!padre.hayEspacio(espacio)) {
 			return false;
 		}
 		
@@ -709,8 +710,9 @@ public final class BStar implements BTree {
 		}
 
 		RegistroNodo regParaSubir = izquierdo.getUltimoRegistro();
-		
-		if (!padre.hayEspacio(regParaSubir.getBytes().length)) {
+		// ESTO ESTA MAL, PORQUE SE PERMUTA LA CLAVE, NO SE AGREGA
+		int espacio = diferenciaClaves(regParaBajar,regParaSubir);
+		if (!padre.hayEspacio(espacio)) {
 			return false;
 		}
 		
@@ -731,8 +733,8 @@ public final class BStar implements BTree {
 			padre.getRegistros().get(posPadre).setClave(removido.getClave());
 		} else {
 			regParaBajar.setClave(removido.getClave());
-			regNuevo.setNroBloqueDerecho(nuevoNroBloque);
 			regNuevo.setNroBloqueIzquierdo(removido.getNroBloqueDerecho());
+			regNuevo.setNroBloqueDerecho(nuevoNroBloque);
 		}
 
 		return true;

@@ -305,9 +305,7 @@ public class Nodo {
 
 			if (!this.isEsHoja()) {
 				// Liberar la clave de la nueva raiz de la raiz anterior
-				if (pos == Constantes.MENOR) {
-					pos = 0;
-				}else if (pos == Constantes.MAYOR) {
+				if (pos == Constantes.MAYOR) {
 					pos = nodoPadre.registros.size() - 1;
 				}
 				regAux.setClave(nodoPadre.registros.get(pos).getClave());
@@ -362,9 +360,7 @@ public class Nodo {
 				}
 				
 			} else {
-				if (pos == Constantes.MENOR) {
-					pos = 0;
-				} else if(pos == Constantes.MAYOR) {
+				if(pos == Constantes.MAYOR) {
 					pos = nodoPadre.getCantidadRegistros() - 1; 
 				}
 				// ahora, tengo que vaciar el hno y llenarlo otra vez
@@ -487,9 +483,7 @@ public class Nodo {
 				pos = nodoPadre.buscarRegistro(getPrimerRegistro().getClave());
 				if (pos == Constantes.MENOR) {
 					pos = 0;
-				} else if(pos == Constantes.MAYOR) {
-					pos = nodoPadre.getCantidadRegistros() - 1; 
-				}
+				} 
 				int espacio = nodoPadre.getEspacioOcupado();
 				espacio += diferenciaClaves(nodoPadre.getRegistros().get(
 					pos), getPrimerRegistro());
