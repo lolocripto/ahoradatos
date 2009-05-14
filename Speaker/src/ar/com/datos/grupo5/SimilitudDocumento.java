@@ -7,7 +7,7 @@ package ar.com.datos.grupo5;
  * @author Led Zeppelin
  *
  */
-public class SimilitudDocumento implements Comparable {
+public class SimilitudDocumento implements Comparable<SimilitudDocumento> {
 
 	private double similitud;
 	private Long documento;
@@ -40,8 +40,8 @@ public class SimilitudDocumento implements Comparable {
 		return documento;
 	}
 	
-	public int compareTo(Object o) {
-		SimilitudDocumento reg = (SimilitudDocumento) o;
+	public int compareTo(SimilitudDocumento reg) {
+		
 		if (this.similitud > reg.getSimilitud()) {
 			return 1;
 		}
