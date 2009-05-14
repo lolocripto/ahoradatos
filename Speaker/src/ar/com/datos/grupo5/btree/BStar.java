@@ -695,9 +695,9 @@ public final class BStar implements BTree {
 		// Si no es hoja, subo la clave al padre y bajo una del padre al
 		// hermano.
 		if (derecho.isEsHoja()) {
-			regParaSubir = padre.getRegistros().get(1);
+			regParaSubir = derecho.getRegistros().get(1);
 		} else {
-			regParaSubir = padre.getPrimerRegistro();
+			regParaSubir = derecho.getPrimerRegistro();
 		}
 		
 		if (!padre.hayEspacio(regParaSubir.getBytes().length)) {
@@ -709,15 +709,19 @@ public final class BStar implements BTree {
 		RegistroNodo regNuevo = new RegistroNodo();
 		regNuevo.setClave(regParaBajar.getClave());
 		regNuevo.setPunteroBloque(regParaBajar.getPunteroBloque());
+		//Me guardo el numero de bloque izquierdo del ultimo registro.
+		int nuevoNroBloque = izquierdo.getUltimoRegistro().getNroBloqueDerecho();
 		izquierdo.insertarRegistro(regNuevo);
+		
+		//Remuevo el primer registro.
+		RegistroNodo removido = derecho.removerRegistro(0);
+		
 		//Reemplazo la clave en el padre.
 		regParaBajar.setClave(regParaSubir.getClave());
-		if (derecho.isEsHoja()) {
-			regParaBajar.setNroBloqueDerecho(derecho.getNroBloque());
-			regParaBajar.setNroBloqueIzquierdo(izquierdo.getNroBloque());
+		if (!derecho.isEsHoja()) {
+			regNuevo.setNroBloqueDerecho(removido.getNroBloqueIzquierdo());
+			regNuevo.setNroBloqueIzquierdo(nuevoNroBloque);
 		}
-		//Remuevo el primer registro.
-		derecho.removerRegistro(0);
 
 		return true;
 	}
@@ -736,7 +740,42 @@ public final class BStar implements BTree {
 			  Nodo derecho,
 			  int posPadre) throws IOException {
 		
-		return false;
+		//El registro que apunta a los dos nodos.
+		RegistroNodo regParaBajar = padre.getRegistros().get(posPadre);
+		RegistroNodo regParaSubir = null;
+		
+		//Veo si tengo espacio para bajar la clave.
+		//TODO: Ver lo del tamaño del registro en el nodo.
+		if (!derecho.hayEspacio(regParaBajar.getBytes().length)) {
+			return false;
+		}
+
+		regParaSubir = izquierdo.getUltimoRegistro();
+		
+		if (!padre.hayEspacio(regParaSubir.getBytes().length)) {
+			return false;
+		}
+		
+		// Si llegue hasta aca, tengo lugar, entonces paso los registros.
+		RegistroNodo regNuevo = new RegistroNodo();
+		regNuevo.setClave(regParaBajar.getClave());
+		regNuevo.setPunteroBloque(regParaBajar.getPunteroBloque());
+		//Me guardo el numero de bloque izquierdo del ultimo registro.
+		int nuevoNroBloque = izquierdo.getUltimoRegistro().getNroBloqueIzquierdo();
+		//Bajo el registro.
+		derecho.insertarRegistro(regNuevo);
+		
+		//Remuevo del izquierdo el ultimo.
+		RegistroNodo removido = izquierdo.removerRegistro(izquierdo.getCantidadRegistros() - 1 );
+		
+		//Actualizo el padre
+		regParaBajar.setClave(removido.getClave());
+		if (!izquierdo.isEsHoja()) {
+			regNuevo.setNroBloqueDerecho(nuevoNroBloque);
+			regNuevo.setNroBloqueIzquierdo(removido.getNroBloqueDerecho());
+		}
+
+		return true;
 	}
 	/**
 	 * @param nodo El nodo en el que no entra
