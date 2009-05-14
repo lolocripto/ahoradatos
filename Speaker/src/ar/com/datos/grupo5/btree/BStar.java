@@ -13,6 +13,7 @@ import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.archivos.ArchivoBloques;
 import ar.com.datos.grupo5.archivos.ArchivoSecuencialSet;
 import ar.com.datos.grupo5.registros.RegistroNodo;
+import ar.com.datos.grupo5.sortExterno.NodoParticion;
 import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
@@ -632,7 +633,60 @@ public final class BStar implements BTree {
 					Nodo nodoIZQ = new Nodo();
 					nodoPadre.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos_izq).getNroBloqueIzquierdo()));
 				}
+			
+			if (izq && der) {
+				
+			} else {
+				
+			}
 			return false;
+	}
+	
+	/**
+	 * 
+	 * @param padre
+	 * @param izquierdo
+	 * @return
+	 * @throws IOException 
+	 */
+	boolean pasarDerechaIzquierda(Nodo padre,
+								  Nodo izquierdo,
+								  Nodo derecho,
+								  int posPadre) throws IOException {
+		
+		//El registro que apunta a los dos nodos.
+		RegistroNodo regParaBajar = padre.getRegistros().get(posPadre);
+		RegistroNodo regParaSubir = null;
+		
+		//Veo si tengo espacio para bajar la clave.
+		//TODO: Ver lo del tamaño del registro en el nodo.
+		if (!izquierdo.hayEspacio(regParaBajar.getBytes().length)) {
+			return false;
+		}
+		// Si no es hoja, subo la clave al padre y bajo una del padre al
+		// hermano.
+		if (derecho.isEsHoja()) {
+			regParaSubir = padre.getRegistros().get(1);
+		} else {
+			regParaSubir = padre.getPrimerRegistro();
+		}
+		
+		if (!padre.hayEspacio(regParaSubir.getBytes().length)) {
+			return false;
+		}
+		
+		// Si llegue hasta aca, tengo lugar, entonces paso los regsitros.
+		// Bajo el registro del padre al izquierdo.
+		RegistroNodo regNuevo = new RegistroNodo();
+		regNuevo.setClave(regParaBajar.getClave());
+		regNuevo.setPunteroBloque(regParaBajar.getPunteroBloque());
+		izquierdo.insertarRegistro(regNuevo);
+		//Reemplazo la clave en el padre.
+		regParaBajar.setClave(regParaSubir.getClave());
+		//Remuevo el primer registro.
+		derecho.removerRegistro(0);
+
+		return true;
 	}
 	
 	/**
