@@ -630,7 +630,7 @@ public final class BStar implements BTree {
 	 * @return si exito true.
 	 * @throws IOException no pudo obtener el nodo
 	 */
-	private boolean pasarRegistro2(final Nodo nodo)
+	private boolean pasarRegistro(final Nodo nodo)
 			throws IOException {
 		
 			Nodo nodoPadre = new Nodo();
@@ -649,14 +649,19 @@ public final class BStar implements BTree {
 				case Constantes.MENOR:
 					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos_izq).getNroBloqueDerecho()));
 					pudePasar =  pasarIzquierdaDerecha(nodoPadre, nodoHNO, nodo, pos_izq);
+					break;
 				case Constantes.MAYOR:
 					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos_der).getNroBloqueIzquierdo()));
 					pudePasar =   pasarDerechaIzquierda(nodoPadre, nodoHNO, nodo, pos_der);
+					break;
 				default:
 					// Primero evaluo el IZQ
 					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueIzquierdo()));
 					pudePasar = pasarDerechaIzquierda(nodoPadre, nodoHNO, nodo, pos); 
 					if(!pudePasar) {
+						if (pos == pos_der) {
+							return false;
+						}
 						nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos+1).getNroBloqueDerecho()));
 						pudePasar =  pasarIzquierdaDerecha(nodoPadre, nodoHNO, nodo, pos); 
 					}
@@ -785,7 +790,7 @@ public final class BStar implements BTree {
 	 * @return si exito true.
 	 * @throws IOException no pudo obtener el nodo
 	 */
-	private boolean pasarRegistro(final Nodo nodo)
+	private boolean pasarRegistro2(final Nodo nodo)
 			throws IOException {
 		
 			Nodo nodoPadre = new Nodo();
