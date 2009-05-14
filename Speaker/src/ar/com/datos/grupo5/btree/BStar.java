@@ -648,10 +648,10 @@ public final class BStar implements BTree {
 			switch (pos) { 
 				case Constantes.MENOR:
 					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos_izq).getNroBloqueDerecho()));
-					pudePasar =  pasarIzquierdaDerecha(nodoPadre, nodoHNO, nodo, pos);
+					pudePasar =  pasarIzquierdaDerecha(nodoPadre, nodoHNO, nodo, pos_izq);
 				case Constantes.MAYOR:
 					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos_der).getNroBloqueIzquierdo()));
-					pudePasar =   pasarDerechaIzquierda(nodoPadre, nodoHNO, nodo, pos);
+					pudePasar =   pasarDerechaIzquierda(nodoPadre, nodoHNO, nodo, pos_der);
 				default:
 					// Primero evaluo el IZQ
 					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueIzquierdo()));
