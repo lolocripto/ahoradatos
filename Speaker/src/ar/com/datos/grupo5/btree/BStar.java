@@ -653,7 +653,7 @@ public final class BStar implements BTree {
 			switch (pos) { 
 				case Constantes.MENOR:
 					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos_izq).getNroBloqueDerecho()));
-					pudePasar =  pasarIzquierdaDerecha(nodoPadre, nodoHNO, nodo, pos_izq);
+					pudePasar =  pasarIzquierdaDerecha(nodoPadre, nodo, nodoHNO, pos_izq);
 					break;
 				case Constantes.MAYOR:
 					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos_der).getNroBloqueIzquierdo()));
@@ -752,8 +752,13 @@ public final class BStar implements BTree {
 		
 		LOG.debug("Pasar registro Izquierda -> Derecha");
 		
+		RegistroNodo regParaBajar = null;
 		//El registro que apunta a los dos nodos.
-		RegistroNodo regParaBajar = padre.getRegistros().get(posPadre);
+		if (izquierdo.isEsHoja()) {
+			regParaBajar = izquierdo.getUltimoRegistro();
+		} else {
+			regParaBajar = padre.getRegistros().get(posPadre);
+		}
 		RegistroNodo regParaSubir = null;
 		
 		//Veo si tengo espacio para bajar la clave.
@@ -775,8 +780,8 @@ public final class BStar implements BTree {
 		//Me guardo el numero de bloque izquierdo del ultimo registro.
 		int nuevoNroBloque = izquierdo.getUltimoRegistro().getNroBloqueIzquierdo();
 		//Bajo el registro.
-		derecho.insertarRegistro(regNuevo);
-		
+		derecho.insertarRegistro(regNuevo); 
+
 		//Remuevo del izquierdo el ultimo.
 		RegistroNodo removido = izquierdo.removerRegistro(izquierdo.getCantidadRegistros() - 1 );
 		
