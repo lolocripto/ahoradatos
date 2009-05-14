@@ -35,7 +35,7 @@ public class TestArbol {
 			
 			String[] claves = {
 					"15", "30", "1", "10", "13", "50", "35", 
-					"20", "22", "40", "55", "23", "21"/*, "24",
+					"20", "22", "40", "55", "23"/*, "21"/*, "24",
 					"25", "26"/*, "43", "45", "23", "17", "241",
 					"242", "37", "38", "16", "41", "47", "68",
 					"34", "48", "100", "200", "150", "151", "44",*/
@@ -52,26 +52,22 @@ public class TestArbol {
 				tree.insertar(reg);
 				tree.listar();
 			}
+			for (int i = 0; i < claves.length; i++) {
+				
+				clave = new Clave();
+				reg = new RegistroNodo();
+				
+				System.out.println("Inserto [" + claves[i] + "]");
+				clave.setClave(claves[i]);
+				reg = tree.buscar(clave);
+				if (reg != null) {
+					System.out.println("Encontrada la clave: " + reg.getClave().getClave());
+				} else {
+					System.out.println("No se encontro la clave: " + claves[i]);
+				}
+			}
 //			int cantidad = 500;
 //			String claveStr = "";
-//			for (int i = 0; i < cantidad; i++) {
-//				
-//				clave = new Clave();
-//				reg = new RegistroNodo();
-//				Integer a = new Double(Math.random() * 1000).intValue();
-//				claveStr = "pepe" + a.toString();
-//				System.out.println("Inserto [" + claveStr + "]");
-//				clave.setClave(claveStr);
-//				reg.setClave(clave);
-//				Thread.sleep(100);
-//				tree.insertar(reg);
-//				//tree.listar();
-//			}
-//			tree.listar();
-//			String palabraVieja = "algo";
-//			ArrayList<String> lista = new ArrayList<String>();
-//			String cadena = "";
-//		
 //			TextInterpreter tx = new TextInterpreter();
 //			
 //			Collection<IunidadDeHabla> lista2 = null;

@@ -544,7 +544,7 @@ public class Nodo {
 		if ((espacioOcupado + espacio) > this.espacioTotal) {
 			overflow = true;
 		}
-		espacioOcupado += espacio;
+		espacioOcupado += espacio - Constantes.SIZE_OF_INT;
 		//tieneCargaMinima();
 	}
 	

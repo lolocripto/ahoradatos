@@ -647,8 +647,7 @@ public final class BStar implements BTree {
 						.getUltimoRegistro());
 					nodoPadre.setEspacioOcupado(espacio);
 					if (nodoPadre.isOverflow()) {
-						int a = 1;
-						a = 3;
+						LOG.error("Error, nodo en overflow.");
 					}
 					nodoPadre.getPrimerRegistro().setClave(
 							nodo.getUltimoRegistro().getClave());
@@ -672,8 +671,7 @@ public final class BStar implements BTree {
 						.getUltimoRegistro());
 					nodoPadre.setEspacioOcupado(espacio);
 					if (nodoPadre.isOverflow()) {
-						int a = 1;
-						a = 3;
+						LOG.error("Error, nodo en overflow.");
 					}
 					nodoPadre.getPrimerRegistro().setClave(
 						nodo.getUltimoRegistro().getClave());
@@ -720,8 +718,7 @@ public final class BStar implements BTree {
 						.getPrimerRegistro());
 					nodoPadre.setEspacioOcupado(espacio);
 					if (nodoPadre.isOverflow()) {
-						int a = 1;
-						a = 3;
+						LOG.error("Error, nodo en overflow.");
 					}
 					nodoPadre.getUltimoRegistro().setClave(
 							nodo.getPrimerRegistro().getClave());
@@ -745,8 +742,7 @@ public final class BStar implements BTree {
 						.getPrimerRegistro());
 					nodoPadre.setEspacioOcupado(espacio);
 					if (nodoPadre.isOverflow()) {
-						int a = 1;
-						a = 3;
+						LOG.error("Error, nodo en overflow.");
 					}
 					nodoPadre.getUltimoRegistro().setClave(
 							nodo.getPrimerRegistro().getClave());
@@ -795,8 +791,7 @@ public final class BStar implements BTree {
 							pos), nodo.getUltimoRegistro());
 						nodoPadre.setEspacioOcupado(espacio);
 						if (nodoPadre.isOverflow()) {
-							int a = 1;
-							a = 3;
+							LOG.error("Error, nodo en overflow.");
 						}
 						nodoPadre.getRegistros().get(pos).setClave(
 								nodo.getUltimoRegistro().getClave());
@@ -820,8 +815,7 @@ public final class BStar implements BTree {
 							pos), regAux);
 						nodoPadre.setEspacioOcupado(espacio);
 						if (nodoPadre.isOverflow()) {
-							int a = 1;
-							a = 3;
+							LOG.error("Error, nodo en overflow.");
 						}
 						nodoPadre.getRegistros().get(pos).setClave(
 								regAux.getClave());
@@ -865,8 +859,7 @@ public final class BStar implements BTree {
 								pos), nodoPadre.getPrimerRegistro());
 							nodoPadre.setEspacioOcupado(espacio);
 							if (nodoPadre.isOverflow()) {
-								int a = 1;
-								a = 3;
+								LOG.error("Error, nodo en overflow.");
 							}
 							nodoPadre.getRegistros().get(pos).setClave(
 									nodo.getPrimerRegistro().getClave());
@@ -890,7 +883,7 @@ public final class BStar implements BTree {
 								pos-1), regAux);
 							nodoPadre.setEspacioOcupado(espacio);
 							if (nodoPadre.isOverflow()) {
-								LOG.debug("Error, nodo en overflow.");
+								LOG.error("Error, nodo en overflow.");
 							}
 							nodoPadre.getRegistros().get(pos-1).setClave(
 								regAux.getClave());
@@ -917,6 +910,12 @@ public final class BStar implements BTree {
 			}
 	}
 	
+	/**
+	 * 
+	 * @param regOld
+	 * @param regNew
+	 * @return
+	 */
 	public int diferenciaClaves(RegistroNodo regOld, RegistroNodo regNew) {
 		return regNew.getClave().getClave().getBytes().length
 				- regOld.getClave().getClave().getBytes().length;
