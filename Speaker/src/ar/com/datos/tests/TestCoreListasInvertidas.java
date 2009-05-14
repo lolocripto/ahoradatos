@@ -746,7 +746,15 @@ public class TestCoreListasInvertidas {
 	
 	public static void main(final String[] args) {
 		TestCoreListasInvertidas list = new TestCoreListasInvertidas();
-		list.load("./poemasreturns.txt");
+	//	list.load("./testlista");
+		list.load("./testlista2");
+		list.load("./testlista2");
+		list.load("./testlista2");
+		list.load("./testlista2");
+		list.load("./testlista2");
+		list.load("./testlista2");
+		list.load("./testlista2");
+		list.load("./testlista2");
 		list.quit();
 	}
 }

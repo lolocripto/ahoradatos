@@ -5,9 +5,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+
+import org.apache.log4j.Logger;
+
 import ar.com.datos.grupo5.CFFTRS;
 import ar.com.datos.grupo5.ClaveFrontCoding;
 import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.FTRSManager;
 import ar.com.datos.grupo5.btree.Nodo;
 import ar.com.datos.grupo5.parser.CodificadorFrontCoding;
 import ar.com.datos.grupo5.registros.RegistroAdmSecSet;
@@ -20,6 +24,8 @@ public class ArchivoSecuencialSet {
 	private ArchivoBloques miArchivo;
 
 	private RegistroAdmSecSet regAdm;
+	
+	private static Logger LOG = Logger.getLogger(FTRSManager.class);
 
 	public ArchivoSecuencialSet() {
 
@@ -184,7 +190,8 @@ public class ArchivoSecuencialSet {
 					.obtenerListaDesdeBloques(listaDeBloquesSucios);
 			// agrego el objeto nuevo que inserte al arbol
 			listaBloquesDecodificada.add(objetoNuevo);
-
+			
+			
 			// con los elementos de todos los bloques obtenidos, genero una
 			// lista
 			// con los nuevos bloques a almacenar
@@ -367,6 +374,7 @@ public class ArchivoSecuencialSet {
 	public void escribirBloque(BloqueFTRS bloque, int numBloque) {
 
 		try {
+			LOG.debug("guardando bloque N: "+numBloque+" tamaño: "+bloque.getBytes().length);
 			this.miArchivo.escribirBloqueSalteado(bloque.getBytes(), numBloque);
 		} catch (IOException e) {
 

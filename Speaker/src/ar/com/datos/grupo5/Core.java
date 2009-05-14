@@ -665,7 +665,7 @@ public class Core {
 		Float tiempoFinal = new Float(0.0);
 		try {
 			
-			logger.debug("se consilta por la palabra: "+query);
+			logger.debug("se ingresa la palabra: "+query);
 			this.tiempoConsulta = System.currentTimeMillis();
 			Long cantidadDocs = DocumentsManager.getInstance().getCantidadDocsAlmacenados();
 			if (cantidadDocs == 0) {
@@ -676,10 +676,11 @@ public class Core {
 			//chequeo de stop word
 			Palabra consulta = PalabrasFactory.getPalabra(query);
 			if (consulta.isStopWord()){
-				return "StopWord, no hay coincidencias para la consulta";
+				return "Su consulta es un StopWord. No presenta documentos relevantes";
 			}else{
 			//fin chequeo stop word
-				
+			
+			logger.debug("pero se consulta por la palabra: "+consulta.getTextoEscrito());
 				
 			try {
 				
