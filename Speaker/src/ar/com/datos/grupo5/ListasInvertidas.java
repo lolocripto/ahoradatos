@@ -1396,7 +1396,7 @@ public class ListasInvertidas {
 		boolean masListas = true;
 		while (masListas) {
 			reg  = new RegistroTerminoDocumentos();
-			while (reg.incompleto() || reg.getCantidadDocumentos() == 0) {
+			while (reg.incompleto() || reg.getCantidadDocumentos() == 0) {  //TODO entra en un loop infinito aparte de querer leer el bloque cero
 				byte[] bloqueALeer = new byte[Constantes.SIZE_OF_LIST_BLOCK];
 				
 				bloqueALeer = leerBloque(bloque);
