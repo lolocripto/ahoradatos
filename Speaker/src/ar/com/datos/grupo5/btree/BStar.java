@@ -580,7 +580,6 @@ public final class BStar implements BTree {
 		
 		Nodo nuevoHno = new Nodo();
 		Nodo nodoPadre = new Nodo();
-		Nodo nodoAuxiliar = new Nodo();
 		RegistroNodo reg = new RegistroNodo();
 		// Lo seteo aca SOLO para ver a cual le puede pasar, luego se cambia
 		reg  = nodo.getUltimoRegistro();
@@ -602,8 +601,8 @@ public final class BStar implements BTree {
 				break;
 			default:
 				// Primero evaluo el DER
-				nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueDerecho()));
-				nuevoHno = nodo.split(nodoHNO, nodoPadre, true, ultimoBloque); 
+				nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueIzquierdo()));
+				nuevoHno = nodo.split(nodoHNO, nodoPadre, false, ultimoBloque); 
 			}
 		nodoActual = nuevoHno;
 		if (nodoActual.isEsHoja()) {
@@ -686,6 +685,8 @@ public final class BStar implements BTree {
 			nodoAuxiliar.setBytes(archivo.leerBloque(nodo.getUltimoRegistro()
 					.getNroBloqueDerecho()));
 			nodoAuxiliar.setNroBloquePadre(nodo.getNroBloque());
+			archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
+					.getNroBloque());
 		} else {
 			nodosModificados.add(nodo);
 		}
