@@ -13,8 +13,10 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
+import ar.com.datos.grupo5.UnidadesDeExpresion.Palabra;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.grupo5.parser.ITextInput;
+import ar.com.datos.grupo5.parser.PalabrasFactory;
 import ar.com.datos.grupo5.parser.TextInterpreter;
 import ar.com.datos.reproduccionaudio.exception.SimpleAudioPlayerException;
 
@@ -565,6 +567,9 @@ public class Core {
 		try {
 			this.diccionario = new Diccionario();
 			this.ftrsManager = new FTRSManager();
+			
+			this.ftrsManager.abrirArchivos(); //TODO esto se puso por una prueba, probablemente haya que sacarlo
+			
 		} catch (Exception e) {
 			this.logger.debug("No se ha podido crear el FTRS.");
 		}
@@ -659,14 +664,26 @@ public class Core {
 	public final String query(final InterfazUsuario invocador, final String query) {
 		Float tiempoFinal = new Float(0.0);
 		try {
+			
+			logger.debug("se consilta por la palabra: "+query);
 			this.tiempoConsulta = System.currentTimeMillis();
 			Long cantidadDocs = DocumentsManager.getInstance().getCantidadDocsAlmacenados();
 			if (cantidadDocs == 0) {
 				return "No hay documentos cargados al sistema";
 			}
+			
+			
+			//chequeo de stop word
+			Palabra consulta = PalabrasFactory.getPalabra(query);
+			if (consulta.isStopWord()){
+				return "StopWord, no hay coincidencias para la consulta";
+			}else{
+			//fin chequeo stop word
+				
+				
 			try {
-				ftrsManager.abrirArchivos();
-				ranking = this.ftrsManager.consultaRankeada(query, cantidadDocs);
+				
+				ranking = this.ftrsManager.consultaRankeada(consulta.getTextoEscrito(), cantidadDocs);
 				tiempoFinal = (float)(System.currentTimeMillis() - this.tiempoConsulta) / 1000;
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -704,7 +721,9 @@ public class Core {
 			  this.playDocumentInterno(invocador, documento);
 			
 			return tiempoFinal.toString() + " segundos";
-		} catch (Exception e) {
+		} 
+		}
+			catch (Exception e) {
 			logger.error("Error: " + e.getMessage(), e);
 			return "Error inesperado.";
 		}
