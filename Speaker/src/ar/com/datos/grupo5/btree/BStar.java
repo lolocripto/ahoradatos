@@ -363,6 +363,7 @@ public final class BStar implements BTree {
 							System.out
 									.println("=====Overflow Split=======Nodo: "
 											+ padre.getNroBloque() + "========");
+							padre.setOverflow(false);
 							padre = split(padre);
 						} else {
 							padre.setOverflow(false);
@@ -672,6 +673,9 @@ public final class BStar implements BTree {
 						LOG.debug("Resultado: " + pudePasar);
 					}
 				}
+			if (nodoPadre.getNroBloquePadre() < 0) {
+				nodoRaiz = nodoPadre;
+			}
 			if(!pudePasar) {
 				return false;
 			}
