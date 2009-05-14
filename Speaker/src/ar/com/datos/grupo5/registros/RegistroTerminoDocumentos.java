@@ -258,7 +258,7 @@ public class RegistroTerminoDocumentos implements Registro {
 						&& offsetByte <= (buffer.length - offset.intValue()) && 
 //						&& offsetByte <= (Constantes.SIZE_OF_LIST_BLOCK - this.tamanioControl) &&
 //						(Constantes.SIZE_OF_LIST_BLOCK - offsetByte - this.tamanioControl) > tamanioNodo) {
-						(buffer.length - offset.intValue() - offsetByte) > tamanioNodo) {
+						(buffer.length - offset.intValue() - offsetByte) >= tamanioNodo) {
 					
 					/* recorro la cadena de bytes y genero los 
 					 * pares frecuencia, Documento */

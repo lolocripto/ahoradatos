@@ -909,6 +909,8 @@ public class ListasInvertidas {
 		//TODO: Ver el tema de los final
 		boolean continua = false; 
 		boolean registroNuevo = false;
+		int overflowRegistro = 0;
+		int primerRegistroOculto = 0;
 		// datos de la lista a grabar
 		byte[] datosListaActualizada = regActualizado.getBytes();
 		
@@ -1112,12 +1114,17 @@ public class ListasInvertidas {
 				dos.write(datosAnteriores, offsetInicial, datosAnteriores.length - offsetInicial);
 				cantidadEscritaEnBuffer += datosAnteriores.length - offsetInicial;
 				if (continua) {
-					if (!registroNuevo) {
-						primerRegistro = (short) (datosAnteriores.length - offsetInicial);	
+					//FIXME: corroborar que sea correcto decir mayor e igual
+					if (overflowRegistro >= 2) {
+						primerRegistro = (short) primerRegistroOculto;
+						overflowRegistro = 0;
 					} else {
-						primerRegistro = 0;
+						if (!registroNuevo) {
+							primerRegistro = (short) (datosAnteriores.length - offsetInicial);	
+						} else {
+							primerRegistro = 0;
+						}
 					}
-					
 				}
 				offsetListaSiguiente = (short) (offsetListaSiguiente - datosAnteriores.length);
 				offsetListaSiguiente = (short) (offsetListaSiguiente - offsetInicial);
@@ -1172,7 +1179,9 @@ public class ListasInvertidas {
 							//Error al escribir datos
 							return 1L;
 						}
-						cantidadEscritaEnBuffer += (int) (regLista.getTamanioControl() + (cantidadNodosDisponibles * regLista.getTamanioNodo()));
+						cantidadEscritaEnBuffer += (int) (regLista.getTamanioControl() + (cantidadNodosDisponibles * regLista.getTamanioNodo())+1);
+						overflowRegistro++;
+						primerRegistroOculto = bosaux.toByteArray().length;
 					} else {
 						//Escribo toda la lista en un auxiliar.
 						TerminoBloque tb = new TerminoBloque(regLista.getIdTermino(),siguienteExt);
@@ -1181,6 +1190,7 @@ public class ListasInvertidas {
 							dosaux.write(datosNuevo, 0, datosNuevo.length);
 							continua = true;
 							registroNuevo = true;
+							overflowRegistro++;
 						} catch (IOException e) {
 							// error al escribir datos
 							return 1L;
@@ -1261,10 +1271,16 @@ public class ListasInvertidas {
 			}
 			
 			if (continua) {
-				if (!registroNuevo) {
-					primerRegistro = (short) (datosAnteriores.length - offsetInicial);	
+				//FIXME: corroborar que sea correcto decir mayor e igual
+				if (overflowRegistro >= 2) {
+					primerRegistro = (short) primerRegistroOculto;
+					overflowRegistro = 0;
 				} else {
-					primerRegistro = 0;
+					if (!registroNuevo) {
+						primerRegistro = (short) (datosAnteriores.length - offsetInicial);	
+					} else {
+						primerRegistro = 0;
+					}
 				}
 			}
 			
@@ -1319,13 +1335,16 @@ public class ListasInvertidas {
 						}
 						//primerRegistro = (short) cantidadEscritaEnBuffer;
 //						primerRegistro = (short) (datosNuevo.length - espacioCantidadNodos.intValue());
-						cantidadEscritaEnBuffer += espacioCantidadNodos.intValue();
+						cantidadEscritaEnBuffer += espacioCantidadNodos.intValue() +1;
+						overflowRegistro++;
+						primerRegistroOculto = bosaux.toByteArray().length;
 					} else {
 						//Escribo toda la lista en un auxiliar.
 						TerminoBloque tb = new TerminoBloque(regLista.getIdTermino(),siguienteExt);
 						this.registrosMovidos.add(tb);
 						try {
 							dosaux.write(datosNuevo, 0, datosNuevo.length);
+							overflowRegistro++;
 						} catch (IOException e) {
 							// error al escribir datos
 							return 1L;
@@ -1407,7 +1426,7 @@ public class ListasInvertidas {
 			return listas;
 		}
 		
-		if (offsetSiguienteLista > Constantes.SIZE_OF_LIST_BLOCK) {
+		if (offsetSiguienteLista >= Constantes.SIZE_OF_LIST_BLOCK) {
 			return listas;
 		}
 		

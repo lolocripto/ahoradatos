@@ -131,12 +131,7 @@ public class TestCoreListasInvertidas {
 				 * sigo con la proxima palabra, sino pido el audio para la
 				 * misma.
 				 */
-				if (this.diccionario.buscarPalabra(elemento
-						.getEquivalenteFonetico()) != null) {
-				//	logger.debug("existe en el archivo de texto.");
-					continue;
-				}
-				
+	
 			//	logger.debug("No esta en el archivo de texto.");
 				
 				
@@ -746,15 +741,7 @@ public class TestCoreListasInvertidas {
 	
 	public static void main(final String[] args) {
 		TestCoreListasInvertidas list = new TestCoreListasInvertidas();
-	//	list.load("./testlista");
-		list.load("./testlista2");
-		list.load("./testlista2");
-		list.load("./testlista2");
-		list.load("./testlista2");
-		list.load("./testlista2");
-		list.load("./testlista2");
-		list.load("./testlista2");
-		list.load("./testlista2");
+		list.load("./poemasreturns.txt");
 		list.quit();
 	}
 }

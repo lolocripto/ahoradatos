@@ -274,13 +274,13 @@ public class FTRSManager {
 					if (registro.getBloqueListaInvertida() != -1) {
 						//Tengo lista invertida, ver como agarrar el bloque
 						this.logger.debug("NroBloque: "+registro.getBloqueListaInvertida()+" idtermino:" + idTermino);
-						if (idTermino.compareTo(308L) == 0) {
+						if (idTermino.compareTo(336L) == 0) {
 							this.logger.debug("empieza la ecatombe");
 						}
 						RegistroTerminoDocumentos regTD = this.listasInvertidas
 								.leerLista(idTermino, registro.getBloqueListaInvertida());
 
-						// Ahora ingreso el ParFrecuenciaDocumento al Registro.
+						//FIXME:if null? Ahora ingreso el ParFrecuenciaDocumento al Registro.
 						Collection<ParFrecuenciaDocumento> listaDatosDocumentos = regTD
 								.getDatosDocumentos();
 						listaDatosDocumentos.add(parFrecDoc);
