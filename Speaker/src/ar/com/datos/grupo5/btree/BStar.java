@@ -598,6 +598,32 @@ public final class BStar implements BTree {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	/**
+	 * Actualiza.
+	 * @param nodo .
+	 * @throws IOException .
+	 */
+	private void actualizaNodo(final Nodo nodo)throws IOException {
+		
+		Nodo nodoAuxiliar = new Nodo();
+		archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
+		if (!nodo.isEsHoja()) {
+			for (RegistroNodo reg : nodo.getRegistros()) {
+				nodoAuxiliar.setBytes(archivo.leerBloque(reg
+						.getNroBloqueIzquierdo()));
+				nodoAuxiliar.setNroBloquePadre(nodo.getNroBloque());
+				archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
+						.getNroBloque());
+			}
+			nodoAuxiliar.setBytes(archivo.leerBloque(nodo.getUltimoRegistro()
+					.getNroBloqueDerecho()));
+			nodoAuxiliar.setNroBloquePadre(nodo.getNroBloque());
+		} else {
+			nodosModificados.add(nodo);
+		}
+	}
 	/**
 	 * @param nodo El nodo en el que no entra
 	 * @param reg el registro a pasar a un hermano de nodo.
@@ -615,31 +641,34 @@ public final class BStar implements BTree {
 			nodoPadre.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
 			//ahora nodo es el nodo padre del nodo que busque
 			int pos = nodoPadre.buscarRegistro(reg.getClave());
-			boolean izq = true;
-			boolean der = true;
-			if (pos == Constantes.MENOR ){
-				izq = false;
-			}
-			if (pos == Constantes.MAYOR ){
-				der = false;
-			}
-			if ((izq)||(pos < nodoPadre.getRegistros().size())) {
-					int pos_izq = pos;
-					if (!der){
-						// Estoy en el ultimo
-						pos_izq = nodoPadre.getRegistros().size() -1;
-					}
+			int pos_izq = 0;
+			int pos_der = nodoPadre.getRegistros().size() - 1;
+			boolean pudePasar = false;
+			Nodo nodoHNO = new Nodo();
+			switch (pos) { 
+				case Constantes.MENOR:
+					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos_izq).getNroBloqueDerecho()));
+					pudePasar =  pasarIzquierdaDerecha(nodoPadre, nodoHNO, nodo, pos);
+				case Constantes.MAYOR:
+					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos_der).getNroBloqueIzquierdo()));
+					pudePasar =   pasarDerechaIzquierda(nodoPadre, nodoHNO, nodo, pos);
+				default:
 					// Primero evaluo el IZQ
-					Nodo nodoIZQ = new Nodo();
-					nodoPadre.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos_izq).getNroBloqueIzquierdo()));
+					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueIzquierdo()));
+					pudePasar = pasarDerechaIzquierda(nodoPadre, nodoHNO, nodo, pos); 
+					if(!pudePasar) {
+						nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos+1).getNroBloqueDerecho()));
+						pudePasar =  pasarIzquierdaDerecha(nodoPadre, nodoHNO, nodo, pos); 
+					}
 				}
-			
-			if (izq && der) {
-				
-			} else {
-				
+			if(!pudePasar) {
+				return false;
 			}
-			return false;
+			nodosModificados.clear();
+			actualizaNodo(nodo);
+			actualizaNodo(nodoHNO);
+			actualizaNodo(nodoPadre);
+		return true;
 	}
 	
 	/**
