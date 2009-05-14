@@ -452,7 +452,123 @@ public final class BStar implements BTree {
 		
 		return true;
 	}
+
 	
+	/**
+	 * Split para nodos Internos.
+	 * @param nodo El nodo a splitear.
+	 * @param Hno El hermano con quien se splitea.
+	 * @param pos La posición del Registro padre del nodo.
+	 * @return Retorna el Padre, por si tiene Overflow
+	 * @throws IOException .
+	 */
+	private Nodo splitNodoInterno(final Nodo nodo, final Nodo Hno,
+			final Nodo padre, final int pos, final int ultimoNroBloque) throws IOException {
+		// ESTE METODO SPLITEA AL NODO CON SU HNO IZQ
+		// GENERANDO UN HNO DERECHO PARA NODO
+		// FIXME TIENE QUE AJUSTARSE PARA EL CASO DE UN NODO INTERNO
+		Nodo nuevoHno = new Nodo();
+		nuevoHno.setNroBloque(ultimoNroBloque + 1);
+		nuevoHno.setNroBloquePadre(nodo.getNroBloquePadre());
+		nuevoHno.setEsHoja(true);
+		ArrayList<RegistroNodo> regs = new ArrayList<RegistroNodo>();
+		// Saco hasta el minIndCarga
+		while (Hno.getCantidadRegistros() > Hno.getMinIndiceCarga()) {
+			RegistroNodo reg = Hno.removerRegistro(Hno.getMinIndiceCarga());
+			regs.add(reg);
+		}
+		// ahora, tengo que vaciar el hno y llenarlo otra vez
+		regs.addAll(nodo.getRegistros());
+		nodo.getRegistros().clear();
+		// Reseteo los valores internos 
+		nodo.setEspacioOcupado(0);
+		nodo.setMinIndiceCarga(Constantes.MENOR);
+		nodo.setOverflow(false);
+		// Ahora lleno a "nodo"
+		while (!nodo.tieneCargaMinima()) {
+			RegistroNodo reg = regs.remove(0);
+			nodo.insertarRegistro(reg);
+		}
+		// SOLO A MODO DE PRUEBA
+		if(regs.size()== 0){
+			LOG.debug("Se quedó sin elementos antes de cargar el nuevo nodo");
+		}
+		// CARGO EL NUEVO NODO CON LO QUE QUEDA
+		while (!nuevoHno.tieneCargaMinima()) {
+			RegistroNodo reg = regs.remove(0);
+			nuevoHno.insertarRegistro(reg);
+		}
+		//ACTUALIZO EL PADRE EN POS
+		RegistroNodo reg = padre.getRegistros().get(pos); 
+		reg.setClave(nodo.getPrimerRegistro().getClave());
+		// INSERTO EN EL PADRE
+		RegistroNodo regAux = new RegistroNodo();
+		regAux.setClave(nuevoHno.getPrimerRegistro().getClave());
+		regAux.setNroBloqueIzquierdo(nodo.getNroBloque());
+		regAux.setNroBloqueDerecho(nuevoHno.getNroBloque());
+		padre.insertarRegistro(regAux);
+		
+		// ACTUALIZO LAS REFERENCIAS EN EL INVOCANTE		
+		return nuevoHno;
+	}
+	
+	
+	/**
+	 * Split para nodos hoja.
+	 * @param nodo El nodo a splitear.
+	 * @param Hno El hermano con quien se splitea.
+	 * @param pos La posición del Registro padre del nodo.
+	 * @return Retorna el Padre, por si tiene Overflow
+	 * @throws IOException .
+	 */
+	private Nodo splitNodoHoja(final Nodo nodo, final Nodo Hno,
+			final Nodo padre, final int pos, final int ultimoNroBloque) throws IOException {
+		// ESTE METODO SPLITEA AL NODO CON SU HNO IZQ
+		// GENERANDO UN HNO DERECHO PARA NODO
+		Nodo nuevoHno = new Nodo();
+		nuevoHno.setNroBloque(ultimoNroBloque + 1);
+		nuevoHno.setNroBloquePadre(nodo.getNroBloquePadre());
+		nuevoHno.setEsHoja(true);
+		ArrayList<RegistroNodo> regs = new ArrayList<RegistroNodo>();
+		// Saco hasta el minIndCarga
+		while (Hno.getCantidadRegistros() > Hno.getMinIndiceCarga()) {
+			RegistroNodo reg = Hno.removerRegistro(Hno.getMinIndiceCarga());
+			regs.add(reg);
+		}
+		// ahora, tengo que vaciar el hno y llenarlo otra vez
+		regs.addAll(nodo.getRegistros());
+		nodo.getRegistros().clear();
+		// Reseteo los valores internos 
+		nodo.setEspacioOcupado(0);
+		nodo.setMinIndiceCarga(Constantes.MENOR);
+		nodo.setOverflow(false);
+		// Ahora lleno a "nodo"
+		while (!nodo.tieneCargaMinima()) {
+			RegistroNodo reg = regs.remove(0);
+			nodo.insertarRegistro(reg);
+		}
+		// SOLO A MODO DE PRUEBA
+		if(regs.size()== 0){
+			LOG.debug("Se quedó sin elementos antes de cargar el nuevo nodo");
+		}
+		// CARGO EL NUEVO NODO CON LO QUE QUEDA
+		while (!nuevoHno.tieneCargaMinima()) {
+			RegistroNodo reg = regs.remove(0);
+			nuevoHno.insertarRegistro(reg);
+		}
+		//ACTUALIZO EL PADRE EN POS
+		RegistroNodo reg = padre.getRegistros().get(pos); 
+		reg.setClave(nodo.getPrimerRegistro().getClave());
+		// INSERTO EN EL PADRE
+		RegistroNodo regAux = new RegistroNodo();
+		regAux.setClave(nuevoHno.getPrimerRegistro().getClave());
+		regAux.setNroBloqueIzquierdo(nodo.getNroBloque());
+		regAux.setNroBloqueDerecho(nuevoHno.getNroBloque());
+		padre.insertarRegistro(regAux);
+		
+		// ACTUALIZO LAS REFERENCIAS EN EL INVOCANTE		
+		return nuevoHno;
+	}
 	
 	/**
 	 * Split interno.
@@ -497,7 +613,7 @@ public final class BStar implements BTree {
 		if (nodoPadre.getNroBloquePadre() < 0) {
 			nodoRaiz = nodoPadre;
 		}
-
+		
 		if (nodo.isEsHoja()) {
 			nodosModificados.clear();
 		}
@@ -505,7 +621,9 @@ public final class BStar implements BTree {
 		actualizaNodo(nodo);
 		actualizaNodo(nodoHNO);
 		actualizaNodo(nodoActual);
-		
+		if (!nodoPadre.isOverflow()) {
+			actualizaNodo(nodoPadre);
+		}
 		return nodoPadre;
 	}
 
