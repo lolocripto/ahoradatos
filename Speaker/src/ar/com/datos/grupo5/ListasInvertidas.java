@@ -908,6 +908,7 @@ public class ListasInvertidas {
 			Short offsetListaSiguiente, final int nroBloqueExt) {
 		//TODO: Ver el tema de los final
 		boolean continua = false; 
+		boolean registroNuevo = false;
 		// datos de la lista a grabar
 		byte[] datosListaActualizada = regActualizado.getBytes();
 		
@@ -1110,7 +1111,14 @@ public class ListasInvertidas {
 				dos = new DataOutputStream(bos);
 				dos.write(datosAnteriores, offsetInicial, datosAnteriores.length - offsetInicial);
 				cantidadEscritaEnBuffer += datosAnteriores.length - offsetInicial;
-				primerRegistro = (short) (datosAnteriores.length - offsetInicial);
+				if (continua) {
+					if (!registroNuevo) {
+						primerRegistro = (short) (datosAnteriores.length - offsetInicial);	
+					} else {
+						primerRegistro = 0;
+					}
+					
+				}
 				offsetListaSiguiente = (short) (offsetListaSiguiente - datosAnteriores.length);
 				offsetListaSiguiente = (short) (offsetListaSiguiente - offsetInicial);
 				
@@ -1159,6 +1167,7 @@ public class ListasInvertidas {
 							//escribo los datos sobrantes del bloque
 							dosaux.write(datosNuevo, espacioCantidadNodos.intValue(), datosNuevo.length - espacioCantidadNodos.intValue());
 							continua = true;
+							registroNuevo = false;
 						} catch (IOException e) {
 							//Error al escribir datos
 							return 1L;
@@ -1171,6 +1180,7 @@ public class ListasInvertidas {
 						try {
 							dosaux.write(datosNuevo, 0, datosNuevo.length);
 							continua = true;
+							registroNuevo = true;
 						} catch (IOException e) {
 							// error al escribir datos
 							return 1L;
@@ -1184,7 +1194,7 @@ public class ListasInvertidas {
 			//Ahora armo el bloque y lo inserto
 			try {
 				this.archivo.escribirBloque(
-							this.armarDatosBloque(siguienteExt, datos, primerRegistro, (short) datos.length, 0, datos.length),
+							this.armarDatosBloque(siguienteExt, datos, primerRegistro, (short) (datos.length + tamanioControl), 0, datos.length),
 							(int) bloqueAInsertar);
 			} catch (IOException e) {
 				// Error al escribir bloque
@@ -1251,8 +1261,12 @@ public class ListasInvertidas {
 			}
 			
 			if (continua) {
-				primerRegistro = (short) (datosAnteriores.length - offsetInicial);
+				if (!registroNuevo) {
+					primerRegistro = (short) (datosAnteriores.length - offsetInicial);	
+				} else {
+					primerRegistro = 0;
 				}
+			}
 			
 			//La lista puede venir vacia pero si viene null existio error
 			if (listaListas == null) {
@@ -1379,7 +1393,8 @@ public class ListasInvertidas {
 	private ArrayList<RegistroTerminoDocumentos> leerListasPorBloque(final short comienzo, final short espacioOcupadoExt, final int bloque) {
 		
 		RegistroTerminoDocumentos reg;
-		long siguiente = this.nroBloque;
+		long siguiente = bloque;
+		long nroBloqueALeer = bloque;
 		@SuppressWarnings("unused")
 		short primerRegistro;
 		short espacioOcupado = (short) Constantes.SIZE_OF_LIST_BLOCK;
@@ -1401,8 +1416,7 @@ public class ListasInvertidas {
 			reg  = new RegistroTerminoDocumentos();
 			while (reg.incompleto() || reg.getCantidadDocumentos() == 0) {  //TODO entra en un loop infinito aparte de querer leer el bloque cero
 				byte[] bloqueALeer = new byte[Constantes.SIZE_OF_LIST_BLOCK];
-				logger.debug("leer lista por bloque accede al bloque: "+bloque);
-				bloqueALeer = leerBloque(bloque);
+				bloqueALeer = leerBloque((int) nroBloqueALeer);
 				
 				/* Saco la información de control del bloque */
 				ByteArrayInputStream bis 
@@ -1420,18 +1434,16 @@ public class ListasInvertidas {
 										offsetSiguienteLista.longValue() + tamanioControl);
 						if (reg.incompleto()) {
 							/* Obtengo el bloque según el numero de bloque*/
-							bloqueALeer = leerBloque((int)siguiente);
+							nroBloqueALeer = (int) siguiente;
 							cantBloquesLeidos++;
 						}
 					} else {
 						
-						reg.setMoreBytes(bloqueALeer, 
-								Constantes.SIZE_OF_LONG	
-								+ Constantes.SIZE_OF_SHORT * 2);
+						reg.setMoreBytes(bloqueALeer, this.tamanioControl);
 						/* Obtengo el bloque según el numero de bloque*/
 						if (reg.incompleto()) {
 							/* Obtengo el bloque según el numero de bloque*/
-							bloqueALeer = leerBloque((int)siguiente);
+							nroBloqueALeer = siguiente;
 						}
 					}
 				} catch (IOException e) {
