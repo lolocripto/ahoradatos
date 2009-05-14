@@ -654,21 +654,25 @@ public final class BStar implements BTree {
 				case Constantes.MENOR:
 					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos_izq).getNroBloqueDerecho()));
 					pudePasar =  pasarIzquierdaDerecha(nodoPadre, nodo, nodoHNO, pos_izq);
+					LOG.debug("Resultado: " + pudePasar);
 					break;
 				case Constantes.MAYOR:
 					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos_der).getNroBloqueIzquierdo()));
 					pudePasar =   pasarDerechaIzquierda(nodoPadre, nodoHNO, nodo, pos_der);
+					LOG.debug("Resultado: " + pudePasar);
 					break;
 				default:
 					// Primero evaluo el IZQ
 					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueIzquierdo()));
-					pudePasar = pasarDerechaIzquierda(nodoPadre, nodoHNO, nodo, pos); 
+					pudePasar = pasarDerechaIzquierda(nodoPadre, nodoHNO, nodo, pos);
+					LOG.debug("Resultado: " + pudePasar);
 					if(!pudePasar) {
 						if (pos == pos_der) {
 							return false;
 						}
 						nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos+1).getNroBloqueDerecho()));
-						pudePasar =  pasarIzquierdaDerecha(nodoPadre, nodoHNO, nodo, pos); 
+						pudePasar =  pasarIzquierdaDerecha(nodoPadre, nodoHNO, nodo, pos);
+						LOG.debug("Resultado: " + pudePasar);
 					}
 				}
 			if(!pudePasar) {
