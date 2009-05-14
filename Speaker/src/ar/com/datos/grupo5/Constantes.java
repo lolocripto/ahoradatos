@@ -232,10 +232,10 @@ public final class Constantes {
 	private static final int loadSecuencialSetBlockSize() {
 		int tamanio = Integer.parseInt(
 				getXML("SIZE_OF_SECUENCIAL_SET_BLOCK"));
-		if (tamanio ==2 * SIZE_OF_INDEX_BLOCK) {
-			return 2 * SIZE_OF_INDEX_BLOCK;
+		if (tamanio ==3 * SIZE_OF_INDEX_BLOCK) {
+			return 3 * SIZE_OF_INDEX_BLOCK;
 		} else {
-			return 2 * SIZE_OF_INDEX_BLOCK;
+			return 3 * SIZE_OF_INDEX_BLOCK;
 		}
 	}
 	
