@@ -209,6 +209,7 @@ public class FTRSManager {
 	/**
 	 * Se encarga de la generacion y actualizacion de las listas invertidas.
 	 */
+	@SuppressWarnings("static-access")
 	public final void generarListasInvertidas() {
 		// Ahora tengo que realizar el replacement Selection
 		ReplacementSelection remplacementP = new ReplacementSelection(
@@ -273,6 +274,9 @@ public class FTRSManager {
 					if (registro.getBloqueListaInvertida() != -1) {
 						//Tengo lista invertida, ver como agarrar el bloque
 						this.logger.debug("NroBloque: "+registro.getBloqueListaInvertida()+" idtermino:" + idTermino);
+						if (idTermino.compareTo(300L) == 0) {
+							this.logger.debug("empieza la ecatombe");
+						}
 						RegistroTerminoDocumentos regTD = this.listasInvertidas
 								.leerLista(idTermino, registro.getBloqueListaInvertida());
 
@@ -284,7 +288,7 @@ public class FTRSManager {
 								.sort(
 										(List<ParFrecuenciaDocumento>) listaDatosDocumentos,
 										(new comparadorFrecuencias()));
-
+						this.logger.debug("nRegistro: " + i);
 						// Ya esta ordenada la lista por frecuencias descendiente
 						this.listasInvertidas.modificarLista(
 								registro.getBloqueListaInvertida().intValue(), 

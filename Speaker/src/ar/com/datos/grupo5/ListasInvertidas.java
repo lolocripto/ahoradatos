@@ -452,8 +452,7 @@ public class ListasInvertidas {
 					logger.debug("Es bloque de control.");
 					this.setCantidadBloques(dis.readInt());
 					this.setNroBloqueLista(dis.readInt());
-					logger.debug("Lei cantidad de bloques y bloque en que " 
-							+ "esta la lista de espacios libres.");
+					logger.debug("Cantidad de bloques: " + this.cantidadBloques);
 					return levantarListaAMemoria();
 				} else {
 
@@ -927,6 +926,9 @@ public class ListasInvertidas {
 		//byte[] para no pisar this.datosLeidosProBloque.
 		byte[] datosLeidos;
 		
+		//FIXME: Borrarme
+		this.logger.debug("Cantidad de Bloques totales: "+Integer.toString(this.cantidadBloques));
+		
 		/*
 		 * Me armo los datos anteriores al registro para escribirlos tal cual
 		 * mas adelante se usara para lo sobrante de cada bloque que se
@@ -1091,10 +1093,10 @@ public class ListasInvertidas {
 			 * offsetListaSiguiente.
 			 */
 			this.logger.debug("OffsetlistSiguiente "+offsetListaSiguiente+" espacioOcupado: "+espacioOcupado+" primerRegistro: "+primerRegistro);
-			if (offsetListaSiguiente > primerRegistro) {
-				listaListas = this.leerListasPorBloque(primerRegistro,espacioOcupado,siguienteExt.intValue());
+			if (offsetListaSiguiente > primerRegistro && continua) {
+				listaListas = this.leerListasPorBloque(primerRegistro,espacioOcupado,bloqueAInsertar);
 			} else {
-				listaListas = this.leerListasPorBloque(offsetListaSiguiente,espacioOcupado,siguienteExt.intValue());
+				listaListas = this.leerListasPorBloque(offsetListaSiguiente,espacioOcupado,bloqueAInsertar);
 			}
 			//La lista puede venir vacia pero si viene null existio error
 			if (listaListas == null) {
@@ -1301,7 +1303,8 @@ public class ListasInvertidas {
 							//Error al escribir datos
 							return 1L;
 						}
-						primerRegistro = (short) cantidadEscritaEnBuffer; 
+						//primerRegistro = (short) cantidadEscritaEnBuffer;
+//						primerRegistro = (short) (datosNuevo.length - espacioCantidadNodos.intValue());
 						cantidadEscritaEnBuffer += espacioCantidadNodos.intValue();
 					} else {
 						//Escribo toda la lista en un auxiliar.
@@ -1337,6 +1340,7 @@ public class ListasInvertidas {
 					datos = bosaux.toByteArray();
 					primerRegistro = (short) datos.length;
  					bloqueAInsertar = this.cantidadBloques;
+ 					this.cantidadBloques++;
 				} catch (IOException e) {
 					//	Error al escribir el bloque
 					return 2L;
@@ -1356,8 +1360,6 @@ public class ListasInvertidas {
 					this.espacioLibre.setIndex(-1);
 					this.espacioLibre.actualizarListaEspacioLibre(bloqueAInsertar,(short) (datos.length));
 				}
-				
-				this.cantidadBloques++;
 			} catch (IOException e) {
 				//	Error al escribir el bloque
 				return 2L;
@@ -1399,7 +1401,6 @@ public class ListasInvertidas {
 			reg  = new RegistroTerminoDocumentos();
 			while (reg.incompleto() || reg.getCantidadDocumentos() == 0) {  //TODO entra en un loop infinito aparte de querer leer el bloque cero
 				byte[] bloqueALeer = new byte[Constantes.SIZE_OF_LIST_BLOCK];
-				
 				logger.debug("leer lista por bloque accede al bloque: "+bloque);
 				bloqueALeer = leerBloque(bloque);
 				
