@@ -802,7 +802,7 @@ public class Nodo {
 	 * @return si entra, true, sino false
 	 */
 	public final boolean hayEspacio(final int espacioNuevoReg) {
-		if ((espacioOcupado + espacioNuevoReg) <= espacioTotal) {
+		if ((espacioOcupado + espacioNuevoReg - Constantes.SIZE_OF_INT) <= espacioTotal) {
 			return true;
 		}
 		return false;
