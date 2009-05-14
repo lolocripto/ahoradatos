@@ -44,6 +44,9 @@
 			<fileset dir=".">
 				<include name="SpeakerConfig.xml"/>
 			</fileset>
+			<fileset dir=".">
+				<include name="StopWords.xml"/>
+			</fileset>
 		</copy>
 		<copy todir="${build}">
 			<fileset dir="${src}">
