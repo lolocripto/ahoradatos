@@ -683,12 +683,32 @@ public final class BStar implements BTree {
 		izquierdo.insertarRegistro(regNuevo);
 		//Reemplazo la clave en el padre.
 		regParaBajar.setClave(regParaSubir.getClave());
+		if (derecho.isEsHoja()) {
+			regParaBajar.setNroBloqueDerecho(derecho.getNroBloque());
+			regParaBajar.setNroBloqueIzquierdo(izquierdo.getNroBloque());
+		}
 		//Remuevo el primer registro.
 		derecho.removerRegistro(0);
 
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @param padre
+	 * @param izquierdo
+	 * @param derecho
+	 * @param posPadre
+	 * @return
+	 * @throws IOException
+	 */
+	boolean pasarIzquierdaDerecha(Nodo padre,
+			  Nodo izquierdo,
+			  Nodo derecho,
+			  int posPadre) throws IOException {
+		
+		return false;
+	}
 	/**
 	 * @param nodo El nodo en el que no entra
 	 * @param reg el registro a pasar a un hermano de nodo.
