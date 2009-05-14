@@ -497,9 +497,11 @@ public final class BStar implements BTree {
 		if (nodoPadre.getNroBloquePadre() < 0) {
 			nodoRaiz = nodoPadre;
 		}
-		if(nodoActual.isEsHoja()){
+
+		if (nodo.isEsHoja()) {
 			nodosModificados.clear();
 		}
+
 		actualizaNodo(nodo);
 		actualizaNodo(nodoHNO);
 		actualizaNodo(nodoActual);
@@ -654,11 +656,12 @@ public final class BStar implements BTree {
 			regParaSubir = derecho.getPrimerRegistro();
 		}
 		// ESTO ESTA MAL, PORQUE SE PERMUTA LA CLAVE, NO SE AGREGA
+		int espacioAnterior = padre.getEspacioOcupado();
 		int espacio = diferenciaClaves(regParaBajar,regParaSubir);
 		if (!padre.hayEspacio(espacio)) {
 			return false;
 		}
-		
+		padre.setEspacioOcupado(espacio + espacioAnterior);
 		// Si llegue hasta aca, tengo lugar, entonces paso los regsitros.
 		// Bajo el registro del padre al izquierdo.
 		RegistroNodo regNuevo = new RegistroNodo();
@@ -713,11 +716,12 @@ public final class BStar implements BTree {
 
 		RegistroNodo regParaSubir = izquierdo.getUltimoRegistro();
 		// ESTO ESTA MAL, PORQUE SE PERMUTA LA CLAVE, NO SE AGREGA
+		int espacioAnterior = padre.getEspacioOcupado();
 		int espacio = diferenciaClaves(regParaBajar,regParaSubir);
 		if (!padre.hayEspacio(espacio)) {
 			return false;
 		}
-		
+		padre.setEspacioOcupado(espacio + espacioAnterior);
 		// Si llegue hasta aca, tengo lugar, entonces paso los registros.
 		RegistroNodo regNuevo = new RegistroNodo();
 		regNuevo.setClave(regParaBajar.getClave());
@@ -725,7 +729,7 @@ public final class BStar implements BTree {
 		//Me guardo el numero de bloque izquierdo del ultimo registro.
 		int nuevoNroBloque = derecho.getPrimerRegistro().getNroBloqueIzquierdo();
 		//Bajo el registro.
-		derecho.insertarRegistro(regNuevo); 
+		derecho.insertarRegistro(regNuevo);
 
 		//Remuevo del izquierdo el ultimo.
 		RegistroNodo removido = izquierdo.removerRegistro(izquierdo.getCantidadRegistros() - 1 );
