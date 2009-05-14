@@ -719,7 +719,7 @@ public final class BStar implements BTree {
 		regNuevo.setClave(regParaBajar.getClave());
 		regNuevo.setPunteroBloque(regParaBajar.getPunteroBloque());
 		//Me guardo el numero de bloque izquierdo del ultimo registro.
-		int nuevoNroBloque = izquierdo.getUltimoRegistro().getNroBloqueIzquierdo();
+		int nuevoNroBloque = derecho.getPrimerRegistro().getNroBloqueIzquierdo();
 		//Bajo el registro.
 		derecho.insertarRegistro(regNuevo); 
 
@@ -731,9 +731,6 @@ public final class BStar implements BTree {
 			padre.getRegistros().get(posPadre).setClave(removido.getClave());
 		} else {
 			regParaBajar.setClave(removido.getClave());
-		}
-		
-		if (!izquierdo.isEsHoja()) {
 			regNuevo.setNroBloqueDerecho(nuevoNroBloque);
 			regNuevo.setNroBloqueIzquierdo(removido.getNroBloqueDerecho());
 		}
