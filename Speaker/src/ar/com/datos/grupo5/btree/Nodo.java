@@ -80,7 +80,7 @@ public class Nodo {
 		overflow = false;
 		minIndiceCarga = -1;
 		espacioTotal = Constantes.SIZE_OF_INDEX_BLOCK
-				- Constantes.SIZE_OF_ADMIN_NODE_DATA;
+				- Constantes.SIZE_OF_ADMIN_NODE_DATA - Constantes.SIZE_OF_INT;
 		espacioOcupado = 0;
 	}
 	
@@ -546,7 +546,14 @@ public class Nodo {
 		if ((espacioOcupado + espacio) > this.espacioTotal) {
 			overflow = true;
 		}
-		espacioOcupado += espacio - Constantes.SIZE_OF_INT;
+
+		espacioOcupado += espacio;
+		
+		if (espacio < 0) {
+			espacioOcupado += Constantes.SIZE_OF_INT;
+		} else {
+			espacioOcupado -= Constantes.SIZE_OF_INT;
+		}
 		//tieneCargaMinima();
 	}
 	
