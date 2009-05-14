@@ -497,7 +497,9 @@ public final class BStar implements BTree {
 		if (nodoPadre.getNroBloquePadre() < 0) {
 			nodoRaiz = nodoPadre;
 		}
-		nodosModificados.clear();
+		if(nodoActual.isEsHoja()){
+			nodosModificados.clear();
+		}
 		actualizaNodo(nodo);
 		actualizaNodo(nodoHNO);
 		actualizaNodo(nodoActual);
