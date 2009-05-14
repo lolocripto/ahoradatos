@@ -682,7 +682,7 @@ public final class BStar implements BTree {
 								  Nodo izquierdo,
 								  Nodo derecho,
 								  int posPadre) throws IOException {
-		
+		LOG.debug("Pasar registro Derecha -> Izquierda");
 		//El registro que apunta a los dos nodos.
 		RegistroNodo regParaBajar = padre.getRegistros().get(posPadre);
 		RegistroNodo regParaSubir = null;
@@ -739,6 +739,8 @@ public final class BStar implements BTree {
 			  Nodo izquierdo,
 			  Nodo derecho,
 			  int posPadre) throws IOException {
+		
+		LOG.debug("Pasar registro Izquierda -> Derecha");
 		
 		//El registro que apunta a los dos nodos.
 		RegistroNodo regParaBajar = padre.getRegistros().get(posPadre);
