@@ -134,6 +134,7 @@ public class ListasInvertidas {
 		try {
 			while (reg.incompleto() || reg.getCantidadDocumentos() == 0) {
 			
+				logger.debug("en leer lista se accede al bloque: "+siguiente);
 				/* Obtengo el bloque según el numero de bloque*/
 				datosLeidosPorBloque = this.archivo.leerBloque((int) siguiente);
 					
@@ -1242,9 +1243,9 @@ public class ListasInvertidas {
 			 * offsetListaSiguiente.
 			 */
 			if ((offsetListaSiguiente > primerRegistro && continua) || offsetListaSiguiente <= 0) {
-				listaListas = this.leerListasPorBloque(primerRegistro,espacioOcupado, siguienteExt.intValue());
+				listaListas = this.leerListasPorBloque(primerRegistro,espacioOcupado, bloqueAInsertar);
 			} else {
-				listaListas = this.leerListasPorBloque(offsetListaSiguiente,espacioOcupado, siguienteExt.intValue());
+				listaListas = this.leerListasPorBloque(offsetListaSiguiente,espacioOcupado, bloqueAInsertar);
 			}
 			
 			if (continua) {
@@ -1399,6 +1400,7 @@ public class ListasInvertidas {
 			while (reg.incompleto() || reg.getCantidadDocumentos() == 0) {  //TODO entra en un loop infinito aparte de querer leer el bloque cero
 				byte[] bloqueALeer = new byte[Constantes.SIZE_OF_LIST_BLOCK];
 				
+				logger.debug("leer lista por bloque accede al bloque: "+bloque);
 				bloqueALeer = leerBloque(bloque);
 				
 				/* Saco la información de control del bloque */
