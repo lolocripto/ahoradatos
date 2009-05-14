@@ -497,73 +497,10 @@ public final class BStar implements BTree {
 		if (nodoPadre.getNroBloquePadre() < 0) {
 			nodoRaiz = nodoPadre;
 		}
-		archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
-		archivo.escribirBloque(nodoActual.getBytes(), nodoActual
-				.getNroBloque());
-		if (!nodoPadre.isOverflow()) {
-			archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
-					.getNroBloque());
-		}
-		archivo.escribirBloque(nodoHNO.getBytes(), nodoHNO
-				.getNroBloque());
-		if (!nodo.isEsHoja()) {
-			for (RegistroNodo aux : nodo.getRegistros()) {
-				nodoAuxiliar.setBytes(archivo.leerBloque(aux
-						.getNroBloqueIzquierdo()));
-				nodoAuxiliar.setNroBloquePadre(nodo.getNroBloque());
-				archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
-						.getNroBloque());
-			}
-			nodoAuxiliar.setBytes(archivo.leerBloque(nodo.getUltimoRegistro()
-					.getNroBloqueDerecho()));
-			nodoAuxiliar.setNroBloquePadre(nodo.getNroBloque());
-			archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
-					.getNroBloque());
-			for (RegistroNodo aux : nodoPadre.getRegistros()) {
-				nodoAuxiliar.setBytes(archivo.leerBloque(aux
-						.getNroBloqueIzquierdo()));
-				nodoAuxiliar.setNroBloquePadre(nodoPadre.getNroBloque());
-				archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
-						.getNroBloque());
-			}
-			nodoAuxiliar.setBytes(archivo.leerBloque(nodoPadre.getUltimoRegistro()
-					.getNroBloqueDerecho()));
-			nodoAuxiliar.setNroBloquePadre(nodoPadre.getNroBloque());
-			archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
-					.getNroBloque());
-			for (RegistroNodo aux : nodoHNO.getRegistros()) {
-				nodoAuxiliar.setBytes(archivo.leerBloque(aux
-						.getNroBloqueIzquierdo()));
-				nodoAuxiliar.setNroBloquePadre(nodoHNO.getNroBloque());
-				archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
-						.getNroBloque());
-			}
-			nodoAuxiliar.setBytes(archivo.leerBloque(nodoHNO.getUltimoRegistro()
-					.getNroBloqueDerecho()));
-			nodoAuxiliar.setNroBloquePadre(nodoHNO.getNroBloque());
-			archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
-					.getNroBloque());
-			for (RegistroNodo aux : nodoActual.getRegistros()) {
-				nodoAuxiliar.setBytes(archivo.leerBloque(aux
-						.getNroBloqueIzquierdo()));
-				nodoAuxiliar.setNroBloquePadre(nodoActual.getNroBloque());
-				archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
-						.getNroBloque());
-			}
-			nodoAuxiliar.setBytes(archivo.leerBloque(nodoActual.getUltimoRegistro()
-					.getNroBloqueDerecho()));
-			nodoAuxiliar.setNroBloquePadre(nodoActual.getNroBloque());
-			archivo.escribirBloque(nodoAuxiliar.getBytes(), nodoAuxiliar
-					.getNroBloque());
-		}
-		
-		// Guardo los nodos hojas modificados para pasarselos al secuencial set
-		if (nodo.isEsHoja()) {
-			nodosModificados.clear();
-			nodosModificados.add(nodo);
-			nodosModificados.add(nodoHNO);
-			nodosModificados.add(nodoActual);
-		}
+		nodosModificados.clear();
+		actualizaNodo(nodo);
+		actualizaNodo(nodoHNO);
+		actualizaNodo(nodoActual);
 		
 		return nodoPadre;
 	}
