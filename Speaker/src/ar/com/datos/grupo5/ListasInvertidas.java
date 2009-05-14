@@ -869,7 +869,7 @@ public class ListasInvertidas {
 			if (regInt == null) {
 				return false;
 			}
-			this.logger.debug("Registro leido: "+regInt.getIdTermino()+" CantidadDocs: "+regInt.getCantidadDocumentos());
+			this.logger.debug("Registro leido: "+regInt.getIdTermino()+" NroBloque: "+nroBloqueExt);
 			//Calculo el nuevo offset lista
 			offsetListaSiguiente = (this.offsetLista + regInt.getTamanio() - this.tamanioControl);
 			
@@ -1089,10 +1089,11 @@ public class ListasInvertidas {
 			 * primerRegistro, si es mayor pongo a primerRegistro, sino a
 			 * offsetListaSiguiente.
 			 */
+			this.logger.debug("OffsetlistSiguiente "+offsetListaSiguiente+" espacioOcupado: "+espacioOcupado+" primerRegistro: "+primerRegistro);
 			if (offsetListaSiguiente > primerRegistro) {
-				listaListas = this.leerListasPorBloque(primerRegistro,espacioOcupado);
+				listaListas = this.leerListasPorBloque(primerRegistro,espacioOcupado,siguienteExt.intValue());
 			} else {
-				listaListas = this.leerListasPorBloque(offsetListaSiguiente,espacioOcupado);
+				listaListas = this.leerListasPorBloque(offsetListaSiguiente,espacioOcupado,siguienteExt.intValue());
 			}
 			//La lista puede venir vacia pero si viene null existio error
 			if (listaListas == null) {
@@ -1241,9 +1242,9 @@ public class ListasInvertidas {
 			 * offsetListaSiguiente.
 			 */
 			if ((offsetListaSiguiente > primerRegistro && continua) || offsetListaSiguiente <= 0) {
-				listaListas = this.leerListasPorBloque(primerRegistro,espacioOcupado);
+				listaListas = this.leerListasPorBloque(primerRegistro,espacioOcupado, siguienteExt.intValue());
 			} else {
-				listaListas = this.leerListasPorBloque(offsetListaSiguiente,espacioOcupado);
+				listaListas = this.leerListasPorBloque(offsetListaSiguiente,espacioOcupado, siguienteExt.intValue());
 			}
 			
 			if (continua) {
@@ -1372,7 +1373,7 @@ public class ListasInvertidas {
 	 * @param comienzo
 	 * @return
 	 */
-	private ArrayList<RegistroTerminoDocumentos> leerListasPorBloque(final short comienzo, final short espacioOcupadoExt) {
+	private ArrayList<RegistroTerminoDocumentos> leerListasPorBloque(final short comienzo, final short espacioOcupadoExt, final int bloque) {
 		
 		RegistroTerminoDocumentos reg;
 		long siguiente = this.nroBloque;
@@ -1396,10 +1397,13 @@ public class ListasInvertidas {
 		while (masListas) {
 			reg  = new RegistroTerminoDocumentos();
 			while (reg.incompleto() || reg.getCantidadDocumentos() == 0) {
+				byte[] bloqueALeer = new byte[Constantes.SIZE_OF_LIST_BLOCK];
+				
+				bloqueALeer = leerBloque(bloque);
 				
 				/* Saco la información de control del bloque */
 				ByteArrayInputStream bis 
-					= new ByteArrayInputStream(datosLeidosPorBloque);  
+					= new ByteArrayInputStream(bloqueALeer);  
 				DataInputStream dis = new DataInputStream(bis);
 				
 				try {
@@ -1409,22 +1413,22 @@ public class ListasInvertidas {
 					
 					if (cantBloquesLeidos == 0) {		
 						/* Armo la lista para el termino especifico */
-						reg.setBytes(this.datosLeidosPorBloque, 
+						reg.setBytes(bloqueALeer, 
 										offsetSiguienteLista.longValue() + tamanioControl);
 						if (reg.incompleto()) {
 							/* Obtengo el bloque según el numero de bloque*/
-							datosLeidosPorBloque = this.archivo.leerBloque((int) siguiente);
+							bloqueALeer = leerBloque((int)siguiente);
 							cantBloquesLeidos++;
 						}
 					} else {
 						
-						reg.setMoreBytes(datosLeidosPorBloque, 
+						reg.setMoreBytes(bloqueALeer, 
 								Constantes.SIZE_OF_LONG	
 								+ Constantes.SIZE_OF_SHORT * 2);
 						/* Obtengo el bloque según el numero de bloque*/
 						if (reg.incompleto()) {
 							/* Obtengo el bloque según el numero de bloque*/
-							datosLeidosPorBloque = this.archivo.leerBloque((int) siguiente);
+							bloqueALeer = leerBloque((int)siguiente);
 						}
 					}
 				} catch (IOException e) {
@@ -1449,6 +1453,15 @@ public class ListasInvertidas {
 		return listas;
 	}
 
+	private final byte[] leerBloque(final int nroBloque){
+		try {
+			return this.archivo.leerBloque(nroBloque);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 	/**
 	 * @param registroMovidos the registroMovidos to set
 	 */

@@ -272,6 +272,7 @@ public class FTRSManager {
 					// y la actualizo, sino la inserto.
 					if (registro.getBloqueListaInvertida() != -1) {
 						//Tengo lista invertida, ver como agarrar el bloque
+						this.logger.debug("NroBloque: "+registro.getBloqueListaInvertida()+" idtermino:" + idTermino);
 						RegistroTerminoDocumentos regTD = this.listasInvertidas
 								.leerLista(idTermino, registro.getBloqueListaInvertida());
 
