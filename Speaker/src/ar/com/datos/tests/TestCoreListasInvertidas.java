@@ -586,11 +586,11 @@ public class TestCoreListasInvertidas {
 	 * 
 	 * @param invocador .
 	 */
-	public final void quit(final InterfazUsuario invocador) {
+	public final void quit() {
 		try {
+			this.cerrarArchivo();
 			this.ftrsManager.cerrarArchivos();
 			this.diccionario.cerrar();
-			invocador.mensaje("gracias por usar TheSpeaker");
 		} catch (Exception e) {
 			
 		}
@@ -603,14 +603,13 @@ public class TestCoreListasInvertidas {
 	 *            .
 	 * @return true si pudo cerrar los archivos.
 	 */
-	private boolean cerrarArchivo(final InterfazUsuario invocador) {
+	private boolean cerrarArchivo() {
 		
 		try {
 
 			if (this.audioFileManager != null) {
 				this.audioFileManager.cerrar();
 			}
-			this.ftrsManager.cerrarArchivos();
 			return true;
 
 		} catch (Exception e) {
@@ -620,13 +619,9 @@ public class TestCoreListasInvertidas {
 					this.audioFileManager.cerrar();
 				}
 			} catch (Exception g) {
-				invocador.mensaje("Error al cerrar el archivo de audio.");
+
 			}
 
-			
-			invocador.mensaje("Error al cerrar el archivo de diccionario.");
-			
-			this.ftrsManager.cerrarArchivos();
 			return false;
 		}
 	}
@@ -752,5 +747,6 @@ public class TestCoreListasInvertidas {
 	public static void main(final String[] args) {
 		TestCoreListasInvertidas list = new TestCoreListasInvertidas();
 		list.load("./poemasreturns.txt");
+		list.quit();
 	}
 }

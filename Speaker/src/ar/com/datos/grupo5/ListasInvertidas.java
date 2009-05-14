@@ -721,6 +721,7 @@ public class ListasInvertidas {
 				dis = new DataInputStream(bis);
 				
 				idTermino = dis.readLong();
+				//FIXME: Es valida la comparacion esta?
 				if (idTerminoBuscado == idTermino) {
 					/* Son iguales por lo tanto el offset de la lista es 
 					 * igual a la primera lista */
@@ -868,7 +869,7 @@ public class ListasInvertidas {
 			if (regInt == null) {
 				return false;
 			}
-			
+			this.logger.debug("Registro leido: "+regInt.getIdTermino()+" CantidadDocs: "+regInt.getCantidadDocumentos());
 			//Calculo el nuevo offset lista
 			offsetListaSiguiente = (this.offsetLista + regInt.getTamanio() - this.tamanioControl);
 			
@@ -1218,7 +1219,7 @@ public class ListasInvertidas {
 		 * tiene y las corro segun la sobra del bloque anterior.
 		 * Si el bloque desborda entonces crea uno nuevo.
 		 */
-		if (siguienteExt == 0) {
+		if (siguienteExt.compareTo(0L) == 0) {
 			//obtengo las listas empezando del primerRegistro
 			try {
 				bos.reset();
@@ -1328,7 +1329,7 @@ public class ListasInvertidas {
 						this.espacioLibre.actualizarEspacio((short) (datos.length));	
 					} else {
 						this.espacioLibre.setIndex(-1);
-						this.espacioLibre.actualizarEspacio((short) (datos.length));
+						this.espacioLibre.actualizarListaEspacioLibre(bloqueAInsertar,(short) (datos.length));
 					}
 					
 					datos = bosaux.toByteArray();
@@ -1463,6 +1464,10 @@ public class ListasInvertidas {
 		return registrosMovidos;
 	}
 	
+	public final void persistirDatosAdministrativos() {
+		this.escribirListaAArchivo();
+		this.escribirEncabezadoArchivo();
+	}
 
 }
 

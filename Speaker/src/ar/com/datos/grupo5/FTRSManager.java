@@ -247,8 +247,8 @@ public class FTRSManager {
 
 			// El documento siempre es el mismo
 			while (i < nRegistros) {
-				while (idTermino == nodo.getIdTermino()
-						&& idDocumento == nodo.getIdDocumento()
+				while (idTermino.compareTo(nodo.getIdTermino()) == 0
+						&& idDocumento.compareTo(nodo.getIdDocumento()) == 0
 						&& i < nRegistros) {
 					frecuencia++;
 					i++;
@@ -263,7 +263,7 @@ public class FTRSManager {
 				// Leo el termino
 				String termino = this.terminosGlobalesManager
 						.leerTermino(idTermino);
-
+				
 				//Pido al FTRS los datos del termino. Busco el termino
 				RegistroFTRS registro = this.arbolFTRS.buscar(termino);
 				
@@ -325,17 +325,13 @@ public class FTRSManager {
 					}
 
 				}
-				//TODO: que pasa si no viene un registro, entonces el termino no existe
-				// no deberia pasar nunca eso.
-				
-				RegistroTerminoDocumentos regTerminoDocumentos = new RegistroTerminoDocumentos();
-
 				// regTerminoDocumentos.
 
 				idTermino = nodo.getIdTermino();
 				idDocumento = nodo.getIdDocumento();
 				frecuencia = 0L;
 			}
+			this.listasInvertidas.persistirDatosAdministrativos();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			File file = new File(Constantes.ARCHIVO_TRABAJO);
