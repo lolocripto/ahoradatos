@@ -606,8 +606,9 @@ public final class BStar implements BTree {
 				nuevoHno = nodo.split(nodoHNO, nodoPadre, true, ultimoBloque); 
 			}
 		nodoActual = nuevoHno;
-		nodoActual.setPunteroBloque(secuencialSet.reservarBloqueLibre());
-		
+		if (nodoActual.isEsHoja()) {
+			nodoActual.setPunteroBloque(secuencialSet.reservarBloqueLibre());
+		}
 		ultimoBloque++;
 		
 		if (nodoPadre.getNroBloquePadre() < 0) {
@@ -732,7 +733,7 @@ public final class BStar implements BTree {
 						LOG.debug("Resultado: " + pudePasar);
 					}
 				}
-			if (nodoPadre.getNroBloquePadre() < 0) {
+			if (nodoPadre.getNroBloquePadre() == Constantes.MENOR) {
 				nodoRaiz = nodoPadre;
 			}
 			if(!pudePasar) {
