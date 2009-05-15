@@ -85,15 +85,14 @@ public class Core {
 			try {
 				//Inicio la grabación del documento.
 				contenedor = this.parser.modolecturaYalmacenamiento(pathDocumento);
+			}
+			catch (FileNotFoundException e) {
+				return "El archivo solicitado no existe.";
 			} catch (Exception e) {
 				logger.error("Error al crear contenedor: " + e.getMessage(), e);
 				return "Error inesperado, consulte al proveedor del software";
 			} 
-			/*catch (FileNotFoundException e) {
-				logger.error("Error al crear contenedor: " + e.getMessage(), e);
-				return "El archivo solicitado no existe.";
-			}
-			*/
+
 			logger.debug("tengo el contenedor de palabras.");
 			
 			Long offsetRegistroAudio;
