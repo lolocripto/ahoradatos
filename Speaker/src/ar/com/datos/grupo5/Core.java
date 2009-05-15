@@ -198,12 +198,6 @@ public class Core {
 			//cerrarArchivo(invocador);
 		}  catch (Exception e) {
 			logger.error("Error: " + e.getMessage());
-			
-			return "Error inesperado";
-		} catch (SimpleAudioPlayerException e) {
-			
-			logger.error("Error: " + e.getMessage());
-			
 			return "Error inesperado";
 		}
 		
