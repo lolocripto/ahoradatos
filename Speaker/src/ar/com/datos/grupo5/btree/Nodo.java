@@ -305,13 +305,12 @@ public class Nodo {
 
 			if (!this.isEsHoja()) {
 				// Liberar la clave de la nueva raiz de la raiz anterior
-				// Recordar que el nodoDerecho esta en pos->izq o en (pos-1)->der
-				if (pos == Constantes.MAYOR) {
-					pos = nodoPadre.registros.size() - 1;
-				}
+				// Recordar que el nodoDerecho esta en pos->izq o en pos-1->der
+				pos = nodoPadre.buscarRegistro(getPrimerRegistro().getClave());
 				if (pos == Constantes.MENOR) {
-					pos = nodoPadre.registros.size() - 1;
+					pos = 0;
 				}
+				
 				regAux.setClave(nodoPadre.registros.get(pos).getClave());
 				regs.add(regAux);
 				
