@@ -601,8 +601,8 @@ public final class BStar implements BTree {
 				break;
 			default:
 				// Primero evaluo el DER
-				nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueIzquierdo()));
-				nuevoHno = nodo.split(nodoHNO, nodoPadre, false, ultimoBloque); 
+				nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueDerecho()));
+				nuevoHno = nodo.split(nodoHNO, nodoPadre, true, ultimoBloque); 
 			}
 		nodoActual = nuevoHno;
 		if (nodoActual.isEsHoja()) {
