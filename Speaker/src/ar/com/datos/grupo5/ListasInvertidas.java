@@ -890,7 +890,11 @@ public class ListasInvertidas {
 		return true;
 	}
 	
-	/** d.
+	/** 
+	 * Administra toda la logica para modificar una lsta invertida,
+	 * eso incluye el desplazamiento de listas y manejo del desborde
+	 * del bloque.
+	 * 
 	 * @param offsetListaSiguiente Lo que ocupa desde el principio del 
 	 * bloque hasta terminar la lista a modificar. Tamanño viejo.
 	 * @param siguienteExt el siguiente del bloque donde esta la lista.

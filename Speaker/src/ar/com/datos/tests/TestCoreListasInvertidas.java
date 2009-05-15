@@ -117,82 +117,16 @@ public class TestCoreListasInvertidas {
 
 				elemento = iterador.next();
 		//		logger.debug("Termino: " + elemento.getTextoEscrito());
-				
+				this.logger.debug(elemento.getTextoEscrito());
 				// Si no es StopWord entonces utilizo el Ftrs.
 				if (!elemento.isStopWord()) {
+					if (elemento.getTextoEscrito().compareTo("fray") == 0) {
+						this.logger.debug("Problema se viene");
+					}
 					ftrsManager.validarTermino(elemento
 							.getTextoEscrito(), offsetDoc);
 				}
-				
-				/*
-				 * Si es una palabra pronunciable la proxima palabra, sino pido
-				 * el audio para la misma. 
-				 * Si, es pronunciable, si la encuntra
-				 * sigo con la proxima palabra, sino pido el audio para la
-				 * misma.
-				 */
-	
-			//	logger.debug("No esta en el archivo de texto.");
-				
-				
-				// Si no encontro la palabra pido ingresar el audio
-				String mensaje; 
-				String respuesta = "0";
 
-				int resultado;
-				
-				/*
-				//pido que grabe hasta que sea correcta la grabación
-				while (!respuesta.equalsIgnoreCase("S")) {
-					
-					mensaje = new String(
-							"Para ingresar el audio para la palabra: "
-							+ elemento.getTextoEscrito());
-					
-					
-					invocador.mensaje(mensaje);
-					
-					// Protocolo de Grabación
-					resultado = this.iniciarGrabacion();
-					// Segun el resultado
-					switch(resultado) {
-						case -1:
-							return "Operacion cancelada.";
-						case -2:
-							this.logger.debug("error, resultado = -2. respuesta es N, pide el termino de nuevo.");
-						//	respuesta = "N";
-							continue;
-						default:
-					}
-					
-					// Protocolo para terminar la grabación
-					resultado = this.finalizarGrabacion(invocador);
-					
-					//Segun el resultado
-					switch(resultado) {
-						case -1:
-							return "Operacion cancelada.";
-						default:
-					}
-					//try {
-						this.playWord();	
-					//} catch (SimpleAudioPlayerException e) {
-//						respuesta = "N";
-						//continue;
-					//}
-					
-				    
-				    mensaje = "La grabación ha sido correcta? S/N: ";
-				    respuesta = invocador.obtenerDatos(mensaje);
-				    }
-
-				offsetRegistroAudio = this.audioFileManager
-						.agregar(this.audioManager.getAudio());
-				
-				//Agrego la palabra al diccionario 
-				this.diccionario.agregar(elemento.getEquivalenteFonetico(),
-						offsetRegistroAudio);
-				*/
 			}
 			
 			System.out.println("entro a generar listas invertidas");

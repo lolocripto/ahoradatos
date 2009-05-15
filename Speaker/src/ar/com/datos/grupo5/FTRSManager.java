@@ -280,7 +280,14 @@ public class FTRSManager {
 						RegistroTerminoDocumentos regTD = this.listasInvertidas
 								.leerLista(idTermino, registro.getBloqueListaInvertida());
 
-						//FIXME:if null? Ahora ingreso el ParFrecuenciaDocumento al Registro.
+						if ( regTD == null ){
+							idTermino = nodo.getIdTermino();
+							idDocumento = nodo.getIdDocumento();
+							frecuencia = 0L;
+							continue;
+						}
+						
+						//Ahora ingreso el ParFrecuenciaDocumento al Registro.
 						Collection<ParFrecuenciaDocumento> listaDatosDocumentos = regTD
 								.getDatosDocumentos();
 						listaDatosDocumentos.add(parFrecDoc);
@@ -382,15 +389,19 @@ public class FTRSManager {
 	}
 
 	/**
-	 * 
+	 * Esta función valida si el termino se encuentra en el arbol,
+	 * si no se encuentra en el arbol lo inserta al archivo de lexico
+	 * global, al arbol. Luego lo inserta en el archivo de duplas. 
 	 * @param termino
 	 * @param offsetDoc
 	 * @throws IOException
 	 */
 	public boolean validarTermino(final String termino, final Long offsetDoc)
 			throws IOException {
+		try {
 		NodoRS idTerminoIdDocumento;
 		Long idTermino = 0L;
+		this.logger.debug(termino);
 		RegistroFTRS registroFtrs = this.arbolFTRS.buscar(termino);
 
 		/*
@@ -398,6 +409,7 @@ public class FTRSManager {
 		 * tampoco existe en el archivo de termino globales.
 		 */
 		if (registroFtrs == null) {
+			this.arbolFTRS.listar();
 			// Se encarga de agregar el termino que no existe.
 			idTermino = this.agregaTermino(termino);
 			if (idTermino == null) {
@@ -409,13 +421,16 @@ public class FTRSManager {
 
 		// Escribo el idTermino junto con el offsetDoc
 		idTerminoIdDocumento = new NodoRS(idTermino, offsetDoc);
-		try {
 			archivoTrabajo.write(idTerminoIdDocumento.getBytes(), 0,
 					idTerminoIdDocumento.getTamanio());
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
-		}
+		} 
+		/*catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}*/
 		return true;
 	}
 

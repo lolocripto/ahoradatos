@@ -583,6 +583,7 @@ public class Core {
 	 */
 	public final void quit(final InterfazUsuario invocador) {
 		try {
+			this.cerrarArchivo(invocador);
 			this.ftrsManager.cerrarArchivos();
 			this.diccionario.cerrar();
 			invocador.mensaje("gracias por usar TheSpeaker");
