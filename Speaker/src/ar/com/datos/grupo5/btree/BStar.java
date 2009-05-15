@@ -760,7 +760,13 @@ public final class BStar implements BTree {
 								  int posPadre) throws IOException {
 		LOG.debug("Pasar registro Derecha -> Izquierda");
 		//El registro que apunta a los dos nodos.
-		RegistroNodo regParaBajar = padre.getRegistros().get(posPadre);
+		RegistroNodo regParaBajar = null;
+		//El registro que apunta a los dos nodos.
+		if (derecho.isEsHoja()) {
+			regParaBajar = derecho.getPrimerRegistro();
+		} else {
+			regParaBajar = padre.getRegistros().get(posPadre);
+		}
 		RegistroNodo regParaSubir = null;
 		
 		//Veo si tengo espacio para bajar la clave.
@@ -795,7 +801,7 @@ public final class BStar implements BTree {
 		RegistroNodo removido = derecho.removerRegistro(0);
 		
 		//Reemplazo la clave en el padre.
-		regParaBajar.setClave(regParaSubir.getClave());
+		padre.getRegistros().get(posPadre).setClave(regParaSubir.getClave());
 		if (!derecho.isEsHoja()) {
 			regNuevo.setNroBloqueDerecho(removido.getNroBloqueIzquierdo());
 			regNuevo.setNroBloqueIzquierdo(nuevoNroBloque);
