@@ -252,31 +252,6 @@ public final class BStar implements BTree {
 					}
 					nodoActual = nodoAux;
 				}
-				//Veo si lo que recupere el igual o mayor.
-//				if (nodoActual.getRegistros().size() == 0) {
-//					return nodoActual;
-//				}
-//				if (nodoActual.getRegistros().get(posReg).getClave().equals(
-//						clave)) {
-//					
-//					return nodoActual;
-//				} else { // Es mayor.
-//					if (!nodoActual.isEsHoja()) {
-//						nroBloque = nodoActual.getRegistros().get(posReg)
-//								.getNroBloqueIzquierdo();
-//						nodoAux = new Nodo();
-//						try {
-//							nodoAux.setBytes(archivo
-//									.leerBloque(nroBloque));
-//						} catch (IOException e) {
-//							e.printStackTrace();
-//							throw e;
-//						}
-//						nodoActual = nodoAux;
-//					} else {
-//						return nodoActual;
-//					}
-//				}
 			}
 		}
 		return nodoActual;
@@ -617,7 +592,6 @@ public final class BStar implements BTree {
 		if (nodo.isEsHoja()) {
 			nodosModificados.clear();
 		}
-
 		actualizaNodo(nodo);
 		actualizaNodo(nodoHNO);
 		actualizaNodo(nodoActual);
@@ -734,6 +708,7 @@ public final class BStar implements BTree {
 						LOG.debug("Resultado: " + pudePasar);
 					}
 				}
+			nodo.setOverflow(false);
 			if (nodoPadre.getNroBloquePadre() == Constantes.MENOR) {
 				nodoRaiz = nodoPadre;
 			}

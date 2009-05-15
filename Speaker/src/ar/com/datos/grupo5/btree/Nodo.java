@@ -238,6 +238,7 @@ public class Nodo {
 		Nodo nodo = new Nodo();
 		Nodo nuevaRaiz = new Nodo();
 		
+		this.setOverflow(false);
 		this.setNroBloquePadre(Constantes.NRO_BLOQUE_RAIZ);
 		this.setNroBloque(ultimoNroBloque + 1);
 		nodo.setNroBloquePadre(Constantes.NRO_BLOQUE_RAIZ);
@@ -510,6 +511,7 @@ public class Nodo {
 				}
 			}
 		}
+		this.setOverflow(false);
 		return nuevoHermano;
 	}
 	
