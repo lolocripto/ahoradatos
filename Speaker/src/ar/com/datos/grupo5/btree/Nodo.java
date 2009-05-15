@@ -618,7 +618,7 @@ public class Nodo {
 	 */
 	public final void setBytes(final byte[] buffer) throws IOException {
 		
-		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);  
+		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
 		DataInputStream dos = new DataInputStream(bis);
 		int bloqueAnt = 0, leido = 0, aLeer = 0;
 		int cantidad = 0;

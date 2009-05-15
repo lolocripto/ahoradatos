@@ -338,7 +338,7 @@ public final class BStar implements BTree {
 		} else if (nodo.getNroBloquePadre() < 0) {
 			// Es la raiz.
 			// Splitear nodo
-			System.out.println("=====SplitRaiz=======Nodo: "
+			LOG.debug("=====SplitRaiz=======Nodo: "
 					+ nodo.getNroBloque() + "========");
 			return splitRaiz(nodo);
 				
@@ -347,7 +347,7 @@ public final class BStar implements BTree {
 			//Si no puedo, veo con cual lo puedo Splitear
 			if (!pasarRegistro(nodo)) {
 				
-				System.out.println("=====Split=======Nodo: "
+				LOG.debug("=====Split=======Nodo: "
 						+ nodo.getNroBloque() + "========");
 				Nodo padre = split(nodo);
 
@@ -961,7 +961,7 @@ public final class BStar implements BTree {
 				if (nodoPadre.getNroBloquePadre() < 0) {
 					nodoRaiz = nodoPadre;
 				}
-				System.out.println("=====PasarRegistroMENOR=======Nodo: "
+				LOG.debug("=====PasarRegistroMENOR=======Nodo: "
 						+ nodo.getNroBloque() + "========");
 				return true;
 			case Constantes.MAYOR:
@@ -1031,7 +1031,7 @@ public final class BStar implements BTree {
 				if (nodoPadre.getNroBloquePadre() < 0) {
 					nodoRaiz = nodoPadre;
 				}
-				System.out.println("=====PasarRegistroMAYOR=======Nodo: "
+				LOG.debug("=====PasarRegistroMAYOR=======Nodo: "
 						+ nodo.getNroBloque() + "========");
 				return true;
 			default:
@@ -1110,7 +1110,7 @@ public final class BStar implements BTree {
 					if (nodoPadre.getNroBloquePadre() < 0) {
 						nodoRaiz = nodoPadre;
 					}
-					System.out.println("=====PasarRegistroDefaultMayor=======Nodo: "
+					LOG.debug("=====PasarRegistroDefaultMayor=======Nodo: "
 							+ nodo.getNroBloque() + "========");
 					return true;
 				} else {
@@ -1178,7 +1178,7 @@ public final class BStar implements BTree {
 						if (nodoPadre.getNroBloquePadre() < 0) {
 							nodoRaiz = nodoPadre;
 						}
-						System.out.println("=====PasarRegistroDefaultMenor=======Nodo: "
+						LOG.debug("=====PasarRegistroDefaultMenor=======Nodo: "
 								+ nodo.getNroBloque() + "========");
 						return true;
 					} else {

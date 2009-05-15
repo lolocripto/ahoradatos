@@ -82,27 +82,6 @@ public class BSharp {
 				//Se pudo insertar, por lo tanto ahora modifico el SecuencialSer.
 				ArrayList<Nodo> lista = this.arbolBStar.getNodosModificados();
 				
-				
-//				Iterator<Nodo> it = lista.iterator();
-//				LOG.debug("en esta iteracion el secuencial intenta acceder a los bloques: ");
-//				
-//				while (it.hasNext()) {
-//				
-//				Nodo unnodo = it.next();
-//				
-////				if (unnodo.getPunteroBloque() == 16){
-////					
-////					int entroaca = 0;
-////				}
-//					
-//				LOG.debug("bloque: " +unnodo.getPunteroBloque());
-//					
-//				}
-//				
-//				LOG.debug("fin listado bloques ");
-				
-			//	System.out.println(" elems pasados al sec: "+lista.size());
-				
 				this.secuencialSet.bloquesActualizados(lista, nuevaPalabraExt, idTerminoExt, -1);
 				return true;
 			} else {
