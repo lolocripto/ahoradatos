@@ -409,7 +409,6 @@ public class FTRSManager {
 		 * tampoco existe en el archivo de termino globales.
 		 */
 		if (registroFtrs == null) {
-			this.arbolFTRS.listar();
 			// Se encarga de agregar el termino que no existe.
 			idTermino = this.agregaTermino(termino);
 			if (idTermino == null) {

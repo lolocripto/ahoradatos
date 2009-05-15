@@ -200,6 +200,11 @@ public class Core {
 			logger.error("Error: " + e.getMessage());
 			
 			return "Error inesperado";
+		} catch (SimpleAudioPlayerException e) {
+			
+			logger.error("Error: " + e.getMessage());
+			
+			return "Error inesperado";
 		}
 		
 		logger.debug("Sali de al funcion load");
@@ -583,7 +588,6 @@ public class Core {
 	 */
 	public final void quit(final InterfazUsuario invocador) {
 		try {
-			this.cerrarArchivo(invocador);
 			this.ftrsManager.cerrarArchivos();
 			this.diccionario.cerrar();
 			invocador.mensaje("gracias por usar TheSpeaker");
@@ -695,7 +699,6 @@ public class Core {
 				return tiempoFinal.toString() + " segundos";
 			}
 
-			//TODO: pasarle el filtro a las palabras
 			  Iterator<SimilitudDocumento> it;
 			  it = this.ranking.iterator();
 			  SimilitudDocumento nodo;
