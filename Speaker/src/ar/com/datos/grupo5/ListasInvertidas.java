@@ -44,7 +44,7 @@ public class ListasInvertidas {
 	 * Lista que contiene los movimientos de los registros
 	 * de un bloque a otro.
 	 */
-	private ArrayList registrosMovidos;
+	private ArrayList<TerminoBloque> registrosMovidos;
 	
 	/**
 	 * Tamaño que tiene el area de control.
