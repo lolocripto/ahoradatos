@@ -1,3 +1,4 @@
+
 package ar.com.datos.grupo5.sortExterno;
 
 import java.io.ByteArrayInputStream;
@@ -12,7 +13,7 @@ import ar.com.datos.grupo5.utils.Conversiones;
 /**
  * @author Led Zeppelin
  * @version 1.0
- * @created 04-May-2009 04:15:57 p.m.
+ * @since 04-May-2009 04:15:57 p.m.
  */
 public class NodoRS implements Comparable<NodoRS> {
 

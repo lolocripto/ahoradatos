@@ -1,9 +1,10 @@
+
 package ar.com.datos.grupo5.sortExterno;
 
 /**
  * @author Led Zeppelin
  * @version 1.0
- * @created 04-May-2009 04:15:26 p.m.
+ * @since 04-May-2009 04:15:26 p.m.
  */
 public class NodoParticion implements Comparable<NodoParticion>{
 
