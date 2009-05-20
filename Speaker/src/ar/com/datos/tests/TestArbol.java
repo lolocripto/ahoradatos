@@ -78,25 +78,25 @@ public class TestArbol {
 			int u =0;
 			
 			//while (it.hasNext()) {
-			while (u < cantidad) {
+			while (it.hasNext()) {
 				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
 				
 				String cadena = iunidadDeHabla.getTextoEscrito();
 				
-				System.out.println(cadena);
+				//System.out.println(cadena);
 				clave = new Clave();
 				clave.setClave(cadena);
 				reg = new RegistroNodo();
 				reg.setClave(clave);
 				if (tree.insertar(reg)) {
-					System.out.println("Insertada la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
+					System.out.println("Insertada la palabra: " + cadena + " Cantidad: " + u);
 				} else {
-					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
+					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + u);
 				}
 				u++;
-				tree.listar();
+				//tree.listar();
 			}
-			/*
+			tree.listar();
 			lista2 = tx.modoLecturaSinAlmacenamiento("palabras.txt", true);
 			it = lista2.iterator();
 			System.out.println("Ahora comienzo a buscar en el diccionario");
@@ -117,7 +117,7 @@ public class TestArbol {
 				}
 				//Thread.sleep(50);
 			}
-*/			
+
 		} catch (Exception e) {
 			logger.error("Error: " + e);
 			e.printStackTrace();

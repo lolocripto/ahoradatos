@@ -13,7 +13,6 @@ import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.archivos.ArchivoBloques;
 import ar.com.datos.grupo5.archivos.ArchivoSecuencialSet;
 import ar.com.datos.grupo5.registros.RegistroNodo;
-import ar.com.datos.grupo5.sortExterno.NodoParticion;
 import ar.com.datos.grupo5.utils.Conversiones;
 
 /**

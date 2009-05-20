@@ -542,10 +542,12 @@ public class Nodo {
 	 *            the espacioOcupado to set
 	 */
 	public final void ocupar(final int espacio) {
-		if ((espacioOcupado + espacio) > this.espacioTotal) {
-			overflow = true;
+		
+		// Si es el primer registro, entonces sumo el puntero a la izquierda.
+		if (espacioOcupado == 0){
+			espacioOcupado += Constantes.SIZE_OF_INT;
 		}
-
+		
 		espacioOcupado += espacio;
 		
 		if (espacio < 0) {
@@ -553,7 +555,10 @@ public class Nodo {
 		} else {
 			espacioOcupado -= Constantes.SIZE_OF_INT;
 		}
-		//tieneCargaMinima();
+		
+		if (espacioOcupado > this.espacioTotal) {
+			overflow = true;
+		}
 	}
 	
 	/**
@@ -622,7 +627,7 @@ public class Nodo {
 		
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
 		DataInputStream dos = new DataInputStream(bis);
-		int bloqueAnt = 0, leido = 0, aLeer = 0;
+		int bloqueAnt = 0, leido = 4, aLeer = 0;
 		int cantidad = 0;
 		byte[] datos = new byte[Constantes.SIZE_OF_INT];
 		RegistroNodo reg = null;
@@ -648,7 +653,7 @@ public class Nodo {
 				
 				//Lea la cantidad de bytes que ocupa el registro.
 				cantidad = dos.readInt();
-				leido += Constantes.SIZE_OF_INT + Constantes.SIZE_OF_INT;
+				leido += Constantes.SIZE_OF_INT;
 				
 				datos = new byte[cantidad];
 				leido += dos.read(datos, 0, cantidad);
