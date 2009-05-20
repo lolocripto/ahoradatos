@@ -27,14 +27,14 @@
 	</logger>
 	
 	<logger name="ar.com.datos">
-		<level value="ERROR" />
+		<level value="ERROR, DEBUG" />
 		<appender-ref ref="FILELOGGER" />
 	</logger>
 
 	<root>
-		<level value="ERROR" />
-		<appender-ref ref="FILELOGGER" />
-		<!--<appender-ref ref="ConsoleAppender" />-->
+		<level value="ERROR, DEBUG" />
+<!--		<appender-ref ref="FILELOGGER" />-->
+		<appender-ref ref="ConsoleAppender" />
 	</root>
 	
 

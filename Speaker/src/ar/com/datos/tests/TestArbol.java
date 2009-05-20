@@ -5,6 +5,8 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
+import sun.rmi.runtime.Log;
+
 import ar.com.datos.grupo5.Main;
 import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.archivos.ArchivoSecuencialSet;
@@ -88,6 +90,9 @@ public class TestArbol {
 				clave.setClave(cadena);
 				reg = new RegistroNodo();
 				reg.setClave(clave);
+				if (u == 32) {
+					logger.debug("");
+				}
 				if (tree.insertar(reg)) {
 					System.out.println("Insertada la palabra: " + cadena + " Cantidad: " + u);
 				} else {

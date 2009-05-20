@@ -558,6 +558,8 @@ public class Nodo {
 		
 		if (espacioOcupado > this.espacioTotal) {
 			overflow = true;
+		} else {
+			overflow = false;
 		}
 	}
 	
