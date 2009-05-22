@@ -287,7 +287,7 @@ public final class BStar implements BTree {
 			
 			nodosModificados.clear();
 			nodosModificados.add(nodoRaiz);
-			
+			nodoActual = nodoRaiz;
 			cerrarArchivos();
 
 			return true;
@@ -319,7 +319,7 @@ public final class BStar implements BTree {
 		} else {
 			//Intento pasar el registro.
 			//Si no puedo, veo con cual lo puedo Splitear
-			if (!pasarRegistro(nodo)) {
+			while ((nodo.isOverflow())&&(!pasarRegistro(nodo))) {
 				
 				LOG.debug("=====Split=======Nodo: "
 						+ nodo.getNroBloque() + "========");
@@ -344,7 +344,7 @@ public final class BStar implements BTree {
 						}
 					}
 				}
-				
+				nodoActual = nodoRaiz;
 				archivo.escribirBloque(padre.getBytes(), padre
 						.getNroBloque());
 				
