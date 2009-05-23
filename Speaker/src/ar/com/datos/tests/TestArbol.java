@@ -65,7 +65,7 @@ public class TestArbol {
 //					System.out.println("No se encontro la clave: " + claves[i]);
 //				}
 //			}
-			int cantidad = 50;
+			int cantidad = 200;
 			String claveStr = "";
 			TextInterpreter tx = new TextInterpreter();
 			
@@ -79,7 +79,7 @@ public class TestArbol {
 			
 			int u =0;
 			
-			//while (it.hasNext()) {
+			//while (u < cantidad) {
 			while (it.hasNext()) {
 				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
 				
@@ -90,7 +90,7 @@ public class TestArbol {
 				clave.setClave(cadena);
 				reg = new RegistroNodo();
 				reg.setClave(clave);
-				if (u == 32) {
+				if (u == 150) {
 					logger.debug("");
 				}
 				if (tree.insertar(reg)) {
@@ -99,12 +99,14 @@ public class TestArbol {
 					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + u);
 				}
 				u++;
-				//tree.listar();
+				tree.listar();
 			}
 			tree.listar();
 			lista2 = tx.modoLecturaSinAlmacenamiento("palabras.txt", true);
 			it = lista2.iterator();
 			System.out.println("Ahora comienzo a buscar en el diccionario");
+			u = 0;
+			//while (u < cantidad){
 			while (it.hasNext()) {
 				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
 				
@@ -120,6 +122,7 @@ public class TestArbol {
 				} else {
 					System.out.println("##########################No encontre: " + clave.getClave());
 				}
+				u++;
 				//Thread.sleep(50);
 			}
 

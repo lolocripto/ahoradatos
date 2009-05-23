@@ -487,7 +487,10 @@ public class Nodo {
 				pos = nodoPadre.buscarRegistro(getPrimerRegistro().getClave());
 				if (pos == Constantes.MENOR) {
 					pos = 0;
-				} 
+				}
+				//if(pos == Constantes.MAYOR) {
+				//	pos = nodoPadre.getCantidadRegistros() - 1; 
+				//}
 				int espacio = nodoPadre.getEspacioOcupado();
 				espacio += diferenciaClaves(nodoPadre.getRegistros().get(
 					pos), getPrimerRegistro());
@@ -786,7 +789,7 @@ public class Nodo {
 		if (espacioOcupado > espacioTotal) {
 			return true;
 		}
-		return overflow;
+		return false;
 	}
 	
 	/**

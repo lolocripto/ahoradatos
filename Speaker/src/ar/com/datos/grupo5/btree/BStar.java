@@ -677,12 +677,12 @@ public final class BStar implements BTree {
 			RegistroNodo reg = new RegistroNodo();
 			// Lo seteo aca SOLO para ver a cual le puede pasar, luego se cambia
 			reg  = nodo.getUltimoRegistro();
-			LOG.debug("Leo nro de bloque: " + nodo.getNroBloquePadre());
+			LOG.debug("Leo nro de bloque Padre: " + nodo.getNroBloquePadre());
 			nodoPadre.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
 			//ahora nodo es el nodo padre del nodo que busque
 			int pos = nodoPadre.buscarRegistro(reg.getClave());
 			int pos_izq = 0;
-			int pos_der = nodoPadre.getRegistros().size() - 1;
+			int pos_der = nodoPadre.getCantidadRegistros() - 1;
 			boolean pudePasar = false;
 			Nodo nodoHNO = new Nodo();
 			switch (pos) { 
@@ -707,8 +707,8 @@ public final class BStar implements BTree {
 						LOG.debug("Resultado: " + pudePasar);
 					}
 				}
-			nodo.setOverflow(false);
-			if (nodoPadre.getNroBloquePadre() == Constantes.MENOR) {
+			nodo.setOverflow(nodo.isOverflow());
+			if (nodoPadre.getNroBloquePadre().equals(Constantes.MENOR)) {
 				nodoRaiz = nodoPadre;
 			}
 			if(!pudePasar) {
@@ -767,7 +767,7 @@ public final class BStar implements BTree {
 		}
 		// ESTO ESTA MAL, PORQUE SE PERMUTA LA CLAVE, NO SE AGREGA
 		int espacioAnterior = padre.getEspacioOcupado();
-		int espacio = diferenciaClaves(regParaBajar,regParaSubir);
+		int espacio = diferenciaClaves(padre.getRegistros().get(posPadre),regParaSubir);
 		if (!padre.hayEspacio(espacio)) {
 			return false;
 		}
@@ -835,7 +835,7 @@ public final class BStar implements BTree {
 		RegistroNodo regParaSubir = izquierdo.getUltimoRegistro();
 		// ESTO ESTA MAL, PORQUE SE PERMUTA LA CLAVE, NO SE AGREGA
 		int espacioAnterior = padre.getEspacioOcupado();
-		int espacio = diferenciaClaves(regParaBajar,regParaSubir);
+		int espacio = diferenciaClaves(padre.getRegistros().get(posPadre),regParaSubir);
 		if (!padre.hayEspacio(espacio)) {
 			return false;
 		}
@@ -853,6 +853,7 @@ public final class BStar implements BTree {
 		RegistroNodo removido = izquierdo.removerRegistro(izquierdo.getCantidadRegistros() - 1 );
 		
 		//Actualizo el padre
+		//RegistroNodo registroPadre = new RegistroNodo();
 		if (izquierdo.isEsHoja()){
 			padre.getRegistros().get(posPadre).setClave(removido.getClave());
 		} else {

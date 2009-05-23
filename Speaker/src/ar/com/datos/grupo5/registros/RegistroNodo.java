@@ -96,12 +96,15 @@ public class RegistroNodo {
 		
 		try {
 			//Leo la longitud de la clave
+			//LOG.debug("Leo la longitud de la clave del nodo de disco");
 			int longdato = dos.readShort();
 			datos = new byte[longdato];
 			//Leo la clave
+			//LOG.debug("Leo la clave del nodo de disco");
 			dos.read(datos, 0, longdato);
 			claveNodo = new Clave(new String(datos));
 			//Leo el numero de bloque posterior.
+			//LOG.debug("Leo el número de bloque derecho del nodo de disco");
 			setNroBloqueDerecho(dos.readInt());
 		} catch (IOException e) {
 			LOG.error("Error: ", e);
