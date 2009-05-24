@@ -193,7 +193,7 @@ public final class BStar implements BTree {
 			switch (posReg) {
 			//La clave es menor al primero, voy por la izquierda.
 			case Constantes.MENOR:
-				if (!nodoActual.isEsHoja()) {
+				if (!nodoActual.isHoja()) {
 
 					nroBloque = nodoActual.getRegistros().get(0)
 							.getNroBloqueIzquierdo();
@@ -211,7 +211,7 @@ public final class BStar implements BTree {
 				break;
 			//La clave es mayor al ultimo, voy por la derecha.
 			case Constantes.MAYOR:
-				if (!nodoActual.isEsHoja()) {
+				if (!nodoActual.isHoja()) {
 					nroBloque = nodoActual.getRegistros().get(
 							nodoActual.getRegistros().size() - 1)
 								.getNroBloqueDerecho();
@@ -230,7 +230,7 @@ public final class BStar implements BTree {
 			//Encontré la clave que buscaba o una mayor.
 			default:
 				//Si es hoja, lo devuelvo.
-				if (nodoActual.isEsHoja()) {
+				if (nodoActual.isHoja()) {
 					return nodoActual;
 				} else {
 					Clave claveAux = nodoActual.getRegistros().get(posReg).getClave();
@@ -319,7 +319,11 @@ public final class BStar implements BTree {
 		} else {
 			//Intento pasar el registro.
 			//Si no puedo, veo con cual lo puedo Splitear
-			while ((nodo.isOverflow())&&(!pasarRegistro(nodo))) {
+			boolean pudoPasar = pasarRegistro(nodo);
+			if (pudoPasar && nodo.isOverflow()) {
+				while (nodo.isOverflow() && pasarRegistro(nodo));
+			}
+			if (!pudoPasar) {
 				
 				LOG.debug("=====Split=======Nodo: "
 						+ nodo.getNroBloque() + "========");
@@ -379,7 +383,7 @@ public final class BStar implements BTree {
 		ultimoBloque += 2;
 		Nodo nodoAuxiliar = new Nodo();
 		
-		if (!nodoActual.isEsHoja()) {
+		if (!nodoActual.isHoja()) {
 			//reasignar los NroBloquePadre de los hijos de nodo y de nodoActual
 			for (RegistroNodo reg : nodo.getRegistros()) {
 				nodoAuxiliar.setBytes(archivo.leerBloque(reg
@@ -579,7 +583,7 @@ public final class BStar implements BTree {
 				nuevoHno = nodo.split(nodoHNO, nodoPadre, true, ultimoBloque); 
 			}
 		nodoActual = nuevoHno;
-		if (nodoActual.isEsHoja()) {
+		if (nodoActual.isHoja()) {
 			nodoActual.setPunteroBloque(secuencialSet.reservarBloqueLibre());
 		}
 		ultimoBloque++;
@@ -588,7 +592,7 @@ public final class BStar implements BTree {
 			nodoRaiz = nodoPadre;
 		}
 		
-		if (nodo.isEsHoja()) {
+		if (nodo.isHoja()) {
 			nodosModificados.clear();
 		}
 		actualizaNodo(nodo);
@@ -647,7 +651,7 @@ public final class BStar implements BTree {
 		
 		Nodo nodoAuxiliar = new Nodo();
 		archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
-		if (!nodo.isEsHoja()) {
+		if (!nodo.isHoja()) {
 			for (RegistroNodo reg : nodo.getRegistros()) {
 				nodoAuxiliar.setBytes(archivo.leerBloque(reg
 						.getNroBloqueIzquierdo()));
@@ -740,7 +744,7 @@ public final class BStar implements BTree {
 		//El registro que apunta a los dos nodos.
 		RegistroNodo regParaBajar = null;
 		//El registro que apunta a los dos nodos.
-		if (derecho.isEsHoja()) {
+		if (derecho.isHoja()) {
 			regParaBajar = derecho.getPrimerRegistro();
 		} else {
 			regParaBajar = padre.getRegistros().get(posPadre);
@@ -764,7 +768,7 @@ public final class BStar implements BTree {
 		
 		// Si no es hoja, subo la clave al padre y bajo una del padre al
 		// hermano.
-		if (derecho.isEsHoja()) {
+		if (derecho.isHoja()) {
 			regParaSubir = derecho.getRegistros().get(1);
 		} else {
 			regParaSubir = derecho.getPrimerRegistro();
@@ -790,7 +794,7 @@ public final class BStar implements BTree {
 		
 		//Reemplazo la clave en el padre.
 		padre.getRegistros().get(posPadre).setClave(regParaSubir.getClave());
-		if (!derecho.isEsHoja()) {
+		if (!derecho.isHoja()) {
 			regNuevo.setNroBloqueDerecho(removido.getNroBloqueIzquierdo());
 			regNuevo.setNroBloqueIzquierdo(nuevoNroBloque);
 		}
@@ -816,7 +820,7 @@ public final class BStar implements BTree {
 		
 		RegistroNodo regParaBajar = null;
 		//El registro que apunta a los dos nodos.
-		if (izquierdo.isEsHoja()) {
+		if (izquierdo.isHoja()) {
 			regParaBajar = izquierdo.getUltimoRegistro();
 		} else {
 			regParaBajar = padre.getRegistros().get(posPadre);
@@ -858,7 +862,7 @@ public final class BStar implements BTree {
 		
 		//Actualizo el padre
 		//RegistroNodo registroPadre = new RegistroNodo();
-		if (izquierdo.isEsHoja()){
+		if (izquierdo.isHoja()){
 			padre.getRegistros().get(posPadre).setClave(removido.getClave());
 		} else {
 			regParaBajar.setClave(removido.getClave());
@@ -867,322 +871,6 @@ public final class BStar implements BTree {
 		}
 
 		return true;
-	}
-	/**
-	 * @param nodo El nodo en el que no entra
-	 * @param reg el registro a pasar a un hermano de nodo.
-	 * @return si exito true.
-	 * @throws IOException no pudo obtener el nodo
-	 */
-	private boolean pasarRegistro2(final Nodo nodo)
-			throws IOException {
-		
-			Nodo nodoPadre = new Nodo();
-			RegistroNodo reg = new RegistroNodo();
-			// Lo seteo aca SOLO para ver a cual le puede pasar, luego se cambia
-			reg  = nodo.getUltimoRegistro();
-			LOG.debug("Leo nro de bloque: " + nodo.getNroBloquePadre());
-			nodoPadre.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
-			//ahora nodo es el nodo padre del nodo que busque
-			int pos = nodoPadre.buscarRegistro(reg.getClave());
-			int nroHno = 0;
-			byte[] datos = null;
-			Nodo nodoHnoIzquierdo = null;
-			Nodo nodoHnoDerecho = null;
-			
-			switch (pos) { 
-			case Constantes.MENOR:
-				//Tiene que pasarlo al de la izquierda
-				nodoHnoDerecho = new Nodo();
-				nroHno = nodoPadre.getPrimerRegistro().getNroBloqueDerecho();
-				datos = archivo.leerBloque(nroHno);
-				nodoHnoDerecho.setBytes(datos);
-				if (!nodoHnoDerecho.hayEspacio(reg.getBytes().length)) {
-					return false;
-				}
-				if (!nodo.isEsHoja()) {
-					// pasar la clave y el resto reasignar las referencias
-					RegistroNodo aux = new RegistroNodo();
-					aux.setClave(nodoPadre.getPrimerRegistro().getClave());
-					aux.setNroBloqueIzquierdo(nodo.getUltimoRegistro()
-							.getNroBloqueDerecho());
-					aux.setNroBloqueDerecho(nodoHnoDerecho.getPrimerRegistro()
-							.getNroBloqueIzquierdo());
-					if (!nodoHnoDerecho.hayEspacio(aux.getBytes().length)) {
-						return false;
-					}
-					nodoHnoDerecho.insertarRegistro(aux);
-					int espacio = nodoPadre.getEspacioOcupado();
-					espacio += diferenciaClaves(nodoPadre.getPrimerRegistro(), nodo
-						.getUltimoRegistro());
-					nodoPadre.setEspacioOcupado(espacio);
-					if (nodoPadre.isOverflow()) {
-						LOG.error("Error, nodo en overflow.");
-					}
-					nodoPadre.getPrimerRegistro().setClave(
-							nodo.getUltimoRegistro().getClave());
-					
-					nodo.removerRegistro(nodo.getRegistros().size() - 1);
-					nodoHnoIzquierdo = new Nodo();
-					nodoHnoIzquierdo.setBytes(archivo.leerBloque(nodoHnoDerecho
-							.getPrimerRegistro().getNroBloqueIzquierdo()));
-					nodoHnoIzquierdo.setNroBloquePadre(nodoHnoDerecho
-							.getNroBloque());
-					archivo.escribirBloque(nodoHnoIzquierdo.getBytes(), 
-							nodoHnoIzquierdo.getNroBloque());
-					
-				} else {
-					if (!nodoHnoDerecho.hayEspacio(nodo.getUltimoRegistro().getBytes().length)) {
-						return false;
-					}
-					nodoHnoDerecho.insertarRegistro(nodo.getUltimoRegistro());
-					int espacio = nodoPadre.getEspacioOcupado();
-					espacio += diferenciaClaves(nodoPadre.getPrimerRegistro(), nodo
-						.getUltimoRegistro());
-					nodoPadre.setEspacioOcupado(espacio);
-					if (nodoPadre.isOverflow()) {
-						LOG.error("Error, nodo en overflow.");
-					}
-					nodoPadre.getPrimerRegistro().setClave(
-						nodo.getUltimoRegistro().getClave());
-					nodo.removerRegistro(nodo.getRegistros().size() - 1);
-					nodosModificados.clear();
-					nodosModificados.add(nodo);
-					nodosModificados.add(nodoHnoDerecho);
-				}
-				archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
-					.getNroBloque());
-				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
-				archivo.escribirBloque(nodoHnoDerecho.getBytes(),
-						nodoHnoDerecho.getNroBloque());
-				if (nodoPadre.getNroBloquePadre() < 0) {
-					nodoRaiz = nodoPadre;
-				}
-				LOG.debug("=====PasarRegistroMENOR=======Nodo: "
-						+ nodo.getNroBloque() + "========");
-				return true;
-			case Constantes.MAYOR:
-				//Tiene que pasarlo al de la izquierda
-				nodoHnoIzquierdo = new Nodo();
-				nroHno = nodoPadre.getUltimoRegistro().getNroBloqueIzquierdo();
-				datos = archivo.leerBloque(nroHno);
-				nodoHnoIzquierdo.setBytes(datos);	
-				reg  = nodo.getPrimerRegistro();
-				if (!nodoHnoIzquierdo.hayEspacio(reg.getBytes().length)) {
-					return false;
-				}
-				if (!nodo.isEsHoja()) {
-					// pasar la clave y el resto reasignar las referencias
-					RegistroNodo aux = new RegistroNodo();
-					aux.setClave(nodoPadre.getUltimoRegistro().getClave());
-					aux.setNroBloqueIzquierdo(nodoHnoIzquierdo
-							.getUltimoRegistro().getNroBloqueDerecho());
-					aux.setNroBloqueDerecho(nodo.getPrimerRegistro()
-							.getNroBloqueIzquierdo());
-					if (!nodoHnoIzquierdo.hayEspacio(aux.getBytes().length)) {
-						return false;
-					}
-					nodoHnoIzquierdo.insertarRegistro(aux);
-					int espacio = nodoPadre.getEspacioOcupado();
-					espacio += diferenciaClaves(nodoPadre.getUltimoRegistro(), nodo
-						.getPrimerRegistro());
-					nodoPadre.setEspacioOcupado(espacio);
-					if (nodoPadre.isOverflow()) {
-						LOG.error("Error, nodo en overflow.");
-					}
-					nodoPadre.getUltimoRegistro().setClave(
-							nodo.getPrimerRegistro().getClave());
-					nodo.removerRegistro(0);
-					nodoHnoDerecho = new Nodo();
-					nodoHnoDerecho.setBytes(archivo.leerBloque(nodoHnoIzquierdo
-							.getUltimoRegistro().getNroBloqueDerecho()));
-					nodoHnoDerecho.setNroBloquePadre(nodoHnoIzquierdo
-							.getNroBloque());
-					archivo.escribirBloque(nodoHnoDerecho.getBytes(), 
-							nodoHnoDerecho.getNroBloque());
-					
-				} else {
-					if (!nodoHnoIzquierdo.hayEspacio(nodo.getPrimerRegistro().getBytes().length)) {
-						return false;
-					}
-					nodoHnoIzquierdo.insertarRegistro(nodo.getPrimerRegistro());
-					nodo.removerRegistro(0);
-					int espacio = nodoPadre.getEspacioOcupado();
-					espacio += diferenciaClaves(nodoPadre.getUltimoRegistro(), nodo
-						.getPrimerRegistro());
-					nodoPadre.setEspacioOcupado(espacio);
-					if (nodoPadre.isOverflow()) {
-						LOG.error("Error, nodo en overflow.");
-					}
-					nodoPadre.getUltimoRegistro().setClave(
-							nodo.getPrimerRegistro().getClave());
-					nodosModificados.clear();
-					nodosModificados.add(nodo);
-					nodosModificados.add(nodoHnoIzquierdo);
-				}
-				archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
-					.getNroBloque());
-				archivo.escribirBloque(nodo.getBytes(), nodo.getNroBloque());
-				archivo.escribirBloque(nodoHnoIzquierdo.getBytes(),
-						nodoHnoIzquierdo.getNroBloque());
-				if (nodoPadre.getNroBloquePadre() < 0) {
-					nodoRaiz = nodoPadre;
-				}
-				LOG.debug("=====PasarRegistroMAYOR=======Nodo: "
-						+ nodo.getNroBloque() + "========");
-				return true;
-			default:
-				//Puede pasarlo a cualquiera, empiezo probando por el IZQUIERDO
-				int pos_izq = 0;
-				int pos_der = nodoPadre.getRegistros().size() - 1;
-				if (pos == 0) {
-					pos_der = pos + 1;	
-				} else if (pos == nodoPadre.getRegistros().size() - 1) {
-					pos_izq = pos - 1;
-				}
-				int nroHnoDerecho = nodoPadre.getRegistros().get(pos_der)
-						.getNroBloqueDerecho();
-				int nroHnoIzquierdo = nodoPadre.getRegistros().get(pos_izq)
-						.getNroBloqueIzquierdo();
-				nodoHnoDerecho = new Nodo();
-				nodoHnoDerecho.setBytes(archivo.leerBloque(nroHnoDerecho));
-				if (nodoHnoDerecho.hayEspacio(reg.getBytes().length)) {
-					
-					if (!nodo.isEsHoja()) {
-						// pasar la clave y el resto reasignar las referencias
-						RegistroNodo aux = new RegistroNodo();
-						aux.setClave(nodoPadre.getRegistros().get(pos_der)
-								.getClave());
-						aux.setNroBloqueIzquierdo(nodo.getUltimoRegistro()
-								.getNroBloqueDerecho());
-						aux.setNroBloqueDerecho(nodoHnoDerecho
-								.getPrimerRegistro().getNroBloqueIzquierdo());
-						if (!nodoHnoDerecho.hayEspacio(aux.getBytes().length)) {
-							return false;
-						}
-						nodoHnoDerecho.insertarRegistro(aux);
-						int espacio = nodoPadre.getEspacioOcupado();
-						espacio += diferenciaClaves(nodoPadre.getRegistros().get(
-							pos), nodo.getUltimoRegistro());
-						nodoPadre.setEspacioOcupado(espacio);
-						if (nodoPadre.isOverflow()) {
-							LOG.error("Error, nodo en overflow.");
-						}
-						nodoPadre.getRegistros().get(pos).setClave(
-								nodo.getUltimoRegistro().getClave());
-						nodo.removerRegistro(nodo.getRegistros().size() - 1);
-						nodoHnoIzquierdo = new Nodo();
-						nodoHnoIzquierdo.setBytes(archivo.leerBloque(nodoHnoDerecho
-								.getPrimerRegistro().getNroBloqueIzquierdo()));
-						nodoHnoIzquierdo.setNroBloquePadre(nodoHnoDerecho
-								.getNroBloque());
-						archivo.escribirBloque(nodoHnoIzquierdo.getBytes(), 
-								nodoHnoIzquierdo.getNroBloque());
-					} else {
-						RegistroNodo regAux = nodo.removerRegistro(
-								nodo.getRegistros().size() - 1);
-						if (!nodoHnoDerecho.hayEspacio(regAux.getBytes().length)) {
-							return false;
-						}
-						nodoHnoDerecho.insertarRegistro(regAux);
-						int espacio = nodoPadre.getEspacioOcupado();
-						espacio += diferenciaClaves(nodoPadre.getRegistros().get(
-							pos_der), regAux);
-						nodoPadre.setEspacioOcupado(espacio);
-						if (nodoPadre.isOverflow()) {
-							LOG.error("Error, nodo en overflow.");
-						}
-						nodoPadre.getRegistros().get(pos).setClave(
-								regAux.getClave());
-						nodosModificados.clear();
-						nodosModificados.add(nodo);
-						nodosModificados.add(nodoHnoDerecho);
-					}
-					archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
-							.getNroBloque());
-					archivo.escribirBloque(nodo.getBytes(), 
-							nodo.getNroBloque());
-					archivo.escribirBloque(nodoHnoDerecho.getBytes(),
-							nodoHnoDerecho.getNroBloque());
-					if (nodoPadre.getNroBloquePadre() < 0) {
-						nodoRaiz = nodoPadre;
-					}
-					LOG.debug("=====PasarRegistroDefaultMayor=======Nodo: "
-							+ nodo.getNroBloque() + "========");
-					return true;
-				} else {
-					nodoHnoIzquierdo = new Nodo();
-					reg = nodo.getPrimerRegistro();
-					nodoHnoIzquierdo.setBytes(
-							archivo.leerBloque(nroHnoIzquierdo));
-					reg = nodo.getUltimoRegistro();
-					if (nodoHnoIzquierdo.hayEspacio(reg.getBytes().length)) {
-						if (!nodo.isEsHoja()) {
-							RegistroNodo aux = new RegistroNodo();
-							aux.setClave(nodoPadre.getRegistros().get(pos_izq)
-									.getClave());
-							aux.setNroBloqueIzquierdo(nodoHnoIzquierdo
-									.getUltimoRegistro().getNroBloqueDerecho());
-							aux.setNroBloqueDerecho(nodo.getPrimerRegistro()
-									.getNroBloqueIzquierdo());
-							if (!nodoHnoIzquierdo.hayEspacio(aux.getBytes().length)) {
-								return false;
-							}
-							nodoHnoIzquierdo.insertarRegistro(aux);
-							int espacio = nodoPadre.getEspacioOcupado();
-							espacio += diferenciaClaves(nodoPadre.getRegistros().get(
-								pos_izq), nodoPadre.getPrimerRegistro());
-							nodoPadre.setEspacioOcupado(espacio);
-							if (nodoPadre.isOverflow()) {
-								LOG.error("Error, nodo en overflow.");
-							}
-							nodoPadre.getRegistros().get(pos).setClave(
-									nodo.getPrimerRegistro().getClave());
-							nodo.removerRegistro(0);
-							nodoHnoDerecho = new Nodo();
-							nodoHnoDerecho.setBytes(archivo.leerBloque(nodoHnoIzquierdo
-									.getUltimoRegistro().getNroBloqueDerecho()));
-							nodoHnoDerecho.setNroBloquePadre(nodoHnoIzquierdo
-									.getNroBloque());
-							archivo.escribirBloque(nodoHnoDerecho.getBytes(), 
-									nodoHnoDerecho.getNroBloque());
-						} else {
-							RegistroNodo regAux = nodo.removerRegistro(0);
-							if (!nodoHnoIzquierdo.hayEspacio(regAux.getBytes().length)) {
-								return false;
-							}
-							nodoHnoIzquierdo.insertarRegistro(regAux);
-							int espacio = nodoPadre.getEspacioOcupado();
-							//FIXME: Aca decia pos, puse pos - 1
-							espacio += diferenciaClaves(nodoPadre.getRegistros().get(
-								pos_izq), regAux);
-							nodoPadre.setEspacioOcupado(espacio);
-							if (nodoPadre.isOverflow()) {
-								LOG.error("Error, nodo en overflow.");
-							}
-							nodoPadre.getRegistros().get(pos_izq).setClave(
-								regAux.getClave());
-							nodosModificados.clear();
-							nodosModificados.add(nodo);
-							nodosModificados.add(nodoHnoIzquierdo);
-						}
-						archivo.escribirBloque(nodoPadre.getBytes(), nodoPadre
-							.getNroBloque());
-						archivo.escribirBloque(nodo.getBytes(),
-								nodo.getNroBloque());
-						archivo.escribirBloque(nodoHnoIzquierdo.getBytes(),
-								nodoHnoIzquierdo.getNroBloque());
-						if (nodoPadre.getNroBloquePadre() < 0) {
-							nodoRaiz = nodoPadre;
-						}
-						LOG.debug("=====PasarRegistroDefaultMenor=======Nodo: "
-								+ nodo.getNroBloque() + "========");
-						return true;
-					} else {
-						return false;
-					}
-				}
-			}
 	}
 	
 	/**

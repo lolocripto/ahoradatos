@@ -243,7 +243,7 @@ public class Nodo {
 		this.setNroBloque(ultimoNroBloque + 1);
 		nodo.setNroBloquePadre(Constantes.NRO_BLOQUE_RAIZ);
 		nodo.setNroBloque(ultimoNroBloque + 2);
-		nodo.setEsHoja(this.isEsHoja());
+		nodo.setEsHoja(this.isHoja());
 		nuevaRaiz.setNroBloquePadre(-1);
 		nuevaRaiz.setNroBloque(Constantes.NRO_BLOQUE_RAIZ);
 		nuevaRaiz.setEsHoja(false);
@@ -255,7 +255,7 @@ public class Nodo {
 		}
 		// Cargar Nueva raiz (nodoAux)
 		RegistroNodo reg = new RegistroNodo();
-		if (!this.isEsHoja()) {
+		if (!this.isHoja()) {
 			// Liberar la clave de la nueva raiz de la raiz anterior
 			reg.setClave(this.getUltimoRegistro().getClave());
 			removerRegistro(registros.size() - 1);
@@ -285,7 +285,7 @@ public class Nodo {
 		Nodo nuevoHermano = new Nodo();
 		nuevoHermano.setNroBloque(ultimoNroBloque + 1);
 		nuevoHermano.setNroBloquePadre(getNroBloquePadre());
-		nuevoHermano.setEsHoja(this.isEsHoja());
+		nuevoHermano.setEsHoja(this.isHoja());
 		ArrayList<RegistroNodo> regs = new ArrayList<RegistroNodo>();
 		int pos = nodoPadre.buscarRegistro(nodoHermano
 				.getPrimerRegistro().getClave());
@@ -304,7 +304,7 @@ public class Nodo {
 				regs.add(reg);
 			}
 
-			if (!this.isEsHoja()) {
+			if (!this.isHoja()) {
 				// Liberar la clave de la nueva raiz de la raiz anterior
 				// Recordar que el nodoDerecho esta en pos->izq o en pos-1->der
 				pos = nodoPadre.buscarRegistro(getPrimerRegistro().getClave());
@@ -410,7 +410,7 @@ public class Nodo {
 						minIndiceCarga);
 				regs.add(reg);
 			}
-			if (!this.isEsHoja()) {
+			if (!this.isHoja()) {
 				// Liberar la clave de la nueva raiz de la raiz anterior
 				if (pos == Constantes.MENOR) {
 					pos = 0;
@@ -701,7 +701,7 @@ public class Nodo {
 	/**
 	 * @return the esHoja
 	 */
-	public final boolean isEsHoja() {
+	public final boolean isHoja() {
 		return esHoja;
 	}
 
