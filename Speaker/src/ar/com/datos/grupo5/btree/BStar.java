@@ -742,9 +742,13 @@ public final class BStar implements BTree {
 								  Nodo derecho,
 								  int posPadre) throws IOException {
 		if (derecho.isHoja()) {
-			LOG.debug("Pasar registro Derecha -> Izquierda");
+			LOG.debug("Pasar registro Derecha ["
+					+ derecho.getNroBloque() + "] -> Izquierda ["
+					+ izquierdo.getNroBloque() + "]");
 		} else {
-			LOG.debug("Pasar registro nodo NO HOJA Derecha -> Izquierda");
+			LOG.debug("Pasar registro nodo NO HOJA Derecha ["
+					+ derecho.getNroBloque() + "] -> Izquierda ["
+					+ izquierdo.getNroBloque() + "]");
 			//return false;
 		}
 		//El registro que apunta a los dos nodos.
@@ -823,10 +827,14 @@ public final class BStar implements BTree {
 			  int posPadre) throws IOException {
 		
 		if (izquierdo.isHoja()) {
-			LOG.debug("Pasar registro Izquierda -> Derecha");
+			LOG.debug("Pasar registro Izquierda ["
+					+ izquierdo.getNroBloque() + "]-> Derecha ["
+					+ derecho.getNroBloque() + "]");
 		} else {
-			LOG.debug("Pasar registro nodo NO HOJA Izquierda -> Derecha");
-			//return false;
+			LOG.debug("Pasar registro nodo NO HOJA Izquierda ["
+					+ izquierdo.getNroBloque() + "]-> Derecha ["
+					+ derecho.getNroBloque() + "]");
+			// return false;
 		}
 		
 		RegistroNodo regParaBajar = null;
