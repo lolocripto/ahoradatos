@@ -57,7 +57,7 @@ public class TestArbol {
 				clave.setClave(cadena);
 				reg = new RegistroNodo();
 				reg.setClave(clave);
-				if (u == 150) {
+				if (u == 43) {
 					logger.debug("");
 				}
 				if (tree.insertar(reg)) {
@@ -65,8 +65,12 @@ public class TestArbol {
 				} else {
 					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + u);
 				}
+				reg = tree.buscar(clave);
+				if (reg == null) {
+					System.out.println("##########################No encontre: " + clave.getClave());
+				}
 				u++;
-				//tree.listar();
+				tree.listar();
 			}
 			tree.listar();
 			//lista2 = tx.modoLecturaSinAlmacenamiento("palabras.txt", true);

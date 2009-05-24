@@ -144,6 +144,7 @@ public final class BStar implements BTree {
 		Nodo nodo = buscarNodo(clave);
 		
 		if (nodo == null || nodoRaiz == null) {
+			cerrarArchivos();
 			return null;
 		}
 		
@@ -332,14 +333,12 @@ public final class BStar implements BTree {
 				while (padre.isOverflow()) {
 					
 					if (padre.getNroBloquePadre() < 0) {
-						System.out
-								.println("=====Overflow - SplitRaiz=======Nodo: "
-										+ padre.getNroBloque() + "========");
+						LOG.debug("=====Overflow - SplitRaiz=======Nodo: "
+								+ padre.getNroBloque() + "========");
 						return splitRaiz(padre);
 					} else {
 						if (!pasarRegistro(padre)) {
-							System.out
-									.println("=====Overflow Split=======Nodo: "
+							LOG.debug("=====Overflow Split=======Nodo: "
 											+ padre.getNroBloque() + "========");
 							padre.setOverflow(false);
 							padre = split(padre);
@@ -677,9 +676,6 @@ public final class BStar implements BTree {
 	private boolean pasarRegistro(final Nodo nodo)
 			throws IOException {
 			
-			if (!nodo.isHoja()) {
-				return false;
-			}
 			Nodo nodoPadre = new Nodo();
 			RegistroNodo reg = new RegistroNodo();
 			// Lo seteo aca SOLO para ver a cual le puede pasar, luego se cambia
