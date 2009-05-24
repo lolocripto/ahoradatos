@@ -57,7 +57,7 @@ public class TestArbol {
 				clave.setClave(cadena);
 				reg = new RegistroNodo();
 				reg.setClave(clave);
-				if (u == 34) {
+				if (u == 48) {
 					logger.debug("");
 				}
 				if (tree.insertar(reg)) {

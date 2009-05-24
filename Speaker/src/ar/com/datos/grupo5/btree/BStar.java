@@ -579,7 +579,6 @@ public final class BStar implements BTree {
 				nuevoHno = nodo.split(nodoHNO, nodoPadre, false, ultimoBloque);
 				break;
 			default:
-				// Primero evaluo el DER
 				nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueDerecho()));
 				nuevoHno = nodo.split(nodoHNO, nodoPadre, true, ultimoBloque); 
 			}
@@ -702,15 +701,13 @@ public final class BStar implements BTree {
 					LOG.debug("Resultado: " + pudePasar);
 					break;
 				default:
-					// Primero evaluo el IZQ
-					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueIzquierdo()));
-					if (nodo.equals(nodoHNO)) {
-						pudePasar = pasarDerechaIzquierda(nodoPadre, nodoHNO, nodo, pos);
-						LOG.debug("Resultado: " + pudePasar);
-					}
+					// Primero evaluo el DER
+					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueDerecho()));
+					pudePasar =  pasarIzquierdaDerecha(nodoPadre, nodo, nodoHNO, pos);
 					if(!pudePasar) {
-						nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueDerecho()));
-						pudePasar =  pasarIzquierdaDerecha(nodoPadre, nodo, nodoHNO, pos); 
+						pos--;
+						nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueIzquierdo()));
+						pudePasar =   pasarDerechaIzquierda(nodoPadre, nodoHNO, nodo, pos);
 						LOG.debug("Resultado: " + pudePasar);
 					}
 				}
