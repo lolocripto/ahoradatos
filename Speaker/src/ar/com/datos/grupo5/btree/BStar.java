@@ -699,8 +699,10 @@ public final class BStar implements BTree {
 				default:
 					// Primero evaluo el IZQ
 					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueIzquierdo()));
-					pudePasar = pasarDerechaIzquierda(nodoPadre, nodoHNO, nodo, pos);
-					LOG.debug("Resultado: " + pudePasar);
+					if (nodo.equals(nodoHNO)) {
+						pudePasar = pasarDerechaIzquierda(nodoPadre, nodoHNO, nodo, pos);
+						LOG.debug("Resultado: " + pudePasar);
+					}
 					if(!pudePasar) {
 						nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueDerecho()));
 						pudePasar =  pasarIzquierdaDerecha(nodoPadre, nodo, nodoHNO, pos); 
