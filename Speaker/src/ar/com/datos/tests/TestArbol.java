@@ -57,7 +57,7 @@ public class TestArbol {
 				clave.setClave(cadena);
 				reg = new RegistroNodo();
 				reg.setClave(clave);
-				if (u == 43) {
+				if (u == 34) {
 					logger.debug("");
 				}
 				if (tree.insertar(reg)) {
@@ -65,7 +65,7 @@ public class TestArbol {
 				} else {
 					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + u);
 				}
-				reg = tree.buscar(clave);
+				//reg = tree.buscar(clave);
 				if (reg == null) {
 					System.out.println("##########################No encontre: " + clave.getClave());
 				}

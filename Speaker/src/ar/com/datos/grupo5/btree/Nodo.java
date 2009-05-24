@@ -405,6 +405,13 @@ public class Nodo {
 			}
 			
 		} else {
+			RegistroNodo regAux = new RegistroNodo();
+			
+			regAux.setNroBloqueDerecho(getPrimerRegistro()
+					.getNroBloqueIzquierdo());
+			regAux.setNroBloqueIzquierdo(nodoHermano
+					.getUltimoRegistro().getNroBloqueDerecho());
+			
 			while (nodoHermano.minIndiceCarga < nodoHermano.registros.size()) {
 				RegistroNodo reg = nodoHermano.removerRegistro(nodoHermano.
 						minIndiceCarga);
@@ -415,13 +422,8 @@ public class Nodo {
 				if (pos == Constantes.MENOR) {
 					pos = 0;
 				}
-				RegistroNodo regAux = new RegistroNodo();
 				regAux.setClave(nodoPadre.registros.get(pos).getClave());
 				
-				regAux.setNroBloqueDerecho(getPrimerRegistro()
-						.getNroBloqueIzquierdo());
-				regAux.setNroBloqueIzquierdo(nodoHermano
-						.getUltimoRegistro().getNroBloqueDerecho());
 				regs.add(regAux);
 				
 				RegistroNodo regAux2 = new RegistroNodo();
