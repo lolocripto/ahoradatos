@@ -561,7 +561,7 @@ public final class BStar implements BTree {
 		RegistroNodo reg = new RegistroNodo();
 		// Lo seteo aca SOLO para ver a cual le puede pasar, luego se cambia
 		reg  = nodo.getUltimoRegistro();
-		LOG.debug("Leo nro de bloque: " + nodo.getNroBloquePadre());
+		//LOG.debug("Leo nro de bloque: " + nodo.getNroBloquePadre());
 		nodoPadre.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
 		//ahora nodo es el nodo padre del nodo que busque
 		int pos = nodoPadre.buscarRegistro(reg.getClave());
@@ -684,7 +684,7 @@ public final class BStar implements BTree {
 			RegistroNodo reg = new RegistroNodo();
 			// Lo seteo aca SOLO para ver a cual le puede pasar, luego se cambia
 			reg  = nodo.getUltimoRegistro();
-			LOG.debug("Leo nro de bloque Padre: " + nodo.getNroBloquePadre());
+			//LOG.debug("Leo nro de bloque Padre: " + nodo.getNroBloquePadre());
 			nodoPadre.setBytes(archivo.leerBloque(nodo.getNroBloquePadre()));
 			//ahora nodo es el nodo padre del nodo que busque
 			int pos = nodoPadre.buscarRegistro(reg.getClave());
@@ -743,7 +743,12 @@ public final class BStar implements BTree {
 								  Nodo izquierdo,
 								  Nodo derecho,
 								  int posPadre) throws IOException {
-		LOG.debug("Pasar registro Derecha -> Izquierda");
+		if (derecho.isHoja()) {
+			LOG.debug("Pasar registro Derecha -> Izquierda");
+		} else {
+			LOG.debug("Pasar registro nodo NO HOJA Derecha -> Izquierda");
+			//return false;
+		}
 		//El registro que apunta a los dos nodos.
 		RegistroNodo regParaBajar = null;
 		//El registro que apunta a los dos nodos.
@@ -819,7 +824,12 @@ public final class BStar implements BTree {
 			  Nodo derecho,
 			  int posPadre) throws IOException {
 		
-		LOG.debug("Pasar registro Izquierda -> Derecha");
+		if (izquierdo.isHoja()) {
+			LOG.debug("Pasar registro Izquierda -> Derecha");
+		} else {
+			LOG.debug("Pasar registro nodo NO HOJA Izquierda -> Derecha");
+			//return false;
+		}
 		
 		RegistroNodo regParaBajar = null;
 		//El registro que apunta a los dos nodos.

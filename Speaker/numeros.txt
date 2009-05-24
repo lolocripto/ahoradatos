@@ -1,0 +1,13 @@
+You could be running virtual
+drive type program Please close
+any software such as this
+before launching GRAND THEFT
+AUTO San Andreas Try installing
+on different computer to confirm
+this Nforce motherboard
+based computer with a Realtek based
+sound chip keeps booting and or crashing
+with a blue screen We have had reports of
+old Nvidia drivers doing this
+Try updating the Nvidia sound drivers
+or changing to Realtek authored drivers to cure this problem

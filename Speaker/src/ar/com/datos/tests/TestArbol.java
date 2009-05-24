@@ -2,6 +2,7 @@ package ar.com.datos.tests;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
@@ -31,54 +32,20 @@ public class TestArbol {
 			
 			Clave clave = null;
 			RegistroNodo reg = null;
-			
-//			String[] claves = {
-//					"15", "30", "1", "10", "13", "50", "35", 
-//					"20", "22", "40", "55", "23", "21", "24",
-//					"25", "26", "43", "45", "23", "17", "241",
-//					"242", "37", "38", "16", "41", "47", "68",
-//					"34", "48", "100", "200", "150", "151", "44"
-//					};
-//				
-//			for (int i = 0; i < claves.length; i++) {
-//				
-//				clave = new Clave();
-//				reg = new RegistroNodo();
-//				
-//				System.out.println("Inserto [" + claves[i] + "]");
-//				clave.setClave(claves[i]);
-//				reg.setClave(clave);
-//				tree.insertar(reg);
-//				tree.listar();
-//			}
-//			for (int i = 0; i < claves.length; i++) {
-//				
-//				clave = new Clave();
-//				reg = new RegistroNodo();
-//				
-//				System.out.println("Busco: " + claves[i]);
-//				clave.setClave(claves[i]);
-//				reg = tree.buscar(clave);
-//				if (reg != null) {
-//					System.out.println("Encontrada la clave: " + reg.getClave().getClave());
-//				} else {
-//					System.out.println("No se encontro la clave: " + claves[i]);
-//				}
-//			}
-			int cantidad = 200;
-			String claveStr = "";
+
 			TextInterpreter tx = new TextInterpreter();
 			
 			Collection<IunidadDeHabla> lista2 = null;
 			
-			lista2 = tx.modoLecturaSinAlmacenamiento("palabras.txt", true);
+			//lista2 = tx.modoLecturaSinAlmacenamiento("palabras.txt", true);
+			lista2 = tx.modoLecturaSinAlmacenamiento("numeros.txt", true);
 			
 			Iterator<IunidadDeHabla> it;
 			
 			it = lista2.iterator();
 			
 			int u =0;
-			
+
 			//while (u < cantidad) {
 			while (it.hasNext()) {
 				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
@@ -102,7 +69,8 @@ public class TestArbol {
 				//tree.listar();
 			}
 			tree.listar();
-			lista2 = tx.modoLecturaSinAlmacenamiento("palabras.txt", true);
+			//lista2 = tx.modoLecturaSinAlmacenamiento("palabras.txt", true);
+			lista2 = tx.modoLecturaSinAlmacenamiento("numeros.txt", true);
 			it = lista2.iterator();
 			System.out.println("Ahora comienzo a buscar en el diccionario");
 			u = 0;
