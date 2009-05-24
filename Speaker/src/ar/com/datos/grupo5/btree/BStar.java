@@ -182,6 +182,8 @@ public final class BStar implements BTree {
 			return null;
 		}
 		
+		nodoRaiz.setBytes(archivo.leerBloque(Constantes.NRO_BLOQUE_RAIZ));
+		
 		Nodo nodoAux = null;
 		nodoActual = nodoRaiz;
 
