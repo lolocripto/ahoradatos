@@ -717,9 +717,11 @@ public final class BStar implements BTree {
 				return false;
 			}
 			nodosModificados.clear();
-			actualizaNodo(nodo);
 			actualizaNodo(nodoHNO);
 			actualizaNodo(nodoPadre);
+			if (!nodo.isOverflow()){
+				actualizaNodo(nodo);
+			}
 		return true;
 	}
 	
