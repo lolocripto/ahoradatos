@@ -99,7 +99,7 @@ public class TestArbol {
 					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + u);
 				}
 				u++;
-				tree.listar();
+				//tree.listar();
 			}
 			tree.listar();
 			lista2 = tx.modoLecturaSinAlmacenamiento("palabras.txt", true);

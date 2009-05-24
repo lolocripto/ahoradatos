@@ -676,7 +676,10 @@ public final class BStar implements BTree {
 	 */
 	private boolean pasarRegistro(final Nodo nodo)
 			throws IOException {
-		
+			
+			if (!nodo.isHoja()) {
+				return false;
+			}
 			Nodo nodoPadre = new Nodo();
 			RegistroNodo reg = new RegistroNodo();
 			// Lo seteo aca SOLO para ver a cual le puede pasar, luego se cambia
@@ -722,10 +725,10 @@ public final class BStar implements BTree {
 			}
 			nodosModificados.clear();
 			actualizaNodo(nodoHNO);
-			actualizaNodo(nodoPadre);
 			if (!nodo.isOverflow()){
 				actualizaNodo(nodo);
 			}
+			actualizaNodo(nodoPadre);
 		return true;
 	}
 	
