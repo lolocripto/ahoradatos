@@ -196,6 +196,6 @@ public class RegistroNodo {
 	 * Redefinicion del toString. 
 	 */
 	public String toString() {
-		return claveNodo.getClave();
+		return claveNodo.getClave() + "##Derecha -> " + nroBloqueDerecho + "##Izquierda ->" + nroBloqueIzquierdo ;
 	}
 }

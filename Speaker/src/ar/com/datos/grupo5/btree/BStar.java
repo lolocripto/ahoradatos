@@ -140,6 +140,8 @@ public final class BStar implements BTree {
 		//Abro el archivo.
 		abrirArchivos();
 		
+		nodoRaiz.setBytes(archivo.leerBloque(Constantes.NRO_BLOQUE_RAIZ));
+		
 		//Obtengo el nodo en el que podria estar la clave.
 		Nodo nodo = buscarNodo(clave);
 		
