@@ -705,6 +705,9 @@ public final class BStar implements BTree {
 				default:
 					// Primero evaluo el DER
 					nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueDerecho()));
+					if (nodoHNO.getNroBloque().equals(nodo.getNroBloque())) {
+						LOG.debug("Esto no puede pasar.");
+					}
 					pudePasar =  pasarIzquierdaDerecha(nodoPadre, nodo, nodoHNO, pos);
 					if(!pudePasar) {
 						pos--;
@@ -785,7 +788,7 @@ public final class BStar implements BTree {
 		// ESTO ESTA MAL, PORQUE SE PERMUTA LA CLAVE, NO SE AGREGA
 		int espacioAnterior = padre.getEspacioOcupado();
 		int espacio = diferenciaClaves(padre.getRegistros().get(posPadre),regParaSubir);
-		if (!padre.hayEspacio(espacio)) {
+		if (!padre.hayEspacio(espacio + Constantes.SIZE_OF_INT)) {
 			return false;
 		}
 		padre.setEspacioOcupado(espacio + espacioAnterior);
@@ -862,7 +865,7 @@ public final class BStar implements BTree {
 		// ESTO ESTA MAL, PORQUE SE PERMUTA LA CLAVE, NO SE AGREGA
 		int espacioAnterior = padre.getEspacioOcupado();
 		int espacio = diferenciaClaves(padre.getRegistros().get(posPadre),regParaSubir);
-		if (!padre.hayEspacio(espacio)) {
+		if (!padre.hayEspacio(espacio + Constantes.SIZE_OF_INT)) {
 			return false;
 		}
 		padre.setEspacioOcupado(espacio + espacioAnterior);
