@@ -35,7 +35,7 @@ A: These are the Rockstar logo movies and the game intro movie playing back with
 Q: Roads in the mid distance have a very noticeable black shadowed look that clears up as I get closer.
 A: Try making sure you are not forcing Bi-Linear or Tri-Linear filtering to ON in your video drivers. Set MipMapping in GRAND THEFT AUTO: San Andreas Display Options to OFF. Use Anistropic Filtering for the best look in game (you will need to force this ON in your video drivers control panel). Increasing the screen resolution will also push this distance further out.
 
-Q: When I Install GRAND THEFT AUTO: San Andreas I get the message "The file C:\Program Files\Rockstar Games\GTA San Andreas\audio\SFX\SPC_GA doesn’t match the file in the setup’s .cab file" ?
+Q: When I Install GRAND THEFT AUTO: San Andreas I get the message "The file C:\Program Files\Rockstar Games\GTA San Andreas\audio\SFX\SPC_GA doesn't match the file in the setup's .cab file" ?
 A: Could be a faulty DVD disk. Try installing on a different DVD-ROM or different computer to confirm this. If you cannot install on other computers or devices then try returning the disk.
 A: Could be a faulty DVD-ROM drive. Try installing on a different DVD-ROM or different computer to confirm this.
 A: Could be lack of free space to unpack the sound effect file on drive C:

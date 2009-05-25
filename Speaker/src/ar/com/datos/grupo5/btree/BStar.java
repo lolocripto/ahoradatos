@@ -709,6 +709,7 @@ public final class BStar implements BTree {
 						LOG.debug("Esto no puede pasar.");
 					}
 					pudePasar =  pasarIzquierdaDerecha(nodoPadre, nodo, nodoHNO, pos);
+					LOG.debug("Resultado: " + pudePasar);
 					if(!pudePasar) {
 						pos--;
 						nodoHNO.setBytes(archivo.leerBloque(nodoPadre.getRegistros().get(pos).getNroBloqueIzquierdo()));

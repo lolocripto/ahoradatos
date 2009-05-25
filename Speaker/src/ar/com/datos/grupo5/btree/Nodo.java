@@ -377,6 +377,10 @@ public class Nodo {
 					RegistroNodo reg = regs.remove(0);
 					nodoHermano.insertarRegistro(reg);
 				}
+				if (regs.size() == 0) {
+					RegistroNodo reg = nodoHermano.removerRegistro(nodoHermano.getCantidadRegistros() - 1);
+					regs.add(reg);
+				}
 				// Luego lleno el nodo con lo del hermano siguiente
 				while (regs.size() > 0) {
 					RegistroNodo reg = regs.remove(0);
@@ -479,6 +483,10 @@ public class Nodo {
 				while ((regs.size() > 0) && (!tieneCargaMinima())) {
 					RegistroNodo reg = regs.remove(0);
 					insertarRegistro(reg);
+				}
+				if (regs.size() == 0) {
+					RegistroNodo reg = nodoHermano.removerRegistro(nodoHermano.getCantidadRegistros() - 1);
+					regs.add(reg);
 				}
 				// Luego lleno el nodo con lo del hermano siguiente
 				while (regs.size() > 0) {
