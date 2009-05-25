@@ -770,13 +770,13 @@ public final class BStar implements BTree {
 		}
 		
 		//intento remover el registro para ver si queda en overflow
-		RegistroNodo removidoAux = derecho.removerRegistro(0);
-		if (derecho.isOverflow()) {
-			derecho.insertarRegistro(removidoAux);
-			return false;
-		} else {
-			derecho.insertarRegistro(removidoAux);
-		}
+//		RegistroNodo removidoAux = derecho.removerRegistro(0);
+//		if (derecho.isOverflow()) {
+//			derecho.insertarRegistro(removidoAux);
+//			return false;
+//		} else {
+//			derecho.insertarRegistro(removidoAux);
+//		}
 		
 		// Si no es hoja, subo la clave al padre y bajo una del padre al
 		// hermano.
@@ -853,13 +853,13 @@ public final class BStar implements BTree {
 			return false;
 		}
 		//intento remover el registro para ver si queda en overflow
-		RegistroNodo removidoAux = izquierdo.removerRegistro(izquierdo.getCantidadRegistros() - 1 );
-		if (izquierdo.isOverflow()) {
-			izquierdo.insertarRegistro(removidoAux);
-			return false;
-		} else {
-			izquierdo.insertarRegistro(removidoAux);
-		}
+//		RegistroNodo removidoAux = izquierdo.removerRegistro(izquierdo.getCantidadRegistros() - 1 );
+//		if (izquierdo.isOverflow()) {
+//			izquierdo.insertarRegistro(removidoAux);
+//			return false;
+//		} else {
+//			izquierdo.insertarRegistro(removidoAux);
+//		}
 
 		RegistroNodo regParaSubir = izquierdo.getUltimoRegistro();
 		// ESTO ESTA MAL, PORQUE SE PERMUTA LA CLAVE, NO SE AGREGA
