@@ -253,12 +253,16 @@ public class Nodo {
 			RegistroNodo reg = removerRegistro(minIndiceCarga);
 			nodo.insertarRegistro(reg);
 		}
+		if (nodo.getCantidadRegistros() == 0) {
+			RegistroNodo reg = removerRegistro(getCantidadRegistros() - 1);
+			nodo.insertarRegistro(reg);
+		}
 		// Cargar Nueva raiz (nodoAux)
 		RegistroNodo reg = new RegistroNodo();
 		if (!this.isHoja()) {
 			// Liberar la clave de la nueva raiz de la raiz anterior
 			reg.setClave(this.getUltimoRegistro().getClave());
-			removerRegistro(registros.size() - 1);
+			removerRegistro(getCantidadRegistros() - 1);
 		} else {
 			reg.setClave(nodo.getPrimerRegistro().getClave());
 		}

@@ -325,8 +325,8 @@ public final class BStar implements BTree {
 			//Intento pasar el registro.
 			//Si no puedo, veo con cual lo puedo Splitear
 			boolean pudoPasar = pasarRegistro(nodo);
-			if (pudoPasar && nodo.isOverflow()) {
-				while (nodo.isOverflow() && pasarRegistro(nodo));
+			while (pudoPasar && nodo.isOverflow()) {
+				pudoPasar = pasarRegistro(nodo);
 			}
 			if (!pudoPasar) {
 				
@@ -344,11 +344,12 @@ public final class BStar implements BTree {
 						if (!pasarRegistro(padre)) {
 							LOG.debug("=====Overflow Split=======Nodo: "
 											+ padre.getNroBloque() + "========");
-							padre.setOverflow(false);
+							//padre.setOverflow(false);
 							padre = split(padre);
-						} else {
-							padre.setOverflow(false);
-						}
+						} 
+						//else {
+						//	padre.setOverflow(false);
+						//}
 					}
 				}
 				nodoActual = nodoRaiz;

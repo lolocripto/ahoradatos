@@ -37,7 +37,8 @@ public class TestArbol {
 			
 			Collection<IunidadDeHabla> lista2 = null;
 			
-			lista2 = tx.modoLecturaSinAlmacenamiento("palabras.txt", true);
+			lista2 = tx.modoLecturaSinAlmacenamiento("palabras2.txt", true);
+			//lista2 = tx.modoLecturaSinAlmacenamiento("palabras.txt", true);
 			//lista2 = tx.modoLecturaSinAlmacenamiento("numeros.txt", true);
 			
 			Iterator<IunidadDeHabla> it;
@@ -57,7 +58,7 @@ public class TestArbol {
 				clave.setClave(cadena);
 				reg = new RegistroNodo();
 				reg.setClave(clave);
-				if (u == 70) {
+				if (u == 10586) {
 					logger.debug("");
 				}
 				if (tree.insertar(reg)) {
@@ -70,10 +71,11 @@ public class TestArbol {
 					System.out.println("##########################No encontre: " + clave.getClave());
 				}
 				u++;
-				tree.listar();
+				//tree.listar();
 			}
 			tree.listar();
-			lista2 = tx.modoLecturaSinAlmacenamiento("palabras.txt", true);
+			lista2 = tx.modoLecturaSinAlmacenamiento("palabras2.txt", true);
+			//lista2 = tx.modoLecturaSinAlmacenamiento("palabras.txt", true);
 			//lista2 = tx.modoLecturaSinAlmacenamiento("numeros.txt", true);
 			it = lista2.iterator();
 			System.out.println("Ahora comienzo a buscar en el diccionario");
