@@ -36,66 +36,67 @@ public class TestArbolBSharp {
 			String palabraVieja = "algo";
 			ArrayList<String> lista = new ArrayList<String>();
 			String cadena = "";
-			
+/*			
 			System.out.println("palabra: adora "+tree.buscar("adora"));
 			System.out.println("palabra: divina "+tree.buscar("divina"));
 			System.out.println("palabra: quiso "+tree.buscar("quiso").getBloqueListaInvertida());
 			System.out.println("palabra: . "+tree.buscar(".").getBloqueListaInvertida());
-			
+*/			
 			TextInterpreter tx = new TextInterpreter();
+
 			
-//			Collection<IunidadDeHabla> lista2 = null;
-//			
-//			lista2 = tx.modoLecturaSinAlmacenamiento("poemas.txt", true);
-//			//lista2 = tx.modoLecturaSinAlmacenamiento("/home/xxvkue/Desktop/prueba", true);
-//			
-//			Iterator<IunidadDeHabla> it;
-//			
-//			it = lista2.iterator();
-//			
-//			int u =0;
-//
-//			while (it.hasNext()) {
-//				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
-//				
-//				cadena = iunidadDeHabla.getTextoEscrito();
-//				tree.listar();
-//				System.out.println(cadena);
-//				if (tree.insertar(cadena, u)) {
-//					System.out.println("Insertada la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
-//				} else {
-//					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
-//				}
-//					
-//				if (u == 235) {
-//									
-//				}
-//				u++;
-//				
-//			}
+			Collection<IunidadDeHabla> lista2 = null;
+			
+			lista2 = tx.modoLecturaSinAlmacenamiento("poemas.txt", true);
+			//lista2 = tx.modoLecturaSinAlmacenamiento("/home/xxvkue/Desktop/prueba", true);
+			
+			Iterator<IunidadDeHabla> it;
+			
+			it = lista2.iterator();
+			
+			int u =0;
+
+			while (it.hasNext()) {
+				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
+				
+				cadena = iunidadDeHabla.getTextoEscrito();
+				tree.listar();
+				System.out.println(cadena);
+				if (tree.insertar(cadena, u)) {
+					System.out.println("Insertada la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
+				} else {
+					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
+				}
+					
+				if (u == 235) {
+									
+				}
+				u++;
+				
+			}
 
 			
 			
-//			it = lista2.iterator();
-//			while (it.hasNext()) {
-//				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
-//				
-//				cadena = iunidadDeHabla.getTextoEscrito();
-//				
-//				RegistroFTRS reg = new RegistroFTRS();
-//				reg = tree.buscar(cadena);
-//
-//				System.out.println(cadena);
-//				if (reg ==null) {
-//
-//					System.out.println("no se encontro cadena");
-//				} else {
-//					System.out.println("se encontro la palabra: " + cadena + " puntero: " + reg.getBloqueListaInvertida());
-//				}
-//				u++;
-//				
-//			//	tree.listar();
-//			}
+			it = lista2.iterator();
+			while (it.hasNext()) {
+				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
+				
+				cadena = iunidadDeHabla.getTextoEscrito();
+				
+				RegistroFTRS reg = new RegistroFTRS();
+				reg = tree.buscar(cadena);
+
+				System.out.println(cadena);
+				if (reg ==null) {
+
+					System.out.println("no se encontro cadena");
+				} else {
+					System.out.println("se encontro la palabra: " + cadena + " puntero: " + reg.getBloqueListaInvertida());
+				}
+				u++;
+				
+			//	tree.listar();
+			}
 
 			
 			
