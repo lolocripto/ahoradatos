@@ -60,7 +60,7 @@ public class TestArbolBSharp {
 				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
 				
 				cadena = iunidadDeHabla.getTextoEscrito();
-				tree.listar();
+				//tree.listar();
 				System.out.println(cadena);
 				if (tree.insertar(cadena, u)) {
 					System.out.println("Insertada la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
@@ -68,8 +68,9 @@ public class TestArbolBSharp {
 					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
 				}
 					
-				if (u == 235) {
-									
+				if (u == 3505) {
+					System.out.println("SecuencialSet");
+					tree.listar();
 				}
 				u++;
 				
