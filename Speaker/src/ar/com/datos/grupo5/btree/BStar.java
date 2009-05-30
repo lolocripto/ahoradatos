@@ -301,6 +301,9 @@ public final class BStar implements BTree {
 
 			return true;
 		}
+		
+		//Limpio los nodos modificados, antes eso se hacia por todas lados.
+		nodosModificados.clear();
 		//Busco en donde insertar.
 		Nodo nodo = buscarNodo(registro.getClave());
 		//Si ya existe, no inserto.
@@ -315,8 +318,7 @@ public final class BStar implements BTree {
 		if (nodo.insertarRegistro(registro)) {
 			
 			this.nodoActual = nodo;
-			nodosModificados.clear();
-			nodosModificados.add(nodoActual);
+			nodosModificados.add(nodo);
 			
 		} else if (nodo.getNroBloquePadre() < 0) {
 			// Es la raiz.
@@ -421,8 +423,7 @@ public final class BStar implements BTree {
 			nodoActual.setPunteroBloque(punteroBloque);
 			punteroBloque = secuencialSet.reservarBloqueLibre();
 			nodo.setPunteroBloque(punteroBloque);
-			nodosModificados.clear();
-			nodosModificados.add(nodoActual);
+			nodosModificados.add(nodos.get(1));
 			nodosModificados.add(nodo);
 		}
 		archivo.escribirBloque(nodoRaiz.getBytes(), nodoRaiz
@@ -599,9 +600,6 @@ public final class BStar implements BTree {
 			nodoRaiz = nodoPadre;
 		}
 		
-		if (nodo.isHoja()) {
-			nodosModificados.clear();
-		}
 		actualizaNodo(nodo);
 		actualizaNodo(nodoHNO);
 		actualizaNodo(nodoActual);
@@ -729,7 +727,7 @@ public final class BStar implements BTree {
 			if(!pudePasar) {
 				return false;
 			}
-			nodosModificados.clear();
+
 			actualizaNodo(nodoHNO);
 			if (!nodo.isOverflow()){
 				actualizaNodo(nodo);
