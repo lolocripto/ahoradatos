@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.archivos.ArchivoBloques;
-import ar.com.datos.grupo5.btree.BStar;
 
 public class TrieArchiveHandler {
 

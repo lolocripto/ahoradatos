@@ -137,6 +137,10 @@ public final class BStar implements BTree {
 	 */
 	public RegistroNodo buscar(final Clave clave) throws IOException {
 		
+		if (nodoRaiz == null) {
+			return null;
+		}
+		
 		//Abro el archivo.
 		abrirArchivos();
 		
@@ -145,7 +149,7 @@ public final class BStar implements BTree {
 		//Obtengo el nodo en el que podria estar la clave.
 		Nodo nodo = buscarNodo(clave);
 		
-		if (nodo == null || nodoRaiz == null) {
+		if (nodo == null) {
 			cerrarArchivos();
 			return null;
 		}

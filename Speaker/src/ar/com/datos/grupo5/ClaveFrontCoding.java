@@ -7,8 +7,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import ar.com.datos.grupo5.btree.Clave;
-import ar.com.datos.grupo5.parser.CodificadorFrontCoding;
-import ar.com.datos.grupo5.utils.Conversiones;
 
 public class ClaveFrontCoding extends Clave {
 

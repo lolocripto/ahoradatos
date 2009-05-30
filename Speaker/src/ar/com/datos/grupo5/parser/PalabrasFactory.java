@@ -1,8 +1,8 @@
 package ar.com.datos.grupo5.parser;
 
+import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.UnidadesDeExpresion.Palabra;
-import ar.com.datos.grupo5.Constantes;
 
 
 /**

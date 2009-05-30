@@ -5,9 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.interfaces.Registro;
 import ar.com.datos.grupo5.utils.Conversiones;
-import ar.com.datos.grupo5.Constantes;
 
 /**
  * Esta clase implementa el registro para el diccionario.

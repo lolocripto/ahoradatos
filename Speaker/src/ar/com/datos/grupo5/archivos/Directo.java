@@ -11,7 +11,6 @@ import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 import ar.com.datos.grupo5.interfaces.Registro;
 import ar.com.datos.grupo5.registros.RegistroAudio;
-import ar.com.datos.grupo5.registros.RegistroTerminoGlobal;
 import ar.com.datos.grupo5.utils.Conversiones;
 
 /**

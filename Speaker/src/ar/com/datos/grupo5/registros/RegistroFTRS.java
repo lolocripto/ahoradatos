@@ -9,10 +9,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import ar.com.datos.grupo5.CFFTRS;
 import ar.com.datos.grupo5.ClaveFrontCoding;
-import ar.com.datos.grupo5.Constantes;
-import ar.com.datos.grupo5.btree.Clave;
 import ar.com.datos.grupo5.trie.persistence.Contenedor;
 import ar.com.datos.grupo5.utils.Conversiones;
 

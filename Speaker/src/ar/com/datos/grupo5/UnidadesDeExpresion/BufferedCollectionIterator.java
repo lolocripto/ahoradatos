@@ -1,9 +1,6 @@
 package ar.com.datos.grupo5.UnidadesDeExpresion;
 
-import java.util.Collection;
 import java.util.Iterator;
-
-import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 
 /**
  * 

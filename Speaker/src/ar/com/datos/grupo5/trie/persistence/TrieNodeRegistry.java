@@ -8,13 +8,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-
 import ar.com.datos.grupo5.Constantes;
-import ar.com.datos.grupo5.registros.RegistroNodo;
 import ar.com.datos.grupo5.trie.core.INodo;
 import ar.com.datos.grupo5.trie.core.Nodo;
 import ar.com.datos.grupo5.trie.core.PunteroSonido;
-import ar.com.datos.grupo5.utils.Conversiones;
 
 public class TrieNodeRegistry {
 

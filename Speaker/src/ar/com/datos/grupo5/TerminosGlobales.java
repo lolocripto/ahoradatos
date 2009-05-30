@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import ar.com.datos.grupo5.archivos.ArchivoDeTerminos;
-import ar.com.datos.grupo5.excepciones.UnImplementedMethodException;
 import ar.com.datos.grupo5.registros.RegistroTerminoGlobal;
 
 

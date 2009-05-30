@@ -7,7 +7,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import ar.com.datos.grupo5.Constantes;
-import ar.com.datos.grupo5.utils.Conversiones;
 
 public class AdministrationRegistry {
 

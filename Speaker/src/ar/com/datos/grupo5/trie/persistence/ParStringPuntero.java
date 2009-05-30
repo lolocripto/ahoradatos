@@ -1,12 +1,10 @@
 package ar.com.datos.grupo5.trie.persistence;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.utils.Conversiones;
