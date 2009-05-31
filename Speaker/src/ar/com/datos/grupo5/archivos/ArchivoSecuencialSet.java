@@ -65,6 +65,10 @@ public class ArchivoSecuencialSet {
 
 		
 		int devolver = this.regAdm.reservarNuevoBloque();
+		//FIXME: BORRAR
+		if (devolver == 48) {
+			System.out.println("Bloque 48 reservado");
+		}
 		
 		try {
 			this.miArchivo.escribirBloque(this.regAdm.getBytes(), 0);
@@ -80,7 +84,6 @@ public class ArchivoSecuencialSet {
 	 * @return
 	 */
 	public int getCantBloquesUsados() {
-
 		return this.regAdm.ultimoBloqueUsado();
 	}
 
@@ -180,7 +183,10 @@ public class ArchivoSecuencialSet {
 			Iterator<Nodo> it = listaNodosActualizados.iterator();
 			while (it.hasNext()) {
 				Nodo actual = it.next();
-
+				//FIXME: Borrar
+				if (actual.getPunteroBloque() == 48) {
+					System.out.println("Voy a leer el bloque 48");
+				}
 				// agrego el bloque sucio
 				listaDeBloquesSucios.add(actual.getPunteroBloque());
 
@@ -330,6 +336,9 @@ public class ArchivoSecuencialSet {
 		while (it.hasNext()) {
 
 			BloqueFTRS actual = it.next();
+			if (actual.getNumeroBloque() == 48) {
+				System.out.println("Voy a escribir el bloque 48");
+			}
 			this.escribirBloque(actual, actual.getNumeroBloque());
 		}
 

@@ -51,10 +51,10 @@ public class TestArbolBSharp {
 			//lista2 = tx.modoLecturaSinAlmacenamiento("/home/xxvkue/Desktop/prueba", true);
 			
 			Iterator<IunidadDeHabla> it;
-			
+			int u =0;
+			/*
 			it = lista2.iterator();
 			
-			int u =0;
 
 			while (it.hasNext()) {
 				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
@@ -75,11 +75,12 @@ public class TestArbolBSharp {
 				u++;
 				
 			}
-
+*/
 			
 			
 			it = lista2.iterator();
 			while (it.hasNext()) {
+				System.out.println("aun no termine");
 				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
 				
 				cadena = iunidadDeHabla.getTextoEscrito();
@@ -92,14 +93,14 @@ public class TestArbolBSharp {
 
 					System.out.println("no se encontro cadena");
 				} else {
-					System.out.println("se encontro la palabra: " + cadena + " puntero: " + reg.getBloqueListaInvertida());
+					System.out.println("se encontro la palabra: " + cadena + " puntero: " + reg.getBloqueListaInvertida() + " palabra nro: " + u);
 				}
 				u++;
 				
 			//	tree.listar();
 			}
 
-			
+			System.out.println("ya termine");
 			
 //			
 //			

@@ -295,6 +295,9 @@ public class FTRSManager {
 								.sort(
 										(List<ParFrecuenciaDocumento>) listaDatosDocumentos,
 										(new comparadorFrecuencias()));
+						if (i == 572) {
+							System.out.println("Registro complicado");
+						}
 						this.logger.debug("nRegistro: " + i);
 						// Ya esta ordenada la lista por frecuencias descendiente
 						this.listasInvertidas.modificarLista(
