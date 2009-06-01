@@ -1,0 +1,254 @@
+---------Block Sorting (BS)---------
+
+S A L V A L A S P A P A S
+0        S A L V A L A S P A P A S
+1        S S A L V A L A S P A P A
+2        A S S A L V A L A S P A P
+3        P A S S A L V A L A S P A
+4        A P A S S A L V A L A S P
+5        P A P A S S A L V A L A S
+6        S P A P A S S A L V A L A
+7        A S P A P A S S A L V A L
+8        L A S P A P A S S A L V A
+9        A L A S P A P A S S A L V
+10       V A L A S P A P A S S A L
+11       L V A L A S P A P A S S A
+12       A L V A L A S P A P A S S
+
+Ordenamos las filas alfabeticamente:
+0        A L A S P A P A S S A L V
+1        A L V A L A S P A P A S S
+2        A P A S S A L V A L A S P
+3        A S P A P A S S A L V A L
+4        A S S A L V A L A S P A P
+5        L A S P A P A S S A L V A
+6        L V A L A S P A P A S S A
+7        P A P A S S A L V A L A S
+8        P A S S A L V A L A S P A
+9        S A L V A L A S P A P A S
+10       S P A P A S S A L V A L A
+11       S S A L V A L A S P A P A
+12       V A L A S P A P A S S A L
+
+Tomamos la ultima columna, y guardamos el indice de la frase original
+VSPLPAASASAAL - 9
+
+La transformacion se puede revertir:
+sort(VSPLPAASASAAL) = AAAAALLPPSSSV
+
+0        A                       V
+1        A                       S
+2        A                       P
+3        A                       L
+4        A                       P
+5        L                       A
+6        L                       A
+7        P                       S
+8        P                       A
+9        S                       S
+10       S                       A
+11       S                       A
+12       V                       L
+
+V A      A L                     V
+S A      A L                     S
+P A      A P                     P
+L A      A S                     L
+P A      A S                     P
+A L      L A                     A
+A L -->  L V                     A
+S P      P A                     S
+A P      P A                     A
+S S      S A                     S
+A S      S P                     A
+A S      S S                     A
+L V      V A                     L
+
+VAL      A L A                   V
+SAL      A L V                   S
+PAP      A P A                   P
+LAS      A S P                   L
+PAS      A S S                   P
+ALA      L A S                   A
+ALV      L V A                   A
+SPA -->  P A P                   S
+APA      P A S                   A
+SSA      S A L                   S
+ASP      S P A                   A
+ASS      S S A                   A
+LVA      V A L                   L
+
+etcetera. 
+
+---------Move to Front (MTF)---------
+Ahora hacemos la asignacion de codigos:
+S=0, A=1, L=2, V=3, P=4
+
+Tomamos la palabra VSPLPAASASAAL, que en codigo se escribe: 3042411010112
+
+Y hacemos MTF
+01234, 
+leemos el 3 (esta en la posicion 3), emitimos un 3: 30124
+leemos el 0 (esta en la posicion 1), emitimos un 1: 03124
+leemos el 4 (esta en la posicion 4), emitimos un 4: 40312
+leemos el 2 (esta en la posicion 4), emitimos un 4: 24031
+leemos el 4 (esta en la posicion 1), emitimos un 1: 42031
+leemos el 1 (esta en la posicion 4), emitimos un 4: 14203
+leemos el 1 (esta en la posicion 0), emitimos un 0: 14203
+leemos el 0 (esta en la posicion 3), emitimos un 3: 01423
+leemos el 1 (esta en la posicion 1), emitimos un 1: 10423
+leemos el 0 (esta en la posicion 1), emitimos un 1: 01423
+leemos el 1 (esta en la posicion 1), emitimos un 1: 10423
+leemos el 1 (esta en la posicion 0), emitimos un 0: 10423
+leemos el 2 (esta en la posicion 3), emitimos un 3
+
+Cadena original: 3042411010112
+Cadena emitida:  3144140311103
+
+Entropia cadena original: 2.13
+Entropia cadena emitida:  1.84
+
+---------Modelo de Shannon---------
+Tomamos la cadena emitida por el MTF: 3144140311103 y la comprimimos con Modelo de Shannon
+Modelo 0(0): M/ESC
+Modelo 1(0): M/ESC
+Modelo 2(1): M/ESC
+Modelo 3(2): M/ESC
+Modelo 4(3): M/ESC
+Modelo 5(4..): 4, 5, 6...254, 255, EOF
+
+Comprimimos el 3:
+Modelo 0: ESC(1/2)	--> M: 1/3, ESC: 2/3
+Modelo 2: ESC(1/2)	--> M: 1/3, ESC: 2/3
+Modelo 3: ESC(1/2)	--> M: 1/3, ESC: 2/3
+Modelo 4: M(1/2)	--> M: 2/3, ESC: 1/3
+
+Comprimimos el 1:
+Modelo 1: ESC(1/2)	--> M: 1/3, ESC: 2/3
+Modelo 2: M(1/3)	--> M: 2/4, ESC: 2/4
+
+Comprimimos el 4:
+Modelo 1: ESC(2/3)	--> M: 1/4, ESC: 3/4
+Modelo 2: ESC(2/4)	--> M: 2/5, ESC: 3/5
+Modelo 3: ESC(2/3)	--> M: 1/4, ESC: 3/4
+Modelo 4: ESC(1/3)	--> M: 2/4, ESC: 2/4
+Modelo 5: 4(1/253)	--> 4: 2/254, Resto: 1/254
+
+Comprimimos el 4:
+Modelo 1: ESC(3/4)	--> M: 1/5, ESC: 4/5
+Modelo 2: ESC(3/5)	--> M: 2/6, ESC: 4/6
+Modelo 3: ESC(3/4)	--> M: 1/5, ESC: 4/5
+Modelo 4: ESC(2/4)	--> M: 2/5, ESC: 3/5
+Modelo 5: 4(2/254)	--> 4: 3/255, Resto: 1/255
+
+Comprimimos el 1:
+Modelo 1: ESC(4/5)	--> M: 1/6, ESC: 5/6
+Modelo 2: M(2/6)	--> M: 3/7, ESC: 4/7
+
+Comprimimos el 4:
+Modelo 1: ESC(5/6)	--> M: 1/7, ESC: 6/7
+Modelo 2: ESC(4/7)	--> M: 3/8, ESC: 5/8
+Modelo 3: ESC(4/5)	--> M: 1/6, ESC: 5/6
+Modelo 4: ESC(3/5)	--> M: 2/6, ESC: 4/6
+Modelo 5: 4(3/255)	--> 4: 4/256, Resto: 1/256
+
+Comprimimos el 0:
+Modelo 1: M(1/7)	--> M: 2/8, ESC: 6/8
+
+Comprimimos el 3:
+Modelo 0: ESC(2/3)	--> M: 1/4, ESC: 3/4
+Modelo 2: ESC(5/8)	--> M: 3/9, ESC: 6/9
+Modelo 3: ESC(5/6)	--> M: 1/7, ESC: 6/7
+Modelo 4: M(2/6)	--> M: 3/7, ESC: 4/7
+
+Comprimimos el 1:
+Modelo 1: ESC(6/8)	--> M: 2/9, ESC: 7/9
+Modelo 2: M(3/9)	--> M: 4/10, ESC: 6/10
+
+Comprimimos el 1:
+Modelo 1: ESC(7/9)	--> M: 2/10, ESC: 8/10
+Modelo 2: M(4/10)	--> M: 5/11, ESC: 6/11
+
+Comprimimos el 1:
+Modelo 1: ESC(8/10)	--> M: 2/11, ESC: 9/11
+Modelo 2: M(5/11)	--> M: 6/12, ESC: 6/12
+
+Comprimimos el 0:
+Modelo 1: M(2/11)	--> M: 3/12, ESC: 9/12
+
+Comprimimos el 3:
+Modelo 0: ESC(3/4)	--> M: 1/5, ESC: 4/5
+Modelo 2: ESC(6/12)	--> M: 6/13, ESC: 7/13
+Modelo 3: ESC(6/7)	--> M: 1/8, ESC: 7/8
+Modelo 4: M(3/7)	--> M: 4/8, ESC: 4/8
+
+Comprimimos el EOF:
+Modelo 0: ESC(4/5)	--> M: 1/6, ESC: 1/6
+Modelo 2: ESC(7/13)	--> M: 6/14, ESC: 8/14
+Modelo 3: ESC(7/8)	--> M: 1/9, ESC: 8/9
+Modelo 4: ESC(4/8)	--> M: 4/9, ESC: 5/9
+Modelo 5: EOF(1/256)	--> 4: 4/257, EOF: 2/257, Resto: 1/257
+
+
+---------Modelo estructurado---------
+Con el modelo estructurado, comprimimos: 1-83-0-48-18-12-7-0
+
+Modelo 0(0): M/ESC
+Modelo 1(1): M/ESC
+Modelo 2(2,3): 2/3/ESC
+Modelo 3(4-7): 4-7/ESC
+Modelo 4(8-15): 8-15/ESC
+Modelo 5(16-31): 16-31/ESC
+Modelo 6(32-63): 32-63/ESC
+Modelo 7(64-127): 64-127/ESC
+Modelo 8(128-256+EOF): 128-256/EOF
+
+Comprimimos el 1:
+Modelo 0: ESC(1/2)	--> M: 1/3, ESC: 2/3
+Modelo 1: M(1/2)	--> M: 2/3, ESC: 1/3
+
+Comprimimos el 83:
+Modelo 0: ESC(2/3)	--> M: 1/4, ESC: 3/4
+Modelo 1: ESC(1/3)	--> M: 2/4, ESC: 2/4
+Modelo 2: ESC(1/3)	--> ESC: 2/4, Resto: 1/4
+Modelo 3: ESC(1/5)	--> ESC: 2/6, Resto: 1/6
+Modelo 4: ESC(1/9)	--> ESC: 2/10, Resto: 1/10
+Modelo 5: ESC(1/17)	--> ESC: 2/18, Resto: 1/18
+Modelo 6: ESC(1/33)	--> ESC: 2/34, Resto: 1/34
+Modelo 7: 83(1/65)	--> ESC: 1/66, 83: 2/66, Resto: 1/66
+
+Comprimimos el 0:
+Modelo 0: M(1/4)	--> M: 2/5, ESC: 3/5
+
+Comprimimos el 48:
+Modelo 0: ESC(3/5)	--> M: 2/6, ESC: 4/6
+Modelo 1: ESC(2/4)	--> M: 2/5, ESC: 3/5
+Modelo 2: ESC(2/4)	--> ESC: 3/5, Resto: 1/5
+Modelo 3: ESC(2/6)	--> ESC: 3/7, Resto: 1/7
+Modelo 4: ESC(2/10)	--> ESC: 3/11, Resto: 1/11
+Modelo 5: ESC(2/18)	--> ESC: 3/19, Resto: 1/19
+Modelo 6: 48(1/34)	--> ESC: 2/35, 48: 2/35, Resto: 1/35
+
+Comprimimos el 18:
+Modelo 0: ESC(4/6)	--> M: 2/7, ESC: 5/7
+Modelo 1: ESC(3/5)	--> M: 2/6, ESC: 4/6
+Modelo 2: ESC(3/5)	--> ESC: 4/6, Resto: 1/6
+Modelo 3: ESC(3/7)	--> ESC: 4/8, Resto: 1/8
+Modelo 4: ESC(3/11)	--> ESC: 4/12, Resto: 1/12
+Modelo 5: 18(1/19)	--> ESC: 3/20, 18: 2/20, Resto: 1/20
+
+Comprimimos el 12:
+Modelo 0: ESC(5/7)	--> M: 2/8, ESC: 6/8
+Modelo 1: ESC(4/6)	--> M: 2/7, ESC: 5/7
+Modelo 2: ESC(4/6)	--> ESC: 5/7, Resto: 1/7
+Modelo 3: ESC(4/8)	--> ESC: 5/9, Resto: 1/9
+Modelo 4: 12(1/12)	--> ESC: 4/13, 12: 2/13, Resto: 1/13
+
+Comprimimos el 7:
+Modelo 0: ESC(6/8)	--> M: 2/9, ESC: 7/9
+Modelo 1: ESC(5/7)	--> M: 2/8, ESC: 6/8
+Modelo 2: ESC(5/7)	--> ESC: 6/8, Resto: 1/8
+Modelo 3: 7(1/9)	--> ESC: 5/10, 7: 2/10, Resto: 1/10
+
+Comprimimos el 0:
+Modelo 0: M(2/9)	--> M: 3/10, ESC: 7/10
