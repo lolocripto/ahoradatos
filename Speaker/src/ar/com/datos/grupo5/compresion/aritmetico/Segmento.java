@@ -91,6 +91,17 @@ public class Segmento {
 		else
 			return false;
 	}
+	
+	/**
+	 * Deja preparado el intervalo para un nuevo proceso de compresion o descompresion
+	 * reinicializando el piso, el techo y el contador de overflow
+	 */
+	public void resetear(){
+		
+		this.techo = Integer.MAX_VALUE;
+		this.piso = Integer.MIN_VALUE;
+		this.bitsUnderflow = 0;
+	}
 
 	/**
 	 * normaliza el segmento devolviendo los bits emitidos en formato de string
@@ -240,7 +251,7 @@ public class Segmento {
 	 */
 	public String emitirRestoBits() {
 
-		// genero un string para emitir y el piso a binario
+		// genero un string para emitir y otro que es el piso en binario
 		String emision = new String();
 		String bitsPiso = Integer.toBinaryString(this.piso);
 
