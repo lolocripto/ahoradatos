@@ -1,0 +1,261 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Cryptography: Theory and Practice:Other Public-key Cryptosystems</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content=0849385210 name=vsisbn>
+<META content="Cryptography: Theory and Practice" name=vstitle>
+<META content="Douglas Stinson" name=vsauthor>
+<META content="CRC Press" name=vsimprint>
+<META content="CRC Press LLC" name=vspublisher>
+<META content=03/17/95 name=vspubdate>
+<META content="Web and Software Development: Cryptography" name=vscategory><!-- HEADER -->
+<STYLE type=text/css>A:hover {
+	COLOR: red
+}
+</STYLE>
+
+<META content="NOINDEX, NOFOLLOW" name=ROBOTS>
+<SCRIPT>
+<!--
+function displayWindow(url, width, height) {
+         var Win = window.open(url,"displayWindow",'width=' + width +',height=' + height + ',resizable=1,scrollbars=yes');
+	if (Win) {
+		Win.focus();
+	}
+}
+//-->
+</SCRIPT>
+
+<SCRIPT>
+<!--
+function popUp(url) {
+        var Win = window.open(url,"displayWindow",'width=400,height=300,resizable=1,scrollbars=yes');
+	if (Win) {
+		Win.focus();
+	}
+}
+//-->
+</SCRIPT>
+
+<SCRIPT language=JavaScript1.2>
+<!--
+function checkForQuery(fm) {
+  /* get the query value */
+  var i = escape(fm.query.value);
+  if (i == "") {
+      alert('Please enter a search word or phrase');
+      return false;
+  }                  /* query is blank, dont run the .jsp file */
+  else return true;  /* execute the .jsp file */
+}
+//-->
+</SCRIPT>
+
+<META content="MSHTML 6.00.2900.2802" name=GENERATOR></HEAD>
+<BODY>
+<TABLE cellSpacing=0 cellPadding=0 border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width=75><IMG height=73 
+      alt="Cryptography: Theory and Practice" 
+      src="The Merkle-Hellman Knapsack system_files/0849385210.gif" width=60 
+      border=1> </TD>
+    <TD align=left><FONT face="arial, helvetica" color=#336633 
+      size=-1><B>Cryptography: Theory and Practice</B></FONT> <BR><FONT 
+      face="arial, helvetica" size=-1><I>by Douglas Stinson</I> <BR>CRC 
+      Press,&nbsp;CRC Press LLC 
+      <BR><B>ISBN:</B>&nbsp;0849385210<B>&nbsp;&nbsp;&nbsp;Pub 
+      Date:</B>&nbsp;03/17/95</FONT>&nbsp;&nbsp; </TD></TR></TBODY></TABLE>
+<P><!--ISBN=0849385210//--><!--TITLE=Cryptography: Theory and Practice//--><!--AUTHOR=Douglas Stinson//--><!--PUBLISHER=CRC Press LLC//--><!--IMPRINT=CRC Press//--><!--CHAPTER=5//--><!--PAGES=188-193//--><!--UNASSIGNED1//--><!--UNASSIGNED2//-->
+<CENTER>
+<TABLE border=1>
+  <TBODY>
+  <TR>
+    <TD><A 
+      href="file:///L:/eLibrary/Organizacion%20de%20datos/Criptografia/Cryptography_Theory_and_Practice/ch05/184-188.html">Previous</A></TD>
+    <TD><A 
+      href="file:///L:/eLibrary/Organizacion%20de%20datos/Criptografia/Cryptography_Theory_and_Practice/ewtoc.html">Table 
+      of Contents</A></TD>
+    <TD><A 
+      href="file:///L:/eLibrary/Organizacion%20de%20datos/Criptografia/Cryptography_Theory_and_Practice/ch05/193-195.html">Next</A></TD></TR></TBODY></TABLE></CENTER>
+<P><BR></P>
+<P>A more efficient variation has been found by Menezes and Vanstone. In this 
+variation, the elliptic curve is used for “masking,” and plaintexts and 
+ciphertexts are allowed to be arbitrary ordered pairs of (nonzero) field 
+elements (i.e., they are not required to be points on <I>E</I>). This yields a 
+message expansion factor of two, the same as in the original <B>ElGamal 
+Cryptosystem</B>. The <B>Menezes-Vanstone Cryptosystem</B> is presented in 
+Figure 5.10.</P>
+<P>If we return to the curve <I>y</I><SUP><SMALL>2</SMALL></SUP> = 
+<I>x</I><SUP><SMALL>3</SMALL></SUP> + <I>x</I> + 6 over <IMG 
+src="The Merkle-Hellman Knapsack system_files/05-91i.jpg">, we see that the 
+<B>Menezes-Vanstone Cryptosystem</B> allows 10 × 10 = 100 plaintexts, as 
+compared to 13 in the original system. We illustrate encryption and decryption 
+in this system using this same curve.</P>
+<P><I>Example 5.9</I></P>
+<P>As in the previous example, suppose that &#945; = (2, 7) and Bob’s secret 
+“exponent” is <I>a</I> = 7, so</P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-122d.jpg"></P>
+<P>Suppose Alice wants to encrypt the plaintext </P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-123d.jpg"></P>
+<P>(note that <I>x</I> is not a point on <I>E</I>), and she chooses the random 
+value <I>k</I> = 6. First, she computes</P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-124d.jpg"></P>
+<P>and </P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-125d.jpg"></P>
+<P>so <I>c</I><SUB><SMALL>1</SMALL></SUB> = 8 and 
+<I>c</I><SUB><SMALL>2</SMALL></SUB> =3.</P>
+<P>Next, she calculates</P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-126d.jpg"></P>
+<P>and </P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-127d.jpg"></P>
+<P><A name=Fig10></A><A 
+href="javascript:displayWindow('The Merkle-Hellman Knapsack system_files/05-10.jpg',400,443)"><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-10t.jpg"></A> <BR><A 
+href="javascript:displayWindow('The Merkle-Hellman Knapsack system_files/05-10.jpg',400,443)"><FONT 
+color=#000077><B>Figure 5.10</B></FONT></A>&nbsp;&nbsp;Menezes-Vanstone Elliptic 
+Curve Cryptosystem</P>
+<P>The ciphertext she sends to Bob is </P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-128d.jpg"></P>
+<P>When Bob receives the ciphertext <I>y</I>, he first computes</P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-129d.jpg"></P>
+<P>and then </P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-130d.jpg"></P>
+<P><A name=Fig11></A><A 
+href="javascript:displayWindow('The Merkle-Hellman Knapsack system_files/05-11.jpg',400,122)"><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-11t.jpg"></A> <BR><A 
+href="javascript:displayWindow('The Merkle-Hellman Knapsack system_files/05-11.jpg',400,122)"><FONT 
+color=#000077><B>Figure 5.11</B></FONT></A>&nbsp;&nbsp;Subset summ problem</P>
+<P>Hence, the decryption yields thee correct plaintext. </P>
+<H3><A name=Heading8></A><FONT color=#000077>5.3 The Merkle-Hellman Knapsack 
+System</FONT></H3>
+<P>The well-known <B>Merkle-Hellman Knapsack Cryptosytem</B> was first described 
+by Merkle and Hellman in 1978. Although this cryptosystem, and several variants 
+of it, were broken in the early 1980’s, it is still worth studying for its 
+conceptual elegance and for the underlying design technique.</P>
+<P>The term “knapsack” is actually a 
+misnomer<SUP><SMALL><B>2</B></SMALL></SUP>.; the system is based on the 
+<B>Subset Sum</B> problem which is presented in Figure 5.11.</P>
+<BLOCKQUOTE>
+  <HR>
+  <SUP><SMALL><B>2</B></SMALL></SUP><FONT size=-1>The <B>Knapsack</B> problem, 
+  as it is usually defined, is a problem involving selecting objects with given 
+  weights and profits in such a way that a specified capacity is not exceeded 
+  and a specified target profit is attained </FONT>
+  <HR>
+</BLOCKQUOTE>
+<P>The <B>Subset Sum</B> problem, as phrased in Figure 5.11, is a <I>decision 
+problem</I> (i.e., we are required only to answer “yes” or “no”). If we rephrase 
+the problem slightly, so that in any instance where the answer is "yes" we are 
+required to find the desired vector <B>x</B> (which may not be unique), then we 
+have a <I>search problem</I>.</P>
+<P><A name=Fig12></A><A 
+href="javascript:displayWindow('The Merkle-Hellman Knapsack system_files/05-12.jpg',400,217)"><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-12t.jpg"></A> <BR><A 
+href="javascript:displayWindow('The Merkle-Hellman Knapsack system_files/05-12.jpg',400,217)"><FONT 
+color=#000077><B>Figure 5.12</B></FONT></A>&nbsp;&nbsp;Algorithm for solving a 
+superincreasing instance of the subset sum problem</P>
+<P>The <B>Subset Sum</B> (decision) problem is one of the so-called NP-complete 
+problems. Among other things, this means that there is no known polynomial-time 
+algorithm that solves it. This is also the case for the <B>Subset Sum</B> search 
+problem. But even if a problem has no polynomial-time algorithm to solve it in 
+general, this does not rule out the possibility that certain special cases can 
+be solved in polynomial time. This is indeed the situation with the <B>Subset 
+Sum problem</B>.</P>
+<P>We define a list of sizes, (<I>s</I><SUB><SMALL>1</SMALL></SUB>, . . . , 
+<I>s<SUB><SMALL>n</SMALL></SUB></I>) to be <I>superincreasing</I> if</P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-131d.jpg"></P>
+<P>for 2 &#8804; <I>j</I> &#8804; <I>n</I>. If the list of sizes is superincreasing, then 
+the search version of the <B>Subset Sum</B> problem can be solved very easily in 
+time <I>O</I>(<I>n</I>), and a solution <B>x</B> (if it exists) must be unique. 
+The algorithm to do this is presented in Figure 5.12.</P>
+<P>Suppose s = (<I>s</I><SUB><SMALL>1</SMALL></SUB>, . . . , 
+<I>s<SUB><SMALL>n</SMALL></SUB></I>) is superincreasing, and consider the 
+function</P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-132d.jpg"></P>
+<P>defined by the rule </P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-133d.jpg"></P>
+<P>Is <I>e<SUB><SMALL>s</SMALL></SUB></I> a possible candidate for an encryption 
+rule? Since <B>s</B> is superincreasing, <I>e<SUB><SMALL>s</SMALL></SUB></I> is 
+an injection, and the algorithm presented in Figure 5.12 would be the 
+corresponding decryption algorithm. However, such a system would be completely 
+insecure since anyone (including Oscar) can decrypt a message that is encrypted 
+in this way.</P>
+<P>The strategy therefore is to transform the list of sizes in such a way that 
+it is no longer superincreasing. Bob will be able to apply an inverse 
+transformation to restore the superincreasing list of sizes. On the other hand 
+Oscar, who does not know the transformation that was applied, is faced with what 
+looks like a general, apparently difficult, instance of the subset sum problem 
+when he tries to decrypt a ciphertext.</P>
+<P>One suitable type of transformation is a <I>modular transformation</I>. That 
+is, a prime modulus <I>p</I> is chosen such that</P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-134d.jpg"></P>
+<P>as well as a multiplier <I>a</I>, where 1 &#8804; <I>a</I> &#8804; <I>p</I> - 1. Then we 
+define</P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-135d.jpg"></P>
+<P>1 &#8804; <I>i</I> &#8804; n. The list of sizes <B>t</B> = 
+(<I>t</I><SUB><SMALL>1</SMALL></SUB>,...,<I>t<SUB><SMALL>n</SMALL></SUB></I>) 
+will be the public key used for encryption. The values <I>a, p</I> used to 
+define the modular transformation are secret. The complete description of the 
+<B>Merkle-Hellman Knapsack Cryptosystem</B> is given in Figure 5.13.</P>
+<P>The following small example illustrates the encryption and decryption 
+operations in the <B>Merkle-Hellman Cryptosystem</B>.</P>
+<P><I>Example 5.10</I></P>
+<P>Suppose</P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-136d.jpg"></P>
+<P>is the secret superincreasing list of sizes. Suppose <I>p</I> = 2003 and 
+<I>a</I> = 1289. Then the public list of sizes is</P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-137d.jpg"></P>
+<P>Now, if Alice wants to encrypt the plaintext <I>x</I> = (1, 0, 1, 1, 0, 0, 1, 
+1, 1), she computes</P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-138d.jpg"></P>
+<P>When Bob receives the ciphertext <I>y</I>, he first computes</P>
+<P align=center><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-139d.jpg"></P>
+<P>Then Bob solves the instance <I>I</I> = (<B>s</B>, <I>z</I>) of the <B>Subset 
+Sum</B> problem using the algorithm presented in Figure 5.12. The plaintext (1, 
+0, 1, 1, 0, 0, 1, 1, 1) is obtained.</P>
+<P><A name=Fig13></A><A 
+href="javascript:displayWindow('The Merkle-Hellman Knapsack system_files/05-13.jpg',450,341)"><IMG 
+src="The Merkle-Hellman Knapsack system_files/05-13t.jpg"></A> <BR><A 
+href="javascript:displayWindow('The Merkle-Hellman Knapsack system_files/05-13.jpg',450,341)"><FONT 
+color=#000077><B>Figure 5.13</B></FONT></A>&nbsp;&nbsp;Merkle-Hellman Knapsack 
+Cryptosystem</P>
+<P>By the early 1980’s, the <B>Merkle-Hellman Knapsack Cryptosystem</B> had been 
+broken by Shamir. Shamir was able to use an integer programming algorithm of 
+Lenstra to break the system. This allows Bob’s trapdoor (or an equivalent 
+trapdoor) to be discovered by Oscar, the cryptanalyst. Then Oscar can decrypt 
+messages exactly as Bob does.</P>
+<P><BR></P>
+<CENTER>
+<TABLE border=1>
+  <TBODY>
+  <TR>
+    <TD><A 
+      href="file:///L:/eLibrary/Organizacion%20de%20datos/Criptografia/Cryptography_Theory_and_Practice/ch05/184-188.html">Previous</A></TD>
+    <TD><A 
+      href="file:///L:/eLibrary/Organizacion%20de%20datos/Criptografia/Cryptography_Theory_and_Practice/ewtoc.html">Table 
+      of Contents</A></TD>
+    <TD><A 
+      href="file:///L:/eLibrary/Organizacion%20de%20datos/Criptografia/Cryptography_Theory_and_Practice/ch05/193-195.html">Next</A></TD></TR></TBODY></TABLE></CENTER>
+<HR width="90%" noShade SIZE=1>
+
+<DIV align=center><FONT face=Verdana,sans-serif size=1>Copyright © <A 
+href="file:///L:/reference/crc00001.html">CRC Press LLC</A></FONT> 
+</DIV></BODY></HTML>
