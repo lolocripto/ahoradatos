@@ -48,14 +48,15 @@ public class Ppmc {
 	 */
 	private final ArrayList<ParCharProb> 
 		obtenerExclusionCompleta(final ArrayList<ParCharProb> listaActual, final ArrayList<ParCharProb> listaContextoAnterior){
+		
+		//FIXME: Recibir dos contexto y dentro de esta funcion obtengo las listas para hacer la exclusion
 		ArrayList<ParCharProb> nuevaListaContexto = new ArrayList<ParCharProb>();
 		
 		nuevaListaContexto.addAll(listaActual);
 		if (listaContextoAnterior != null) {
-			//FIXME: Ojo al piojo, no eliminar el escape!!, Son iguales solo por el char o por el char y la prob??
 			nuevaListaContexto.removeAll(listaContextoAnterior);
 		}
-		
+		//FIXME: Agregar el escape de listaActual.
 		return nuevaListaContexto;
 	}
 	
@@ -99,6 +100,7 @@ public class Ppmc {
 				e.printStackTrace();
 				return null;
 			}
+			pos++;
 		}
 		
 		return bos.toByteArray();
@@ -106,12 +108,13 @@ public class Ppmc {
 
 	private final byte[] recorrerContextos(Character letra) {
 		int ordenContexto = this.contextoActual.length();
-		String contexto = this.contextoActual.substring(0, ordenContexto); 
+		String contexto = this.contextoActual.substring(0, ordenContexto); //FIXME: Ver el tema de contextoActual, sino se usa despues eliminar contexto
 		boolean finalizarRecorrida = false;
 		//Recorro los Contextos desde el orden indicado por el largo del contexto
 		ArrayList<ParCharProb> listaContextoMasUno;
-		ArrayList<Character> NroRes;
+
 		while (ordenContexto > -1 && !finalizarRecorrida){
+			//null o el contexto
 			ArrayList<ParCharProb> listaContextoActual = new ArrayList<ParCharProb>();
 			//Recorro los contextos
 			
@@ -133,9 +136,9 @@ public class Ppmc {
 			//FIXME: LLamar al Compresor Aritmetico, si no hay nada como lo hago?? le mando un ESC o 
 			//solo le mando null en el nuevoOrdenContexto
 			if (nuevoOrdenContexto == null || nuevoOrdenContexto.size() == 0) {
-				//NroRes = this.comprimir(null,letra);
+				//this.comprimir(null,letra);
 			} else {
-			//NroRes = this.comprimir(nuevoOrdenContexto,letra);
+			//this.comprimir(nuevoOrdenContexto,letra);
 			}
 		
 			//Actualizo la frecuencia en el contexto particular
@@ -148,7 +151,7 @@ public class Ppmc {
 			//Analizo por separado el ultimo vector 
 		}
 		
-		//FIXME: Convertir NroRes a bytes y devolverlo
+		//FIXME: Convertir NroRes a bytes y devolverlo, NO DEVOLVER NADA
 		return new byte[2];
 	}
 	

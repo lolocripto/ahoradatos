@@ -13,6 +13,7 @@ import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
 public class Orden {
 
 	private int Numero;
+	//FIXME: Encapsular el contexto.
 	private HashMap<String, HashMap<Character,ParCharProb> > listaContexto;
 	
 	public Orden(){
@@ -64,10 +65,13 @@ public class Orden {
 		this.listaContexto.put(contexto, new HashMap<Character,ParCharProb>());
 		
 		//FIXME: Para el EOF QUE PONGO!!!, me conviene cambiarlo a String
-		par = new ParCharProb(letra, 1);
-		this.listaContexto.get(contexto).put(letra, par);
+		/* NO VA
+		 * par = new ParCharProb(letra, 1);
+		 * this.listaContexto.get(contexto).put(letra, par);
+		 */
 		
-		//Creo el EOF, ver que pasa aca.
+		
+		//Creo el ESC, ver que pasa aca. El ultimo UNICODE
 		par = new ParCharProb(new Character(' '), 1);
 	
 	}
@@ -76,7 +80,11 @@ public class Orden {
 	 * Obtiene todos los valores del HashMap
 	 * @return Un vector de Objects.
 	 */
-	public final Object[] obtenerArrayList(String contexto){
-		return this.listaContexto.get(contexto).entrySet().toArray();
+	public final Collention<ParCharProb> obtenerArrayList(String contexto){
+		return this.listaContexto.get(contexto).values();
+	}
+	
+	private final void inicializarContexto(){
+		//Cuando esta vacio lo inicializo
 	}
 }
