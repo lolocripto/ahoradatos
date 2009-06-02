@@ -3,6 +3,7 @@ package ar.com.datos.grupo5.compresion.ppmc;
  * 
  */
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
@@ -13,19 +14,17 @@ import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
 public class Orden {
 
 	private int Numero;
-	//FIXME: Encapsular el contexto.
-	private HashMap<String, HashMap<Character,ParCharProb> > listaContexto;
+	private HashMap< String, Contexto > listaContexto;
 	
 	public Orden(){
-		
 	}
 	
 	/**
-	 * Obtengo la lista de ocurrencias en el contexto recibido.
-	 * @param contexto Contexto del cual voy a buscar la lista de ocurrencias. 
-	 * @return Lista de ocurrencias de las letras.
+	 * Obtengo el contexto con el nombre recibido.
+	 * @param contexto Contexto el cual voy a devolver. 
+	 * @return El contexto.
 	 */
-	public final HashMap<Character,ParCharProb> obtenerListaContextos(String contexto){
+	public final Contexto getContexto(String contexto){
 		return this.listaContexto.get(contexto);
 	}
 	
@@ -35,56 +34,37 @@ public class Orden {
 	 * @param contexto Contexto en el cual actulizo la frecuencia.
 	 * @param letra Letra de la cual actualizo la frecuencia.
 	 */
-	public final void incrementarFrecuenciaChar(String contexto, Character letra){
-		ParCharProb par;
-		if (this.listaContexto.containsKey(contexto)) {
-			//El contexto Existe
-			if (this.listaContexto.get(contexto).containsKey(letra)){
-				par = this.listaContexto.get(contexto).get(letra);
-				par.setProbabilidad(par.getProbabilidad() + 1);
-			} else {
-				par = new ParCharProb(letra, 1);
-				this.listaContexto.get(contexto).put(letra, par);
-			}
+	public final boolean actualizarContexto(String contexto, Character letra){
+		Contexto ctx = this.listaContexto.get(contexto); 
+		if (ctx.actualizarContexto(letra)) {
+			//Actualizacion correcta
+			return true;
 		} else {
-			//Creo el contexto
-			this.crearContexto(contexto, letra);
+			//La letra a actualizar con existía dentro del contexto
+			if (ctx.crearCharEnContexto(letra)){
+				return true;
+			}
 		}
-		
+		return false;
 	}
-	
-	/**
-	 * Creo el contexto, lo inicializo con el caracter buscado y el escape en 1  
-	 * @param contexto Contexto a crear.
-	 * @param letra Letra a agregar en ese contexto.
-	 */
-	private final void crearContexto(String contexto, Character letra) {
 		
-		ParCharProb par;
-		//El contexto no existe por lo tanto lo creo
-		this.listaContexto.put(contexto, new HashMap<Character,ParCharProb>());
-		
-		//FIXME: Para el EOF QUE PONGO!!!, me conviene cambiarlo a String
-		/* NO VA
-		 * par = new ParCharProb(letra, 1);
-		 * this.listaContexto.get(contexto).put(letra, par);
-		 */
-		
-		
-		//Creo el ESC, ver que pasa aca. El ultimo UNICODE
-		par = new ParCharProb(new Character(' '), 1);
-	
-	}
-	
 	/**
 	 * Obtiene todos los valores del HashMap
 	 * @return Un vector de Objects.
 	 */
-	public final Collention<ParCharProb> obtenerArrayList(String contexto){
-		return this.listaContexto.get(contexto).values();
+	public final Collection<ParCharProb> obtenerArrayList(String contexto){
+		return this.listaContexto.get(contexto).getArrayCharProb();
 	}
 	
-	private final void inicializarContexto(){
-		//Cuando esta vacio lo inicializo
+	/**
+	 * Crea un contexto en el orden actual.  
+	 * @param nombreContexto Nombre del contexto. 
+	 * @return El contexto creado.
+	 */
+	public final Contexto crearContexto(String nombreContexto){
+		//Cuando no existe se crea
+		Contexto ctx = new Contexto(nombreContexto);
+		this.listaContexto.put(nombreContexto, ctx);
+		return ctx;
 	}
 }
