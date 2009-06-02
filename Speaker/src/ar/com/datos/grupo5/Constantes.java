@@ -275,6 +275,12 @@ public final class Constantes {
 	public static final int NRO_BLOQUE_ADMIN = 0;
 	
 	/**
+	 * Nuero de bloque de los datos arministrativos del archivo del arbol.
+	 */
+	public static final int ORDER_MAX_PPMC = Integer.parseInt(
+			getXML("ORDER_MAX_PPMC"));
+	
+	/**
 	 * Nro de bloque de la raiz del arbol.
 	 */
 	public static final int NRO_BLOQUE_RAIZ = 1;
