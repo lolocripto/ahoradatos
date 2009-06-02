@@ -275,10 +275,15 @@ public final class Constantes {
 	public static final int NRO_BLOQUE_ADMIN = 0;
 	
 	/**
-	 * Nuero de bloque de los datos arministrativos del archivo del arbol.
+	 * Orden máximo con el que va a trabajar el PPMC.
 	 */
 	public static final int ORDER_MAX_PPMC = Integer.parseInt(
 			getXML("ORDER_MAX_PPMC"));
+	
+	/**
+	 * Valor para el caracter EOF
+	 */
+	public static final Character ESC = new Character('\uFFFF');  
 	
 	/**
 	 * Nro de bloque de la raiz del arbol.
