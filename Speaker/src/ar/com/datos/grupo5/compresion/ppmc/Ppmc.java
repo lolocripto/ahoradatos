@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
+
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
 
@@ -29,17 +31,44 @@ public class Ppmc {
 	private int orden;
 	
 	/**
+	 * Logger para la clase.
+	 */
+	private static Logger logger = Logger.getLogger(Ppmc.class);
+	
+	/**
 	 * Contructor de clase.
 	 */
 	public Ppmc(){
-		//TODO: Llenar contextoOrdenMenosUno con los caracteres validos del UNICODE
 		
+		//Lleno contextoOrdenMenosUno con todos los caracteres del UNICODE
+		this.contextoOrdenMenosUno = new ArrayList<ParCharProb>();
 		//Obtengo el orden del xml de configuración
 		this.orden = Constantes.ORDER_MAX_PPMC;
 		//Creo tantos Ordenes como dice el XML
-		this.listaOrdenes = new ArrayList<Orden>(orden+1);
+		this.listaOrdenes = new ArrayList<Orden>(this.orden+1);
+		this.inicializarListas();
 	}
 	
+	/**
+	 * Inicializa el array con todos los elementos del UNICODE
+	 * y el array de Ordenes
+	 */
+	private final void inicializarListas() {
+		//Cargo la Lista de orden menos uno
+		ParCharProb par;
+		for (int i = 0; i < 65535; i++) {
+			par = new ParCharProb(new Character(Character.toChars(i)[0]),1);
+			this.contextoOrdenMenosUno.add(par);
+		}
+		
+		//Cargo las listas de ordenes desde 0 al orden definido en la configuración
+		Orden ordenContexto;
+		for (int i = 0; i <= this.orden; i++) {
+			ordenContexto = new Orden();
+			this.listaOrdenes.add(ordenContexto);
+		}
+	}
+
 	/**
 	 * Genera un lista nueva con las letras posibles en el contexto.
 	 * @param listaActual	Lista a la que voy a filtrar por el contexto de orden mayor.
@@ -54,14 +83,14 @@ public class Ppmc {
 		nuevaListaContexto.addAll(contextoActual.getArrayCharProb());
 		
 		if (contextoAnterior != null) {
-			//Me copio el elemento ESC porque se va a borrar al hacer removeAll
-			ParCharProb par = new ParCharProb(Constantes.ESC,0);
-			par = nuevaListaContexto.get(nuevaListaContexto.indexOf(par));
-			
-			nuevaListaContexto.removeAll(contextoAnterior.getArrayCharProb());
-			nuevaListaContexto.add(par);
+			if (!contextoAnterior.getArrayCharProb().isEmpty()) {		
+				//Me copio el elemento ESC porque se va a borrar al hacer removeAll
+				ParCharProb par = contextoActual.getChar(Constantes.ESC);
+		
+				nuevaListaContexto.removeAll(contextoAnterior.getArrayCharProb());
+				nuevaListaContexto.add(par);
+			}
 		}
-
 		return nuevaListaContexto;
 	}
 	
@@ -92,24 +121,27 @@ public class Ppmc {
 	 */
 	public final byte[] comprimir(final String cadena){
 		int pos = 0;
-		
+		/*
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
-		
+		*/
 		while (pos < cadena.length()) {
 			this.obtenerContexto(cadena, pos);
-			try {
-				dos.write(this.recorrerContextos(cadena.charAt(pos)));
+//			try {
+				this.recorrerContextos(cadena.charAt(pos));
 				this.actualizarOrdenes(cadena.charAt(pos));
+/*
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return null;
 			}
+*/			
 			pos++;
 		}
 		
-		return bos.toByteArray();
+		//return bos.toByteArray();
+		return null;
 	}
 
 	/**
@@ -119,6 +151,7 @@ public class Ppmc {
 	private void actualizarOrdenes(Character letra) {
 		int ordenContexto = this.contextoActual.length();
 		String contextoString = this.contextoActual.substring(0, ordenContexto); //FIXME: Ver el tema de contextoActual, sino se usa despues eliminar contexto
+		this.logger.debug("Nuevo contexto: " + contextoString);
 		Contexto contexto;
 		boolean finalizarActualizacion = false;
 		
@@ -135,6 +168,7 @@ public class Ppmc {
 					//La encontro entonces actualizamos la letra
 					contexto.actualizarContexto(letra);
 					finalizarActualizacion = true;
+					continue;
 				} else {
 					//Como la letra no esta, la creo y actualizo el ESC
 					contexto.actualizarContexto(Constantes.ESC);
@@ -144,11 +178,12 @@ public class Ppmc {
 			
 			//Preparo para el siguiente contexto
 			if (ordenContexto > 0){
+				ordenContexto--;
 				contextoString = this.contextoActual.substring(this.contextoActual.length() - ordenContexto, this.contextoActual.length());
+				this.logger.debug("Nuevo contexto: " + contextoString);
+			} else {
+				ordenContexto--;
 			}
-			
-			//Cambio de Orden
-			ordenContexto--;
 		}
 	}
 
@@ -160,6 +195,7 @@ public class Ppmc {
 	private final byte[] recorrerContextos(Character letra) {
 		int ordenContexto = this.contextoActual.length();
 		String contextoString = this.contextoActual.substring(0, ordenContexto); //FIXME: Ver el tema de contextoActual, sino se usa despues eliminar contexto
+		this.logger.debug("Nuevo contexto: " + contextoString);
 		boolean finalizarRecorrida = false;
 		Contexto contexto;
 		Contexto contextoMasUno;
@@ -187,16 +223,19 @@ public class Ppmc {
 				//Emito la respuesta del Aritmetico
 				//this.compresorAritmetico.comprimir(contexto.getArrayCharProb(),Constantes.ESC);
 				
-				//Actualizo el contexto
-				contextoString = this.contextoActual.substring(this.contextoActual.length() - ordenContexto, this.contextoActual.length());
-				
-				ordenContexto--;
+				if (ordenContexto > 0){
+					ordenContexto--;
+					contextoString = this.contextoActual.substring(this.contextoActual.length() - ordenContexto, this.contextoActual.length());
+					this.logger.debug("Nuevo contexto: " + contextoString);
+				} else {
+					ordenContexto--;
+				}
 				continue;
 			}
 				
 			//El contexto buscado existe! Entonces busco el contexto anterior en el orden anterior
 			if (ordenContexto < this.orden) {					
-				contextoMasUno = this.listaOrdenes.get(ordenContexto + 1).getContexto(contextoActual.substring(this.contextoActual.length() - ordenContexto + 1, this.contextoActual.length()));
+				contextoMasUno = this.listaOrdenes.get(ordenContexto + 1).getContexto(contextoActual.substring(this.contextoActual.length() - (ordenContexto + 1), this.contextoActual.length()));
 			} else {
 				//No existe orden anterior porque estoy en el ultimo orden (el orden mas grande)
 				contextoMasUno = null;
@@ -212,13 +251,19 @@ public class Ppmc {
 			*/
 			//this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra);
 			
-			//Actualizo el string del proximo contexto
-			if (ordenContexto > 0){
-				contextoString = this.contextoActual.substring(this.contextoActual.length() - ordenContexto, this.contextoActual.length());
+			if (contexto.existeChar(letra)) {
+				finalizarRecorrida = true;
+				continue;
 			}
 			
-			//Cambio de Orden
-			ordenContexto--;
+			//Actualizo el string del proximo contexto
+			if (ordenContexto > 0){
+				ordenContexto--;
+				contextoString = this.contextoActual.substring(this.contextoActual.length() - ordenContexto, this.contextoActual.length());
+				this.logger.debug("Nuevo contexto: " + contextoString);
+			} else {
+				ordenContexto--;
+			}
 		}
 		//Analizo por separado el ultimo vector
 		if (ordenContexto == -1 && !finalizarRecorrida){

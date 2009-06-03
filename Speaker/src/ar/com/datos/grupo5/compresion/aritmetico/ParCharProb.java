@@ -73,14 +73,14 @@ public class ParCharProb implements Comparable<ParCharProb>{
 	
 	public boolean equals(ParCharProb obj) {
 		
-		if (this.simboloUnicode == obj.simboloUnicode)return true;
-		else return false;
+		if (this.simboloUnicode == obj.simboloUnicode) return true;
+		return false;
 	}
-	
-	
-	
-	
-	
-	
-	
+
+	@Override
+	public boolean equals(Object o) {
+		ParCharProb obj = (ParCharProb) o;
+		if (this.simboloUnicode == obj.simboloUnicode) return true;
+		return false;
+	}
 }

@@ -17,6 +17,7 @@ public class Orden {
 	private HashMap< String, Contexto > listaContexto;
 	
 	public Orden(){
+		this.listaContexto = new HashMap< String, Contexto>();
 	}
 	
 	/**
