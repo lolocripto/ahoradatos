@@ -286,6 +286,11 @@ public final class Constantes {
 	public static final Character ESC = new Character('\uFFFF');  
 	
 	/**
+	 * Valor para el caracter EOF
+	 */
+	public static final Character EOF = new Character('\uFFFE');  
+	
+	/**
 	 * Nro de bloque de la raiz del arbol.
 	 */
 	public static final int NRO_BLOQUE_RAIZ = 1;
@@ -301,6 +306,12 @@ public final class Constantes {
 	 */
 	public static final String ARCHIVO_TRABAJO = 
 		getXML("ARCHIVO_TRABAJO");
+	
+	/**
+	 * Metodo de compresión por defecto para los documentos.
+	 */
+	public static final String METODO = getXML("METODO");
+	
 	
 	
 	/**
@@ -354,5 +365,7 @@ public final class Constantes {
 	 * Lista de palabras a filtrar.
 	 */
 	public static final List<IunidadDeHabla> LISTA_STOP_WORDS = stopWords();
+
+	
 	
 }

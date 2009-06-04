@@ -5,6 +5,10 @@ package ar.com.datos.grupo5.compresion.ppmc;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
+
+import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
 /**
@@ -15,6 +19,11 @@ public class Orden {
 
 	private int Numero;
 	private HashMap< String, Contexto > listaContexto;
+	
+	/**
+	 * Logger para la clase.
+	 */
+	private static Logger logger = Logger.getLogger(Orden.class);
 	
 	public Orden(){
 		this.listaContexto = new HashMap< String, Contexto>();
@@ -67,5 +76,22 @@ public class Orden {
 		Contexto ctx = new Contexto(nombreContexto);
 		this.listaContexto.put(nombreContexto, ctx);
 		return ctx;
+	}
+	
+	public final void meImprimo() {
+		Iterator<Entry<String,Contexto>> it = this.listaContexto.entrySet().iterator();
+		Entry<String,Contexto> elemento;
+		System.out.println("\tCtx\tChar\tFrec");
+		ParCharProb par;
+		Contexto contexto;
+		while (it.hasNext()) {
+			elemento = it.next();
+			contexto = elemento.getValue();
+			Iterator<ParCharProb> itLista = contexto.getArrayCharProb().iterator();
+			while (itLista.hasNext()) {
+				par = itLista.next();
+				System.out.println(contexto.getContexto() + " " + par.getSimboloUnicode() + " " + par.getProbabilidad());
+			}
+		}
 	}
 }

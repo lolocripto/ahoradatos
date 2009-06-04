@@ -6,11 +6,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.compresion.aritmetico.LogicaAritmetica;
 import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
+import ar.com.datos.grupo5.interfaces.Compresor;
 
 /**
  * 
@@ -20,15 +23,17 @@ import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
  * @author Led Zeppelin
  *
  */
-public class Ppmc {
+public class Ppmc implements Compresor{
 
-	private ArrayList<ParCharProb> contextoOrdenMenosUno;
+	private Contexto contextoOrdenMenosUno;
 	
 	private ArrayList<Orden> listaOrdenes;
 	
 	private String contextoActual;
 	
 	private int orden;
+	
+	private LogicaAritmetica compresorAritmetico;
 	
 	/**
 	 * Logger para la clase.
@@ -41,12 +46,13 @@ public class Ppmc {
 	public Ppmc(){
 		
 		//Lleno contextoOrdenMenosUno con todos los caracteres del UNICODE
-		this.contextoOrdenMenosUno = new ArrayList<ParCharProb>();
+		this.contextoOrdenMenosUno = new Contexto();
 		//Obtengo el orden del xml de configuración
 		this.orden = Constantes.ORDER_MAX_PPMC;
 		//Creo tantos Ordenes como dice el XML
 		this.listaOrdenes = new ArrayList<Orden>(this.orden+1);
 		this.inicializarListas();
+		this.compresorAritmetico = new LogicaAritmetica();
 	}
 	
 	/**
@@ -55,11 +61,11 @@ public class Ppmc {
 	 */
 	private final void inicializarListas() {
 		//Cargo la Lista de orden menos uno
-		ParCharProb par;
-		for (int i = 0; i < 65535; i++) {
-			par = new ParCharProb(new Character(Character.toChars(i)[0]),1);
-			this.contextoOrdenMenosUno.add(par);
+		
+		for (int i = 0; i < 65533; i++) {
+			this.contextoOrdenMenosUno.crearCharEnContexto(new Character(Character.toChars(i)[0]));
 		}
+		this.contextoOrdenMenosUno.crearCharEnContexto(Constantes.EOF);
 		
 		//Cargo las listas de ordenes desde 0 al orden definido en la configuración
 		Orden ordenContexto;
@@ -100,7 +106,7 @@ public class Ppmc {
 	 * @param posicion Posición dentro de la cadena a comprimir
 	 * @return El contexto en la posición posicion
 	 */
-	private final void obtenerContexto(final String cadena, final int posicion){
+	private final void getContexto(final String cadena, final int posicion){
 		//FIXME: Ver si es > o >=
 		if (posicion > this.orden) {
 			//Obtengo un contexto de maximo orden
@@ -126,22 +132,31 @@ public class Ppmc {
 		DataOutputStream dos = new DataOutputStream(bos);
 		*/
 		while (pos < cadena.length()) {
-			this.obtenerContexto(cadena, pos);
-//			try {
-				this.recorrerContextos(cadena.charAt(pos));
-				this.actualizarOrdenes(cadena.charAt(pos));
-/*
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return null;
-			}
-*/			
+			//Obtengo el contexto
+			this.getContexto(cadena, pos);
+			//Recorro los contextos para las emisiones
+			this.recorrerContextos(cadena.charAt(pos));
+			//Actualizo los contextos para la próxima recorrida.
+			this.actualizarOrdenes(cadena.charAt(pos));
+			//FIXME: Imprimo los ordenes, es solo para debug. Por lo tanto borrarlo.
+			this.imprimirEstado();
 			pos++;
 		}
-		
 		//return bos.toByteArray();
 		return null;
+	}
+
+	private void imprimirEstado() {
+		Iterator<Orden> it = this.listaOrdenes.iterator();
+		Orden ordenAImprimir;
+		int i = 0;
+		while (it.hasNext()) {
+			System.out.println("\tOrden " + i);
+			ordenAImprimir = it.next();
+			ordenAImprimir.meImprimo();
+			System.out.println("");
+			i++;
+		}
 	}
 
 	/**
@@ -199,6 +214,7 @@ public class Ppmc {
 		boolean finalizarRecorrida = false;
 		Contexto contexto;
 		Contexto contextoMasUno;
+		ArrayList<ParCharProb> nuevoOrdenContexto;
 		
 		while (ordenContexto > -1 && !finalizarRecorrida) {
 			
@@ -221,7 +237,8 @@ public class Ppmc {
 				//contexto.crearCharEnContexto(Constantes.ESC);
 		
 				//Emito la respuesta del Aritmetico
-				//this.compresorAritmetico.comprimir(contexto.getArrayCharProb(),Constantes.ESC);
+				//FIXME: Ver como pasar los parametros al compresor
+				this.compresorAritmetico.comprimir((ArrayList<ParCharProb>) contexto.getArrayCharProb(),Constantes.ESC);
 				
 				if (ordenContexto > 0){
 					ordenContexto--;
@@ -241,7 +258,7 @@ public class Ppmc {
 				contextoMasUno = null;
 			}
 			
-			ArrayList<ParCharProb> nuevoOrdenContexto = this.obtenerExclusionCompleta(contexto, contextoMasUno);
+			nuevoOrdenContexto = this.obtenerExclusionCompleta(contexto, contextoMasUno);
 			
 			/*
 			//FIXME: LLamar al Compresor Aritmetico, si no hay nada como lo hago?? le mando un ESC como letra o 
@@ -249,7 +266,8 @@ public class Ppmc {
 			 * La corroboracion de si la letra esta en la lista que le mando la hago yo o la hace el compresor??
 			 * si la hace el compresor, deberia buscar y al no encontrar emitir ESC
 			*/
-			//this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra);
+			//FIXME: Ver como pasar los parametros al compresor
+			this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra);
 			
 			if (contexto.existeChar(letra)) {
 				finalizarRecorrida = true;
@@ -269,10 +287,24 @@ public class Ppmc {
 		if (ordenContexto == -1 && !finalizarRecorrida){
 			//FIXME: Terminar la union con el compresor aritmetico.
 			//Como es el contexto -1 y no se encontro aun la emision final entonces emito el valor por default
-			//this.compresorAritmetico.comprimir(this.contextoOrdenMenosUno,letra);
-		}	
+			
+			contextoMasUno = this.listaOrdenes.get(0).getContexto(contextoActual.substring(this.contextoActual.length() - (0), this.contextoActual.length()));
+			
+			nuevoOrdenContexto = this.obtenerExclusionCompleta(this.contextoOrdenMenosUno, contextoMasUno);
+			//FIXME: Ver como pasar los parametros al compresor
+			this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra);
+		}
 		//FIXME: Convertir NroRes a bytes y devolverlo, NO DEVOLVER NADA
 		return null;
 	}
 	
+	public final byte[] finalizarCompresion(){
+		//TODO: Llamar al Aritmetico para finalizar la compresion.
+		return null;
+	}
+	
+	public final String descomprimir(){
+		//TODO: Como hacemos esto!!
+		return null;
+	}
 }

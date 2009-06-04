@@ -63,6 +63,8 @@ public class Core {
 	private static Logger logger = Logger.getLogger(Core.class);
 	
 	private long tiempoConsulta;
+
+	private String metodo;
 	
 	/**
 	 * Busca las palabras a grabar, graba el audio y lo guarda.
@@ -75,7 +77,7 @@ public class Core {
 	 * @return devuelve un mensaje informando el estado final del proceso.
 	 */
 	public final String load(final InterfazUsuario invocador,
-			final String pathDocumento) {
+			final String pathDocumento, final String metodo) {
 		
 		logger.debug("Entre en load");
 		
@@ -204,8 +206,54 @@ public class Core {
 		return "Las palabras han sido correctamente ingresadas.";
 	}
 
-	
+	/** 
+	 * Permite al usuario agregar un documento sin especificar el compresor a utilizar
+	 * utilizando el compresor por defecto definido en la configuracion.
+	 * @param invocador
+	 * @param pathDocumento
+	 * @return
+	 */
+	public final String load(final InterfazUsuario invocador,
+			final String pathDocumento) {
+		return this.load(invocador, pathDocumento, this.metodo);
+	}
 
+	/**
+	 * Permite comprimir un archivo de texto cualquiera especificando los path's
+	 * de los archivos de origen y el de destino.
+	 * @param invodador
+	 * @param metodoExt Metodo que se usara para la compresión.
+	 * @param pathArchivoOrigen Ubicación del archivo que se va a comprimir.
+	 * @param pathArchivoDestino Ubicación y nombre del archivo que tendrá
+	 * el archivo comprimido. 
+	 * @return Aviso del resultado de la compresión.
+	 */
+	public final String comprimir(final InterfazUsuario invodador, final String metodoExt,
+					final String pathArchivoOrigen,final String pathArchivoDestino) {
+		//El manejador del compresor, le indico el compresor a usar.
+		CompresorManager compresorManager = new CompresorManager(metodoExt, pathArchivoOrigen, pathArchivoDestino);
+		
+		return compresorManager.ComprimirArchivo();
+	}
+	
+	/**
+	 * Permite descomprimir un archivo previamente comprimido por este programa 
+	 * especificando los path's de los archivos de origen y el de destino.
+	 * @param invodador
+	 * @param metodoExt Metodo con el cual esta comprimido el archivo.
+	 * @param pathArchivoOrigen Ubicación del archivo que se va a descomprimir.
+	 * @param pathArchivoDestino Ubicación y nombre del archivo que tendrá
+	 * el archivo descomprimido
+	 * @return Aviso del resultado de la descompresión.
+	 */
+	public final String descomprimir(final InterfazUsuario invodador, final String metodoExt,
+			final String pathArchivoOrigen,final String pathArchivoDestino) {
+		//El manejador del compresor, le indico el compresor a usar.
+		CompresorManager compresorManager = new CompresorManager(metodoExt, pathArchivoOrigen, pathArchivoDestino);
+		
+		return compresorManager.DesComprimirArchivo();
+	}
+	
 	/**
 	 * 
 	 * @param invocador .
@@ -214,9 +262,13 @@ public class Core {
 		//TODO: Actualizar Help
 		String mensaje = "Funcion: load \n"
 			+ "Caracteristicas: carga un documento para almacenar las palabras "
-			+ "desconocidas \n"
-			+ "Uso: load <\"path_absoluto_del_documento\"> \n"
-			+ "Ej: load \"/home/usuario/Escritorio/prueba.txt\" \n\n"
+			+ "desconocidas y almacena al documento lo almacena comprimido.\n"
+			+ "Los metodos de compresión disponibles son: PPMC, LZP, LZ78.\n"
+			+ "En el caso de no elegir un metodo de compresión se comprimirá\n"
+			+ "con el metodo especificado por default.\n"
+			+ "Uso: load <\"path_absoluto_del_documento\"> [<\"metodo_para_comprimir\">]\n"
+			+ "Ej: load \"/home/usuario/Escritorio/prueba.txt\" \n"
+			+ "Ej: load \"/home/usuario/Escritorio/prueba.txt\" \"ppmc\" \n\n"
 
 			+ "Funcion: playDocument \n"
 			+ "Caracteristicas: carga un documento reproduciendo las "
@@ -244,10 +296,25 @@ public class Core {
 			+ "Uso: query <\"texto ingresado\"> \n"
 			+ "Ej: query \"hola como estas\" \n\n"
 
+			+ "Funcion: comprimir\n"
+			+ "Caracteristicas: Comprime un archivo según el método elegido. \n"
+			+ "Uso: comprimir <\"metodo_para_comprimir\"> <\"path_archivo_origen\"> <\"path_archivo_destino\"> \n"
+			+ "Ej: comprimir \"lzp\" \"/home/usuario/Escritorio/prueba.txt\" \"/home/usuario/Escritorio/pruebaComprimida.tsp\" \n\n"
+			
+			+ "Funcion: comprimir\n"
+			+ "Caracteristicas: Comprime un archivo según el método elegido. \n"
+			+ "Uso: comprimir <\"metodo_para_comprimir\"> <\"path_archivo_origen\"> <\"path_archivo_destino\"> \n"
+			+ "Ej: comprimir \"lzp\" \"/home/usuario/Escritorio/prueba.txt\" \"/home/usuario/Escritorio/pruebaComprimida.tsp\" \n\n"
+			
+			+ "Funcion: descomprimir\n"
+			+ "Caracteristicas: Descomprime un archivo según el método elegido. \n"
+			+ "Uso: descomprimir <\"metodo_para_descomprimir\"> <\"path_archivo_origen\"> <\"path_archivo_destino\"> \n"
+			+ "Ej: descomprimir \"lzp\" \"/home/usuario/Escritorio/pruebaComprimida.zip\" \"/home/usuario/Escritorio/pruebaDescomprimida.txt\" \n\n"
+						
 			+ "Funcion: fin \n" 
 			+ "Caracteristicas: sale del programa \n"
 			+ "Uso: fin \n" + "Ej: fin \n\n";	
-		
+
 		this.clear(invocador);
 		invocador.mensaje(mensaje);
 	}
@@ -572,6 +639,7 @@ public class Core {
 			this.logger.debug("No se ha podido crear el FTRS.");
 		}
 		this.ranking = null;
+		this.metodo = Constantes.METODO;
 	}
 	
 	/**
