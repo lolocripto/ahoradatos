@@ -141,5 +141,30 @@ public class UnsignedInt {
 		UnsignedInt nuevo = new UnsignedInt(result);
 		return nuevo;
 	}
+	
+	/**
+	 * Setea el bit 32 segun el valor pasado por parametro
+	 * no realizando ninguna accion si este valor es diferente
+	 * a 1 ó 0 
+	 * @param valor
+	 */
+	public void  SetBitMasSignificativo(int valor){
+		
+		long aux;
+		
+		// para poner un 1, hago un OR todos ceros salvo el de la posicion 32
+		if (valor == 1){
+			aux = this.longAsociado | 0x80000000L;
+			this.setLongAsociado(aux);
+		}
+		
+		//para poner un 0, hago un and con todos 1 salvo el de la posicion 32
+		if(valor ==0){
+			aux = this.longAsociado & 0x7fffffffL;
+			this.setLongAsociado(aux);
+		}
+		
+		
+	}
 
 }
