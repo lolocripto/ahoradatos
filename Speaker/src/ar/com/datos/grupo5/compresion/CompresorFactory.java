@@ -19,27 +19,25 @@ public class CompresorFactory {
 	 * comprimir
 	 * @return el compresor.
 	 */
-	public static Compresor getCompresor(MetodoCompresion metodo){
-		Compresor moduloCompresor;
-		switch(0) {
-			case 0:{
-				//PPMC
-				moduloCompresor = new Ppmc();
-			}
-			break;
-			case 1:{
-				//LZP
-				moduloCompresor = new Ppmc();
-			}
-			break;
-			case 2:{
-				//LZ78
-				moduloCompresor = new Ppmc();
-			}
-			break;
-			default:
-				moduloCompresor = null;
+	public static Compresor getCompresor(String metodo){
+		Compresor moduloCompresor = null;
+		if (MetodoCompresion.valueOf(metodo) == MetodoCompresion.PPMC) {
+			moduloCompresor = new Ppmc();
+			return moduloCompresor;
 		}
-		return moduloCompresor;
+		if (MetodoCompresion.valueOf(metodo) == MetodoCompresion.LZP) {
+			moduloCompresor = null;
+			return moduloCompresor;
+		} 
+		if (MetodoCompresion.valueOf(metodo) == MetodoCompresion.LZ78) {
+			moduloCompresor = null;
+			return moduloCompresor;
+		} 
+		if (MetodoCompresion.valueOf(metodo) == MetodoCompresion.ARIT) {
+			moduloCompresor = null;
+			return moduloCompresor;
+		} 
+		
+		return moduloCompresor; 
 	}
 }
