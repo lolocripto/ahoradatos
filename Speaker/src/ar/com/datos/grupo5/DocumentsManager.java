@@ -6,6 +6,7 @@ package ar.com.datos.grupo5;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.archivos.ArchivoDocs;
+import ar.com.datos.grupo5.utils.MetodoCompresion;
 
 
 /**
@@ -27,6 +28,8 @@ public class DocumentsManager {
 	private static Logger milogueador = Logger.getLogger(DocumentsManager.class);
 	
 	static private DocumentsManager singleton = null;
+	
+	private MetodoCompresion tipoCompresion;
 	
 	/**
 	 * Constructor de la clase AudioFileManager.
@@ -75,7 +78,7 @@ public class DocumentsManager {
 	
 	public void initDocWriteSession(String nombre, long longitud){
 		
-		this.offsetUltDocEscrito = this.archivo.documentToWrite(nombre, longitud);
+		this.offsetUltDocEscrito = this.archivo.documentToWrite(nombre, this.tipoCompresion, longitud);
 	}
 	
 	public Long getCantidadDocsAlmacenados(){
@@ -97,6 +100,23 @@ public class DocumentsManager {
 
 	public void cerrarSesion(){
 		this.archivo.cerrarArchivo();
+	}
+
+
+	/**
+	 * @param tipoCompresion the tipoCompresion to set
+	 */
+	public void setTipoCompresion(String tipoCompresionString) {
+		this.tipoCompresion = MetodoCompresion.valueOf(tipoCompresionString);
+	}
+
+
+	/**
+	 * @return the tipoCompresion
+	 */
+	public MetodoCompresion getTipoCompresion(Long offsetDoc) {
+		this.tipoCompresion = this.archivo.getTipoCompresion(offsetDoc);
+		return this.tipoCompresion;
 	}
 	
 }

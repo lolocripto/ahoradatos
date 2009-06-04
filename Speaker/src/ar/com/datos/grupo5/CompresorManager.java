@@ -20,7 +20,7 @@ public class CompresorManager {
 	private String pathArchivoDestino;
 	
 	public CompresorManager(final String metodo, final String pathArchivoOrigenExt, final String pathArchivoDestinoExt){
-		this.compresor = CompresorFactory.getCompresor(MetodoCompresion.valueOf(metodo));
+		this.compresor = CompresorFactory.getCompresor(metodo);
 		this.pathArchivoDestino = pathArchivoDestinoExt;
 		this.pathArchivoOrigen = pathArchivoOrigenExt;
 	}

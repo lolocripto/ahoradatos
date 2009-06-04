@@ -6,6 +6,8 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.compresion.ppmc.Ppmc;
+import ar.com.datos.grupo5.utils.MetodoCompresion;
 
 public class ArchivoDocs {
 
@@ -84,7 +86,7 @@ public class ArchivoDocs {
 	
 	
 	
-	public long documentToWrite(String nombre, long longitud){
+	public long documentToWrite(String nombre, MetodoCompresion metodo, long longitud){
 		
 		long offsetDelNuevoArchivo=0;
 		
@@ -99,7 +101,7 @@ public class ArchivoDocs {
 			//me voy al final del archivo
 			this.miArchivo.file.seek(offsetDelNuevoArchivo);
 			//escribo el nombre y la longitud
-			this.escribirNombreYlong(nombre, longitud);
+			this.escribirNombreYlong(nombre, metodo, longitud);
 			//ya queda preparado para escribir informacion;
 
 		} catch (IOException e) {
@@ -120,6 +122,8 @@ public class ArchivoDocs {
 			byte[] nombre =new byte[longNombre];
 			this.miArchivo.file.read(nombre);  //leo el nombre
 			
+			this.miArchivo.file.readByte();	//Leo el tipo de compresion
+			
 			this.longDocActualRead = this.miArchivo.file.readLong(); //cargo la longitud que debo leer
 			this.offsetInicio = this.miArchivo.file.getFilePointer();//guardo la posicion desde donde empiezo a leer lineas
 			
@@ -130,16 +134,39 @@ public class ArchivoDocs {
 	}
 	
 	//escribe el nombre y la longitud del documento desde la posicion actual en el archivo
-	private void escribirNombreYlong(String nombre, long longitud){
+	private void escribirNombreYlong(String nombre, MetodoCompresion metodo, long longitud){
 		
 		byte[] nombreEnBytes = nombre.getBytes();
 		byte longNombre = (byte) nombreEnBytes.length;
+		
+		byte tipoCompresion = (new Integer(0)).byteValue();
 		
 		try{
 			//escribo la longitud del nombre
 			this.miArchivo.file.writeByte(longNombre);
 			//escribo el nombre
 			this.miArchivo.file.write(nombreEnBytes);
+			
+			//Escribo el tipo de compresion
+			//0 => Ninguno, 1=> LZP, 2 => PPMC, 3 => LZ78, 4 => ARTIMETICO
+			if (metodo == MetodoCompresion.PPMC) {
+				tipoCompresion = (new Integer(2)).byteValue();
+			} else {
+				if (metodo == MetodoCompresion.LZP) {
+					tipoCompresion = (new Integer(1)).byteValue();
+				} else {
+					if (metodo == MetodoCompresion.LZ78) {
+						tipoCompresion = (new Integer(3)).byteValue();
+					} else {
+						if (metodo == MetodoCompresion.ARIT) {
+							tipoCompresion = (new Integer(4)).byteValue();
+						}					
+					}
+				}
+			}
+			
+			this.miArchivo.file.writeByte(tipoCompresion);
+			
 			//escribo la longitud del archivo que voy a escribir a continuacion
 			this.miArchivo.file.writeLong(longitud);
 			//reservo espacio en la logitud del archivo, de esta forma si se rompe, se rompe solo un documento.
@@ -241,24 +268,56 @@ public class ArchivoDocs {
 		}
 	}
 	
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-	
+	/**
+	 * Obtiene el tipo de compresion que tiene el documento almacenado.
+	 * @param offset
+	 * @return
+	 */
+	public MetodoCompresion getTipoCompresion(long offset){
+    	
+		MetodoCompresion metodo = null;
+		byte tipoCom;
+		
+		try {
+			
+			//guardo la posicion actual
+    		long posOriginal = this.miArchivo.file.getFilePointer();
+			
+			this.miArchivo.file.seek(offset);
+			byte longNombre = this.miArchivo.file.readByte(); //leo a long del nombre
+			byte[] nomEnBytes =new byte[longNombre];
+			this.miArchivo.file.read(nomEnBytes);  //leo el nombre
+			
+			tipoCom = this.miArchivo.file.readByte();
+			
+			switch((new Integer(tipoCom)).intValue()){
+				case 0:
+						metodo = MetodoCompresion.NINGUNO;
+					break;
+				case 1:
+						metodo = MetodoCompresion.LZP;
+					break;
+				case 2:
+						metodo = MetodoCompresion.PPMC;
+					break;
+				case 3:
+						metodo = MetodoCompresion.LZ78;
+					break;
+				case 4:
+						metodo = MetodoCompresion.ARIT;
+					break;
+				default:
+						metodo = MetodoCompresion.NINGUNO;
+			}
+			
+			this.miArchivo.file.seek(posOriginal);
+			
+		} catch (IOException e) {
+			LOG.error("no se pudo leer nombre de documento, en archivo documentos",e);
+			e.printStackTrace();
+		}
+		return metodo;
+
+    }
+
 }
