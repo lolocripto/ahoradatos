@@ -2,8 +2,8 @@ package ar.com.datos.grupo5.compresion.aritmetico;
 
 public class Segmento {
 
-	private int techo;
-	private int piso;
+	private UnsignedInt techo;
+	private UnsignedInt piso;
 	private int bitsUnderflow;
 
 	/**
@@ -14,36 +14,37 @@ public class Segmento {
 	 * @param techo
 	 */
 	public Segmento(int piso, int techo) {
-		this.techo = techo;
-		this.piso = piso;
+		
+		this.techo = new UnsignedInt(techo);
+		this.piso = new UnsignedInt(piso);
 		this.bitsUnderflow = 0;
 	}
 
 	/**
 	 * Constructor sin parámetros, por defecto toma todo el espacio comprendido
-	 * por el tipo de dato Integer [-2147483648, +2147483647] que son 32 bits
-	 * tomando al bit mas significativo como signo.
+	 * en un dato de 32 bits sin signo (0H a ffffffffH) 
 	 */
 	public Segmento() {
-		this.techo = Integer.MAX_VALUE;
-		this.piso = Integer.MIN_VALUE;
+		this.techo = new UnsignedInt(0);
+		this.piso = new UnsignedInt(0);
+		this.techo.setMaxNumber();
 		this.bitsUnderflow = 0;
 	}
 
-	public int getTecho() {
-		return techo;
+	public UnsignedInt getTecho() {
+		return this.techo;
 	}
 
-	public void setTecho(int techo) {
-		this.techo = techo;
+	public void setTecho(long techo) {
+		this.techo.setLongAsociado(techo);
 	}
 
-	public int getPiso() {
-		return piso;
+	public UnsignedInt getPiso() {
+		return this.piso;
 	}
 
-	public void setPiso(int piso) {
-		this.piso = piso;
+	public void setPiso(long piso) {
+		this.piso.setLongAsociado(piso);
 	}
 
 	/**
@@ -53,8 +54,8 @@ public class Segmento {
 	 */
 	public boolean hayOverflow() {
 
-		String bitsTecho = Integer.toBinaryString(this.techo);
-		String bitsPiso = Integer.toBinaryString(this.piso);
+		String bitsTecho = this.techo.get32BitsRepresentation();
+		String bitsPiso = this.piso.get32BitsRepresentation();
 
 		if (bitsPiso.charAt(0) == bitsTecho.charAt(0))
 			return true;
@@ -77,8 +78,8 @@ public class Segmento {
 	 */
 	public boolean hayUnderflow() {
 
-		String bitsTecho = Integer.toBinaryString(this.techo);
-		String bitsPiso = Integer.toBinaryString(this.piso);
+		String bitsTecho = this.techo.get32BitsRepresentation();
+		String bitsPiso = this.piso.get32BitsRepresentation();
 		//primer bit diferente
 		boolean condicionUno = bitsPiso.charAt(0) != bitsTecho.charAt(0);
 		//segundo bit diferente
@@ -98,8 +99,8 @@ public class Segmento {
 	 */
 	public void resetear(){
 		
-		this.techo = Integer.MAX_VALUE;
-		this.piso = Integer.MIN_VALUE;
+		this.techo.setMaxNumber();
+		this.piso.setLongAsociado(0L);
 		this.bitsUnderflow = 0;
 	}
 
@@ -122,7 +123,7 @@ public class Segmento {
 
 		// proceso el overflow actual, bit por bit
 		while (this.hayOverflow()) {
-			emision.concat(this.emitirBitOverflow());
+			emision = emision.concat(this.emitirBitOverflow());
 		}
 
 		// si procesé overflow y anteriormente el contador de underflow no
@@ -137,7 +138,7 @@ public class Segmento {
 			// uso ese bit para rellenar tantas veces como me diga el contador
 			// de underflow
 			while (this.bitsUnderflow > 0) {
-				emision.concat(rellenoCon);
+				emision = emision.concat(rellenoCon);
 				this.bitsUnderflow--;
 			}
 
@@ -176,68 +177,42 @@ public class Segmento {
 	private String emitirBitOverflow() {
 
 		// genero los strings con el numero binario
-		String bitsTecho = Integer.toBinaryString(this.techo);
-		String bitsPiso = Integer.toBinaryString(this.piso);
+		String bitsTecho = this.techo.get32BitsRepresentation();
 		String emision = new String();
 
 		// como sé que hay overflow, tomo el primer bit del techo o del piso y
-		// lo emito
-		// este proceso sera parte de un ciclo manejado desde afuera por eso
-		// solo se
-		// emite de a 1 bit
-		emision.concat(bitsTecho.substring(0, 1));
-
-		// agrego 1 al final del techo y cero al final del piso
-		bitsTecho.concat("1");
-		bitsPiso.concat("0");
-
-		// convierto mis strings en enteros, modificando el viejo
-		// techo y piso, para luego devolver el bit emitido
-		this.techo = Integer.parseInt(bitsTecho.substring(1), 2);
-		this.piso = Integer.parseInt(bitsPiso.substring(1), 2);
-
+		// lo emito este proceso sera parte de un ciclo manejado desde afuera 
+		// por eso solo se emite de a 1 bit
+		emision = bitsTecho.substring(0, 1);
+		
+		// hago una corrimiento de bits
+		//en el techo corro a la izq y agrego un 1 al final
+		this.techo.leftShiftOne();
+		//en el piso corro a la izq y agrego un 0 al final
+		this.piso.leftShiftCero();
+		
 		return emision;
-
 	}
 
 	/**
 	 * Este metodo permite quitar el segundo bit mas significativo del piso y el
 	 * techo agregando unos y ceros al final, de modo que podamos evitar el
-	 * underflow. al finalizar Suma un bit al contador de underflow
+	 * underflow. Para hacerlo se toma como premisa que si estamos en Underflow
+	 * el primer bit del techo sera 1 y el primer bit del piso será 0.
+	 * al finalizar Suma un bit al contador de underflow
 	 */
+	//TODO verificar la premisa anterior.
 	private void trabajarUnderFlow() {
 
-		// genero los strings con el numero binario
-		String bitsTecho = Integer.toBinaryString(this.techo);
-		String bitsPiso = Integer.toBinaryString(this.piso);
+		// agrego hago un corrimiento de bits a la izquierda y coloco
+		// un 1 al final del techo y 0 al final del piso
+		this.techo.leftShiftOne();
+		this.piso.leftShiftCero();
 
-		// tomo los bits mas significativos del techo y el piso para
-		// preservarlos
-		String bitMasSignTecho = bitsTecho.substring(0, 1);
-		String bitMasSignPiso = bitsPiso.substring(0, 1);
-
-		// agrego 1 al final del techo y cero al final del piso
-		bitsTecho.concat("1");
-		bitsPiso.concat("0");
-
-		// una vez que guarde los bits mas significativos remuevo los 2 bits mas
-		// sign
-		// de cada uno, debido a que no tengo forma de remover solo el segundo,
-		// debo remover
-		// ambos y luego volver a unir el string.
-		bitsTecho = bitsTecho.substring(2);
-		bitsPiso = bitsPiso.substring(2);
-
-		// por ultimo coloco nuevamente los bits que guardé anteriormente
-		// poniendolos adelante
-		bitsTecho = bitMasSignTecho.concat(bitsTecho);
-		bitsPiso = bitMasSignPiso.concat(bitsPiso);
-
-		// convierto mis strings en enteros, modificando el viejo
-		// techo y piso, para luego devolver el bit emitido
-		this.techo = Integer.parseInt(bitsTecho, 2);
-		this.piso = Integer.parseInt(bitsPiso, 2);
-
+		//restauro el primer bit del techo a 1 y el del piso a 0
+		this.techo.SetBitMasSignificativo(1);
+		this.piso.SetBitMasSignificativo(0);
+	
 		// sumo 1 bit al contador de underflow
 		this.bitsUnderflow++;
 
@@ -253,12 +228,12 @@ public class Segmento {
 
 		// genero un string para emitir y otro que es el piso en binario
 		String emision = new String();
-		String bitsPiso = Integer.toBinaryString(this.piso);
+		String bitsPiso = this.piso.get32BitsRepresentation();
 
 		// si estamos en un caso con underflow al final
 		if (this.bitsUnderflow > 0) {
 			// tomo el primer bit del piso y lo pongo para emitir
-			emision.concat(bitsPiso.substring(0, 1));
+			emision = emision.concat(bitsPiso.substring(0, 1));
 
 			// genero una variable auxiliar con ese primer bit negado
 			String rellenoCon = this.negarBit(emision);
@@ -267,12 +242,12 @@ public class Segmento {
 			// bits en la emision, que seran el negado del primero
 			while (this.bitsUnderflow > 0) {
 
-				emision.concat(rellenoCon);
+				emision = emision.concat(rellenoCon);
 				this.bitsUnderflow--;
 
 			}
 			// por ultimo coloco el resto de los bits del piso para emitir
-			emision.concat(bitsPiso.substring(1));
+			emision = emision.concat(bitsPiso.substring(1));
 			return emision;
 		} else {
 			// si no habia bits de underflow, devuelvo directamente el piso

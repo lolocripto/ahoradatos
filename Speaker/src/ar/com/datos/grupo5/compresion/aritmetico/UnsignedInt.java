@@ -17,7 +17,7 @@ public class UnsignedInt {
 		this.longAsociado = (long)numero;
 		this.Bit64Repr = Long.toBinaryString(this.longAsociado);
 		this.Bit64Repr = this.setLeadingCeros(Bit64Repr, 64);
-		this.Bit32Repr = Bit64Repr.substring(31);
+		this.Bit32Repr = Bit64Repr.substring(32);
 		
 	}
 	
@@ -34,7 +34,7 @@ public class UnsignedInt {
 		bits = this.setLeadingCeros(bits, 64);
 		this.Bit64Repr = bits;
 		this.longAsociado = Long.parseLong(bits, 2);
-		this.Bit32Repr = Bit64Repr.substring(31);
+		this.Bit32Repr = Bit64Repr.substring(32);
 	}
 	
 	public long getLongAsociado (){
@@ -53,7 +53,7 @@ public class UnsignedInt {
 		this.longAsociado = numero;
 		this.Bit64Repr = Long.toBinaryString(this.longAsociado);
 		this.Bit64Repr = this.setLeadingCeros(Bit64Repr, 64);
-		this.Bit32Repr = Bit64Repr.substring(31);
+		this.Bit32Repr = Bit64Repr.substring(32);
 		
 	}
 	
@@ -136,6 +136,12 @@ public class UnsignedInt {
 		return nuevo;
 	}
 	
+	public UnsignedInt mas (int numero){
+		long result = this.getLongAsociado() + numero;
+		UnsignedInt nuevo = new UnsignedInt(result);
+		return nuevo;
+	}
+	
 	public UnsignedInt menos (UnsignedInt numero){
 		long result = this.getLongAsociado() - numero.getLongAsociado();
 		UnsignedInt nuevo = new UnsignedInt(result);
@@ -158,7 +164,7 @@ public class UnsignedInt {
 			this.setLongAsociado(aux);
 		}
 		
-		//para poner un 0, hago un and con todos 1 salvo el de la posicion 32
+		//para poner un 0, hago un AND con todos 1 salvo el de la posicion 32
 		if(valor ==0){
 			aux = this.longAsociado & 0x7fffffffL;
 			this.setLongAsociado(aux);

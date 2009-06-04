@@ -5,8 +5,8 @@ public class ParCharProb implements Comparable<ParCharProb>{
 	
 	private char simboloUnicode;
 	private float probabilidad;
-	private int techo;
-	private int piso;
+	private long techo;
+	private long piso;
 	
 
 	public ParCharProb(char simboloUnicode, float probabilidad) {
@@ -35,24 +35,30 @@ public class ParCharProb implements Comparable<ParCharProb>{
 	}
 
 
-	public int getTecho() {
+	public long getTecho() {
 		return techo;
 	}
 
 
-	public void setTecho(int longTotalIntervalo) {
+	public void setTecho(long longTotalIntervalo) {
 		
        double sky = Math.floor(piso + longTotalIntervalo*this.probabilidad);
 	   this.techo = (int)sky;
 	}
 
 
-	public void setTecho(int piso, int longTotalIntervalo) {
+	public void setTecho(long piso, long longitudInterv) {
 		this.piso = piso;
-		this.setTecho(longTotalIntervalo);
+		this.setTecho(longitudInterv);
 		}
 	
-	public int getPiso() {
+	public void setTecho(UnsignedInt piso, UnsignedInt longitudInterv) {
+		this.piso = piso.getLongAsociado();
+		
+		this.techo = (piso.mas(longitudInterv)).porFloat(this.probabilidad).getLongAsociado();
+		}
+	
+	public long getPiso() {
 		return piso;
 	}
 

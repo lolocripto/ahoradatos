@@ -13,11 +13,14 @@ public class LogicaAritmetica {
 	private int bitsUnderflow;
 	private Segmento intervalo;
 
+	
 	private ParCharProb segmentar(ArrayList<ParCharProb> contexto,
 			char caracterAcodificar) {
 
-		int piso = this.intervalo.getPiso();
-		int longitudInterv = this.intervalo.getTecho() - piso;
+		UnsignedInt piso = this.intervalo.getPiso();
+		UnsignedInt techo = this.intervalo.getTecho();
+		
+		UnsignedInt longitudInterv = techo.menos(piso);
 
 		// ordeno el contexto por orden alfabetico
 		// Collections.sort(contexto);
@@ -43,7 +46,7 @@ public class LogicaAritmetica {
 
 			// el piso del elemento actual, sera el techo + 1 del elemento
 			// anterior
-			elemActual.setTecho(elemAnterior.getTecho() + 1, longitudInterv);
+			elemActual.setTecho(elemAnterior.getTecho() + 1, longitudInterv.getLongAsociado());
 
 			// me fijo si es el que debo codificar para no seguir segmentando
 			// sin sentido
