@@ -63,7 +63,14 @@ public class Ppmc implements Compresor{
 		//Cargo la Lista de orden menos uno
 		
 		for (int i = 0; i < 65533; i++) {
-			this.contextoOrdenMenosUno.crearCharEnContexto(new Character(Character.toChars(i)[0]));
+			if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
+				this.contextoOrdenMenosUno.crearCharEnContexto(new Character(Character.toChars(i)[0]));
+			}
+			
+			//new Character(Character.toChars(i)[0]);
+			if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
+				this.contextoOrdenMenosUno.crearCharEnContexto(new Character(Character.toChars(i)[0]));
+			}
 		}
 		this.contextoOrdenMenosUno.crearCharEnContexto(Constantes.EOF);
 		
