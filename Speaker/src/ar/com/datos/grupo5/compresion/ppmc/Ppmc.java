@@ -142,6 +142,9 @@ public class Ppmc implements Compresor{
 			this.imprimirEstado();
 			pos++;
 		}
+		//FIXME: Probar
+		this.getContexto(cadena, pos);
+		
 		//return bos.toByteArray();
 		return null;
 	}
@@ -300,6 +303,15 @@ public class Ppmc implements Compresor{
 	
 	public final byte[] finalizarCompresion(){
 		//TODO: Llamar al Aritmetico para finalizar la compresion.
+		
+		//Recorro los contextos para las emisiones
+		this.recorrerContextos(Constantes.EOF);
+		//Actualizo los contextos para la próxima recorrida.
+		this.actualizarOrdenes(Constantes.EOF);
+		//FIXME: Imprimo los ordenes, es solo para debug. Por lo tanto borrarlo.
+		this.imprimirEstado();
+		
+		this.compresorAritmetico.finalizarCompresion();
 		return null;
 	}
 	
