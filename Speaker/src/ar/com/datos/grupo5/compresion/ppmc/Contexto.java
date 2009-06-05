@@ -18,7 +18,7 @@ public class Contexto {
 	/**
 	 * Contiene todas la letras del contexto asociado con su ocurrencia.
 	 */
-	private HashMap<Character,ParCharProb> listaOcurrenciaPorCaracter;
+	private HashMap<String,ParCharProb> listaOcurrenciaPorCaracter;
 	
 	/**
 	 * Contiene el nombre del contexto asociado a la lista de Ocurrencias.
@@ -34,7 +34,7 @@ public class Contexto {
 	 * Constructor del contexto.
 	 */
 	public Contexto() {
-		this.listaOcurrenciaPorCaracter = new HashMap<Character,ParCharProb>();
+		this.listaOcurrenciaPorCaracter = new HashMap<String,ParCharProb>();
 		this.setCantidadLetras(0);
 	}
 	
@@ -44,7 +44,7 @@ public class Contexto {
 	 */
 	public Contexto(final String nombreContexto) {
 		this.setContexto(nombreContexto);
-		this.listaOcurrenciaPorCaracter = new HashMap<Character,ParCharProb>();
+		this.listaOcurrenciaPorCaracter = new HashMap<String,ParCharProb>();
 		this.setCantidadLetras(0);
 	}
 	
@@ -64,7 +64,7 @@ public class Contexto {
 			this.cantidadLetras++;
 			
 			//Actualizo la letra con el elemento par.
-			this.listaOcurrenciaPorCaracter.put(letra, par);
+			this.listaOcurrenciaPorCaracter.put(letra.toString(), par);
 			return true;
 		}
 		return false;
@@ -80,7 +80,7 @@ public class Contexto {
 			ParCharProb par = new ParCharProb(letra, 1);
 			
 			//Actualizo la letra con el elemento par.
-			this.listaOcurrenciaPorCaracter.put(letra, par);
+			this.listaOcurrenciaPorCaracter.put(letra.toString(), par);
 			
 			this.cantidadLetras++;
 			

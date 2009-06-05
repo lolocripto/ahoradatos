@@ -11,6 +11,7 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.compresion.conversionBitToByte;
 import ar.com.datos.grupo5.compresion.aritmetico.LogicaAritmetica;
 import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
 import ar.com.datos.grupo5.interfaces.Compresor;
@@ -35,6 +36,8 @@ public class Ppmc implements Compresor{
 	
 	private LogicaAritmetica compresorAritmetico;
 	
+	private conversionBitToByte conversor;
+	
 	/**
 	 * Logger para la clase.
 	 */
@@ -53,6 +56,7 @@ public class Ppmc implements Compresor{
 		this.listaOrdenes = new ArrayList<Orden>(this.orden+1);
 		this.inicializarListas();
 		this.compresorAritmetico = new LogicaAritmetica();
+		this.conversor = new conversionBitToByte();
 	}
 	
 	/**
@@ -134,10 +138,6 @@ public class Ppmc implements Compresor{
 	 */
 	public final byte[] comprimir(final String cadena){
 		int pos = 0;
-		/*
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
-		DataOutputStream dos = new DataOutputStream(bos);
-		*/
 		while (pos < cadena.length()) {
 			//Obtengo el contexto
 			this.getContexto(cadena, pos);
@@ -151,8 +151,6 @@ public class Ppmc implements Compresor{
 		}
 		//FIXME: Probar
 		this.getContexto(cadena, pos);
-		
-		//return bos.toByteArray();
 		return null;
 	}
 
@@ -217,7 +215,7 @@ public class Ppmc implements Compresor{
 	 * @param letra
 	 * @return
 	 */
-	private final byte[] recorrerContextos(Character letra) {
+	private final void recorrerContextos(Character letra) {
 		int ordenContexto = this.contextoActual.length();
 		String contextoString = this.contextoActual.substring(0, ordenContexto); //FIXME: Ver el tema de contextoActual, sino se usa despues eliminar contexto
 		this.logger.debug("Nuevo contexto: " + contextoString);
@@ -242,13 +240,12 @@ public class Ppmc implements Compresor{
 				//Creo el contexto contextoString
 				contexto = this.listaOrdenes.get(ordenContexto).crearContexto(contextoString);
 				
-				//FIXME: Agrego el elemento ESC al contexto. No lo debería llenar, asi se lo mando vacio y sabe que emite uno,
-				//luego en el paso de actualizar los contextos agrego el ESC y la letra
-				//contexto.crearCharEnContexto(Constantes.ESC);
-		
-				//Emito la respuesta del Aritmetico
-				//FIXME: Ver como pasar los parametros al compresor
-				this.compresorAritmetico.comprimir((ArrayList<ParCharProb>) contexto.getArrayCharProb(),Constantes.ESC);
+				//Creo una estructura temporaria para evitar tener que cambiar todo el algoritmo. 
+				ArrayList<ParCharProb> temp = new ArrayList<ParCharProb>();
+				temp.add(new ParCharProb(Constantes.ESC,1));
+				
+				//TODO:Emito la respuesta del Aritmetico
+				conversor.setBits(this.compresorAritmetico.comprimir(temp,Constantes.ESC));
 				
 				if (ordenContexto > 0){
 					ordenContexto--;
@@ -276,8 +273,17 @@ public class Ppmc implements Compresor{
 			 * La corroboracion de si la letra esta en la lista que le mando la hago yo o la hace el compresor??
 			 * si la hace el compresor, deberia buscar y al no encontrar emitir ESC
 			*/
-			//FIXME: Ver como pasar los parametros al compresor
-			this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra);
+			
+			//Busco la letra en el contexto
+			if (contexto.existeChar(letra)) {
+				//FIXME: Capturar la salida.
+				conversor.setBits(this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra));	
+			} else {
+				//FIXME: Capturar la salida.
+				conversor.setBits(this.compresorAritmetico.comprimir(nuevoOrdenContexto,Constantes.ESC));
+			}
+			
+			
 			
 			if (contexto.existeChar(letra)) {
 				finalizarRecorrida = true;
@@ -295,17 +301,13 @@ public class Ppmc implements Compresor{
 		}
 		//Analizo por separado el ultimo vector
 		if (ordenContexto == -1 && !finalizarRecorrida){
-			//FIXME: Terminar la union con el compresor aritmetico.
-			//Como es el contexto -1 y no se encontro aun la emision final entonces emito el valor por default
-			
+	
 			contextoMasUno = this.listaOrdenes.get(0).getContexto(contextoActual.substring(this.contextoActual.length() - (0), this.contextoActual.length()));
 			
 			nuevoOrdenContexto = this.obtenerExclusionCompleta(this.contextoOrdenMenosUno, contextoMasUno);
-			//FIXME: Ver como pasar los parametros al compresor
-			this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra);
+			//FIXME: Campturar la salida. 
+			conversor.setBits(this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra));
 		}
-		//FIXME: Convertir NroRes a bytes y devolverlo, NO DEVOLVER NADA
-		return null;
 	}
 	
 	public final byte[] finalizarCompresion(){
@@ -318,8 +320,9 @@ public class Ppmc implements Compresor{
 		//FIXME: Imprimo los ordenes, es solo para debug. Por lo tanto borrarlo.
 		this.imprimirEstado();
 		
-		this.compresorAritmetico.finalizarCompresion();
-		return null;
+		conversor.setBits(this.compresorAritmetico.finalizarCompresion());
+		
+		return conversor.getBytes();
 	}
 	
 	public final String descomprimir(){
