@@ -1,6 +1,7 @@
 package ar.com.datos.grupo5.compresion.lzp;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Led Zeppelin
@@ -9,24 +10,20 @@ import java.util.ArrayList;
  */
 public class ListaContexto {
 
-	private ArrayList<ParCtxUbicacion> lista;
+	private Map<String, Integer> mapaContexto;
 
 	public ListaContexto(){
-
+		mapaContexto = new HashMap<String, Integer>();
 	}
 
-	public void finalize() throws Throwable {
-
+	public Integer getPosicion(String contexto) {
+		return mapaContexto.get(contexto);
 	}
-
-	/**
-	 * 
-	 * @param contexto
-	 */
-	public void buscarContexto(String contexto){
-
+	
+	public void setPosicion(String contexto, Integer posicion) {
+		mapaContexto.put(contexto, posicion);
 	}
-
+	
 	public byte[] getBytes(){
 		return null;
 	}
@@ -37,24 +34,6 @@ public class ListaContexto {
 	 */
 	public void setBytes(byte[] datos){
 
-	}
-
-	public String siguienteContexto(){
-		return "";
-	}
-
-	/**
-	 * @param lista the lista to set
-	 */
-	public void setLista(ArrayList<ParCtxUbicacion> lista) {
-		this.lista = lista;
-	}
-
-	/**
-	 * @return the lista
-	 */
-	public ArrayList<ParCtxUbicacion> getLista() {
-		return lista;
 	}
 
 }
