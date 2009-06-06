@@ -20,14 +20,6 @@ public class Lzp implements Compresor {
 
 	}
 
-	public void algoritmoDeMatch(){
-
-	}
-
-	public void algoritmoDePersistenciaABinario(){
-
-	}
-
 	/**
 	 * 
 	 * @param cadena
