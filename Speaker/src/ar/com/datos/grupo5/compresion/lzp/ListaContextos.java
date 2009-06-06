@@ -8,11 +8,11 @@ import java.util.Map;
  * @version 1.0
  * @created 05-Jun-2009 12:58:19 a.m.
  */
-public class ListaContexto {
+public class ListaContextos {
 
 	private Map<String, Integer> mapaContexto;
 
-	public ListaContexto(){
+	public ListaContextos(){
 		mapaContexto = new HashMap<String, Integer>();
 	}
 

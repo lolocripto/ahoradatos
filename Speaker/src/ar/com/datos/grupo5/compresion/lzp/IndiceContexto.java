@@ -10,7 +10,7 @@ public class IndiceContexto {
 
 	private ArchivoBloques archivoBloque;
 	private short espacioOcupado;
-	private ListaContexto Indice;
+	private ListaContextos Indice;
 	private long ultimoBloque;
 
 	
@@ -69,14 +69,14 @@ public class IndiceContexto {
 	/**
 	 * @param indice the indice to set
 	 */
-	public void setIndice(ListaContexto indice) {
+	public void setIndice(ListaContextos indice) {
 		Indice = indice;
 	}
 
 	/**
 	 * @return the indice
 	 */
-	public ListaContexto getIndice() {
+	public ListaContextos getIndice() {
 		return Indice;
 	}
 

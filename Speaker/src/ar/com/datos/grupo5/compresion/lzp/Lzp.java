@@ -14,10 +14,19 @@ public class Lzp implements Compresor {
 	private IndiceContexto Indice;
 	private Orden letrasLeidas;
 	private Contexto longitudes;
+	
+	/**
+	 * Compresor aritmetico para las longitudes y cararteres emitodos.
+	 */
 	private LogicaAritmetica compresorAritemtico;
+	
+	/**
+	 * Contextos y posiciones.
+	 */
+	private ListaContextos listaContextos;
 
 	public Lzp(){
-
+		listaContextos = new ListaContextos(); 
 	}
 
 	/**
