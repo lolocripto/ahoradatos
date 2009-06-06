@@ -45,7 +45,8 @@ public class Lzp implements Compresor {
 
 	public Lzp(){
 		listaContextos = new ListaContextos();
-		compresorAritemtico = new LogicaAritmetica();
+		motorAritCaracteres = new LogicaAritmetica();
+		motorAritLongitudes = new LogicaAritmetica();
 		letrasCtx = new Orden();
 		longitudesCtx = new Contexto();
 	}
@@ -77,7 +78,8 @@ public class Lzp implements Compresor {
 	@Override
 	public void iniciarSesion() {
 		listaContextos = new ListaContextos();
-		compresorAritemtico = new LogicaAritmetica();
+		motorAritCaracteres = new LogicaAritmetica();
+		motorAritLongitudes = new LogicaAritmetica();
 		letrasCtx = new Orden();
 		longitudesCtx = new Contexto();
 		sesionIniciada = true;
