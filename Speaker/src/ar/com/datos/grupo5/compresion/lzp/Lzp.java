@@ -32,7 +32,8 @@ public class Lzp implements Compresor {
 	/**
 	 * Motor aritmetico para las longitudes.
 	 */
-	private LogicaAritmetica motorAritLongitudes;	
+	private LogicaAritmetica motorAritLongitudes;
+	
 	/**
 	 * Contextos y posiciones.
 	 */
@@ -60,8 +61,24 @@ public class Lzp implements Compresor {
 			throw new SessionException();
 		}
 		
+		String resultado = "";
 		
-		return null;
+		//Trabajar con un StringBuffer es mas rapido.
+		StringBuffer buffer = new StringBuffer(cadena);
+		
+		//Si no hay nada aca, entonces es la primera iteracion.
+		if (longitudesCtx.getCantidadLetras() > 0) {
+			char primero = buffer.charAt(0);
+			char segundo = buffer.charAt(1);
+			//Saco los 2 primeros.
+			buffer.delete(0, 2);
+			
+			//TODO: Hay que emitir estos caracteres sin longitudes.
+		}
+		
+		resultado += ComprimirInterno(buffer);
+		
+		return resultado;
 	}
 
 	@Override
@@ -85,4 +102,7 @@ public class Lzp implements Compresor {
 		sesionIniciada = true;
 	}
 
+	private String ComprimirInterno(StringBuffer cadena) {
+		return "";
+	}
 }
