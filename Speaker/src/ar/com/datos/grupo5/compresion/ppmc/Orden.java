@@ -16,7 +16,11 @@ import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
  */
 public class Orden {
 
-	private int Numero;
+	/**
+	 * Para que es esto, que encima no se usa????????
+	 */
+	private int numero;
+	
 	private HashMap< String, Contexto > listaContexto;
 	
 	/**
