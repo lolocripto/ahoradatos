@@ -25,10 +25,11 @@ public interface Compresor {
 	 * Obtiene los datos comprimidos hasta el momento.
 	 * @return bytes con los datos comprimidos.
 	 */
-	public byte[] flush();
+	public byte[] obtenerBuffer();
 	
 	/**
 	 * Finaliza la sesion actual y deja todo lista para comprimir/descomprimir otro archivo.
+	 * @return los bytes que quedaron sin obtenerse aun. 
 	 */
 	public byte[] finalizarSession();
 	
