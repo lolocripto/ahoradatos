@@ -12,7 +12,11 @@ import ar.com.datos.grupo5.interfaces.Compresor;
 public class Lzp implements Compresor {
 
 	private IndiceContexto Indice;
-	private Orden letrasLeidas;
+	
+	/**
+	 * Contexto para las letra? porque carajo se llama Orden?
+	 */
+	private Orden letrasCtx;
 	
 	/**
 	 * Contextos para las longitudes, para pasar al compresor aritmetico.
