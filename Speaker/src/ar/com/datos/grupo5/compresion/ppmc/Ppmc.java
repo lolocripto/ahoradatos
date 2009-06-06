@@ -1,11 +1,6 @@
 package ar.com.datos.grupo5.compresion.ppmc;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
@@ -174,7 +169,7 @@ public class Ppmc implements Compresor{
 	private void actualizarOrdenes(Character letra) {
 		int ordenContexto = this.contextoActual.length();
 		String contextoString = this.contextoActual.substring(0, ordenContexto); //FIXME: Ver el tema de contextoActual, sino se usa despues eliminar contexto
-		this.logger.debug("Nuevo contexto: " + contextoString);
+		logger.debug("Nuevo contexto: " + contextoString);
 		Contexto contexto;
 		boolean finalizarActualizacion = false;
 		
@@ -203,7 +198,7 @@ public class Ppmc implements Compresor{
 			if (ordenContexto > 0){
 				ordenContexto--;
 				contextoString = this.contextoActual.substring(this.contextoActual.length() - ordenContexto, this.contextoActual.length());
-				this.logger.debug("Nuevo contexto: " + contextoString);
+				logger.debug("Nuevo contexto: " + contextoString);
 			} else {
 				ordenContexto--;
 			}
@@ -218,7 +213,7 @@ public class Ppmc implements Compresor{
 	private final void recorrerContextos(Character letra) {
 		int ordenContexto = this.contextoActual.length();
 		String contextoString = this.contextoActual.substring(0, ordenContexto); //FIXME: Ver el tema de contextoActual, sino se usa despues eliminar contexto
-		this.logger.debug("Nuevo contexto: " + contextoString);
+		logger.debug("Nuevo contexto: " + contextoString);
 		boolean finalizarRecorrida = false;
 		Contexto contexto;
 		Contexto contextoMasUno;
@@ -249,7 +244,7 @@ public class Ppmc implements Compresor{
 				if (ordenContexto > 0){
 					ordenContexto--;
 					contextoString = this.contextoActual.substring(this.contextoActual.length() - ordenContexto, this.contextoActual.length());
-					this.logger.debug("Nuevo contexto: " + contextoString);
+					logger.debug("Nuevo contexto: " + contextoString);
 				} else {
 					ordenContexto--;
 				}
@@ -291,7 +286,7 @@ public class Ppmc implements Compresor{
 			if (ordenContexto > 0){
 				ordenContexto--;
 				contextoString = this.contextoActual.substring(this.contextoActual.length() - ordenContexto, this.contextoActual.length());
-				this.logger.debug("Nuevo contexto: " + contextoString);
+				logger.debug("Nuevo contexto: " + contextoString);
 			} else {
 				ordenContexto--;
 			}

@@ -2,11 +2,8 @@ package ar.com.datos.tests;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
-
-import sun.rmi.runtime.Log;
 
 import ar.com.datos.grupo5.Main;
 import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
@@ -32,55 +29,76 @@ public class TestArbol {
 			
 			Clave clave = null;
 			RegistroNodo reg = null;
-
+			
+//			String[] claves = {
+//					"15", "30", "1", "10", "13", "50", "35", 
+//					"20", "22", "40", "55", "23", "21", "24",
+//					"25", "26", "43", "45", "23", "17", "241",
+//					"242", "37", "38", "16", "41", "47", "68",
+//					"34", "48", "100", "200", "150", "151", "44"
+//					};
+//				
+//			for (int i = 0; i < claves.length; i++) {
+//				
+//				clave = new Clave();
+//				reg = new RegistroNodo();
+//				
+//				System.out.println("Inserto [" + claves[i] + "]");
+//				clave.setClave(claves[i]);
+//				reg.setClave(clave);
+//				tree.insertar(reg);
+//				tree.listar();
+//			}
+//			for (int i = 0; i < claves.length; i++) {
+//				
+//				clave = new Clave();
+//				reg = new RegistroNodo();
+//				
+//				System.out.println("Busco: " + claves[i]);
+//				clave.setClave(claves[i]);
+//				reg = tree.buscar(clave);
+//				if (reg != null) {
+//					System.out.println("Encontrada la clave: " + reg.getClave().getClave());
+//				} else {
+//					System.out.println("No se encontro la clave: " + claves[i]);
+//				}
+//			}
+			int cantidad = 500;
+			String claveStr = "";
 			TextInterpreter tx = new TextInterpreter();
 			
 			Collection<IunidadDeHabla> lista2 = null;
 			
-			lista2 = tx.modoLecturaSinAlmacenamiento("palabras2.txt", true);
-			//lista2 = tx.modoLecturaSinAlmacenamiento("palabras.txt", true);
-			//lista2 = tx.modoLecturaSinAlmacenamiento("numeros.txt", true);
+			lista2 = tx.modoLecturaSinAlmacenamiento("palabras.txt", true);
 			
 			Iterator<IunidadDeHabla> it;
 			
 			it = lista2.iterator();
 			
 			int u =0;
-
-			//while (u < cantidad) {
+			
 			while (it.hasNext()) {
 				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
 				
 				String cadena = iunidadDeHabla.getTextoEscrito();
 				
-				//System.out.println(cadena);
+				System.out.println(cadena);
 				clave = new Clave();
 				clave.setClave(cadena);
 				reg = new RegistroNodo();
 				reg.setClave(clave);
-				if (u == 10586) {
-					logger.debug("");
-				}
 				if (tree.insertar(reg)) {
-					System.out.println("Insertada la palabra: " + cadena + " Cantidad: " + u);
+					System.out.println("Insertada la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
 				} else {
-					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + u);
-				}
-				//reg = tree.buscar(clave);
-				if (reg == null) {
-					System.out.println("##########################No encontre: " + clave.getClave());
+					System.out.println("No se inserto la palabra: " + cadena + " Cantidad: " + Integer.toString(u));
 				}
 				u++;
 				//tree.listar();
 			}
-			tree.listar();
-			lista2 = tx.modoLecturaSinAlmacenamiento("palabras2.txt", true);
-			//lista2 = tx.modoLecturaSinAlmacenamiento("palabras.txt", true);
-			//lista2 = tx.modoLecturaSinAlmacenamiento("numeros.txt", true);
+
+			lista2 = tx.modoLecturaSinAlmacenamiento("d:\\poemasreturns.txt", true);
 			it = lista2.iterator();
-			System.out.println("Ahora comienzo a buscar en el diccionario");
-			u = 0;
-			//while (u < cantidad){
+			
 			while (it.hasNext()) {
 				IunidadDeHabla iunidadDeHabla = (IunidadDeHabla) it.next();
 				
@@ -96,10 +114,9 @@ public class TestArbol {
 				} else {
 					System.out.println("##########################No encontre: " + clave.getClave());
 				}
-				u++;
 				//Thread.sleep(50);
 			}
-
+			
 		} catch (Exception e) {
 			logger.error("Error: " + e);
 			e.printStackTrace();

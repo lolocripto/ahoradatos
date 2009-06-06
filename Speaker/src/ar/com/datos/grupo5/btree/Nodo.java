@@ -563,6 +563,8 @@ public class Nodo {
 		// Si es el primer registro, entonces sumo el puntero a la izquierda.
 		if (espacioOcupado == 0){
 			espacioOcupado += Constantes.SIZE_OF_INT;
+		} else {
+			overflow = false;
 		}
 		
 		espacioOcupado += espacio;

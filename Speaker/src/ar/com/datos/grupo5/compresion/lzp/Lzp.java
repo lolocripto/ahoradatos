@@ -20,10 +20,6 @@ public class Lzp implements Compresor {
 
 	}
 
-	public void finalize() throws Throwable {
-
-	}
-
 	public void algoritmoDeMatch(){
 
 	}

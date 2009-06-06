@@ -158,7 +158,7 @@ public class Core {
 						case -1:
 							return "Operacion cancelada.";
 						case -2:
-							this.logger.debug("error, resultado = -2. respuesta es N, pide el termino de nuevo.");
+							logger.debug("error, resultado = -2. respuesta es N, pide el termino de nuevo.");
 						//	respuesta = "N";
 							continue;
 						default:
@@ -636,7 +636,7 @@ public class Core {
 			this.ftrsManager.abrirArchivos(); //TODO esto se puso por una prueba, probablemente haya que sacarlo
 			
 		} catch (Exception e) {
-			this.logger.debug("No se ha podido crear el FTRS.");
+			logger.debug("No se ha podido crear el FTRS.");
 		}
 		this.ranking = null;
 		this.metodo = Constantes.METODO;

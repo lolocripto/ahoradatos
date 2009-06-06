@@ -6,7 +6,6 @@ package ar.com.datos.grupo5.compresion.ppmc;
 import java.util.Collection;
 import java.util.HashMap;
 
-import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
 
 /**

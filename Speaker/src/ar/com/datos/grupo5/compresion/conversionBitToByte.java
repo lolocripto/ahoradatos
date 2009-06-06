@@ -11,9 +11,7 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.aritmetico.UnsignedInt;
-import ar.com.datos.grupo5.compresion.ppmc.Ppmc;
 
 /**
  * @author Led Zeppelin
@@ -68,7 +66,7 @@ public class conversionBitToByte {
 			
 			for (int i = 0; i < cantidad; i++) {
 				
-				this.logger.debug("Inicio: "+beginIndex+" final: "+endIndex+" Longitud Total: "+this.datosBinarios.substring(beginIndex, endIndex));
+				logger.debug("Inicio: "+beginIndex+" final: "+endIndex+" Longitud Total: "+this.datosBinarios.substring(beginIndex, endIndex));
 				//Convierto el string de binario a byte para luego escribirlo en binario puro
 				Byte elemento = Byte.parseByte(this.datosBinarios.substring(beginIndex, endIndex),2);
 				

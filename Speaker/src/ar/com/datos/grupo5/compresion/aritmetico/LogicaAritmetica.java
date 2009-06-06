@@ -1,11 +1,7 @@
 package ar.com.datos.grupo5.compresion.aritmetico;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
-
-import sun.text.normalizer.UnicodeSet;
 
 public class LogicaAritmetica {
 
