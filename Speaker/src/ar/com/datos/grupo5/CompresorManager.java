@@ -4,6 +4,7 @@
 package ar.com.datos.grupo5;
 
 import ar.com.datos.grupo5.compresion.CompresorFactory;
+import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.Compresor;
 import ar.com.datos.grupo5.utils.MetodoCompresion;
 
@@ -25,7 +26,7 @@ public class CompresorManager {
 		this.pathArchivoOrigen = pathArchivoOrigenExt;
 	}
 	
-	public final String ComprimirArchivo(){
+	public final String ComprimirArchivo() throws SessionException{
 		byte[] salidaCompresor;
 		//Abrir archivo y leer linea por linea.
 		String linea = "";

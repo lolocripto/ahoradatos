@@ -3,6 +3,8 @@
  */
 package ar.com.datos.grupo5.interfaces;
 
+import ar.com.datos.grupo5.excepciones.SessionException;
+
 /**
  * @author Led Zeppelin
  *
@@ -20,8 +22,9 @@ public interface Compresor {
 	 * @param cadena
 	 *            La cadena a comprimir.
 	 * @return La cadena comprida en binario.
+	 * @throws SessionException 
 	 */
-	public String comprimir(String cadena);
+	public String comprimir(String cadena) throws SessionException;
 
 	/**
 	 * Finaliza la sesion actual y deja todo lista para comprimir/descomprimir
@@ -30,7 +33,7 @@ public interface Compresor {
 	public void finalizarSession();
 	
 	/**
-	 * 
+	 * @param datos Los datos comprimidos en binario.
 	 * @return la cadena descomprimida.
 	 */
 	public String descomprimir(String datos);

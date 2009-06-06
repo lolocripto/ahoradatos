@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.UnidadesDeExpresion.Palabra;
+import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.grupo5.parser.ITextInput;
 import ar.com.datos.grupo5.parser.PalabrasFactory;
@@ -233,7 +234,13 @@ public class Core {
 		//El manejador del compresor, le indico el compresor a usar.
 		CompresorManager compresorManager = new CompresorManager(metodoExt, pathArchivoOrigen, pathArchivoDestino);
 		
-		return compresorManager.ComprimirArchivo();
+		try {
+			return compresorManager.ComprimirArchivo();
+		} catch (SessionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
 	}
 	
 	/**

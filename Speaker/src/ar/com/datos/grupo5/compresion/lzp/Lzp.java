@@ -2,6 +2,7 @@ package ar.com.datos.grupo5.compresion.lzp;
 import ar.com.datos.grupo5.compresion.aritmetico.LogicaAritmetica;
 import ar.com.datos.grupo5.compresion.ppmc.Orden;
 import ar.com.datos.grupo5.compresion.ppmc.Contexto;
+import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.Compresor;
 
 /**
@@ -36,16 +37,29 @@ public class Lzp implements Compresor {
 	 * Contextos y posiciones.
 	 */
 	private ListaContextos listaContextos;
+	
+	/**
+	 * Flag para saber si la session fue inicializada. 
+	 */
+	private boolean sesionIniciada = true;
 
 	public Lzp(){
 		listaContextos = new ListaContextos();
+		compresorAritemtico = new LogicaAritmetica();
+		letrasCtx = new Orden();
+		longitudesCtx = new Contexto();
 	}
 
 	/**
 	 * 
 	 * @param cadena
 	 */
-	public String comprimir(String cadena){
+	public String comprimir(String cadena) throws SessionException{
+		if (!sesionIniciada) {
+			throw new SessionException();
+		}
+		
+		
 		return null;
 	}
 
@@ -57,14 +71,16 @@ public class Lzp implements Compresor {
 
 	@Override
 	public void finalizarSession() {
-		// TODO Auto-generated method stub
-		
+		sesionIniciada = false;
 	}
 
 	@Override
 	public void iniciarSesion() {
-		// TODO Auto-generated method stub
-		
+		listaContextos = new ListaContextos();
+		compresorAritemtico = new LogicaAritmetica();
+		letrasCtx = new Orden();
+		longitudesCtx = new Contexto();
+		sesionIniciada = true;
 	}
 
 }
