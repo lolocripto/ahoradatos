@@ -6,7 +6,7 @@ import java.util.Iterator;
 public class LogicaAritmetica {
 
 	// private ArrayList<ParCharProb> listaCaracterProb;
-	private int bitsUnderflow;
+	//private int bitsUnderflow;
 	private Segmento intervalo;
 
 	
@@ -23,7 +23,7 @@ public class LogicaAritmetica {
 
 		Iterator<ParCharProb> it = contexto.iterator();
 
-		boolean encontrado = false;
+		//boolean encontrado = false;
 		ParCharProb elemAnterior = null;
 		ParCharProb elemActual = null;
 

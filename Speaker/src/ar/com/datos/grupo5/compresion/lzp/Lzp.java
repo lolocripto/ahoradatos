@@ -24,10 +24,14 @@ public class Lzp implements Compresor {
 	private Contexto longitudesCtx;
 	
 	/**
-	 * Compresor aritmetico para las longitudes y cararteres emitodos.
+	 * Motor aritmetico para los cararteres emitodos.
 	 */
-	private LogicaAritmetica compresorAritemtico;
+	private LogicaAritmetica motorAritCaracteres;
 	
+	/**
+	 * Motor aritmetico para las longitudes.
+	 */
+	private LogicaAritmetica motorAritLongitudes;	
 	/**
 	 * Contextos y posiciones.
 	 */
