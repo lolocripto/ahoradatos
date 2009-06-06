@@ -23,6 +23,12 @@ public class ListaContexto {
 	public void setPosicion(String contexto, Integer posicion) {
 		mapaContexto.put(contexto, posicion);
 	}
+
+	public Integer findPosicion(final String contexto, final Integer posicion) {
+		Integer ctx = mapaContexto.get(contexto);
+		mapaContexto.put(contexto, posicion);
+		return ctx;
+	}
 	
 	public byte[] getBytes(){
 		return null;
