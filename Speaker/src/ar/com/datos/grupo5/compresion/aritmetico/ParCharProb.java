@@ -7,6 +7,7 @@ public class ParCharProb implements Comparable<ParCharProb>{
 	private float probabilidad;
 	private long techo;
 	private long piso;
+	private long frecuencia;
 	
 
 	public ParCharProb(char simboloUnicode, float probabilidad) {
@@ -88,5 +89,19 @@ public class ParCharProb implements Comparable<ParCharProb>{
 		ParCharProb obj = (ParCharProb) o;
 		if (this.simboloUnicode == obj.simboloUnicode) return true;
 		return false;
+	}
+
+	/**
+	 * @param frecuencia the frecuencia to set
+	 */
+	public void setFrecuencia(long frecuencia) {
+		this.frecuencia = frecuencia;
+	}
+
+	/**
+	 * @return the frecuencia
+	 */
+	public long getFrecuencia() {
+		return frecuencia;
 	}
 }

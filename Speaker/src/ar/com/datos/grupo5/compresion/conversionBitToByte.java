@@ -12,6 +12,7 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.compresion.aritmetico.UnsignedInt;
+import ar.com.datos.grupo5.utils.Conversiones;
 
 /**
  * @author Led Zeppelin
@@ -48,8 +49,6 @@ public class conversionBitToByte {
 		long cantidad = 0;
 		int beginIndex = 0, endIndex = 0;
 		
-		UnsignedInt numero = new UnsignedInt(1);
-		
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
 
@@ -61,33 +60,36 @@ public class conversionBitToByte {
 			//Entonces lo parseo con un byte
 			
 			//obtengo la cantidad de bytes que puedo leer
-			cantidad = longitud / (Byte.SIZE-1);
-			endIndex += Byte.SIZE-1;
+			cantidad = longitud / (Byte.SIZE);
+			endIndex += Byte.SIZE;
 			
 			for (int i = 0; i < cantidad; i++) {
 				
 				logger.debug("Inicio: "+beginIndex+" final: "+endIndex+" Longitud Total: "+this.datosBinarios.substring(beginIndex, endIndex));
 				//Convierto el string de binario a byte para luego escribirlo en binario puro
-				Byte elemento = Byte.parseByte(this.datosBinarios.substring(beginIndex, endIndex),2);
+				Long elemento = Long.parseLong(this.datosBinarios.substring(beginIndex, endIndex), 2);
 				
 				try {
-					dos.writeByte(elemento.byteValue());
+					byte[] numeroBytes = Conversiones.longToArrayByte(elemento);
+					dos.write(numeroBytes,7,1);
 				} catch (IOException e) {
 					//TODO: ver que hago aca!
 					e.printStackTrace();
 					return null;
 				}
 				//Muevo los offset para avanzar al siguiente byte
-				endIndex += Byte.SIZE-1;
-				beginIndex += Byte.SIZE-1;
+				endIndex += Byte.SIZE;
+				beginIndex += Byte.SIZE;
 			}
 			
-			if (longitud % (Byte.SIZE-1) > 0) {
-				this.datosBinarios = this.datosBinarios.substring((int) (cantidad*Byte.SIZE-1));
+			if (longitud % (Byte.SIZE) > 0) {
+				this.datosBinarios = this.datosBinarios.substring((int) (cantidad*Byte.SIZE));
+			} else {
+				this.datosBinarios = "";
 			}
 	
 		} else {
-			if (longitud <= Integer.SIZE) {
+			if (longitud < Integer.SIZE) {
 				//Entonces lo parseo con un Short
 				cantidad = longitud / Short.SIZE;
 				endIndex += Short.SIZE;
@@ -95,12 +97,14 @@ public class conversionBitToByte {
 				for (int i = 0; i < cantidad; i++) {
 					
 					//Convierto el string de binario a byte para luego escribirlo en binario puro
-					Short elemento = Short.parseShort(this.datosBinarios.substring(beginIndex, endIndex),2);
+					Long elemento = Long.parseLong(this.datosBinarios.substring(beginIndex, endIndex), 2);
 					
 					try {
-						dos.writeShort(elemento);
-					} catch (IOException E) {
+						byte[] numeroBytes = Conversiones.longToArrayByte(elemento);
+						dos.write(numeroBytes,6,2);
+					} catch (IOException e) {
 						//TODO: ver que hago aca!
+						e.printStackTrace();
 						return null;
 					}
 					//Muevo los offset para avanzar al siguiente byte
@@ -109,10 +113,11 @@ public class conversionBitToByte {
 				}
 				if (longitud % Short.SIZE > 0) {
 					this.datosBinarios = this.datosBinarios.substring((int) (cantidad*Short.SIZE));
+				} else {
+					this.datosBinarios = "";
 				}
 				
 			} else {
-				if (longitud <= Long.SIZE) {
 					//Entonces lo parseo con un Integer
 					cantidad = longitud / Integer.SIZE;
 					endIndex += Integer.SIZE;
@@ -120,45 +125,25 @@ public class conversionBitToByte {
 					for (int i = 0; i < cantidad; i++) {
 						
 						//Convierto el string de binario a byte para luego escribirlo en binario puro
-						Integer elemento = Integer.parseInt(this.datosBinarios.substring(beginIndex, endIndex),2);
+						Long elemento = Long.parseLong(this.datosBinarios.substring(beginIndex, endIndex), 2);
 						
 						try {
-							dos.writeInt(elemento);
-						} catch (IOException E) {
+							byte[] numeroBytes = Conversiones.longToArrayByte(elemento);
+							dos.write(numeroBytes,4,4);
+						} catch (IOException e) {
 							//TODO: ver que hago aca!
+							e.printStackTrace();
 							return null;
 						}
 						//Muevo los offset para avanzar al siguiente byte
 						endIndex += Integer.SIZE;
 						beginIndex += Integer.SIZE;
 					}
-					if (longitud % Integer.SIZE > 0) {
+					if ((longitud % Integer.SIZE) > 0) {
 						this.datosBinarios = this.datosBinarios.substring((int) (cantidad*Integer.SIZE));
+					} else {
+						this.datosBinarios = "";
 					}
-				} else {
-					//Entoces lo parseo con un Long
-					cantidad = longitud / Long.SIZE;
-					endIndex += Long.SIZE;
-					
-					for (int i = 0; i < cantidad; i++) {
-						
-						//Convierto el string de binario a byte para luego escribirlo en binario puro
-						Long elemento = Long.parseLong(this.datosBinarios.substring(beginIndex, endIndex),2);
-						
-						try {
-							dos.writeLong(elemento);
-						} catch (IOException E) {
-							//TODO: ver que hago aca!
-							return null;
-						}
-						//Muevo los offset para avanzar al siguiente byte
-						endIndex += Long.SIZE;
-						beginIndex += Long.SIZE;
-					}
-					if (longitud % Long.SIZE > 0) {
-						this.datosBinarios = this.datosBinarios.substring((int) (cantidad*Long.SIZE));
-					}
-				}
 			}
 		}
 		
@@ -217,7 +202,44 @@ public class conversionBitToByte {
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
-
+		
+		int beginIndex = 0, endIndex = 1;
+		int cantidad = this.datosBinarios.length() / (Byte.SIZE);
+		endIndex += Byte.SIZE;
+		
+		for (int i = 0; i < cantidad; i++) {
+			
+			this.logger.debug("Inicio: "+beginIndex+" final: "+endIndex+" Longitud Total: "+this.datosBinarios.substring(beginIndex, endIndex));
+			//Convierto el string de binario a byte para luego escribirlo en binario puro
+			Long elemento = Long.parseLong(this.datosBinarios.substring(beginIndex, endIndex), 2);
+			
+			try {
+				byte[] numeroBytes = Conversiones.longToArrayByte(elemento);
+				dos.write(numeroBytes,7,1);
+			} catch (IOException e) {
+				//TODO: ver que hago aca!
+				e.printStackTrace();
+				return null;
+			}
+			//Muevo los offset para avanzar al siguiente byte
+			endIndex += Byte.SIZE;
+			beginIndex += Byte.SIZE;
+		}
+		
+		int faltante = this.datosBinarios.length() % (Byte.SIZE);
+		if (faltante > 0) {
+			this.completarByte(faltante);
+			Long elemento = Long.parseLong(this.datosBinarios.substring((int) (cantidad*Byte.SIZE)), 2);
+			
+			try {
+				byte[] numeroBytes = Conversiones.longToArrayByte(elemento);
+				dos.write(numeroBytes,7,1);
+			} catch (IOException e) {
+				//TODO: ver que hago aca!
+				e.printStackTrace();
+				return null;
+			}
+		}
 		//Una vez terminada la conversion inicializo el conversor.
 		inicializarConversor();
 		

@@ -24,7 +24,7 @@ public class Lzp implements Compresor {
 	 * 
 	 * @param cadena
 	 */
-	public byte[] comprimir(String cadena){
+	public String comprimir(String cadena){
 		return null;
 	}
 
@@ -90,6 +90,24 @@ public class Lzp implements Compresor {
 	 */
 	public LogicaAritmetica getCompresorAritemtico() {
 		return compresorAritemtico;
+	}
+
+	@Override
+	public String descomprimir(String datos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void finalizarSession() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void iniciarSesion() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

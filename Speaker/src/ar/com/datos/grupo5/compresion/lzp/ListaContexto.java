@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class ListaContexto {
 
 	private ArrayList<ParCtxUbicacion> lista;
-	public ParCtxUbicacion m_ParCtxUbicacion;
 
 	public ListaContexto(){
 

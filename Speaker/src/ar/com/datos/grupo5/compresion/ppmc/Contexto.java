@@ -5,6 +5,8 @@ package ar.com.datos.grupo5.compresion.ppmc;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
 
@@ -58,9 +60,9 @@ public class Contexto {
 			
 			//Obtengo el elemento vinculado a la letra y actualizo.
 			par = this.listaOcurrenciaPorCaracter.get(letra);
-			par.setProbabilidad(par.getProbabilidad()+1);
-			
+			par.setFrecuencia(par.getFrecuencia());
 			this.cantidadLetras++;
+			
 			
 			//Actualizo la letra con el elemento par.
 			this.listaOcurrenciaPorCaracter.put(letra.toString(), par);
@@ -77,6 +79,7 @@ public class Contexto {
 	public final boolean crearCharEnContexto(Character letra){
 		if (!this.listaOcurrenciaPorCaracter.containsKey(letra)){
 			ParCharProb par = new ParCharProb(letra, 1);
+			par.setFrecuencia(1);
 			
 			//Actualizo la letra con el elemento par.
 			this.listaOcurrenciaPorCaracter.put(letra.toString(), par);
@@ -142,5 +145,21 @@ public class Contexto {
 	 */
 	public int getCantidadLetras() {
 		return cantidadLetras;
+	}
+	
+	/**
+	 * Actualiza las probabilidades de todos los caracteres según 
+	 * la cantidad de letras en el contexto.
+	 */
+	public void actualizarProbabilidades(){
+		//Recorrer todo el hashMap y actualizar la frecuencia.
+		Iterator<Entry<String,ParCharProb>> it = this.listaOcurrenciaPorCaracter.entrySet().iterator();
+		Entry<String,ParCharProb> elemento;		
+		ParCharProb par;
+		while (it.hasNext()) {
+			elemento = it.next();
+			par = elemento.getValue();
+			par.setProbabilidad(par.getFrecuencia()/this.cantidadLetras);
+		}
 	}
 }

@@ -131,7 +131,7 @@ public class Ppmc implements Compresor{
 	 * @param cadena Cadena a comprimir.
 	 * @return Un Array de bytes para escribir a archivo.
 	 */
-	public final byte[] comprimir(final String cadena){
+	public final String comprimir(final String cadena){
 		int pos = 0;
 		while (pos < cadena.length()) {
 			//Obtengo el contexto
@@ -316,9 +316,22 @@ public class Ppmc implements Compresor{
 		
 		return conversor.getBytes();
 	}
-	
-	public final String descomprimir(){
-		//TODO: Como hacemos esto!!
+
+	@Override
+	public String descomprimir(String datos) {
+		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void finalizarSession() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void iniciarSesion() {
+		// TODO Auto-generated method stub
+		
 	}
 }

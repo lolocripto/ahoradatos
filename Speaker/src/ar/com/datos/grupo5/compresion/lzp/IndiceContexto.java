@@ -12,7 +12,6 @@ public class IndiceContexto {
 	private short espacioOcupado;
 	private ListaContexto Indice;
 	private long ultimoBloque;
-	public ListaContexto m_ListaContexto;
 
 	public IndiceContexto(){
 
