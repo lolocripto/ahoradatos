@@ -43,6 +43,25 @@ public class Lzp implements Compresor {
 	 * Flag para saber si la session fue inicializada. 
 	 */
 	private boolean sesionIniciada = true;
+	
+	/**
+	 * Ultimo Contexto, para saber que emito. 
+	 */
+	private String ultCtx;
+	
+	/**
+	 * @return the ultCtx
+	 */
+	public final String getUltCtx() {
+		return ultCtx;
+	}
+
+	/**
+	 * @param ultCtx the ultCtx to set
+	 */
+	public final void setUltCtx(String ultCtx) {
+		this.ultCtx = ultCtx;
+	}
 
 	public Lzp(){
 		listaContextos = new ListaContextos();
@@ -50,6 +69,7 @@ public class Lzp implements Compresor {
 		motorAritLongitudes = new LogicaAritmetica();
 		letrasCtx = new Orden();
 		longitudesCtx = new Contexto();
+		ultCtx = new String();
 	}
 
 	/**
@@ -60,6 +80,7 @@ public class Lzp implements Compresor {
 		if (!sesionIniciada) {
 			throw new SessionException();
 		}
+		// TODO Auto-generated method stub
 		
 		String resultado = "";
 		
@@ -74,6 +95,9 @@ public class Lzp implements Compresor {
 			buffer.delete(0, 2);
 			
 			//TODO: Hay que emitir estos caracteres sin longitudes.
+			
+			// Genero el CTX.
+			ultCtx = buffer.substring(0, 2);
 		}
 		
 		resultado += ComprimirInterno(buffer);
@@ -100,9 +124,24 @@ public class Lzp implements Compresor {
 		letrasCtx = new Orden();
 		longitudesCtx = new Contexto();
 		sesionIniciada = true;
+		ultCtx = new String();
 	}
 
 	private String ComprimirInterno(StringBuffer cadena) {
-		return "";
+		String result = new String();
+		while (cadena.length() > 0){
+			// Leer de a uno e ir revisando y comprimiendo en la salida
+			char caracter = cadena.charAt(0);
+			// Buscar el contexto...
+			listaContextos.getPosicion(ultCtx);
+			// Lo saco porque ya lo procese
+			cadena.delete(0, 1);
+			// Actualizo el ultimo contexto
+			
+			
+			// La pos del contexto que se modifico es:
+			// posActual - (length(match) + 1)
+		} 
+		return result;
 	}
 }
