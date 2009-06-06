@@ -244,7 +244,6 @@ public class Ppmc implements Compresor{
 				ArrayList<ParCharProb> temp = new ArrayList<ParCharProb>();
 				temp.add(new ParCharProb(Constantes.ESC,1));
 				
-				//TODO:Emito la respuesta del Aritmetico
 				conversor.setBits(this.compresorAritmetico.comprimir(temp,Constantes.ESC));
 				
 				if (ordenContexto > 0){
@@ -276,10 +275,8 @@ public class Ppmc implements Compresor{
 			
 			//Busco la letra en el contexto
 			if (contexto.existeChar(letra)) {
-				//FIXME: Capturar la salida.
 				conversor.setBits(this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra));	
 			} else {
-				//FIXME: Capturar la salida.
 				conversor.setBits(this.compresorAritmetico.comprimir(nuevoOrdenContexto,Constantes.ESC));
 			}
 			
@@ -305,7 +302,7 @@ public class Ppmc implements Compresor{
 			contextoMasUno = this.listaOrdenes.get(0).getContexto(contextoActual.substring(this.contextoActual.length() - (0), this.contextoActual.length()));
 			
 			nuevoOrdenContexto = this.obtenerExclusionCompleta(this.contextoOrdenMenosUno, contextoMasUno);
-			//FIXME: Campturar la salida. 
+
 			conversor.setBits(this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra));
 		}
 	}
