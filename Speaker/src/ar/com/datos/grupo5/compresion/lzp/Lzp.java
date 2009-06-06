@@ -67,7 +67,7 @@ public class Lzp implements Compresor {
 		StringBuffer buffer = new StringBuffer(cadena);
 		
 		//Si no hay nada aca, entonces es la primera iteracion.
-		if (longitudesCtx.getCantidadLetras() > 0) {
+		if (longitudesCtx.getCantidadLetras() == 0) {
 			char primero = buffer.charAt(0);
 			char segundo = buffer.charAt(1);
 			//Saco los 2 primeros.
