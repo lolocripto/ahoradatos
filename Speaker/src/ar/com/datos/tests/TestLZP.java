@@ -23,6 +23,7 @@ public class TestLZP {
 		for (int i = 0; i < cadena2.length; i++) {
 			result += comp.comprimir(cadena2[i]);
 		}
+		LOG.info(cadena.replace(",", ""));
 		LOG.info(result);
 		comp.finalizarSession();
 	}
