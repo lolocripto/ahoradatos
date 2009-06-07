@@ -7,10 +7,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.aritmetico.UnsignedInt;
 import ar.com.datos.grupo5.utils.Conversiones;
 
@@ -51,10 +53,6 @@ public class conversionBitToByte {
 		
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
-
-		
-		
-		//TODO: Hacer la validacion nuevamente porque no es asi!!!!
 		
 		if (longitud < Short.SIZE) {
 			//Entonces lo parseo con un byte
@@ -107,7 +105,7 @@ public class conversionBitToByte {
 						e.printStackTrace();
 						return null;
 					}
-					//Muevo los offset para avanzar al siguiente byte
+					//Muevo los offset para avanzar al siguiente Short
 					endIndex += Short.SIZE;
 					beginIndex += Short.SIZE;
 				}
@@ -135,7 +133,7 @@ public class conversionBitToByte {
 							e.printStackTrace();
 							return null;
 						}
-						//Muevo los offset para avanzar al siguiente byte
+						//Muevo los offset para avanzar al siguiente Integer
 						endIndex += Integer.SIZE;
 						beginIndex += Integer.SIZE;
 					}
@@ -168,7 +166,18 @@ public class conversionBitToByte {
 	 * @param datos bytes a convertir.
 	 */
 	public final void setBytes(byte[] datos){
-		this.datosComprimidos = datos;
+		
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+		DataOutputStream dos = new DataOutputStream(bos);
+		try {
+			if (this.datosComprimidos != null)
+				dos.write(this.datosComprimidos);
+			dos.write(datos);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+		this.datosComprimidos = bos.toByteArray();
 	}
 	
 	/**
@@ -178,18 +187,32 @@ public class conversionBitToByte {
 	 */
 	public final String getBits(){
 		
-		int cantidadIntegers = this.datosComprimidos.length / Integer.SIZE;
-
+		int cantidadIntegers = this.datosComprimidos.length / Constantes.SIZE_OF_INT;
+		 if ((this.datosComprimidos.length % Constantes.SIZE_OF_INT) > 0) {
+			 cantidadIntegers++;
+		 }
+		
 		ByteArrayInputStream bis = new ByteArrayInputStream(this.datosComprimidos);  
 		DataInputStream dis = new DataInputStream(bis);
+		
 		try {
 		for (int i = 0; i < cantidadIntegers; i++) {
-			this.datosBinarios += Integer.toBinaryString(dis.readInt());
+			
+			byte[] bytesLec = {0, 0, 0, 0, 0, 0, 0, 0};
+			dis.read(bytesLec, 4, 4);
+			Long longRec = Conversiones.arrayByteToLong(bytesLec);
+			Integer integerRec = longRec.intValue();
+			this.datosBinarios += Integer.toBinaryString(integerRec);	
 		}
+
 		} catch (IOException E) {
 			return null;
 		}
 		return this.datosBinarios;
+	}
+	
+	public final boolean hasMoreBytes() {
+		return (this.datosBinarios.length() > 0);
 	}
 	
 	/**

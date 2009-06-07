@@ -30,8 +30,10 @@ public class Ppmc implements Compresor{
 	private int orden;
 	
 	private LogicaAritmetica compresorAritmetico;
+
+	private boolean initSession;
 	
-	private conversionBitToByte conversor;
+	private String tiraBits;
 	
 	/**
 	 * Logger para la clase.
@@ -42,16 +44,7 @@ public class Ppmc implements Compresor{
 	 * Contructor de clase.
 	 */
 	public Ppmc(){
-		
-		//Lleno contextoOrdenMenosUno con todos los caracteres del UNICODE
-		this.contextoOrdenMenosUno = new Contexto();
-		//Obtengo el orden del xml de configuración
-		this.orden = Constantes.ORDER_MAX_PPMC;
-		//Creo tantos Ordenes como dice el XML
-		this.listaOrdenes = new ArrayList<Orden>(this.orden+1);
-		this.inicializarListas();
-		this.compresorAritmetico = new LogicaAritmetica();
-		this.conversor = new conversionBitToByte();
+		this.iniciarSesion();
 	}
 	
 	/**
@@ -69,7 +62,6 @@ public class Ppmc implements Compresor{
 					this.contextoOrdenMenosUno.crearCharEnContexto(new Character(Character.toChars(i)[0]));
 				}
 			}
-			
 		}
 		this.contextoOrdenMenosUno.crearCharEnContexto(Constantes.EOF);
 		
@@ -133,20 +125,24 @@ public class Ppmc implements Compresor{
 	 */
 	public final String comprimir(final String cadena){
 		int pos = 0;
-		while (pos < cadena.length()) {
-			//Obtengo el contexto
+		if (this.initSession) {
+			while (pos < cadena.length() ) {
+				//Obtengo el contexto
+				this.getContexto(cadena, pos);
+				//Recorro los contextos para las emisiones
+				this.recorrerContextos(cadena.charAt(pos));
+				//Actualizo los contextos para la próxima recorrida.
+				this.actualizarOrdenes(cadena.charAt(pos));
+				//FIXME: Imprimo los ordenes, es solo para debug. Por lo tanto borrarlo.
+				this.imprimirEstado();
+				pos++;
+			}
+			//FIXME: Probar
 			this.getContexto(cadena, pos);
-			//Recorro los contextos para las emisiones
-			this.recorrerContextos(cadena.charAt(pos));
-			//Actualizo los contextos para la próxima recorrida.
-			this.actualizarOrdenes(cadena.charAt(pos));
-			//FIXME: Imprimo los ordenes, es solo para debug. Por lo tanto borrarlo.
-			this.imprimirEstado();
-			pos++;
+			return this.tiraBits;
+		} else {
+			return "";
 		}
-		//FIXME: Probar
-		this.getContexto(cadena, pos);
-		return null;
 	}
 
 	private void imprimirEstado() {
@@ -237,9 +233,10 @@ public class Ppmc implements Compresor{
 				
 				//Creo una estructura temporaria para evitar tener que cambiar todo el algoritmo. 
 				ArrayList<ParCharProb> temp = new ArrayList<ParCharProb>();
-				temp.add(new ParCharProb(Constantes.ESC,1));
+				ParCharProb par = new ParCharProb(Constantes.ESC,1);
+				temp.add(par);
 				
-				conversor.setBits(this.compresorAritmetico.comprimir(temp,Constantes.ESC));
+				this.tiraBits = this.compresorAritmetico.comprimir(temp,Constantes.ESC);
 				
 				if (ordenContexto > 0){
 					ordenContexto--;
@@ -270,9 +267,9 @@ public class Ppmc implements Compresor{
 			
 			//Busco la letra en el contexto
 			if (contexto.existeChar(letra)) {
-				conversor.setBits(this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra));	
+				this.tiraBits = this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra);	
 			} else {
-				conversor.setBits(this.compresorAritmetico.comprimir(nuevoOrdenContexto,Constantes.ESC));
+				this.tiraBits = this.compresorAritmetico.comprimir(nuevoOrdenContexto,Constantes.ESC);
 			}
 			
 			
@@ -298,12 +295,11 @@ public class Ppmc implements Compresor{
 			
 			nuevoOrdenContexto = this.obtenerExclusionCompleta(this.contextoOrdenMenosUno, contextoMasUno);
 
-			conversor.setBits(this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra));
+			this.tiraBits = this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra);
 		}
 	}
 	
-	public final byte[] finalizarCompresion(){
-		//TODO: Llamar al Aritmetico para finalizar la compresion.
+	public final String finalizarCompresion(){
 		
 		//Recorro los contextos para las emisiones
 		this.recorrerContextos(Constantes.EOF);
@@ -312,9 +308,9 @@ public class Ppmc implements Compresor{
 		//FIXME: Imprimo los ordenes, es solo para debug. Por lo tanto borrarlo.
 		this.imprimirEstado();
 		
-		conversor.setBits(this.compresorAritmetico.finalizarCompresion());
+		this.tiraBits = this.compresorAritmetico.finalizarCompresion();
 		
-		return conversor.getBytes();
+		return this.tiraBits;
 	}
 
 	@Override
@@ -326,12 +322,26 @@ public class Ppmc implements Compresor{
 	@Override
 	public void finalizarSession() {
 		// TODO Auto-generated method stub
-		
+		// Lleno contextoOrdenMenosUno con todos los caracteres del UNICODE
+		this.contextoOrdenMenosUno = null;
+		//Obtengo el orden del xml de configuración
+		this.orden = -1;
+		//Creo tantos Ordenes como dice el XML
+		this.listaOrdenes = null;
+		this.compresorAritmetico = null;
+		this.initSession = false;
 	}
 
 	@Override
 	public void iniciarSesion() {
-		// TODO Auto-generated method stub
-		
+		//Lleno contextoOrdenMenosUno con todos los caracteres del UNICODE
+		this.contextoOrdenMenosUno = new Contexto();
+		//Obtengo el orden del xml de configuración
+		this.orden = Constantes.ORDER_MAX_PPMC;
+		//Creo tantos Ordenes como dice el XML
+		this.listaOrdenes = new ArrayList<Orden>(this.orden+1);
+		this.inicializarListas();
+		this.compresorAritmetico = new LogicaAritmetica();
+		this.initSession = true;
 	}
 }

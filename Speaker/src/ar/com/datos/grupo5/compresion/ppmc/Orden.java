@@ -15,12 +15,10 @@ import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
  *
  */
 public class Orden {
-
-	/**
-	 * Para que es esto, que encima no se usa????????
-	 */
-	private int numero;
 	
+	/**
+	 * Lista con los caracteres del contexto actual.
+	 */
 	private HashMap< String, Contexto > listaContexto;
 	
 	/**
