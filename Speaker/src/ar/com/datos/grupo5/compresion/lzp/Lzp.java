@@ -241,7 +241,7 @@ public class Lzp implements Compresor {
 		// Voy a la posicion en la cual puede haber un match.
 		archivoTrabajo.seek(pos);
 		String a = "";
-		int longMatch = 0;
+		int longitudMatch = 0;
 		String charsLeidos = "";
 		int longCadena = cadena.length() * 2;
 
@@ -253,15 +253,15 @@ public class Lzp implements Compresor {
 			charsLeidos = new String(datos, Charset.forName(Constantes.CHARSET_UTF16));
 			for (int i = 0; i < datos.length; i++) {
 				if (charsLeidos.charAt(i) == cadena.charAt(i)) {
-					longMatch++;
+					longitudMatch++;
 				} else {
-					return longMatch;
+					return longitudMatch;
 				}
 			}
 			leidos = archivoTrabajo.read(datos, 0, 8);
 		}
 		
-		return longMatch;
+		return longitudMatch;
 	}
 	
 }
