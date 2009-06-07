@@ -1,11 +1,13 @@
 package ar.com.datos.grupo5.compresion.lzp;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.charset.Charset;
 
 import ar.com.datos.grupo5.compresion.aritmetico.LogicaAritmetica;
-import ar.com.datos.grupo5.compresion.ppmc.Orden;
 import ar.com.datos.grupo5.compresion.ppmc.Contexto;
+import ar.com.datos.grupo5.compresion.ppmc.Orden;
 import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.Compresor;
 
@@ -59,6 +61,11 @@ public class Lzp implements Compresor {
 	private RandomAccessFile archivoTrabajo = null;
 	
 	/**
+	 * Posicion en el archivo.
+	 */
+	private long posActual = 0L;
+	
+	/**
 	 * @return the ultCtx
 	 */
 	public final String getUltCtx() {
@@ -78,7 +85,7 @@ public class Lzp implements Compresor {
 		motorAritLongitudes = new LogicaAritmetica();
 		letrasCtx = new Orden();
 		longitudesCtx = new Contexto();
-		ultCtx = new String();
+		ultCtx = "";
 		try {
 			archivoTrabajo = new RandomAccessFile("./lzpTemp.txt", "rw");
 		} catch (FileNotFoundException e) {
@@ -97,11 +104,22 @@ public class Lzp implements Compresor {
 		
 		String resultado = "";
 		
+		// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
+		// buscar match.
+		try {
+			archivoTrabajo.seek(archivoTrabajo.length());
+			//Escribo en el archivo temporal en unicode.
+			archivoTrabajo.write(cadena.getBytes(Charset.forName("UTF-16BE")));
+		} catch (IOException e) {
+			//TODO: Hacer algo
+			e.printStackTrace();
+		}
+
 		//Trabajar con un StringBuffer es mas rapido.
 		StringBuffer buffer = new StringBuffer(cadena);
 		
 		//Si no hay nada aca, entonces es la primera iteracion.
-		if (longitudesCtx.getCantidadLetras() == 0) {
+		if (ultCtx.length() == 0) {
 			char primero = buffer.charAt(0);
 			char segundo = buffer.charAt(1);
 
@@ -112,6 +130,11 @@ public class Lzp implements Compresor {
 			buffer.delete(0, 2);
 
 			//TODO: Hay que emitir estos caracteres sin longitudes.
+			
+			// Luego de emitir, meto el primer contexto en la tabla. Pos 4
+			// porque son 2 inicode de 2 bytes c/u.
+			listaContextos.setPosicion(ultCtx, 4);
+			posActual = 4L;
 		}
 		
 		resultado += ComprimirInterno(buffer);
@@ -140,27 +163,60 @@ public class Lzp implements Compresor {
 		letrasCtx = new Orden();
 		longitudesCtx = new Contexto();
 		sesionIniciada = true;
-		ultCtx = new String();
+		ultCtx = "";
 	}
 
 	private String ComprimirInterno(StringBuffer cadena) {
-		String result = new String();
+		
+		String result = "";
+		char charActual = 0;
+		char charAnterior = ultCtx.charAt(1);
+		String nuevoCtx = "";
+		//Sumo 1 posicion en el archivo.
+		posActual += 2L;
+		
 		while (cadena.length() > 0){
 			// Leer de a uno e ir revisando y comprimiendo en la salida
-			char caracter = cadena.charAt(0);
+			charActual = cadena.charAt(0);
+			nuevoCtx += charAnterior + charActual;
+			
 			// Buscar el contexto...
-			if (listaContextos.getPosicion(ultCtx)== null){
+			if (listaContextos.getPosicion(nuevoCtx)== null) {
 				// Creo el contexto y emito con long de match 0
-				listaContextos.setPosicion(ultCtx, 2);
+				listaContextos.setPosicion(nuevoCtx, 2);
 			}
+			
 			// Lo saco porque ya lo procese
 			cadena.delete(0, 1);
 			// Actualizo el ultimo contexto
 			
-			
 			// La pos del contexto que se modifico es:
 			// posActual - (length(match) + 1)
-		} 
+		}
+		ultCtx = new String(nuevoCtx);
 		return result;
+	}
+	
+	/**
+	 * Calcula la long de match de una cadena en un stream.
+	 * 
+	 * @param cadena
+	 *            cadena para machear.
+	 * @param pos
+	 *            posicion a partir de la cual busco match.
+	 * @return la longitud de match.
+	 * @throws IOException 
+	 */
+	private int longMatch(StringBuffer cadena, long pos) throws IOException {
+	
+		//Buffer para leer.
+		byte[] datos = new byte[8];
+		int leidos = 0;
+		// Voy a la posicion en la cual puede haber un match.
+		archivoTrabajo.seek(pos);
+
+		leidos = archivoTrabajo.read(datos, 0, 8);
+		
+		return 0;
 	}
 }
