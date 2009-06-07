@@ -250,7 +250,8 @@ public class Lzp implements Compresor {
 
 		//Leo algunos 4 caracters.
 		leidos += archivoTrabajo.read(datos, 0, 8);
-		while ((leidos > 0) && (leidos < longCadena) && (this.longMatch < Constantes.MAX_LONGITD_MATCH)) {
+		while ((leidos > 0) && (leidos < longCadena) && 
+				((this.longMatch + longitudMatch) < Constantes.MAX_LONGITD_MATCH)) {
 			
 			//Me armo un string con los datos leidos en UNICODE.
 			charsLeidos = new String(datos, Charset.forName(Constantes.CHARSET_UTF16));
