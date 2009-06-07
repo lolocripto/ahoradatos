@@ -207,13 +207,10 @@ public class Lzp implements Compresor {
 				longMatchActual = longMatch(cadena, posMatch);
 				if (longMatchActual == cadena.length()) {
 					matchCompleto = true;
-					longMatch += longMatchActual;
-				} else {
-					
-					longMatch += longMatchActual;
-				}
+				} 					
+				longMatch += longMatchActual;
 			}
-			
+
 			charAnterior = charActual;
 			// Lo saco porque ya lo procese
 			cadena.delete(0, 1);
@@ -243,26 +240,25 @@ public class Lzp implements Compresor {
 		int leidos = 0;
 		// Voy a la posicion en la cual puede haber un match.
 		archivoTrabajo.seek(pos);
-		String a = "";
 		int longitudMatch = 0;
 		String charsLeidos = "";
 		int longCadena = cadena.length() * 2;
 
 		//Leo algunos 4 caracters.
-		leidos += archivoTrabajo.read(datos, 0, 8);
-		while ((leidos > 0) && (leidos < longCadena) && 
+		leidos = archivoTrabajo.read(datos, 0, 8);
+		while ((leidos > 0) && (longCadena < leidos) && 
 				((this.longMatch + longitudMatch) < Constantes.MAX_LONGITD_MATCH)) {
 			
 			//Me armo un string con los datos leidos en UNICODE.
 			charsLeidos = new String(datos, Charset.forName(Constantes.CHARSET_UTF16));
-			for (int i = 0; i < datos.length; i++) {
+			for (int i = 0; i < charsLeidos.length(); i++) {
 				if (charsLeidos.charAt(i) == cadena.charAt(i)) {
 					longitudMatch++;
 				} else {
 					return longitudMatch;
 				}
 			}
-			leidos = archivoTrabajo.read(datos, 0, 8);
+			leidos += archivoTrabajo.read(datos, 0, 8);
 		}
 		
 		return longitudMatch;
