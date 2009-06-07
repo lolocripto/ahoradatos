@@ -67,6 +67,16 @@ public class Lzp implements Compresor {
 	private int posActual = 0;
 	
 	/**
+	 * Esto undica que toda la cadena matcheo. 
+	 */
+	private boolean matchCompleto = false;
+	
+	/**
+	 * Longitud de match
+	 */
+	private int longMatch = 0;
+	
+	/**
 	 * @return the ultCtx
 	 */
 	public final String getUltCtx() {
@@ -138,7 +148,11 @@ public class Lzp implements Compresor {
 			posActual = 4;
 		}
 		
-		resultado += ComprimirInterno(buffer);
+		try {
+			resultado += ComprimirInterno(buffer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		return resultado;
 	}
@@ -167,13 +181,14 @@ public class Lzp implements Compresor {
 		ultCtx = "";
 	}
 
-	private String ComprimirInterno(StringBuffer cadena) {
+	private String ComprimirInterno(StringBuffer cadena) throws IOException {
 		
 		String result = "";
 		char charActual = 0;
 		char charAnterior = ultCtx.charAt(1);
 		String nuevoCtx = "";
 		Integer posMatch = 0;
+		int longMatchActual = 0;
 		
 		while (cadena.length() > 0){
 			// Leer de a uno e ir revisando y comprimiendo en la salida
@@ -188,7 +203,12 @@ public class Lzp implements Compresor {
 				// Creo el contexto y emito con long de match 0
 				listaContextos.setPosicion(nuevoCtx, posActual);
 			} else {
-				
+				//Busco la longitud de match.
+				longMatchActual = longMatch(cadena, posMatch);
+				if (longMatchActual == cadena.length()) {
+					matchCompleto = true;
+					longMatch += longMatchActual; 
+				}
 			}
 			
 			// Lo saco porque ya lo procese
