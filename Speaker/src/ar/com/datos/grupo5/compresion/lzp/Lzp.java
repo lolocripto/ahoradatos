@@ -176,6 +176,7 @@ public class Lzp implements Compresor {
 			if ( posMatch == null) {
 				// Creo el contexto y emito con long de match 0
 				listaContextos.setPosicion(nuevoCtx, posActual);
+				result = "0" + charActual;
 				// Lo saco porque ya lo procese
 				cadena.delete(0, 1);
 			} else {
@@ -265,7 +266,7 @@ public class Lzp implements Compresor {
 				} else {
 					return longitudMatch;
 				}
-				if ((this.longMatch + longitudMatch) < Constantes.MAX_LONGITD_MATCH) {
+				if ((this.longMatch + longitudMatch) >= Constantes.MAX_LONGITD_MATCH) {
 					break;
 				}
 			}
