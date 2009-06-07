@@ -190,6 +190,7 @@ public class Lzp implements Compresor {
 					longMatch += longMatchActual;
 					result.append(String.valueOf(longMatch) + charActual);
 					longMatch = 0;
+					listaContextos.setPosicion(nuevoCtx, posActual);
 				}
 				// Lo saco porque ya lo procese
 				cadena.delete(0, longMatchActual + 1);
