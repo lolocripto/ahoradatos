@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 
+import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.aritmetico.LogicaAritmetica;
 import ar.com.datos.grupo5.compresion.ppmc.Contexto;
 import ar.com.datos.grupo5.compresion.ppmc.Orden;
@@ -109,7 +110,7 @@ public class Lzp implements Compresor {
 		try {
 			archivoTrabajo.seek(archivoTrabajo.length());
 			//Escribo en el archivo temporal en unicode.
-			archivoTrabajo.write(cadena.getBytes(Charset.forName("UTF-16BE")));
+			archivoTrabajo.write(cadena.getBytes(Charset.forName(Constantes.CHARSET_UTF16)));
 		} catch (IOException e) {
 			//TODO: Hacer algo
 			e.printStackTrace();
@@ -214,9 +215,28 @@ public class Lzp implements Compresor {
 		int leidos = 0;
 		// Voy a la posicion en la cual puede haber un match.
 		archivoTrabajo.seek(pos);
+		String a = "";
+		int longMatch = 0;
+		String charsLeidos = "";
+		int longCadena = cadena.length() * 2;
 
-		leidos = archivoTrabajo.read(datos, 0, 8);
+		//Leo algunos 4 caracters.
+		leidos += archivoTrabajo.read(datos, 0, 8);
+		while (leidos > 0 && leidos < longCadena) {
+			
+			//Me armo un string con los datos leidos en UNICODE.
+			charsLeidos = new String(datos, Charset.forName(Constantes.CHARSET_UTF16));
+			for (int i = 0; i < datos.length; i++) {
+				if (charsLeidos.charAt(i) == cadena.charAt(i)) {
+					longMatch++;
+				} else {
+					return longMatch;
+				}
+			}
+			leidos = archivoTrabajo.read(datos, 0, 8);
+		}
 		
-		return 0;
+		return longMatch;
 	}
+	
 }
