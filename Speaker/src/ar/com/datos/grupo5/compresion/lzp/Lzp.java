@@ -91,17 +91,19 @@ public class Lzp implements Compresor {
 		if (longitudesCtx.getCantidadLetras() == 0) {
 			char primero = buffer.charAt(0);
 			char segundo = buffer.charAt(1);
+			
 			//Saco los 2 primeros.
 			buffer.delete(0, 2);
-			
+
 			//TODO: Hay que emitir estos caracteres sin longitudes.
 			
 			// Genero el CTX.
 			ultCtx = buffer.substring(0, 2);
+			listaContextos.setPosicion(ultCtx, 2);
 		}
 		
 		resultado += ComprimirInterno(buffer);
-		
+
 		return resultado;
 	}
 
