@@ -201,7 +201,7 @@ public class Lzp implements Compresor {
 					longMatch = 0;
 				}
 				// Lo saco porque ya lo procese
-				cadena.delete(0, longMatchActual);
+				cadena.delete(0, longMatchActual==0?1:longMatchActual);
 			}
 
 			charAnterior = charActual;
