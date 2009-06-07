@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 
-import com.sun.org.apache.bcel.internal.generic.LUSHR;
-
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.aritmetico.LogicaAritmetica;
 import ar.com.datos.grupo5.compresion.ppmc.Contexto;
@@ -255,18 +253,17 @@ public class Lzp implements Compresor {
 	private int longMatch(StringBuffer cadena, long pos) throws IOException {
 	
 		//Buffer para leer del tamaño de la cadena.
-		int tamBuffer = cadena.length() * 2;
-		byte[] datos = new byte[tamBuffer];
+		int longCadena = cadena.length() * 2;
+		byte[] datos = new byte[longCadena];
 		int leidos = 0;
 		// Voy a la posicion en la cual puede haber un match.
 		archivoTrabajo.seek(pos);
 		int longitudMatch = 0;
 		String charsLeidos = "";
-		int longCadena = cadena.length() * 2;
 
 		// Leo la cantidad de caracteres que tiene la cadena de entrada, como
 		// maximo.
-		leidos = archivoTrabajo.read(datos, 0, tamBuffer);
+		leidos = archivoTrabajo.read(datos, 0, longCadena);
 		while ((leidos > 0) && (longCadena < leidos) && 
 				((this.longMatch + longitudMatch) < Constantes.MAX_LONGITD_MATCH)) {
 			
@@ -282,7 +279,7 @@ public class Lzp implements Compresor {
 					break;
 				}
 			}
-			leidos += archivoTrabajo.read(datos, 0, tamBuffer);
+			leidos += archivoTrabajo.read(datos, 0, longCadena);
 		}
 		
 		return longitudMatch;
