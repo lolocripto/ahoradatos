@@ -257,6 +257,9 @@ public class Lzp implements Compresor {
 				} else {
 					return longitudMatch;
 				}
+				if ((this.longMatch + longitudMatch) < Constantes.MAX_LONGITD_MATCH) {
+					break;
+				}
 			}
 			leidos += archivoTrabajo.read(datos, 0, 8);
 		}
