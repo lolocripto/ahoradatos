@@ -135,7 +135,10 @@ public class Lzp implements Compresor {
 			// Leer de a uno e ir revisando y comprimiendo en la salida
 			char caracter = cadena.charAt(0);
 			// Buscar el contexto...
-			listaContextos.getPosicion(ultCtx);
+			if (listaContextos.getPosicion(ultCtx)== null){
+				// Creo el contexto y emito con long de match 0
+				listaContextos.setPosicion(ultCtx, 2);
+			}
 			// Lo saco porque ya lo procese
 			cadena.delete(0, 1);
 			// Actualizo el ultimo contexto
