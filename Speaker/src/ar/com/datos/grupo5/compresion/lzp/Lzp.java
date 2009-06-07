@@ -1,4 +1,8 @@
 package ar.com.datos.grupo5.compresion.lzp;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.RandomAccessFile;
+
 import ar.com.datos.grupo5.compresion.aritmetico.LogicaAritmetica;
 import ar.com.datos.grupo5.compresion.ppmc.Orden;
 import ar.com.datos.grupo5.compresion.ppmc.Contexto;
@@ -50,6 +54,11 @@ public class Lzp implements Compresor {
 	private String ultCtx;
 	
 	/**
+	 * Archivo temporal de trabajo.
+	 */
+	private RandomAccessFile archivoTrabajo = null;
+	
+	/**
 	 * @return the ultCtx
 	 */
 	public final String getUltCtx() {
@@ -70,6 +79,11 @@ public class Lzp implements Compresor {
 		letrasCtx = new Orden();
 		longitudesCtx = new Contexto();
 		ultCtx = new String();
+		try {
+			archivoTrabajo = new RandomAccessFile("./lzpTemp.txt", "rw");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -80,7 +94,6 @@ public class Lzp implements Compresor {
 		if (!sesionIniciada) {
 			throw new SessionException();
 		}
-		// TODO Auto-generated method stub
 		
 		String resultado = "";
 		
@@ -91,15 +104,14 @@ public class Lzp implements Compresor {
 		if (longitudesCtx.getCantidadLetras() == 0) {
 			char primero = buffer.charAt(0);
 			char segundo = buffer.charAt(1);
+
+			// Genero el CTX.
+			ultCtx = buffer.substring(0, 2);
 			
 			//Saco los 2 primeros.
 			buffer.delete(0, 2);
 
 			//TODO: Hay que emitir estos caracteres sin longitudes.
-			
-			// Genero el CTX.
-			ultCtx = buffer.substring(0, 2);
-			listaContextos.setPosicion(ultCtx, 2);
 		}
 		
 		resultado += ComprimirInterno(buffer);
@@ -116,6 +128,8 @@ public class Lzp implements Compresor {
 	@Override
 	public void finalizarSession() {
 		sesionIniciada = false;
+		File file = new File("./lzpTemp");
+		file.delete();
 	}
 
 	@Override
