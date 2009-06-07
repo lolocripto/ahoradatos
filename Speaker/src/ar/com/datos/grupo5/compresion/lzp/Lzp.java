@@ -157,7 +157,7 @@ public class Lzp implements Compresor {
 
 	private String ComprimirInterno(StringBuffer cadena) throws IOException {
 		
-		String result = "";
+		StringBuffer result = new StringBuffer();
 		char charActual = 0;
 		char charAnterior = ultCtx.charAt(1);
 		String nuevoCtx = "";
@@ -176,7 +176,7 @@ public class Lzp implements Compresor {
 			if ( posMatch == null) {
 				// Creo el contexto y emito con long de match 0
 				listaContextos.setPosicion(nuevoCtx, posActual);
-				result += "0" + charActual;
+				result.append("0" + charActual);
 				// Lo saco porque ya lo procese
 				cadena.delete(0, 1);
 			} else {
@@ -188,7 +188,7 @@ public class Lzp implements Compresor {
 				} else {
 					matchCompleto = false;
 					longMatch += longMatchActual;
-					result += String.valueOf(longMatch) + charActual;
+					result.append(String.valueOf(longMatch) + charActual);
 					longMatch = 0;
 				}
 				// Lo saco porque ya lo procese
@@ -204,7 +204,7 @@ public class Lzp implements Compresor {
 		}
 		ultCtx = new String(nuevoCtx);
 		
-		return result;
+		return result.toString();
 	}
 
 	@Override
