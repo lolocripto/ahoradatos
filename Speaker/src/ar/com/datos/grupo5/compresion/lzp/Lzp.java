@@ -64,7 +64,7 @@ public class Lzp implements Compresor {
 	/**
 	 * Posicion en el archivo.
 	 */
-	private long posActual = 0L;
+	private int posActual = 0;
 	
 	/**
 	 * @return the ultCtx
@@ -135,7 +135,7 @@ public class Lzp implements Compresor {
 			// Luego de emitir, meto el primer contexto en la tabla. Pos 4
 			// porque son 2 inicode de 2 bytes c/u.
 			listaContextos.setPosicion(ultCtx, 4);
-			posActual = 4L;
+			posActual = 4;
 		}
 		
 		resultado += ComprimirInterno(buffer);
@@ -152,7 +152,7 @@ public class Lzp implements Compresor {
 	@Override
 	public void finalizarSession() {
 		sesionIniciada = false;
-		File file = new File("./lzpTemp");
+		File file = new File("./lzpTemp.txt");
 		file.delete();
 	}
 
@@ -173,18 +173,22 @@ public class Lzp implements Compresor {
 		char charActual = 0;
 		char charAnterior = ultCtx.charAt(1);
 		String nuevoCtx = "";
-		//Sumo 1 posicion en el archivo.
-		posActual += 2L;
+		Integer posMatch = 0;
 		
 		while (cadena.length() > 0){
 			// Leer de a uno e ir revisando y comprimiendo en la salida
 			charActual = cadena.charAt(0);
-			nuevoCtx += charAnterior + charActual;
+			nuevoCtx = String.valueOf(charAnterior) + String.valueOf(charActual);
+			//Sumo 1 posicion en el archivo.
+			posActual += 2;
 			
 			// Buscar el contexto...
-			if (listaContextos.getPosicion(nuevoCtx)== null) {
+			posMatch = listaContextos.getPosicion(nuevoCtx);
+			if ( posMatch == null) {
 				// Creo el contexto y emito con long de match 0
-				listaContextos.setPosicion(nuevoCtx, 2);
+				listaContextos.setPosicion(nuevoCtx, posActual);
+			} else {
+				
 			}
 			
 			// Lo saco porque ya lo procese
