@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 
+import org.apache.log4j.Logger;
+
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.aritmetico.LogicaAritmetica;
 import ar.com.datos.grupo5.compresion.ppmc.Contexto;
@@ -19,6 +21,11 @@ import ar.com.datos.grupo5.interfaces.Compresor;
  */
 public class Lzp implements Compresor {
 
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOG = Logger.getLogger(Lzp.class);
+	
 	private IndiceContexto Indice;
 	
 	/**
@@ -103,17 +110,6 @@ public class Lzp implements Compresor {
 		}
 		
 		String resultado = "";
-		
-		// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
-		// buscar match.
-		try {
-			archivoTrabajo.seek(archivoTrabajo.length());
-			//Escribo en el archivo temporal en unicode.
-			archivoTrabajo.write(cadena.getBytes(Charset.forName(Constantes.CHARSET_UTF16)));
-		} catch (IOException e) {
-			//TODO: Hacer algo
-			e.printStackTrace();
-		}
 
 		//Trabajar con un StringBuffer es mas rapido.
 		StringBuffer buffer = new StringBuffer(cadena);
@@ -135,14 +131,7 @@ public class Lzp implements Compresor {
 			// porque son 2 inicode de 2 bytes c/u.
 			listaContextos.setPosicion(ultCtx, 4);
 			posActual = 4;
-			
-			//Escribo los dos caracteres que leí.
-			try {
-				archivoTrabajo.seek(archivoTrabajo.length());
-				archivoTrabajo.write(ultCtx.getBytes(Charset.forName(Constantes.CHARSET_UTF16)));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+
 			resultado = ultCtx;
 		}
 		
@@ -152,6 +141,21 @@ public class Lzp implements Compresor {
 			e.printStackTrace();
 		}
 
+		// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
+		// buscar match.
+		try {
+			long pos = archivoTrabajo.length();
+			if (pos > 0) {
+				//pos -= 2;
+			}
+			archivoTrabajo.seek(pos);
+			//Escribo en el archivo temporal en unicode.
+			archivoTrabajo.write(cadena.getBytes(Charset.forName(Constantes.CHARSET_UTF16 + "BE")));
+		} catch (IOException e) {
+			//TODO: Hacer algo
+			e.printStackTrace();
+		}
+		
 		return resultado;
 	}
 
@@ -163,13 +167,17 @@ public class Lzp implements Compresor {
 		String nuevoCtx = "";
 		Integer posMatch = 0;
 		int longMatchActual = 0;
+		nuevoCtx = ultCtx;
 		
 		while (cadena.length() > 0){
-			// Leer de a uno e ir revisando y comprimiendo en la salida
-			charActual = cadena.charAt(0);
-			nuevoCtx = String.valueOf(charAnterior) + String.valueOf(charActual);
-			//Sumo 1 posicion en el archivo.
-			posActual += 2;
+			
+			if (!matchCompleto) {
+				// Leer de a uno e ir revisando y comprimiendo en la salida
+				charActual = cadena.charAt(0);
+				nuevoCtx = String.valueOf(charAnterior) + String.valueOf(charActual);
+				//Sumo 1 posicion en el archivo.
+				posActual += 2;
+			}
 			
 			// Buscar el contexto...
 			posMatch = listaContextos.getPosicion(nuevoCtx);
@@ -179,18 +187,27 @@ public class Lzp implements Compresor {
 				result.append("0" + charActual);
 				// Lo saco porque ya lo procese
 				cadena.delete(0, 1);
+				matchCompleto = false;
+				longMatch = 0;
 			} else {
+				if (matchCompleto) {
+					posMatch += (longMatch * 2);
+				}
 				//Busco la longitud de match.
-				longMatchActual = longMatch(cadena, posMatch);
-				if (longMatchActual == cadena.length()) {
+				longMatchActual = longMatch(new StringBuffer(cadena.substring(1)), posMatch);
+				if (longMatchActual == cadena.length() - 1) {
 					matchCompleto = true;
 					longMatch += longMatchActual;
+					posActual += (longMatchActual * 2) - 2;
 				} else {
 					matchCompleto = false;
 					longMatch += longMatchActual;
 					result.append(String.valueOf(longMatch) + charActual);
+					if (longMatchActual > 0) {
+						posActual += (longMatchActual * 2) - 2;
+						listaContextos.setPosicion(nuevoCtx, posActual);
+					}
 					longMatch = 0;
-					listaContextos.setPosicion(nuevoCtx, posActual);
 				}
 				// Lo saco porque ya lo procese
 				cadena.delete(0, longMatchActual + 1);
@@ -203,6 +220,7 @@ public class Lzp implements Compresor {
 			// La pos del contexto que se modifico es:
 			// posActual - (length(match) + 1)
 		}
+
 		ultCtx = new String(nuevoCtx);
 		
 		return result.toString();
@@ -250,6 +268,7 @@ public class Lzp implements Compresor {
 		int leidos = 0;
 		// Voy a la posicion en la cual puede haber un match.
 		archivoTrabajo.seek(pos);
+		LOG.info("Me posiciono en el archivo temporal: " + pos);
 		int longitudMatch = 0;
 		String charsLeidos = "";
 
@@ -260,7 +279,8 @@ public class Lzp implements Compresor {
 				((this.longMatch + longitudMatch) < Constantes.MAX_LONGITD_MATCH)) {
 			
 			//Me armo un string con los datos leidos en UNICODE.
-			charsLeidos = new String(datos, Charset.forName(Constantes.CHARSET_UTF16));
+			charsLeidos = new String(datos, Charset.forName(Constantes.CHARSET_UTF16 + "BE"));
+			LOG.info("Lei del temporal: " + charsLeidos);
 			for (int i = 0; i < charsLeidos.length() && i < cadena.length(); i++) {
 				if (charsLeidos.charAt(i) == cadena.charAt(i)) {
 					longitudMatch++;
