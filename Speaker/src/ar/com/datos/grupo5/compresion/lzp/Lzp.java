@@ -75,20 +75,6 @@ public class Lzp implements Compresor {
 	 * Longitud de match
 	 */
 	private int longMatch = 0;
-	
-	/**
-	 * @return the ultCtx
-	 */
-	public final String getUltCtx() {
-		return ultCtx;
-	}
-
-	/**
-	 * @param ultCtx the ultCtx to set
-	 */
-	public final void setUltCtx(String ultCtx) {
-		this.ultCtx = ultCtx;
-	}
 
 	public Lzp(){
 		listaContextos = new ListaContextos();
@@ -99,7 +85,10 @@ public class Lzp implements Compresor {
 		ultCtx = "";
 		try {
 			archivoTrabajo = new RandomAccessFile("./lzpTemp.txt", "rw");
+			archivoTrabajo.setLength(0);
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -131,8 +120,8 @@ public class Lzp implements Compresor {
 		
 		//Si no hay nada aca, entonces es la primera iteracion.
 		if (ultCtx.length() == 0) {
-			char primero = buffer.charAt(0);
-			char segundo = buffer.charAt(1);
+			//char primero = buffer.charAt(0);
+			//char segundo = buffer.charAt(1);
 
 			// Genero el CTX.
 			ultCtx = buffer.substring(0, 2);
@@ -154,6 +143,7 @@ public class Lzp implements Compresor {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			resultado = ultCtx;
 		}
 		
 		try {
@@ -201,7 +191,7 @@ public class Lzp implements Compresor {
 					longMatch = 0;
 				}
 				// Lo saco porque ya lo procese
-				cadena.delete(0, longMatchActual==0?1:longMatchActual);
+				cadena.delete(0, longMatchActual + 1);
 			}
 
 			charAnterior = charActual;
@@ -264,7 +254,7 @@ public class Lzp implements Compresor {
 		// Leo la cantidad de caracteres que tiene la cadena de entrada, como
 		// maximo.
 		leidos = archivoTrabajo.read(datos, 0, longCadena);
-		while ((leidos > 0) && (longCadena < leidos) && 
+		while ((leidos > 0) && (leidos <= longCadena) && 
 				((this.longMatch + longitudMatch) < Constantes.MAX_LONGITD_MATCH)) {
 			
 			//Me armo un string con los datos leidos en UNICODE.
