@@ -188,6 +188,8 @@ public class Lzp implements Compresor {
 			if ( posMatch == null) {
 				// Creo el contexto y emito con long de match 0
 				listaContextos.setPosicion(nuevoCtx, posActual);
+				// Lo saco porque ya lo procese
+				cadena.delete(0, 1);
 			} else {
 				//Busco la longitud de match.
 				longMatchActual = longMatch(cadena, posMatch);
@@ -200,11 +202,12 @@ public class Lzp implements Compresor {
 					result = String.valueOf(longMatch) + charActual;
 					longMatch = 0;
 				}
+				// Lo saco porque ya lo procese
+				cadena.delete(0, longMatchActual);
 			}
 
 			charAnterior = charActual;
-			// Lo saco porque ya lo procese
-			cadena.delete(0, 1);
+
 			// Actualizo el ultimo contexto
 			
 			// La pos del contexto que se modifico es:
