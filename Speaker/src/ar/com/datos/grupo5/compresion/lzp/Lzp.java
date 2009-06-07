@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 
+import com.sun.org.apache.bcel.internal.generic.LUSHR;
+
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.aritmetico.LogicaAritmetica;
 import ar.com.datos.grupo5.compresion.ppmc.Contexto;
@@ -146,6 +148,14 @@ public class Lzp implements Compresor {
 			// porque son 2 inicode de 2 bytes c/u.
 			listaContextos.setPosicion(ultCtx, 4);
 			posActual = 4;
+			
+			//Escribo los dos caracteres que leí.
+			try {
+				archivoTrabajo.seek(archivoTrabajo.length());
+				archivoTrabajo.write(ultCtx.getBytes(Charset.forName(Constantes.CHARSET_UTF16)));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		try {
@@ -155,30 +165,6 @@ public class Lzp implements Compresor {
 		}
 
 		return resultado;
-	}
-
-	@Override
-	public String descomprimir(String datos) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void finalizarSession() {
-		sesionIniciada = false;
-		File file = new File("./lzpTemp.txt");
-		file.delete();
-	}
-
-	@Override
-	public void iniciarSesion() {
-		listaContextos = new ListaContextos();
-		motorAritCaracteres = new LogicaAritmetica();
-		motorAritLongitudes = new LogicaAritmetica();
-		letrasCtx = new Orden();
-		longitudesCtx = new Contexto();
-		sesionIniciada = true;
-		ultCtx = "";
 	}
 
 	private String ComprimirInterno(StringBuffer cadena) throws IOException {
@@ -207,8 +193,13 @@ public class Lzp implements Compresor {
 				longMatchActual = longMatch(cadena, posMatch);
 				if (longMatchActual == cadena.length()) {
 					matchCompleto = true;
-				} 					
-				longMatch += longMatchActual;
+					longMatch += longMatchActual;
+				} else {
+					matchCompleto = false;
+					longMatch += longMatchActual;
+					result = String.valueOf(longMatch) + charActual;
+					longMatch = 0;
+				}
 			}
 
 			charAnterior = charActual;
@@ -220,9 +211,34 @@ public class Lzp implements Compresor {
 			// posActual - (length(match) + 1)
 		}
 		ultCtx = new String(nuevoCtx);
+		
 		return result;
 	}
-	
+
+	@Override
+	public String descomprimir(String datos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void finalizarSession() {
+		sesionIniciada = false;
+		File file = new File("./lzpTemp.txt");
+		file.delete();
+	}
+
+	@Override
+	public void iniciarSesion() {
+		listaContextos = new ListaContextos();
+		motorAritCaracteres = new LogicaAritmetica();
+		motorAritLongitudes = new LogicaAritmetica();
+		letrasCtx = new Orden();
+		longitudesCtx = new Contexto();
+		sesionIniciada = true;
+		ultCtx = "";
+	}
+		
 	/**
 	 * Calcula la long de match de una cadena en un stream.
 	 * 
@@ -235,8 +251,9 @@ public class Lzp implements Compresor {
 	 */
 	private int longMatch(StringBuffer cadena, long pos) throws IOException {
 	
-		//Buffer para leer.
-		byte[] datos = new byte[8];
+		//Buffer para leer del tamaño de la cadena.
+		int tamBuffer = cadena.length() * 2;
+		byte[] datos = new byte[tamBuffer];
 		int leidos = 0;
 		// Voy a la posicion en la cual puede haber un match.
 		archivoTrabajo.seek(pos);
@@ -244,14 +261,15 @@ public class Lzp implements Compresor {
 		String charsLeidos = "";
 		int longCadena = cadena.length() * 2;
 
-		//Leo algunos 4 caracters.
-		leidos = archivoTrabajo.read(datos, 0, 8);
+		// Leo la cantidad de caracteres que tiene la cadena de entrada, como
+		// maximo.
+		leidos = archivoTrabajo.read(datos, 0, tamBuffer);
 		while ((leidos > 0) && (longCadena < leidos) && 
 				((this.longMatch + longitudMatch) < Constantes.MAX_LONGITD_MATCH)) {
 			
 			//Me armo un string con los datos leidos en UNICODE.
 			charsLeidos = new String(datos, Charset.forName(Constantes.CHARSET_UTF16));
-			for (int i = 0; i < charsLeidos.length(); i++) {
+			for (int i = 0; i < charsLeidos.length() && i < cadena.length(); i++) {
 				if (charsLeidos.charAt(i) == cadena.charAt(i)) {
 					longitudMatch++;
 				} else {
@@ -261,7 +279,7 @@ public class Lzp implements Compresor {
 					break;
 				}
 			}
-			leidos += archivoTrabajo.read(datos, 0, 8);
+			leidos += archivoTrabajo.read(datos, 0, tamBuffer);
 		}
 		
 		return longitudMatch;
