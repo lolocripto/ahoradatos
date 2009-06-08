@@ -6,9 +6,8 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
-import ar.com.datos.grupo5.compresion.conversionBitToByte;
-import ar.com.datos.grupo5.compresion.aritmetico.LogicaAritmetica;
-import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
+import ar.com.datos.grupo5.compresion.aritmeticoRamiro.LogicaAritmetica;
+import ar.com.datos.grupo5.compresion.aritmeticoRamiro.ParCharProb;
 import ar.com.datos.grupo5.interfaces.Compresor;
 
 /**
@@ -60,18 +59,12 @@ public class Ppmc implements Compresor{
 	 */
 	private final void inicializarListas() {
 		//Cargo la Lista de orden menos uno
-		int j=0;
 		for (int i = 0; i < 65533; i++) {
-			if ( j == 253) {
-				this.logger.debug("Elementos criticos");
-			}
 			if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
 				this.contextoOrdenMenosUno.crearCharEnContexto(new Character(Character.toChars(i)[0]));
-				j++;
 			} else {
 				if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
 					this.contextoOrdenMenosUno.crearCharEnContexto(new Character(Character.toChars(i)[0]));
-					j++;
 				}
 			}
 		}
@@ -149,8 +142,8 @@ public class Ppmc implements Compresor{
 				this.actualizarOrdenes(cadena.charAt(pos));
 				//FIXME: Imprimo los ordenes, es solo para debug. Por lo tanto borrarlo.
 				this.imprimirEstado();
+				this.logger.debug("Letra: " + cadena.charAt(pos) + ", Emision: " + this.tiraBits);
 				pos++;
-				this.logger.debug(this.tiraBits);
 			}
 			//FIXME: Probar
 			this.getContexto(cadena, pos);
@@ -223,7 +216,7 @@ public class Ppmc implements Compresor{
 	 */
 	private final void recorrerContextos(Character letra) {
 		int ordenContexto = this.contextoActual.length();
-		String contextoString = this.contextoActual.substring(0, ordenContexto); //FIXME: Ver el tema de contextoActual, sino se usa despues eliminar contexto
+		String contextoString = this.contextoActual.substring(0, ordenContexto);
 		logger.debug("Nuevo contexto: " + contextoString);
 		boolean finalizarRecorrida = false;
 		Contexto contexto;
@@ -251,7 +244,7 @@ public class Ppmc implements Compresor{
 				ParCharProb par = new ParCharProb(Constantes.ESC,1);
 				temp.add(par);
 				
-				this.tiraBits = this.compresorAritmetico.comprimir(temp,Constantes.ESC);
+				this.tiraBits += this.compresorAritmetico.comprimir(temp,Constantes.ESC);
 				
 				if (ordenContexto > 0){
 					ordenContexto--;
@@ -283,9 +276,9 @@ public class Ppmc implements Compresor{
 			
 			//Busco la letra en el contexto
 			if (contexto.existeChar(letra)) {
-				this.tiraBits = this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra);	
+				this.tiraBits += this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra);	
 			} else {
-				this.tiraBits = this.compresorAritmetico.comprimir(nuevoOrdenContexto,Constantes.ESC);
+				this.tiraBits += this.compresorAritmetico.comprimir(nuevoOrdenContexto,Constantes.ESC);
 			}
 			
 			
@@ -311,7 +304,7 @@ public class Ppmc implements Compresor{
 			
 			nuevoOrdenContexto = this.obtenerExclusionCompleta(this.contextoOrdenMenosUno, contextoMasUno);
 
-			this.tiraBits = this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra);
+			this.tiraBits += this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra);
 		}
 	}
 	
@@ -346,6 +339,7 @@ public class Ppmc implements Compresor{
 		this.listaOrdenes = null;
 		this.compresorAritmetico = null;
 		this.initSession = false;
+		this.tiraBits = "";
 	}
 
 	@Override
@@ -359,5 +353,6 @@ public class Ppmc implements Compresor{
 		this.inicializarListas();
 		this.compresorAritmetico = new LogicaAritmetica();
 		this.initSession = true;
+		this.tiraBits = "";
 	}
 }

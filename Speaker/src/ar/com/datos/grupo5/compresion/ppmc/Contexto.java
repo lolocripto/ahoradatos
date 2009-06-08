@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
+import ar.com.datos.grupo5.compresion.aritmeticoRamiro.ParCharProb;
 
 /**
  * @author Led Zeppelin
@@ -80,8 +80,6 @@ public class Contexto {
 		if (!this.listaOcurrenciaPorCaracter.containsKey(letra)){
 			ParCharProb par = new ParCharProb(letra, 1);
 			par.setFrecuencia(1);
-			
-			System.out.println("Letra: " + letra);
 			
 			//Actualizo la letra con el elemento par.
 			this.listaOcurrenciaPorCaracter.put(letra, par);

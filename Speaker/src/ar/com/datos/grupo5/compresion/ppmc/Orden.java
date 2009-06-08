@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
-import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
+import ar.com.datos.grupo5.compresion.aritmeticoRamiro.ParCharProb;
 /**
  * @author Led Zeppiln
  *
@@ -88,6 +88,7 @@ public class Orden {
 		while (it.hasNext()) {
 			elemento = it.next();
 			contexto = elemento.getValue();
+			contexto.actualizarProbabilidades();
 			Iterator<ParCharProb> itLista = contexto.getArrayCharProb().iterator();
 			while (itLista.hasNext()) {
 				par = itLista.next();

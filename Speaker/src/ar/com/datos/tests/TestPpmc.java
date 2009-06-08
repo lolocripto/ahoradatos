@@ -20,6 +20,7 @@ public class TestPpmc {
 		Ppmc compresorPpmc = new Ppmc();
 		conversionBitToByte conversor = new conversionBitToByte();
 		System.out.println("TATATAAAAALO: 12Bytes, 96bits");
+		compresorPpmc.iniciarSesion();
 		String cadena = compresorPpmc.comprimir("TATATAAAAALO");
 		cadena += compresorPpmc.finalizarCompresion();
 		conversor.setBits(cadena);
@@ -35,6 +36,6 @@ public class TestPpmc {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		compresorPpmc.finalizarSession();
 	}
 }
