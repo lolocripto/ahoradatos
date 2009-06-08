@@ -60,17 +60,24 @@ public class Ppmc implements Compresor{
 	 */
 	private final void inicializarListas() {
 		//Cargo la Lista de orden menos uno
-		
+		int j=0;
 		for (int i = 0; i < 65533; i++) {
+			if ( j == 253) {
+				this.logger.debug("Elementos criticos");
+			}
 			if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
 				this.contextoOrdenMenosUno.crearCharEnContexto(new Character(Character.toChars(i)[0]));
+				j++;
 			} else {
 				if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
 					this.contextoOrdenMenosUno.crearCharEnContexto(new Character(Character.toChars(i)[0]));
+					j++;
 				}
 			}
 		}
 		this.contextoOrdenMenosUno.crearCharEnContexto(Constantes.EOF);
+		
+		this.contextoOrdenMenosUno.actualizarProbabilidades();
 		
 		//Cargo las listas de ordenes desde 0 al orden definido en la configuración
 		Orden ordenContexto;
@@ -143,6 +150,7 @@ public class Ppmc implements Compresor{
 				//FIXME: Imprimo los ordenes, es solo para debug. Por lo tanto borrarlo.
 				this.imprimirEstado();
 				pos++;
+				this.logger.debug(this.tiraBits);
 			}
 			//FIXME: Probar
 			this.getContexto(cadena, pos);
@@ -263,6 +271,7 @@ public class Ppmc implements Compresor{
 				contextoMasUno = null;
 			}
 			
+			contexto.actualizarProbabilidades();
 			nuevoOrdenContexto = this.obtenerExclusionCompleta(contexto, contextoMasUno);
 			
 			/*

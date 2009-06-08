@@ -19,7 +19,7 @@ public class Contexto {
 	/**
 	 * Contiene todas la letras del contexto asociado con su ocurrencia.
 	 */
-	private HashMap<String,ParCharProb> listaOcurrenciaPorCaracter;
+	private HashMap<Character,ParCharProb> listaOcurrenciaPorCaracter;
 	
 	/**
 	 * Contiene el nombre del contexto asociado a la lista de Ocurrencias.
@@ -35,7 +35,7 @@ public class Contexto {
 	 * Constructor del contexto.
 	 */
 	public Contexto() {
-		this.listaOcurrenciaPorCaracter = new HashMap<String,ParCharProb>();
+		this.listaOcurrenciaPorCaracter = new HashMap<Character,ParCharProb>();
 		this.setCantidadLetras(0);
 	}
 	
@@ -45,7 +45,7 @@ public class Contexto {
 	 */
 	public Contexto(final String nombreContexto) {
 		this.setContexto(nombreContexto);
-		this.listaOcurrenciaPorCaracter = new HashMap<String,ParCharProb>();
+		this.listaOcurrenciaPorCaracter = new HashMap<Character,ParCharProb>();
 		this.setCantidadLetras(0);
 	}
 	
@@ -65,7 +65,7 @@ public class Contexto {
 			
 			
 			//Actualizo la letra con el elemento par.
-			this.listaOcurrenciaPorCaracter.put(letra.toString(), par);
+			this.listaOcurrenciaPorCaracter.put(letra, par);
 			return true;
 		}
 		return false;
@@ -81,8 +81,10 @@ public class Contexto {
 			ParCharProb par = new ParCharProb(letra, 1);
 			par.setFrecuencia(1);
 			
+			System.out.println("Letra: " + letra);
+			
 			//Actualizo la letra con el elemento par.
-			this.listaOcurrenciaPorCaracter.put(letra.toString(), par);
+			this.listaOcurrenciaPorCaracter.put(letra, par);
 			
 			this.cantidadLetras++;
 			
@@ -153,13 +155,13 @@ public class Contexto {
 	 */
 	public void actualizarProbabilidades(){
 		//Recorrer todo el hashMap y actualizar la frecuencia.
-		Iterator<Entry<String,ParCharProb>> it = this.listaOcurrenciaPorCaracter.entrySet().iterator();
-		Entry<String,ParCharProb> elemento;		
+		Iterator<Entry<Character,ParCharProb>> it = this.listaOcurrenciaPorCaracter.entrySet().iterator();
+		Entry<Character,ParCharProb> elemento;		
 		ParCharProb par;
 		while (it.hasNext()) {
 			elemento = it.next();
 			par = elemento.getValue();
-			par.setProbabilidad(par.getFrecuencia()/this.cantidadLetras);
+			par.setProbabilidad((float) par.getFrecuencia()/ (float) this.cantidadLetras);
 		}
 	}
 }
