@@ -205,9 +205,6 @@ public class Lzp implements Compresor {
 					posMatch += (longMatch * 2);
 					longMatchActual = longMatch(cadena, posMatch);
 				} else {
-					if (cadena.length() == 1)
-						longMatchActual = longMatch(cadena, posMatch);
-					else
 					longMatchActual = longMatch(new StringBuffer(cadena.substring(1)), posMatch);
 				}
 				
