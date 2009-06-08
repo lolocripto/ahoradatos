@@ -135,12 +135,6 @@ public class Lzp implements Compresor {
 			resultado = ultCtx;
 		}
 		
-		try {
-			resultado += ComprimirInterno(buffer);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
 		// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
 		// buscar match.
 		try {
@@ -153,6 +147,12 @@ public class Lzp implements Compresor {
 			archivoTrabajo.write(cadena.getBytes(Charset.forName(Constantes.CHARSET_UTF16 + "BE")));
 		} catch (IOException e) {
 			//TODO: Hacer algo
+			e.printStackTrace();
+		}
+		
+		try {
+			resultado += ComprimirInterno(buffer);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -194,7 +194,7 @@ public class Lzp implements Compresor {
 					posMatch += (longMatch * 2);
 				}
 				//Busco la longitud de match.
-				longMatchActual = longMatch(new StringBuffer(cadena.substring(1)), posMatch);
+				longMatchActual = longMatch(cadena, posMatch);
 				if (longMatchActual == cadena.length() - 1) {
 					matchCompleto = true;
 					longMatch += longMatchActual;
