@@ -65,7 +65,7 @@ public class ListaContextos {
 	public final String toString(){
 		String result = new String();
 		for (Entry<String, Integer> entry : mapaContexto.entrySet()) {
-			   result += entry.getKey() + "->" + entry.getValue();
+			   result += "[" + entry.getKey() + "->" + entry.getValue() + "] ";
 			  }
 		return result;
 	}
