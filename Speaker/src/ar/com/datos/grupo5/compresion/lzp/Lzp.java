@@ -195,7 +195,7 @@ public class Lzp implements Compresor {
 				}
 				//Busco la longitud de match.
 				longMatchActual = longMatch(cadena, posMatch);
-				if (longMatchActual == cadena.length() - 1) {
+				if (longMatchActual == cadena.length()) {
 					matchCompleto = true;
 					longMatch += longMatchActual;
 					posActual += (longMatchActual * 2) - 2;
