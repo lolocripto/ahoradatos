@@ -37,4 +37,9 @@ public interface Compresor {
 	 * @return la cadena descomprimida.
 	 */
 	public String descomprimir(String datos);
+	
+	/**
+	 * Imprime los valores de la lista de Contexto
+	 */
+	public void imprimirHashMap();
 }

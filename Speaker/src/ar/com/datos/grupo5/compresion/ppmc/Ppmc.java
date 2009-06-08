@@ -46,7 +46,14 @@ public class Ppmc implements Compresor{
 	public Ppmc(){
 		this.iniciarSesion();
 	}
-	
+
+	/**
+	 * 
+	 * 
+	 */
+	public void imprimirHashMap() {
+
+	}
 	/**
 	 * Inicializa el array con todos los elementos del UNICODE
 	 * y el array de Ordenes

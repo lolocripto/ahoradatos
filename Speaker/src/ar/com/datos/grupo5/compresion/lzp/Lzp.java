@@ -102,6 +102,19 @@ public class Lzp implements Compresor {
 
 	/**
 	 * 
+	 * 
+	 */
+	public void imprimirHashMap() {
+		if (listaContextos.size() == 0) {
+			System.out.println("La lista de contextos estaba vacía");
+			return;
+		}
+		System.out.println("Valores de la lista de contextos:");
+		System.out.println(listaContextos.toString());
+		}
+	
+	/**
+	 * 
 	 * @param cadena
 	 */
 	public String comprimir(String cadena) throws SessionException{
