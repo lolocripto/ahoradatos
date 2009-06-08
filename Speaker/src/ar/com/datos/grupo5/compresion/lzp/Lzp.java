@@ -191,7 +191,7 @@ public class Lzp implements Compresor {
 					posMatch += (longMatch * 2);
 				}
 				//Busco la longitud de match.
-				longMatchActual = longMatch(cadena, posMatch);
+				longMatchActual = longMatch(new StringBuffer(cadena.substring(1)), posMatch);
 				if (longMatchActual == cadena.length()) {
 					matchCompleto = true;
 					longMatch += longMatchActual;
@@ -262,7 +262,7 @@ public class Lzp implements Compresor {
 		byte[] datos = new byte[longCadena];
 		int leidos = 0;
 		// Voy a la posicion en la cual puede haber un match.
-		archivoTrabajo.seek(pos);
+		archivoTrabajo.seek(pos + 2);
 		LOG.info("Me posiciono en el archivo temporal: " + pos);
 		int longitudMatch = 0;
 		String charsLeidos = "";
