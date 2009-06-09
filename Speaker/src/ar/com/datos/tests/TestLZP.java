@@ -16,19 +16,21 @@ public class TestLZP {
 	public static void main(String[] args) throws IOException, SessionException {
 		
 		Compresor comp = new Lzp();
-		String cadena = "ABCC,BABC,CBCC,BCC";
+		String cadena = "ABCCBABC,CBCCBCCX";
 		String[] cadena2 = cadena.split(",");
 		String result = "";
 		
 		comp.iniciarSesion();
 		for (int i = 0; i < cadena2.length; i++) {
 			result += comp.comprimir(cadena2[i]);
+			comp.imprimirHashMap();
 		}
 		LOG.info(cadena.replace(",", ""));
 		LOG.info(result);
-		comp.imprimirHashMap();
 		comp.finalizarSession();
+/*		
 		byte[] cad = "A".getBytes(Constantes.CHARSET_UTF16);
 		LOG.info("Cad (A) en 16 bits = " + cad.toString());
+		*/
 	}
 }

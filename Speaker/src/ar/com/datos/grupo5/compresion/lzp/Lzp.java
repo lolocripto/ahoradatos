@@ -134,9 +134,6 @@ public class Lzp implements Compresor {
 
 			// Genero el CTX.
 			ultCtx = buffer.substring(0, 2);
-			
-			//Saco los 2 primeros.
-			buffer.delete(0, 2);
 
 			//TODO: Hay que emitir estos caracteres sin longitudes.
 			
@@ -144,8 +141,12 @@ public class Lzp implements Compresor {
 			// porque son 2 inicode de 2 bytes c/u.
 			listaContextos.setPosicion(ultCtx, 4);
 			posActual = 4;
-
-			resultado = ultCtx;
+			
+			resultado = ultCtx + "0" + String.valueOf(cadena.charAt(2));
+			ultCtx = cadena.substring(1, 3);
+			
+			//Saco los 3 primeros.
+			buffer.delete(0, 3);
 		}
 		
 		// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
@@ -163,7 +164,7 @@ public class Lzp implements Compresor {
 		}
 		
 		try {
-			resultado += ComprimirInterno(buffer);
+			resultado += ComprimirInterno2(buffer);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -189,7 +190,7 @@ public class Lzp implements Compresor {
 				//Sumo 1 posicion en el archivo.
 				posActual += 2;
 			}
-			
+			LOG.info("Ultimo Contexto: " + ultCtx);
 			// Buscar el contexto...
 			posMatch = listaContextos.getPosicion(ultCtx);
 			if ( posMatch == null) {
@@ -230,6 +231,54 @@ public class Lzp implements Compresor {
 			
 			// La pos del contexto que se modifico es:
 			// posActual - (length(match) + 1)
+		}
+		
+		return result.toString();
+	}
+
+	private String ComprimirInterno2(StringBuffer cadena) throws IOException {
+		
+		StringBuffer result = new StringBuffer();
+		int longMatchActual = 0;
+		int posMatch = 0;
+		
+		while (cadena.length() > 0){
+			
+			Integer pos = listaContextos.getPosicion(ultCtx);
+			if ( pos == null) {
+				posActual += 2;
+				listaContextos.setPosicion(ultCtx, posActual);
+				ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
+				result.append("0" + cadena.substring(0, 1));
+				cadena.delete(0, 1);
+			} else {
+				posMatch = listaContextos.getPosicion(ultCtx);
+				if (posMatch > 0) {
+					if (matchCompleto) {
+						posMatch += longMatch * 2;
+					}
+					longMatchActual = longMatch(cadena, posMatch);
+					if (matchCompleto) {
+						longMatch += longMatchActual;
+						break;
+					} else {
+						String match = cadena.substring(0, longMatchActual);
+						ultCtx = String.valueOf(cadena.charAt(longMatchActual-1));
+						cadena.delete(0, longMatchActual);
+						ultCtx += String.valueOf(cadena.charAt(0));
+						result.append(String.valueOf(longMatch + longMatchActual) + String.valueOf(cadena.charAt(0)));
+						cadena.deleteCharAt(0);
+						posActual += (longMatch + longMatchActual) * 2;
+						longMatch = 0;
+					}
+				} else {
+					posActual += 2;
+					ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
+					result.append("0" + cadena.substring(0, 1));
+					cadena.delete(0, 1);
+					listaContextos.setPosicion(ultCtx, posActual);
+				}
+			}
 		}
 		
 		return result.toString();
