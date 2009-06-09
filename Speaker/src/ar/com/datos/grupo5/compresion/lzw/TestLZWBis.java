@@ -2,6 +2,8 @@ package ar.com.datos.grupo5.compresion.lzw;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -39,7 +41,7 @@ public class TestLZWBis {
         try {
         	
         	String comprimido = compresorBIS.comprimir("CatCatInTheHatAndTheRat");
-			System.out.println("quedodo "+comprimido);
+			System.out.println("quedo "+comprimido);
 			String fout = new String("compresion222.lzw");
 			FileOutputStream ffileOut = new FileOutputStream(fout);
 			conversionBitToByte conversor = new conversionBitToByte();
@@ -55,8 +57,19 @@ public class TestLZWBis {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-       
-        
+       byte[] datosComprimidos = null;
+		ByteArrayInputStream bis = new ByteArrayInputStream(datosComprimidos);  
+		DataInputStream dis = new DataInputStream(bis);
+		
+		byte[] bytesLec = {0, 0, 0, 0};
+		try {
+			dis.read(bytesLec, 2, 2);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Integer integerRec = Conversiones.arrayByteToInt(bytesLec);
+		String datosBinarios = (Integer.toBinaryString(integerRec)).substring(8, 17);	
 	}
 
 }
