@@ -8,6 +8,7 @@ import java.util.HashMap;
 import ar.com.datos.grupo5.compresion.conversionBitToByte;
 import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.Compresor;
+import ar.com.datos.grupo5.utils.Conversiones;
 
 public class CompresorLZWBis implements Compresor{
 
@@ -65,7 +66,7 @@ public class CompresorLZWBis implements Compresor{
 	    int ultimoMatcheo = 0;
 	    ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
-		
+		String textoComprimidoEnBytes = new String();
 		while (!comprimido) {
 			Character caracter = null;
 			if (!(posicion == cadena.length())) 
@@ -96,6 +97,7 @@ public class CompresorLZWBis implements Compresor{
 						 if ( ultimoMatcheo >this.codigosReservados ) {
 				    	      //Se emite el codigo en vez del char
 				    		 textoComprimido+= Integer.toString(ultimoMatcheo);
+				    		 textoComprimidoEnBytes += Conversiones.shortToArrayByte(ultimoMatcheo);
 				    		 int segundoByte = (0x0000FF & (ultimoMatcheo));  
 				    		 int primerByte = ((ultimoMatcheo) & 0x00FF00 ) >> 8;  
 				    		 byte[] codigoBytes= {(byte)primerByte,(byte)segundoByte};
@@ -106,12 +108,14 @@ public class CompresorLZWBis implements Compresor{
 				    		 //emite el ultimo char de la cadena
 				    		 if (caracter != null ) {
 				    			 textoComprimido +=actual.charAt(actual.length()-2);
+				    			 textoComprimidoEnBytes +=Conversiones.charToBinaryString(actual.charAt(actual.length()-2));
 				    			 byte[] codigoBytes = Character.toString(
 								actual.charAt(actual.length() - 2)).getBytes(); 
 				    			 dos.write(codigoBytes,0,codigoBytes.length);
 				    		 }
 				    		 else {
 				    		     textoComprimido +=actual.charAt(0);
+				    		     textoComprimidoEnBytes +=Conversiones.charToBinaryString(actual.charAt(0));
 				    			 byte[] codigoBytes = Character.toString(
 											actual.charAt(0)).getBytes(); 
 							    			 dos.write(codigoBytes,0,codigoBytes.length);
@@ -128,19 +132,20 @@ public class CompresorLZWBis implements Compresor{
 		
 		System.out.println(textoComprimido);
 		return bos.toByteArray();
+		
 		}
 
 	public String comprimir(String cadena) throws SessionException {
 		if (estadoInicio == 0) 
 			throw new SessionException();
-	    boolean comprimido = false;
+		boolean comprimido = false;
 	    String anterior = new String();
 	    String textoComprimido =  new String();
 	    int posicion = 0;
 	    int ultimoMatcheo = 0;
 	    ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
-		
+		String textoComprimidoEnBytes = new String();
 		while (!comprimido) {
 			Character caracter = null;
 			if (!(posicion == cadena.length())) 
@@ -167,44 +172,22 @@ public class CompresorLZWBis implements Compresor{
 				     anterior= new Character(actual.charAt(actual.length()-1)).toString();
 				    	 this.ultimoCodigo++;
 				    	 this.tablaLZW.put(actual,new ParLZW(this.ultimoCodigo,actual));
-				    	 System.out.println(ultimoCodigo+"|"+actual);
+				    	 //System.out.println(ultimoCodigo+"|"+actual);
 						 if ( ultimoMatcheo >this.codigosReservados ) {
 				    	      //Se emite el codigo en vez del char
 				    		 textoComprimido+= Integer.toString(ultimoMatcheo);
-				    		 int segundoByte = (0x0000FF & (ultimoMatcheo));  
-				    		 int primerByte = ((ultimoMatcheo) & 0x00FF00 ) >> 8;  
-				    		 byte[] codigoBytes= {(byte)primerByte,(byte)segundoByte};
-				    		 try {
-								dos.write(codigoBytes,0,codigoBytes.length);
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+				    		 textoComprimidoEnBytes += Conversiones.shortToArrayByte(ultimoMatcheo);
 				    		 ultimoMatcheo = 0;
 				    	 }
 				    	 else {
 				    		 //emite el ultimo char de la cadena
 				    		 if (caracter != null ) {
 				    			 textoComprimido +=actual.charAt(actual.length()-2);
-				    			 byte[] codigoBytes = Character.toString(
-								actual.charAt(actual.length() - 2)).getBytes(); 
-				    			 try {
-									dos.write(codigoBytes,0,codigoBytes.length);
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
+				    			 textoComprimidoEnBytes +=Conversiones.charToBinaryString(actual.charAt(actual.length()-2));
 				    		 }
 				    		 else {
 				    		     textoComprimido +=actual.charAt(0);
-				    			 byte[] codigoBytes = Character.toString(
-											actual.charAt(0)).getBytes(); 
-							    			 try {
-												dos.write(codigoBytes,0,codigoBytes.length);
-											} catch (IOException e) {
-												// TODO Auto-generated catch block
-												e.printStackTrace();
-											}
+				    		     textoComprimidoEnBytes +=Conversiones.charToBinaryString(actual.charAt(0));
 
 				    		 }
 					    	 ultimoMatcheo = 0;
@@ -217,12 +200,9 @@ public class CompresorLZWBis implements Compresor{
 		}
 		
 		System.out.println(textoComprimido);
-		conversionBitToByte conversor = new conversionBitToByte();
-		conversor.setBytes(bos.toByteArray());
-		System.out.println("en bytes quedo "+ conversor.getBits());
-		return conversor.getBits(); 
+		return textoComprimidoEnBytes;
 		
-	}
+		}
 
 	public String descomprimir(String datos) {
 		// TODO Auto-generated method stub

@@ -7,6 +7,7 @@ import java.io.DataInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 import ar.com.datos.grupo5.compresion.conversionBitToByte;
@@ -46,7 +47,13 @@ public class TestLZWBis {
 			FileOutputStream ffileOut = new FileOutputStream(fout);
 			conversionBitToByte conversor = new conversionBitToByte();
 			conversor.setBits(comprimido);
-			ffileOut.write(conversor.getBytes());
+			byte[] codigoEnBytes = conversor.getBytes();
+			byte[] loQueFalto =conversor.finalizarConversion();
+			
+			for (int j=0;j<loQueFalto.length;j++) {
+			   codigoEnBytes[codigoEnBytes.length+j] = loQueFalto[j];	
+			}
+			
 			ffileOut.close();
 			
 		} 
