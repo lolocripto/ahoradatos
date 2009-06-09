@@ -47,13 +47,7 @@ public class TestLZWBis {
 			FileOutputStream ffileOut = new FileOutputStream(fout);
 			conversionBitToByte conversor = new conversionBitToByte();
 			conversor.setBits(comprimido);
-			byte[] codigoEnBytes = conversor.getBytes();
-			byte[] loQueFalto =conversor.finalizarConversion();
-			
-			for (int j=0;j<loQueFalto.length;j++) {
-			   codigoEnBytes[codigoEnBytes.length+j] = loQueFalto[j];	
-			}
-			
+			ffileOut.write(conversor.getBytes());
 			ffileOut.close();
 			
 		} 

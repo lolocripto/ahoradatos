@@ -188,6 +188,7 @@ public class CompresorLZWBis implements Compresor{
 				    		 else {
 				    		     textoComprimido +=actual.charAt(0);
 				    		     textoComprimidoEnBytes +=Conversiones.charToBinaryString(actual.charAt(0));
+				    		     
 
 				    		 }
 					    	 ultimoMatcheo = 0;
@@ -199,7 +200,6 @@ public class CompresorLZWBis implements Compresor{
 			comprimido = (posicion == cadena.length()+1);
 		}
 		
-		System.out.println(textoComprimido);
 		return textoComprimidoEnBytes;
 		
 		}
