@@ -176,7 +176,8 @@ public class CompresorLZWBis implements Compresor{
 						 if ( ultimoMatcheo >this.codigosReservados ) {
 				    	      //Se emite el codigo en vez del char
 				    		 textoComprimido+= Integer.toString(ultimoMatcheo);
-				    		 textoComprimidoEnBytes += Conversiones.shortToArrayByte(ultimoMatcheo);
+				    		 textoComprimidoEnBytes += new UnsignedShort(ultimoMatcheo).get16BitsRepresentation();
+				    		 System.out.println(ultimoMatcheo+">>"+ new UnsignedShort(ultimoMatcheo).get16BitsRepresentation());
 				    		 ultimoMatcheo = 0;
 				    	 }
 				    	 else {
@@ -184,10 +185,12 @@ public class CompresorLZWBis implements Compresor{
 				    		 if (caracter != null ) {
 				    			 textoComprimido +=actual.charAt(actual.length()-2);
 				    			 textoComprimidoEnBytes +=Conversiones.charToBinaryString(actual.charAt(actual.length()-2));
+				    			 System.out.println(actual.charAt(actual.length()-2)+">>"+Conversiones.charToBinaryString(actual.charAt(actual.length()-2)));
 				    		 }
 				    		 else {
 				    		     textoComprimido +=actual.charAt(0);
 				    		     textoComprimidoEnBytes +=Conversiones.charToBinaryString(actual.charAt(0));
+				    		     System.out.println(actual.charAt(0)+">>"+Conversiones.charToBinaryString(actual.charAt(0)));
 				    		     
 
 				    		 }
