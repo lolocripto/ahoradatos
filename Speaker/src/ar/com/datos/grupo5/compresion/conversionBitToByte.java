@@ -192,6 +192,7 @@ public class conversionBitToByte {
 			 cantidadIntegers++;
 		 }
 		
+		this.datosBinarios = null;
 		ByteArrayInputStream bis = new ByteArrayInputStream(this.datosComprimidos);  
 		DataInputStream dis = new DataInputStream(bis);
 		

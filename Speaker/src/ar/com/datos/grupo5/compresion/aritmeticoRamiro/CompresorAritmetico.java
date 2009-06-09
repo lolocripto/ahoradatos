@@ -6,6 +6,7 @@ package ar.com.datos.grupo5.compresion.aritmeticoRamiro;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.ppmc.Contexto;
 import ar.com.datos.grupo5.compresion.ppmc.Orden;
 import ar.com.datos.grupo5.excepciones.SessionException;
@@ -21,6 +22,8 @@ public class CompresorAritmetico implements Compresor{
 	private List<Orden> listaOrdenes;
 	private LogicaAritmetica motorAritmetico;
 	private int orden;
+	private String bits;
+	private boolean charset;
 	//private String bits;
 	
 	public CompresorAritmetico(){
@@ -30,10 +33,17 @@ public class CompresorAritmetico implements Compresor{
 	}
 	
 	public CompresorAritmetico(final int ordenCompresor){
+		this.charset = true;
 		this.orden = ordenCompresor;
 		this.iniciarSesion();
 	}
 
+	public CompresorAritmetico(final int ordenCompresor, final boolean charSet){
+		this.orden = ordenCompresor;
+		this.charset = charSet;
+		this.iniciarSesion();
+	}
+	
 	@Override
 	public String comprimir(String cadena) throws SessionException {
 		Orden ordenActual = this.listaOrdenes.get(this.orden);;
@@ -61,8 +71,6 @@ public class CompresorAritmetico implements Compresor{
 		if (ctx == null){
 			//Creo el contexto 
 			ctx = this.listaOrdenes.get(orden).crearContexto(contexto.toString());
-			//Agrego la letra al contexto.
-			ctx.crearCharEnContexto(cadena.charAt(0));
 		} else {
 			//El contexto existe, verifico que exista la letra a agregar en el contexto
 			if (ctx.existeChar(cadena.charAt(0))){
@@ -78,8 +86,10 @@ public class CompresorAritmetico implements Compresor{
 			this.contexto = cadena.charAt(0);
 		}
 		ctx.actualizarProbabilidades();
-		return this.motorAritmetico.comprimir( (ArrayList<ParCharProb>) ctx.getArrayCharProb(), cadena.charAt(0));
-		
+		this.bits = this.motorAritmetico.comprimir( (ArrayList<ParCharProb>) ctx.getArrayCharProb(), cadena.charAt(0));
+		//Agrego la letra al contexto.
+		ctx.crearCharEnContexto(cadena.charAt(0));
+		return this.bits;
 	}
 
 	@Override
@@ -107,9 +117,65 @@ public class CompresorAritmetico implements Compresor{
 		Orden ordenContexto;
 		for (int i = 0; i <= this.orden; i++) {
 			ordenContexto = new Orden();
+			this.inicializarContexto();
 			this.listaOrdenes.add(ordenContexto);
 		}
 		this.contexto = new Character('\b');
 		this.motorAritmetico = new LogicaAritmetica();
+	}
+
+	private void inicializarContexto() {
+		// TODO Auto-generated method stub
+		Contexto ctx = null;
+		if (this.charset) {
+			switch(this.orden){
+			case 0:
+				//Cargo todo el orden con contexto ""
+				ctx = this.listaOrdenes.get(this.orden).getContexto(""); 
+				if (ctx == null) {
+					this.listaOrdenes.get(this.orden).crearContexto("");
+					ctx = this.listaOrdenes.get(orden).getContexto("");
+				}
+				//Cargo el contexto
+				//Crear letras dentro del contexto del charset!
+				for (int i = 0; i < 65533; i++) {
+					if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
+						ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
+					} else {
+						if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
+							ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
+						}
+					}
+				}
+				break;
+			case 1:
+				//bucle Crear contextos dentro del charset!
+				//bucle crear letras dentro del contexto del charset!
+				break;
+			}
+			//Cargo el charset LATIN
+			
+		} else {
+			//Cargo el UNICODE completo
+			switch(this.orden){
+			case 0:
+				//Cargo todo el orden con contexto ""
+				ctx = this.listaOrdenes.get(this.orden).getContexto(""); 
+				if (ctx == null) {
+					this.listaOrdenes.get(this.orden).crearContexto("");
+					ctx = this.listaOrdenes.get(orden).getContexto("");
+				}
+				//Cargo el contexto
+				//Crear letras dentro del UNICODE!
+				for (int i = 0; i < 65533; i++) {
+					ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
+				}
+				break;
+			case 1:
+				//bucle Crear contextos dentro del charset!
+				//bucle crear letras dentro del contexto del charset!
+				break;
+			}
+		}
 	}
 }
