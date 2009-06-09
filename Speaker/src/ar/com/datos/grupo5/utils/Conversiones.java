@@ -191,13 +191,39 @@ public final class Conversiones {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 		DataOutputStream dos = new DataOutputStream(bos);
 		
+		end += Byte.SIZE;
+		String byteString = "";
 		//Los bytes completos los escribo en el dos
 		for (int i = 0; i < cantidadBytes; i++) {
-			bufferString.substring(start,end);
+			byteString = bufferString.substring(start,end);
+			try {
+				dos.writeByte(Conversiones.BinaryByteStringToByte(byteString));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			bufferString.delete(start,end);
 		}
-		//String binaryInt = Integer.toBinaryString(Character.getNumericValue(letra));
-		//return binaryInt.substring(16, 25);
+		if (faltante > 0){
+			for(int i = 0; i < faltante; i++) {
+				bufferString.append("0");
+			}
+			byteString = bufferString.substring(start,end);
+			try {
+				dos.writeByte(Conversiones.BinaryByteStringToByte(byteString));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			bufferString.delete(start,end);
+		}
 		return bos.toByteArray();
+	}
+	
+	public static byte BinaryByteStringToByte(final String byteString) {	
+		//Convierto el string de binario a byte para luego escribirlo en binario puro
+		Short elemento = Short.parseShort(byteString, 2);
+		byte[] numeroBytes = Conversiones.shortToArrayByte(elemento);
+		return numeroBytes[1];
 	}
 }
