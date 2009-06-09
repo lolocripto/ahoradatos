@@ -182,7 +182,7 @@ public class conversionBitToByte {
 	}
 	
 	/**
-	 * Obtiene los bits que representan el contenido
+	 * Obtiene los bits que representan el contenido y setea los bits en datosBinarios
 	 * de los bytes.
 	 * @return los bits en un string.
 	 */

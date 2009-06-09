@@ -1,5 +1,9 @@
 package ar.com.datos.tests;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -116,7 +120,25 @@ public class TestBinario {
 		f.setBytes(algo);
 		f.setCompletarA16Bits(true);
 		LOG.debug(f.getBits());
+		byte[] algoFinal = Conversiones.BinaryStringToBytes(f.getBits());
+		/*
+		byte[] algoFinal = f.getBytes();
+		if (f.hasMoreBytes()){
+			algoFinal = f.finalizarConversion();
+		}
+		*/
+		ByteArrayInputStream bis = new ByteArrayInputStream(algoFinal);  
+		DataInputStream dis = new DataInputStream(bis);
+		algo = new byte[2];
+		LOG.debug(Short.toString(dis.readShort()));
+		LOG.debug(Character.forDigit(dis.readByte(), 10));
+		LOG.debug(Character.forDigit(dis.readByte(), 10));
+		//LOG.debug(h);
+		//Character h = new Character(Character.toChars(Conversiones.arrayByteToShort(algo))[0]);
+		//LOG.debug(h);
+		
 		LOG.debug(Conversiones.shortToBinaryString(2));
+		//Cat257tInTheH258And264eR258
 	}
 
 }

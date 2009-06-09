@@ -191,7 +191,7 @@ public final class Conversiones {
 		
 		int cantidadBytes = cadena.length() / Byte.SIZE;
 		int faltante = cadena.length() % Byte.SIZE;
-		int start = 0, end = 1;
+		int start = 0, end = 0;
 		StringBuffer bufferString = new StringBuffer(cadena);
 		 
 		
