@@ -58,19 +58,10 @@ public class TestLZWBis {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-       byte[] datosComprimidos = null;
-		ByteArrayInputStream bis = new ByteArrayInputStream(datosComprimidos);  
-		DataInputStream dis = new DataInputStream(bis);
 		
-		byte[] bytesLec = {0, 0, 0, 0};
-		try {
-			dis.read(bytesLec, 2, 2);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Integer integerRec = Conversiones.arrayByteToInt(bytesLec);
-		String datosBinarios = (Integer.toBinaryString(integerRec)).substring(8, 17);	
+		
+     
+		
 	}
 
 }

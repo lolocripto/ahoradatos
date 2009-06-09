@@ -24,12 +24,13 @@ public class conversionBitToByte {
 
 	private byte[] datosComprimidos;
 	private String datosBinarios;
-	
+	private boolean completarA16Bits;
 	
 	/**
 	 * Logger para la clase.
 	 */
 	private static Logger logger = Logger.getLogger(conversionBitToByte.class);
+	
 	
 	/**
 	 * Agrega mas datos binarios.
@@ -187,7 +188,13 @@ public class conversionBitToByte {
 	 */
 	public final String getBits(){
 		
-		int cantidadIntegers = this.datosComprimidos.length / Constantes.SIZE_OF_INT;
+		int cantidadIntegers = 0;
+		if (this.completarA16Bits) {
+			cantidadIntegers = this.datosComprimidos.length / Constantes.SIZE_OF_SHORT;
+		} else {
+			cantidadIntegers = this.datosComprimidos.length / Constantes.SIZE_OF_INT;
+		}
+		 
 		 if ((this.datosComprimidos.length % Constantes.SIZE_OF_INT) > 0) {
 			 cantidadIntegers++;
 		 }
@@ -200,10 +207,23 @@ public class conversionBitToByte {
 		for (int i = 0; i < cantidadIntegers; i++) {
 			
 			byte[] bytesLec = {0, 0, 0, 0, 0, 0, 0, 0};
-			dis.read(bytesLec, 4, 4);
+			if (this.completarA16Bits) {
+				dis.read(bytesLec, 6, 2);
+			} else {
+				dis.read(bytesLec, 4, 4);	
+			}
 			Long longRec = Conversiones.arrayByteToLong(bytesLec);
 			Integer integerRec = longRec.intValue();
-			this.datosBinarios += Integer.toBinaryString(integerRec);	
+			if (this.completarA16Bits){
+				String binarioInt = Integer.toBinaryString(integerRec);
+				int faltante = (16 - binarioInt.length());
+				for(int j = 0; j < faltante; j++) {
+					binarioInt = "0" + binarioInt;
+				}
+				this.datosBinarios += binarioInt;
+			} else {
+				this.datosBinarios += Integer.toBinaryString(integerRec);
+			}
 		}
 
 		} catch (IOException E) {
@@ -278,5 +298,22 @@ public class conversionBitToByte {
 	public final void inicializarConversor(){
 		this.datosBinarios = "";
 		this.datosComprimidos = null;
+		this.setCompletarA16Bits(false);
+	}
+
+
+	/**
+	 * @param completarA16Bits the completarA16Bits to set
+	 */
+	public void setCompletarA16Bits(boolean completarA16Bits) {
+		this.completarA16Bits = completarA16Bits;
+	}
+
+
+	/**
+	 * @return the completarA16Bits
+	 */
+	public boolean isCompletarA16Bits() {
+		return completarA16Bits;
 	}
 }

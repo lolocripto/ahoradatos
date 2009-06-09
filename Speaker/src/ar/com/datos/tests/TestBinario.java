@@ -8,12 +8,13 @@ import java.util.BitSet;
 
 import org.apache.log4j.Logger;
 
+import ar.com.datos.grupo5.compresion.conversionBitToByte;
 import ar.com.datos.grupo5.utils.Conversiones;
 
 public class TestBinario {
 
 	private static Logger LOG = Logger.getLogger(TestBinario.class);
-	
+	/*
     // Returns a bitset containing the values in bytes.
     // The byte-ordering of bytes must be big-endian which means the most significant bit is in element 0.
     public static BitSet fromByteArray(byte[] bytes) {
@@ -40,7 +41,7 @@ public class TestBinario {
         }
         return bytes;
     }
-
+*/
 	/**
 	 * @param args
 	 * @throws IOException 
@@ -73,7 +74,7 @@ public class TestBinario {
 //		}
 		
 		//Ejemplo de como guardar 32 bits en disco.
-		
+	/*	
 		//tenemos que guardar 32 bits.
 		String integer = "11110000111100001111000011110000";
 		LOG.debug("En binario: " + integer);
@@ -100,7 +101,22 @@ public class TestBinario {
 		//Si quiero puedo convertirlo a integer y obtener el binario original.
 		Integer integerRec = longRec.intValue();
 		LOG.debug("Binario recuperado: " + Integer.toBinaryString(integerRec));
-		
+		*/
+		LOG.debug(Conversiones.charToBinaryString('Z'));
+		conversionBitToByte f = new conversionBitToByte();
+		f.setBits(Conversiones.charToBinaryString('H'));
+		f.setBits(Conversiones.charToBinaryString('O'));
+		f.setBits(Conversiones.charToBinaryString('L'));
+		f.setBits(Conversiones.charToBinaryString('A'));
+		byte[] algo = f.getBytes();
+		if (f.hasMoreBytes()){
+			algo = f.finalizarConversion();
+		}
+		LOG.debug(algo.toString());
+		f.setBytes(algo);
+		f.setCompletarA16Bits(true);
+		LOG.debug(f.getBits());
+		LOG.debug(Conversiones.shortToBinaryString(2));
 	}
 
 }
