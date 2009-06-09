@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+import ar.com.datos.grupo5.compresion.ConversorABytes;
 import ar.com.datos.grupo5.compresion.conversionBitToByte;
 import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.Compresor;
@@ -35,10 +36,19 @@ public class CompresorLZWBis implements Compresor{
 	 */
 	private void limpiaTabla(){
 		int i = 0;
-		for(i = 0; i<codigosReservados; i++) {
-			    String valor = new Character(Character.toChars(i)[0]).toString();
-	            tablaLZW.put(valor,new ParLZW(i,valor));
+		tablaLZW = new HashMap<Object,ParLZW>();
+		for (i = 0; i < codigosReservados; i++) {
+			if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
+				String valor =  new Character(Character.toChars(i)[0]).toString();
+				tablaLZW.put(valor,new ParLZW(i,valor));
+			} else {
+				if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
+					String valor = new Character(Character.toChars(i)[0]).toString();
+					tablaLZW.put(valor,new ParLZW(i,valor));
+				}
+			}
 		}
+
 		i++;
         tablaLZW.put(this.caracterEOF,new ParLZW(i,this.caracterEOF));
 		ultimoCodigo = i ;
@@ -97,10 +107,12 @@ public class CompresorLZWBis implements Compresor{
 						 if ( ultimoMatcheo >this.codigosReservados ) {
 				    	      //Se emite el codigo en vez del char
 				    		 textoComprimido+= Integer.toString(ultimoMatcheo);
-				    		 textoComprimidoEnBytes += Conversiones.shortToArrayByte(ultimoMatcheo);
+				    		 textoComprimidoEnBytes +=  ConversorABytes.shortToBinaryString(ultimoMatcheo);
+				    		 System.out.println(ultimoMatcheo+">>"+ ConversorABytes.shortToBinaryString(ultimoMatcheo));
 				    		 int segundoByte = (0x0000FF & (ultimoMatcheo));  
 				    		 int primerByte = ((ultimoMatcheo) & 0x00FF00 ) >> 8;  
 				    		 byte[] codigoBytes= {(byte)primerByte,(byte)segundoByte};
+				    		 System.out.println("niaaaaaaaam graba "+codigoBytes.length);
 				    		 dos.write(codigoBytes,0,codigoBytes.length);
 				    		 ultimoMatcheo = 0;
 				    	 }
@@ -108,17 +120,21 @@ public class CompresorLZWBis implements Compresor{
 				    		 //emite el ultimo char de la cadena
 				    		 if (caracter != null ) {
 				    			 textoComprimido +=actual.charAt(actual.length()-2);
-				    			 textoComprimidoEnBytes +=Conversiones.charToBinaryString(actual.charAt(actual.length()-2));
+				    			 textoComprimidoEnBytes +=ConversorABytes.charToBinaryString(actual.charAt(actual.length()-2));
+				    			 System.out.println(actual.charAt(actual.length()-2)+">>"+ConversorABytes.charToBinaryString(actual.charAt(actual.length()-2))+"<<<"+(int)actual.charAt(actual.length()-2));
 				    			 byte[] codigoBytes = Character.toString(
 								actual.charAt(actual.length() - 2)).getBytes(); 
 				    			 dos.write(codigoBytes,0,codigoBytes.length);
+				    			 System.out.println("niaaaaaaaam graba "+codigoBytes.length);
 				    		 }
 				    		 else {
 				    		     textoComprimido +=actual.charAt(0);
-				    		     textoComprimidoEnBytes +=Conversiones.charToBinaryString(actual.charAt(0));
+				    		     textoComprimidoEnBytes +=ConversorABytes.charToBinaryString(actual.charAt(0));
+				    			 System.out.println(actual.charAt(0)+">>"+ConversorABytes.charToBinaryString(actual.charAt(0))+"<<<"+(int)actual.charAt(0));				    		     
 				    			 byte[] codigoBytes = Character.toString(
 											actual.charAt(0)).getBytes(); 
-							    			 dos.write(codigoBytes,0,codigoBytes.length);
+							     dos.write(codigoBytes,0,codigoBytes.length);
+							     System.out.println("niaaaaaaaam graba "+codigoBytes.length);
 
 				    		 }
 					    	 ultimoMatcheo = 0;
@@ -130,7 +146,8 @@ public class CompresorLZWBis implements Compresor{
 			comprimido = (posicion == cadena.length()+1);
 		}
 		
-		System.out.println(textoComprimido);
+		System.out.println("Comprimir Datos da " +textoComprimido);
+		System.out.println("mandria..." + textoComprimidoEnBytes);
 		return bos.toByteArray();
 		
 		}
@@ -138,13 +155,11 @@ public class CompresorLZWBis implements Compresor{
 	public String comprimir(String cadena) throws SessionException {
 		if (estadoInicio == 0) 
 			throw new SessionException();
-		boolean comprimido = false;
+	    boolean comprimido = false;
 	    String anterior = new String();
 	    String textoComprimido =  new String();
 	    int posicion = 0;
 	    int ultimoMatcheo = 0;
-	    ByteArrayOutputStream bos = new ByteArrayOutputStream();  
-		DataOutputStream dos = new DataOutputStream(bos);
 		String textoComprimidoEnBytes = new String();
 		while (!comprimido) {
 			Character caracter = null;
@@ -176,23 +191,21 @@ public class CompresorLZWBis implements Compresor{
 						 if ( ultimoMatcheo >this.codigosReservados ) {
 				    	      //Se emite el codigo en vez del char
 				    		 textoComprimido+= Integer.toString(ultimoMatcheo);
-				    		 textoComprimidoEnBytes += new UnsignedShort(ultimoMatcheo).get16BitsRepresentation();
-				    		 System.out.println(ultimoMatcheo+">>"+ new UnsignedShort(ultimoMatcheo).get16BitsRepresentation());
+				    		 textoComprimidoEnBytes +=  ConversorABytes.shortToBinaryString(ultimoMatcheo);
+				    		 System.out.println(ultimoMatcheo+">>"+ ConversorABytes.shortToBinaryString(ultimoMatcheo));
 				    		 ultimoMatcheo = 0;
 				    	 }
 				    	 else {
 				    		 //emite el ultimo char de la cadena
 				    		 if (caracter != null ) {
 				    			 textoComprimido +=actual.charAt(actual.length()-2);
-				    			 textoComprimidoEnBytes +=Conversiones.charToBinaryString(actual.charAt(actual.length()-2));
-				    			 System.out.println(actual.charAt(actual.length()-2)+">>"+Conversiones.charToBinaryString(actual.charAt(actual.length()-2)));
+				    			 textoComprimidoEnBytes +=ConversorABytes.charToBinaryString(actual.charAt(actual.length()-2));
+				    			 System.out.println(actual.charAt(actual.length()-2)+">>"+ConversorABytes.charToBinaryString(actual.charAt(actual.length()-2))+"<<<"+(int)actual.charAt(actual.length()-2));
 				    		 }
 				    		 else {
 				    		     textoComprimido +=actual.charAt(0);
-				    		     textoComprimidoEnBytes +=Conversiones.charToBinaryString(actual.charAt(0));
-				    		     System.out.println(actual.charAt(0)+">>"+Conversiones.charToBinaryString(actual.charAt(0)));
-				    		     
-
+				    		     textoComprimidoEnBytes +=ConversorABytes.charToBinaryString(actual.charAt(0));
+				    			 System.out.println(actual.charAt(0)+">>"+ConversorABytes.charToBinaryString(actual.charAt(0))+"<<<"+(int)actual.charAt(0));				    		     
 				    		 }
 					    	 ultimoMatcheo = 0;
 				    	 }
@@ -203,19 +216,24 @@ public class CompresorLZWBis implements Compresor{
 			comprimido = (posicion == cadena.length()+1);
 		}
 		
+		System.out.println("Comprimir Datos da " +textoComprimido);
+		System.out.println("mandria..." + textoComprimidoEnBytes);
 		return textoComprimidoEnBytes;
 		
 		}
 
-	public String descomprimir(String datos) {
+	public String descomprimir(String datoscomprimidos) {
 		// TODO Auto-generated method stub
 		conversionBitToByte conversor = new conversionBitToByte();
-		int posicion = 0;
-		while (posicion < datos.length()) {
-		  conversor.setBits(datos.substring(posicion,posicion+16));
-		  byte[] shortie = conversor.getBytes();
-		  System.out.println("|"+shortie[0]+"|"+shortie[1]);
-		  posicion+=16;
+		int k=0;
+		while (k < datoscomprimidos.length()) {
+		conversor.setBits(datoscomprimidos.substring(k,k+16));
+		System.out.println("sub)"+datoscomprimidos.substring(k,k+16));
+		int codigo = Conversiones.arrayByteToShort(conversor.getBytes());
+		if (codigo<255)
+			System.out.println("     >>>>"+(char)codigo);
+		System.out.println(codigo);
+		k+=16;
 		}
 		return null;
 	}
@@ -248,11 +266,14 @@ public class CompresorLZWBis implements Compresor{
             
             String actual = null;
             ParLZW NodoActual = null;
-            
+            conversionBitToByte conversorPuto = new conversionBitToByte();
 			byte firstByte = (byte) (0x000000FF & (buffer[posicion]));
 			if ((int) firstByte < 16) {
 				//es numero
 				byte secondByte = (byte) (0x000000FF & (buffer[posicion + 1]));
+				byte[] numero = {firstByte,secondByte};
+				conversorPuto.setBytes(numero);
+				System.out.println("b)"+conversorPuto.getBits());
 				posicion++;
 				int codigo = (firstByte << 8 | secondByte);
 				System.out.println("c>>" + codigo);
@@ -265,6 +286,10 @@ public class CompresorLZWBis implements Compresor{
 			} else {
 				//era una letra
 				char codigo = (char) buffer[posicion];
+				byte[] letra = {buffer[posicion]};
+			   conversorPuto.setBytes(letra);
+			   System.out.println("c)"+conversorPuto.getBits());
+			   /*
 				System.out.println("c>>" + codigo);
 				actual = Character.toString(codigo);
 				System.out.println("actual es "+(int)codigo);
@@ -302,7 +327,7 @@ public class CompresorLZWBis implements Compresor{
 					codigoValor = new String();
 			    }
 			        	
-			
+			*/
 			}
 				
   		posicion++;

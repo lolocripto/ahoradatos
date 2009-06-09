@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import ar.com.datos.grupo5.compresion.conversionBitToByte;
 import ar.com.datos.grupo5.excepciones.SessionException;
@@ -27,41 +28,52 @@ public class TestLZWBis {
 			//compresorBIS.comprimeDatos("/wed/we/wee/web/wet");
 	        try {
 				byte[] comprimidoBytes = compresorBIS.comprimeDatos("CatCatInTheHatAndTheRat");
+				conversionBitToByte conver = new conversionBitToByte();
+				conver.setBytes(comprimidoBytes);
+				String cadenaBits = conver.getBits();
+				System.out.println("||con metodo en byte[]||"+cadenaBits);
 				String out = new String("compresion.lzw");
 				FileOutputStream fileOut = new FileOutputStream(out);
 				fileOut.write(comprimidoBytes);
 				fileOut.close();
+				
+				try {
+					compresorBIS.iniciarSesion();
+					String enbites = compresorBIS.comprimir("CatCatInTheHatAndTheRat");
+				    conver.setBits(enbites);
+				    byte[] cachirla = conver.getBytes();
+					String out2 = new String("compresion0001.lzw");
+					FileOutputStream fileOut2 = new FileOutputStream(out2);
+					fileOut2.write(cachirla);
+					fileOut2.close();
+				    
+				    leeCadena(enbites);	
+				} catch (SessionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block\
 				System.out.println("|error");
 				e.printStackTrace();
 			}
-		
-        
-        try {
-        	
-        	String comprimido = compresorBIS.comprimir("CatCatInTheHatAndTheRat");
-			System.out.println("quedo "+comprimido);
-			String fout = new String("compresion222.lzw");
-			FileOutputStream ffileOut = new FileOutputStream(fout);
-			conversionBitToByte conversor = new conversionBitToByte();
-			conversor.setBits(comprimido);
-			ffileOut.write(conversor.getBytes());
-			ffileOut.close();
-			
-		} 
-	    catch (SessionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-     
-		
+	
 	}
 
+	private static void leeCadena(String comprimido) {
+		conversionBitToByte conversor = new conversionBitToByte();
+		int k=0;
+		while (k < comprimido.length()) {
+		conversor.setBits(comprimido.substring(k,k+16));
+		System.out.println("sub)"+comprimido.substring(k,k+16));
+		int codigo = Conversiones.arrayByteToShort(conversor.getBytes());
+		if (codigo<255)
+			System.out.println("     >>>>"+(char)codigo);
+		System.out.println(codigo);
+		k+=16;
+		}		
+		
+		
+	}
 }
