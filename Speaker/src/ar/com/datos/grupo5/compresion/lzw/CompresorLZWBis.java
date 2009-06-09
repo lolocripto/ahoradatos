@@ -92,7 +92,7 @@ public class CompresorLZWBis implements Compresor{
 				     anterior= new Character(actual.charAt(actual.length()-1)).toString();
 				    	 this.ultimoCodigo++;
 				    	 this.tablaLZW.put(actual,new ParLZW(this.ultimoCodigo,actual));
-				    	 System.out.println(ultimoCodigo+"|"+actual);
+				    	 //System.out.println(ultimoCodigo+"|"+actual);
 						 if ( ultimoMatcheo >this.codigosReservados ) {
 				    	      //Se emite el codigo en vez del char
 				    		 textoComprimido+= Integer.toString(ultimoMatcheo);
@@ -131,13 +131,15 @@ public class CompresorLZWBis implements Compresor{
 		}
 
 	public String comprimir(String cadena) throws SessionException {
-		limpiaTabla();
+		if (estadoInicio == 0) 
+			throw new SessionException();
 	    boolean comprimido = false;
 	    String anterior = new String();
 	    String textoComprimido =  new String();
-	    String textoComprimidoBytes =  new String();
 	    int posicion = 0;
 	    int ultimoMatcheo = 0;
+	    ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+		DataOutputStream dos = new DataOutputStream(bos);
 		
 		while (!comprimido) {
 			Character caracter = null;
@@ -172,23 +174,37 @@ public class CompresorLZWBis implements Compresor{
 				    		 int segundoByte = (0x0000FF & (ultimoMatcheo));  
 				    		 int primerByte = ((ultimoMatcheo) & 0x00FF00 ) >> 8;  
 				    		 byte[] codigoBytes= {(byte)primerByte,(byte)segundoByte};
-				    		 textoComprimidoBytes+=new UnsignedShort(primerByte).get16BitsRepresentation();
-				    		 textoComprimidoBytes+=new UnsignedShort(segundoByte).get16BitsRepresentation();
+				    		 try {
+								dos.write(codigoBytes,0,codigoBytes.length);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 				    		 ultimoMatcheo = 0;
 				    	 }
 				    	 else {
 				    		 //emite el ultimo char de la cadena
 				    		 if (caracter != null ) {
 				    			 textoComprimido +=actual.charAt(actual.length()-2);
-				    			 textoComprimidoBytes += new UnsignedShort((int) actual
-								.charAt(actual.length() - 2))
-								.get16BitsRepresentation(); 
+				    			 byte[] codigoBytes = Character.toString(
+								actual.charAt(actual.length() - 2)).getBytes(); 
+				    			 try {
+									dos.write(codigoBytes,0,codigoBytes.length);
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 				    		 }
 				    		 else {
 				    		     textoComprimido +=actual.charAt(0);
-				    		     textoComprimidoBytes += new UnsignedShort((int) actual
-											.charAt(0))
-											.get16BitsRepresentation(); 
+				    			 byte[] codigoBytes = Character.toString(
+											actual.charAt(0)).getBytes(); 
+							    			 try {
+												dos.write(codigoBytes,0,codigoBytes.length);
+											} catch (IOException e) {
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+											}
 
 				    		 }
 					    	 ultimoMatcheo = 0;
@@ -201,9 +217,12 @@ public class CompresorLZWBis implements Compresor{
 		}
 		
 		System.out.println(textoComprimido);
-		return textoComprimidoBytes;
-		}
-
+		conversionBitToByte conversor = new conversionBitToByte();
+		conversor.setBytes(bos.toByteArray());
+		System.out.println("en bytes quedo "+ conversor.getBits());
+		return conversor.getBits(); 
+		
+	}
 
 	public String descomprimir(String datos) {
 		// TODO Auto-generated method stub
@@ -254,7 +273,9 @@ public class CompresorLZWBis implements Compresor{
 				posicion++;
 				int codigo = (firstByte << 8 | secondByte);
 				System.out.println("c>>" + codigo);
-				NodoActual= (ParLZW)tablaLZW.get(new ParLZW(codigo,""));
+				ParLZW aux = new ParLZW(codigo,new String());
+				System.out.println("crea aux");
+				NodoActual= tablaLZW.get(aux);
 				codigoValor = NodoActual.getValor();
 				actual = codigoValor;
 
@@ -263,6 +284,7 @@ public class CompresorLZWBis implements Compresor{
 				char codigo = (char) buffer[posicion];
 				System.out.println("c>>" + codigo);
 				actual = Character.toString(codigo);
+				System.out.println("actual es "+(int)codigo);
 			    if (!anterior.isEmpty()) {
 					    actual = anterior + actual;
 					    NodoActual= (ParLZW)tablaLZW.get(new ParLZW(0,actual));

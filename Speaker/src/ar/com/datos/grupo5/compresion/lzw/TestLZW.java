@@ -6,11 +6,8 @@ public class TestLZW {
 	public static void main(String[] args) {
 	        // Create application frame.
 	        CompresorLzw lzwNew = new CompresorLzw();
-	        lzwNew.comprimirArchivo("compresion.txt","compresion2.lzw");
-	        lzwNew.descomprimirArchivo("compresion2.lzw","compresion2.wzl");
-            //for (int i =0 ; i<1000; i++) {
-           // 	System.out.println("char= "+Character.toChars(i)[0]+" pos="+i);
-            //}
+	        lzwNew.comprimirArchivo("compresion.txt","compresion.lzw");
+	        lzwNew.descomprimirArchivo("compresion.lzw","compresion.wzl");
 	        
 	}
 }

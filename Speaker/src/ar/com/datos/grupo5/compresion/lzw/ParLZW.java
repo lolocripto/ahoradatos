@@ -25,9 +25,8 @@ public class ParLZW {
 		return valor;
 	}
 	
-	public final boolean equals(Object o) {
-    	
-    	System.out.println("Viene a comparar ("+((ParLZW)o).getClave()+","+((ParLZW)o).getValor()+")");
+	public boolean equals(Object o) {
+    	System.out.println("clase= "+ o.toString());
     	System.out.println("comparar ("+this.getClave()+","+this.getValor()+")");
     	if (((ParLZW)o).getClave() == this.getClave() ) {
     		return true;
