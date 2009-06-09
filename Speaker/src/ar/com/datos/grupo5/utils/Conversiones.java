@@ -163,7 +163,13 @@ public final class Conversiones {
 	 * @return el short en binario.
 	 */
 	public static String shortToBinaryString(final Integer numero) {
-		return Integer.toBinaryString(numero.intValue()).substring(16, 32);
+		String binaryInt = Integer.toBinaryString(numero.intValue());
+		int faltante = (16 - binaryInt.length());
+		for(int i = 0; i < faltante; i++) {
+			binaryInt = "0" + binaryInt;
+		}
+		//System.out.println(numero+">>>"+binaryInt);
+		return binaryInt;
 	}
 	
 	public static String charToBinaryString(final Character letra) {
