@@ -155,4 +155,19 @@ public final class Conversiones {
 		return bos.toByteArray();  
 	}
 	
+	/**
+	 * Int to array byte.
+	 * 
+	 * @param numero
+	 *            el entero a convertir.
+	 * @return el short en binario.
+	 */
+	public static String shortToBinaryString(final Integer numero) {
+		return Integer.toBinaryString(numero.intValue()).substring(16, 25);
+	}
+	
+	public static String charToBinaryString(final Character letra) {
+		String binaryInt = Integer.toBinaryString(Character.getNumericValue(letra));
+		return binaryInt.substring(16, 25);
+	}
 }

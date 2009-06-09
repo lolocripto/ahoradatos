@@ -209,6 +209,7 @@ public class conversionBitToByte {
 		} catch (IOException E) {
 			return null;
 		}
+		this.datosComprimidos = null;
 		return this.datosBinarios;
 	}
 	
