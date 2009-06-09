@@ -163,11 +163,41 @@ public final class Conversiones {
 	 * @return el short en binario.
 	 */
 	public static String shortToBinaryString(final Integer numero) {
-		return Integer.toBinaryString(numero.intValue()).substring(16, 25);
+		return Integer.toBinaryString(numero.intValue()).substring(16, 32);
 	}
 	
 	public static String charToBinaryString(final Character letra) {
 		String binaryInt = Integer.toBinaryString(Character.getNumericValue(letra));
-		return binaryInt.substring(16, 25);
+		int faltante = (16 - binaryInt.length());
+		for(int i = 0; i < faltante; i++) {
+			binaryInt = "0" + binaryInt;
+		}
+		return binaryInt;
+	}
+	
+	/**
+	 * Recibe un BinaryString y lo convierte en una tira de bytes
+	 * @param letra
+	 * @return
+	 */
+	public static byte[] BinaryStringToBytes(final String cadena) {
+		
+		int cantidadBytes = cadena.length() / Byte.SIZE;
+		int faltante = cadena.length() % Byte.SIZE;
+		int start = 0, end = 1;
+		StringBuffer bufferString = new StringBuffer(cadena);
+		 
+		
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+		DataOutputStream dos = new DataOutputStream(bos);
+		
+		//Los bytes completos los escribo en el dos
+		for (int i = 0; i < cantidadBytes; i++) {
+			bufferString.substring(start,end);
+			bufferString.delete(start,end);
+		}
+		//String binaryInt = Integer.toBinaryString(Character.getNumericValue(letra));
+		//return binaryInt.substring(16, 25);
+		return bos.toByteArray();
 	}
 }
