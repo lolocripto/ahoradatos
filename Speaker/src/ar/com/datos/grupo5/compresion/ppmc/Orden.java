@@ -39,6 +39,9 @@ public class Orden {
 		return this.listaContexto.get(contexto);
 	}
 	
+	public final boolean existeContexto(String contexto){
+		return this.listaContexto.containsKey(contexto);
+	}
 	/**
 	 * Incrementa la frecuencia del char que se emitio, sino existia el contexto se 
 	 * crea.

@@ -35,13 +35,11 @@ public class CompresorAritmetico implements Compresor{
 	public CompresorAritmetico(final int ordenCompresor){
 		this.charset = true;
 		this.orden = ordenCompresor;
-		this.iniciarSesion();
 	}
 
 	public CompresorAritmetico(final int ordenCompresor, final boolean charSet){
 		this.orden = ordenCompresor;
 		this.charset = charSet;
-		this.iniciarSesion();
 	}
 	
 	@Override
@@ -117,13 +115,42 @@ public class CompresorAritmetico implements Compresor{
 		Orden ordenContexto;
 		for (int i = 0; i <= this.orden; i++) {
 			ordenContexto = new Orden();
-			this.inicializarContexto();
 			this.listaOrdenes.add(ordenContexto);
+			this.inicializarContexto();
 		}
 		this.contexto = new Character('\b');
 		this.motorAritmetico = new LogicaAritmetica();
 	}
 
+	private void cargarCtxConUnicodeBlock(Contexto ctx){
+		for (int i = 0; i < 65533; i++) {
+			if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
+				ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
+			} else {
+				if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
+					ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
+				}
+			}
+		}
+	}
+	
+	private void cargarCtxConUnicodeCompleto(Contexto ctx){
+		for (int i = 0; i < 65533; i++) {
+			ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
+		}
+	}
+	
+	private Contexto verificarCtx(final String contextoString){
+		Contexto ctx = null;
+		if (!this.listaOrdenes.get(this.orden).existeContexto(contextoString)) {
+			this.listaOrdenes.get(this.orden).crearContexto("");
+			ctx = this.listaOrdenes.get(orden).getContexto("");
+		} else {
+			ctx = this.listaOrdenes.get(this.orden).getContexto(contextoString);
+		}
+		return ctx;
+	}
+	
 	private void inicializarContexto() {
 		// TODO Auto-generated method stub
 		Contexto ctx = null;
@@ -131,49 +158,55 @@ public class CompresorAritmetico implements Compresor{
 			switch(this.orden){
 			case 0:
 				//Cargo todo el orden con contexto ""
-				ctx = this.listaOrdenes.get(this.orden).getContexto(""); 
-				if (ctx == null) {
-					this.listaOrdenes.get(this.orden).crearContexto("");
-					ctx = this.listaOrdenes.get(orden).getContexto("");
-				}
+				ctx = verificarCtx("");
 				//Cargo el contexto
 				//Crear letras dentro del contexto del charset!
-				for (int i = 0; i < 65533; i++) {
-					if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
-						ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
-					} else {
-						if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
-							ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
-						}
-					}
-				}
+				this.cargarCtxConUnicodeBlock(ctx);
 				break;
 			case 1:
 				//bucle Crear contextos dentro del charset!
 				//bucle crear letras dentro del contexto del charset!
+				for (int i = 0; i < 65533; i++) {
+					if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
+						System.out.println(new Character(Character.toChars(i)[0]).toString());
+						ctx = this.verificarCtx(new Character(Character.toChars(i)[0]).toString());
+						this.cargarCtxConUnicodeBlock(ctx);
+					} else {
+						if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
+							System.out.println(new Character(Character.toChars(i)[0]).toString());
+							ctx = this.verificarCtx(new Character(Character.toChars(i)[0]).toString());
+							this.cargarCtxConUnicodeBlock(ctx);
+						}
+					}
+					System.out.println(i);
+				}
 				break;
 			}
 			//Cargo el charset LATIN
-			
 		} else {
 			//Cargo el UNICODE completo
 			switch(this.orden){
 			case 0:
 				//Cargo todo el orden con contexto ""
-				ctx = this.listaOrdenes.get(this.orden).getContexto(""); 
-				if (ctx == null) {
-					this.listaOrdenes.get(this.orden).crearContexto("");
-					ctx = this.listaOrdenes.get(orden).getContexto("");
-				}
+				ctx = verificarCtx("");
 				//Cargo el contexto
 				//Crear letras dentro del UNICODE!
-				for (int i = 0; i < 65533; i++) {
-					ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
-				}
+				this.cargarCtxConUnicodeCompleto(ctx);
 				break;
 			case 1:
 				//bucle Crear contextos dentro del charset!
 				//bucle crear letras dentro del contexto del charset!
+				for (int i = 0; i < 65533; i++) {
+					if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
+						ctx = this.verificarCtx(new Character(Character.toChars(i)[0]).toString());
+						this.cargarCtxConUnicodeCompleto(ctx);
+					} else {
+						if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
+							ctx = this.verificarCtx(new Character(Character.toChars(i)[0]).toString());
+							this.cargarCtxConUnicodeCompleto(ctx);
+						}
+					}
+				}
 				break;
 			}
 		}

@@ -106,6 +106,7 @@ public class TestBinario {
 		Integer integerRec = longRec.intValue();
 		LOG.debug("Binario recuperado: " + Integer.toBinaryString(integerRec));
 		*/
+		/*
 		LOG.debug(Conversiones.charToBinaryString('Z'));
 		conversionBitToByte f = new conversionBitToByte();
 		f.setBits(Conversiones.charToBinaryString('H'));
@@ -121,12 +122,7 @@ public class TestBinario {
 		f.setCompletarA16Bits(true);
 		LOG.debug(f.getBits());
 		byte[] algoFinal = Conversiones.BinaryStringToBytes(f.getBits());
-		/*
-		byte[] algoFinal = f.getBytes();
-		if (f.hasMoreBytes()){
-			algoFinal = f.finalizarConversion();
-		}
-		*/
+		
 		ByteArrayInputStream bis = new ByteArrayInputStream(algoFinal);  
 		DataInputStream dis = new DataInputStream(bis);
 		algo = new byte[2];
@@ -139,6 +135,39 @@ public class TestBinario {
 		
 		LOG.debug(Conversiones.shortToBinaryString(2));
 		//Cat257tInTheH258And264eR258
+		 *
+		 */
+		/*
+		Character c = new Character('\n');
+		String hola = c.toString();
+		System.out.println("New character.tostring: " + hola);
+		 c = new Character('\r');
+		hola = c.toString();
+		System.out.println("New character.tostring: " + hola);
+		*/
+		for (int i = 0; i < 65533; i++) {
+			if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
+				System.out.println(new Character(Character.toChars(i)[0]));
+				Character c = new Character(Character.toChars(i)[0]);
+				char value = c.charValue();
+
+				String hola = c.toString();
+				System.out.println("New character.tostring: " + hola + ", char value: " +value);
+				System.out.println("Value of: " + String.valueOf(new Character(Character.toChars(i)[0])));
+				System.out.println(i);
+			} else {
+				if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
+					System.out.println(new Character(Character.toChars(i)[0]));
+					Character c = new Character(Character.toChars(i)[0]);
+					String hola = c.toString();
+					System.out.println("New character.tostring: " + hola);
+					System.out.println("Value of: " + String.valueOf(new Character(Character.toChars(i)[0])));
+					System.out.println(i);
+				}
+			}
+			
+		}
+
 	}
 
 }
