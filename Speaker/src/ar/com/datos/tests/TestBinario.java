@@ -13,6 +13,7 @@ import java.util.BitSet;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.compresion.conversionBitToByte;
+import ar.com.datos.grupo5.utils.CodePoint;
 import ar.com.datos.grupo5.utils.Conversiones;
 
 public class TestBinario {
@@ -145,28 +146,13 @@ public class TestBinario {
 		hola = c.toString();
 		System.out.println("New character.tostring: " + hola);
 		*/
-		for (int i = 0; i < 65533; i++) {
-			if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
-				System.out.println(new Character(Character.toChars(i)[0]));
-				Character c = new Character(Character.toChars(i)[0]);
-				char value = c.charValue();
-
-				String hola = c.toString();
-				System.out.println("New character.tostring: " + hola + ", char value: " +value);
-				System.out.println("Value of: " + String.valueOf(new Character(Character.toChars(i)[0])));
-				System.out.println(i);
-			} else {
-				if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
-					System.out.println(new Character(Character.toChars(i)[0]));
-					Character c = new Character(Character.toChars(i)[0]);
-					String hola = c.toString();
-					System.out.println("New character.tostring: " + hola);
-					System.out.println("Value of: " + String.valueOf(new Character(Character.toChars(i)[0])));
-					System.out.println(i);
-				}
-			}
-			
-		}
+					
+		CodePoint cp = new CodePoint();
+		Character letra1 = cp.getChar(30000);
+		System.out.println(letra1);
+		int codepoint = cp.getCodePoint(letra1);
+		System.out.println(codepoint);
+		
 
 	}
 
