@@ -13,6 +13,7 @@ import java.util.BitSet;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.compresion.conversionBitToByte;
+import ar.com.datos.grupo5.excepciones.CodePointException;
 import ar.com.datos.grupo5.utils.CodePoint;
 import ar.com.datos.grupo5.utils.Conversiones;
 
@@ -148,10 +149,18 @@ public class TestBinario {
 		*/
 					
 		CodePoint cp = new CodePoint();
-		Character letra1 = cp.getChar(30000);
-		System.out.println(letra1);
-		int codepoint = cp.getCodePoint(letra1);
-		System.out.println(codepoint);
+		Character letra1 = null;
+		try {
+			letra1 = cp.getChar(3679700);
+			System.out.println(letra1);
+			int codepoint = cp.getCodePoint(letra1);
+			System.out.println(codepoint);
+
+		} catch (CodePointException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Fuera del Intervalo.");
+		}
 		
 
 	}

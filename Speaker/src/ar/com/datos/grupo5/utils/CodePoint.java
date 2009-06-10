@@ -3,14 +3,20 @@
  */
 package ar.com.datos.grupo5.utils;
 
+import ar.com.datos.grupo5.excepciones.CodePointException;
+
 /**
  * @author Led Zeppelin
  *
  */
 public class CodePoint {
 
-	public final Character getChar(final int CodePoint){
-		return new Character(Character.toChars(CodePoint)[0]);
+	public final Character getChar(final int codepoint) throws CodePointException{
+		if (codepoint <= Character.MAX_VALUE && codepoint >= Character.MIN_VALUE) {
+			return new Character(Character.toChars(codepoint)[0]);	
+		} else {
+				throw new CodePointException();
+		}
 	}
 	
 	public final int getCodePoint(final Character letra){
