@@ -6,7 +6,6 @@ package ar.com.datos.grupo5.compresion.aritmeticoRamiro;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.ppmc.Contexto;
 import ar.com.datos.grupo5.compresion.ppmc.Orden;
 import ar.com.datos.grupo5.excepciones.SessionException;
@@ -44,7 +43,7 @@ public class CompresorAritmetico implements Compresor{
 	
 	@Override
 	public String comprimir(String cadena) throws SessionException {
-		Orden ordenActual = this.listaOrdenes.get(this.orden);;
+		Orden ordenActual = this.listaOrdenes.get(0);
 		Contexto ctx = null;
 		
 		/*
@@ -54,7 +53,6 @@ public class CompresorAritmetico implements Compresor{
 		 */
 		switch(this.orden){
 		case 1:
-			//FIXME: Ver el famoso \b
 			ctx = ordenActual.getContexto(contexto.toString());
 			break;
 		default:
@@ -65,7 +63,7 @@ public class CompresorAritmetico implements Compresor{
 		
 		
 		
-		//Si el contexto no existe lo creo
+		//Si el contexto no existe lo creo, no debería entrar nunca aca
 		if (ctx == null){
 			//Creo el contexto 
 			ctx = this.listaOrdenes.get(orden).crearContexto(contexto.toString());
@@ -73,20 +71,24 @@ public class CompresorAritmetico implements Compresor{
 			//El contexto existe, verifico que exista la letra a agregar en el contexto
 			if (ctx.existeChar(cadena.charAt(0))){
 				//Exite la letra por lo tanto actualizo la frecuencia
+				ctx.actualizarProbabilidades();
+				
+				//FIXME: Genero una lista temporal porque no puedo castear de un HASHMAP$Values a ArrayList 
+				ArrayList<ParCharProb> temp = new ArrayList<ParCharProb>(ctx.getArrayCharProb());
+				
+				this.bits = this.motorAritmetico.comprimir(temp, cadena.charAt(0));
 				ctx.actualizarContexto(cadena.charAt(0));
 			} else {
-				//Creo la letra.
+				//Creo la letra. No debería entrar nunca.
 				ctx.crearCharEnContexto(cadena.charAt(0));
 			}
 		}
+		
 		if (this.orden > 0) {
 			//Si es de orden mayor a 0 entonces actualizo el contexto
 			this.contexto = cadena.charAt(0);
 		}
-		ctx.actualizarProbabilidades();
-		this.bits = this.motorAritmetico.comprimir( (ArrayList<ParCharProb>) ctx.getArrayCharProb(), cadena.charAt(0));
-		//Agrego la letra al contexto.
-		ctx.crearCharEnContexto(cadena.charAt(0));
+
 		return this.bits;
 	}
 
@@ -113,11 +115,11 @@ public class CompresorAritmetico implements Compresor{
 		// TODO Auto-generated method stub
 		this.listaOrdenes = new ArrayList<Orden>(this.orden);
 		Orden ordenContexto;
-		for (int i = 0; i <= this.orden; i++) {
-			ordenContexto = new Orden();
-			this.listaOrdenes.add(ordenContexto);
-			this.inicializarContexto();
-		}
+		//Al final solo tengo un contexto o vacio o una letra
+		ordenContexto = new Orden();
+		this.listaOrdenes.add(ordenContexto);
+		this.inicializarContexto();
+	
 		this.contexto = new Character('\b');
 		this.motorAritmetico = new LogicaAritmetica();
 	}
@@ -135,18 +137,24 @@ public class CompresorAritmetico implements Compresor{
 	}
 	
 	private void cargarCtxConUnicodeCompleto(Contexto ctx){
-		for (int i = 0; i < 65533; i++) {
+		//for (int i = 0; i < 65533; i++) {
+		for (int i = 0; i < 655; i++) {
 			ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
 		}
 	}
 	
+	/**
+	 * Verifico que el 
+	 * @param contextoString
+	 * @return
+	 */
 	private Contexto verificarCtx(final String contextoString){
 		Contexto ctx = null;
-		if (!this.listaOrdenes.get(this.orden).existeContexto(contextoString)) {
-			this.listaOrdenes.get(this.orden).crearContexto("");
-			ctx = this.listaOrdenes.get(orden).getContexto("");
+		if (!this.listaOrdenes.get(0).existeContexto(contextoString)) {
+			this.listaOrdenes.get(0).crearContexto(contextoString);
+			ctx = this.listaOrdenes.get(0).getContexto(contextoString);
 		} else {
-			ctx = this.listaOrdenes.get(this.orden).getContexto(contextoString);
+			ctx = this.listaOrdenes.get(0).getContexto(contextoString);
 		}
 		return ctx;
 	}
@@ -168,17 +176,14 @@ public class CompresorAritmetico implements Compresor{
 				//bucle crear letras dentro del contexto del charset!
 				for (int i = 0; i < 65533; i++) {
 					if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
-						System.out.println(new Character(Character.toChars(i)[0]).toString());
 						ctx = this.verificarCtx(new Character(Character.toChars(i)[0]).toString());
 						this.cargarCtxConUnicodeBlock(ctx);
 					} else {
 						if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
-							System.out.println(new Character(Character.toChars(i)[0]).toString());
 							ctx = this.verificarCtx(new Character(Character.toChars(i)[0]).toString());
 							this.cargarCtxConUnicodeBlock(ctx);
 						}
 					}
-					System.out.println(i);
 				}
 				break;
 			}

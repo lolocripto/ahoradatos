@@ -17,18 +17,18 @@ public class TestCompresorAritemetico {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		CompresorAritmetico compressOrder0 = new CompresorAritmetico(0, false);
+		//CompresorAritmetico compressOrder0 = new CompresorAritmetico(0, true);
 		CompresorAritmetico compressOrder1 = new CompresorAritmetico(1, true);
 		String cadena = "TATATAAAAALO";
 		String bitOrden0 = "";
 		String bitOrden1 = "";
 		Character letra;
-		compressOrder0.iniciarSesion();
+		//compressOrder0.iniciarSesion();
 		compressOrder1.iniciarSesion();
 		try {
 		for (int i = 0; i < cadena.length(); i++) {
 			letra = cadena.charAt(i);
-			bitOrden0 += compressOrder0.comprimir(letra.toString());
+			//bitOrden0 += compressOrder0.comprimir(letra.toString());
 			bitOrden1 += compressOrder1.comprimir(letra.toString());
 		}
 		System.out.println("Salida comprimida orden0: " + bitOrden0);
