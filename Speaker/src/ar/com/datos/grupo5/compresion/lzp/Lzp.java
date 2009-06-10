@@ -8,11 +8,12 @@ import java.nio.charset.Charset;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
-import ar.com.datos.grupo5.compresion.aritmetico.LogicaAritmetica;
+import ar.com.datos.grupo5.compresion.aritmeticoRamiro.CompresorAritmetico;
 import ar.com.datos.grupo5.compresion.ppmc.Contexto;
 import ar.com.datos.grupo5.compresion.ppmc.Orden;
 import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.Compresor;
+import ar.com.datos.grupo5.utils.CodePoint;
 
 /**
  * @author Led Zeppelin
@@ -41,12 +42,12 @@ public class Lzp implements Compresor {
 	/**
 	 * Motor aritmetico para los cararteres emitodos.
 	 */
-	private LogicaAritmetica motorAritCaracteres;
+	private CompresorAritmetico motorAritCaracteres;
 	
 	/**
 	 * Motor aritmetico para las longitudes.
 	 */
-	private LogicaAritmetica motorAritLongitudes;
+	private CompresorAritmetico motorAritLongitudes;
 	
 	/**
 	 * Contextos y posiciones.
@@ -85,8 +86,8 @@ public class Lzp implements Compresor {
 
 	public Lzp(){
 		listaContextos = new ListaContextos();
-		motorAritCaracteres = new LogicaAritmetica();
-		motorAritLongitudes = new LogicaAritmetica();
+		motorAritCaracteres = new CompresorAritmetico();
+		motorAritLongitudes = new CompresorAritmetico();
 		letrasCtx = new Orden();
 		longitudesCtx = new Contexto();
 		ultCtx = "";
@@ -285,11 +286,65 @@ public class Lzp implements Compresor {
 	}
 
 	@Override
-	public String descomprimir(String datos) {
-		// TODO Auto-generated method stub
-		return null;
+	public String descomprimir(String cadena) {
+		
+		String result = new String();
+		int longMatchActual = 0;
+		int posMatch = 0;
+		
+		// Los primeros 2 son literales, y con ellos armo el prim contexto
+		// -> como sabe el aritmetico que son literales?
+		while (cadena.length() > 0){
+			//aun quedan strings
+			
+		}
+		return result;
 	}
+	
+	/*
+	 * 
+	 */
+	public String descomprimirInterno(String cadena) throws SessionException{
+		if (!sesionIniciada) {
+			throw new SessionException();
+		}
+		
+		String resultado = "";
+		String longitud = "";
+		
+		//Si no hay nada aca, entonces es la primera iteracion.
+		if (ultCtx.length() == 0) {
+			// Genero el CTX.
+			ultCtx = motorAritCaracteres.descomprimir(cadena);
+			ultCtx += motorAritCaracteres.descomprimir(cadena);
 
+			resultado = ultCtx;
+
+			listaContextos.setPosicion(ultCtx, 4);
+			posActual = 4;
+		}
+		longitud = motorAritLongitudes.descomprimir(cadena);
+		//long pos = archivoTrabajo.length();
+		long pos = CodePoint.getCodePoint(longitud.charAt(0));		
+		// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
+		// buscar match.
+		try {
+			
+			// TODO Arreglar lo que va aca
+			archivoTrabajo.seek(pos);
+			// Cuanto leo?
+			
+			byte[] bytes = null;
+			archivoTrabajo.read(bytes, 0, posActual - (int)pos);
+			//ir replicando todos los cambios en la cadena, y luego 
+			//escribirlos en el archivo
+		} catch (IOException e) {
+			//TODO: Hacer algo
+			e.printStackTrace();
+		}
+		resultado += descomprimirInterno(cadena);
+		return resultado;
+	}
 	@Override
 	public void finalizarSession() {
 		sesionIniciada = false;
@@ -300,8 +355,8 @@ public class Lzp implements Compresor {
 	@Override
 	public void iniciarSesion() {
 		listaContextos = new ListaContextos();
-		motorAritCaracteres = new LogicaAritmetica();
-		motorAritLongitudes = new LogicaAritmetica();
+		motorAritCaracteres = new CompresorAritmetico();
+		motorAritLongitudes = new CompresorAritmetico();
 		letrasCtx = new Orden();
 		longitudesCtx = new Contexto();
 		sesionIniciada = true;
