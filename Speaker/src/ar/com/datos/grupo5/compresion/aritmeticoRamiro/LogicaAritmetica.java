@@ -115,4 +115,37 @@ public class LogicaAritmetica {
 		return emision;
 	}
 
+	private ParCharProb segmentar(ArrayList<ParCharProb> contexto,
+			String binaryString) {
+		return null;
+	}
+	
+	/**
+	 * Recibe un BinaryString del cual va a leer los bits y los va modificar
+	 * dependiendo de los bits que use.
+	 * @param cadenaBits bit emitidos en la compresion.
+	 * @return El caracter encontrado
+	 */
+	public final Character descomprimir(ArrayList<ParCharProb> Contexto, String cadenaBits){
+		
+		System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
+		System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
+		// obtengo el segmento del espacio de probabilidades del contexto y luego busco el intervalo donde esta la letra
+		
+		ParCharProb subIntervalo = this.segmentar(Contexto, cadenaBits);
+
+		// con el sub intervalo de la letra seleccionada, hago un zoom, es decir
+		// seteo los nuevos piso y techo del segmento mayor o espacio de
+		// probabilidades
+		this.intervalo.setPiso(subIntervalo.getPiso());
+		this.intervalo.setTecho(subIntervalo.getTecho());
+
+		System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
+		System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
+		
+		// con los nuevos piso y techo, estoy en condiciones de proceder a la
+		// normalizacion y emitir bits en el proceso.
+		//return this.intervalo.normalizar();
+		return null;
+	}
 }
