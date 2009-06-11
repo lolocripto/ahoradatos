@@ -3,6 +3,8 @@ package ar.com.datos.grupo5.compresion.aritmeticoRamiro;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.ParagraphAction;
+
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.compresion.ppmc.Orden;
@@ -144,6 +146,7 @@ public class LogicaAritmetica {
 		UnsignedInt longitudInterv = techo.menos(piso);
 		
 		this.cantidadMatchBits = 0;
+		
 
 		// ordeno el contexto por orden alfabetico
 		// Collections.sort(contexto);
@@ -153,21 +156,24 @@ public class LogicaAritmetica {
 		//boolean encontrado = false;
 		ParCharProb elemAnterior = null;
 		ParCharProb elemActual = null;
+		ParCharProb elemSiguiente = null;
 
 		// inicializo el primer elemento
 		if (it.hasNext()) {
 			elemAnterior = it.next();
 			elemAnterior.setTecho(piso, longitudInterv);
 			//Valido el match
-		}
-
+			if (this.validarMatch(elemAnterior, binaryString) == 1) {
+				return elemAnterior;
+			}
+		} 
+		
 		//Si tiene un solo elemento entonces directamente devuelvo ese elemento
 		//no actualizo los bits dado que al ser un solo elemento entonces no
 		if (contexto.size() == 1) {
 			//Valido el match
 			//FIXME: Esto es asi? tengo que validar si hay un solo elemento?
-			 
-			this.validarMatch(elemAnterior.getPiso(),elemAnterior.getTecho(), binaryString);
+			this.validarMatch(elemAnterior, binaryString);
 			this.actualizarBinaryString(binaryString);
 			return elemAnterior;
 		}
@@ -180,14 +186,21 @@ public class LogicaAritmetica {
 
 			// el piso del elemento actual, sera el techo + 1 del elemento
 			// anterior
-			elemActual.setTecho(elemAnterior.getTecho() + 1, longitudInterv.getLongAsociado());
+			elemActual.setTecho(elemActual.getTecho() + 1, longitudInterv.getLongAsociado());
 
 			//Valido el match
-			if (this.validarMatch(elemAnterior.getPiso(),elemActual.getPiso(), binaryString)){
-				mejorMatch = elemActual;
+			switch (this.validarMatch(elemActual, binaryString)) {
+				case -1:
+					//Siguiente elemento
+					elemAnterior = elemActual;
+					continue;
+				case 0:
+					//Elemento Anterior
+					return elemAnterior;
+				case 1:
+					//Elemento buscado
+					return elemActual;
 			}
-			
-			elemAnterior = elemActual;
 		}
 		this.actualizarBinaryString(binaryString);
 		return mejorMatch;
@@ -203,37 +216,66 @@ public class LogicaAritmetica {
 
 	/**
 	 * . 
-	 * @param pisoAnterior
-	 * @param pisoActual
+	 * @param elemAnterior
+	 * @param elemActual
+	 * @param elemSiguiente 
 	 * @param binaryString
 	 * @return True si el caracter analizado es el mas acorde a emitir, false si no.
 	 */
-	private boolean validarMatch(long pisoAnterior, long pisoActual, String binaryString) {
-		// TODO Auto-generated method stub
-		UnsignedInt anterior = new UnsignedInt(pisoAnterior);
-		UnsignedInt actual = new UnsignedInt(pisoActual);
-		int longitudMatchBits = 0;
+	private int validarMatch(ParCharProb elemAnterior, String binaryString) {
+		//Trabajo con un solo elemento y veo el match que tiene con la cadena de bits
+		UnsignedInt piso = new UnsignedInt(elemAnterior.getPiso());
+		UnsignedInt techo = new UnsignedInt(elemAnterior.getTecho());
 		
 		//Obtengo la representacion de cada piso
-		String anterior32Rep = anterior.get32BitsRepresentation();
-		String actual32Rep = actual.get32BitsRepresentation();
+		String piso32Rep = piso.get32BitsRepresentation();
+		String techo32Rep = techo.get32BitsRepresentation();
 		
-		for (int i = 0; i < anterior32Rep.length(); i++) {
-			if(anterior32Rep.charAt(i) == actual32Rep.charAt(i) && actual32Rep.charAt(i) == binaryString.charAt(i)){
-				//Tengo un match entre techo, piso y string a descomprimir 
-				longitudMatchBits++;
+		if(piso32Rep.charAt(0) == techo32Rep.charAt(0) && piso32Rep.charAt(0) == binaryString.charAt(0)){
+			//Tengo un match entre techo, piso y string a descomprimir
+			if (this.cantidadMatchBits > 0) {
+				return this.calcularMatch(piso32Rep, techo32Rep, binaryString, true);
 			} else {
-				break;
+				return this.calcularMatch(piso32Rep, techo32Rep, binaryString, false);
 			}
-		}
+		} 
 		
-		if (longitudMatchBits > this.cantidadMatchBits) {
-			this.cantidadMatchBits = longitudMatchBits;
-			return true; 
-		}
-		return false;
+		return -1;
 	}
 
+	/**
+	 * Calculo cuantos bits tienen en común el piso con el techo y con los bits
+	 * @param piso32Bits
+	 * @param techo32Bits
+	 * @param bits
+	 * @param moreBits
+	 * @return
+	 */
+	private int calcularMatch(String piso32Bits, String techo32Bits, String bits, boolean moreBits){
+		int match = 1;
+		if (moreBits) {
+			//Significa que tengo que ver los primeros X bits
+			String bitsPrimeros = bits.substring(0, this.cantidadMatchBits);
+			if(!piso32Bits.startsWith(bitsPrimeros)){
+				//Retornar que el anterior elemento era el valido
+				return 0;
+			}
+		}
+		while (piso32Bits.charAt(match) == techo32Bits.charAt(match) && piso32Bits.charAt(match) == bits.charAt(match)) {
+			match++;
+		}
+		this.cantidadMatchBits = match;	
+		if (piso32Bits.charAt(match) == bits.charAt(match)) {
+			//Entonces es el elemento buscado
+			return 1;
+		} else {
+			if (techo32Bits.charAt(match) == bits.charAt(match)) {
+				//Busco el siguiente
+				return -1;
+			}
+		}
+		return 0;
+	}
 	/**
 	 * Recibe un BinaryString del cual va a leer los bits y los va modificar
 	 * dependiendo de los bits que use.
