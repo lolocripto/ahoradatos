@@ -76,12 +76,12 @@ public class UnsignedInt {
 	 * @param numero
 	 * @return
 	 */
-	public UnsignedInt porFloat (float numero){
+	public UnsignedInt porFloat (double numero){
 		//Por aproximaciones al multiplicar por 1.0 y hacer el floor pierdo datos y me da otro resultado
 		//FIXME: Puede ser que computacionalmente hablando sea valido ya que lo hace siempre asi.
 		if (numero != 1) {
 			double sky = Math.floor(this.longAsociado*numero);
-			return new UnsignedInt ((long)sky);
+			return new UnsignedInt (new Double(sky).longValue());
 		}
 		return new UnsignedInt(this.longAsociado);
 	}
