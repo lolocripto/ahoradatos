@@ -259,4 +259,54 @@ public class Segmento {
 
 	}
 
+	/**
+	 * normaliza el segmento despues de una descompresión.
+	 * El objetivo es correr los bits necesarios en el piso y techo
+	 * del segmento y si hay OverFlow eliminar los bits de UnderFlow
+	 */
+	public final void normalizarDescompresion(String binaryString){
+		boolean procesarBitsUnderflow = false;
+		String emision = "";
+		
+		// verifico si luego de procesar el overflow debo emitir bits de
+		// underflow
+		if (this.hayOverflow() && (this.bitsUnderflow != 0)) {
+			procesarBitsUnderflow = true;
+		}
+
+		// proceso el overflow actual, bit por bit
+		while (this.hayOverflow()) {
+			emision = emision.concat(this.emitirBitOverflow());
+		}
+
+		// si procesé overflow y anteriormente el contador de underflow no
+		// estaba
+		// en cero, entonces debo emitir tantos bits como me diga el contador.
+		if (procesarBitsUnderflow) {
+
+			// uso ese bit para rellenar tantas veces como me diga el contador
+			// de underflow
+			while (this.bitsUnderflow > 0) {
+				//emision = emision.concat(rellenoCon);
+				//Saco los birs de UnderFlow del string y al no ser final se modifica
+				//hacia arriba
+				binaryString = binaryString.substring(1);
+				this.bitsUnderflow--;
+			}
+
+
+			return;
+
+		}
+
+		while (this.hayUnderflow()) {
+			this.trabajarUnderFlow();
+		}
+		
+		System.out.println("Luego de Normalizar:");
+		System.out.println("Techo: " + Long.toHexString(new Long(this.techo.getLongAsociado())));
+		System.out.println("Piso: " + Long.toHexString(new Long(this.piso.getLongAsociado())));
+		//Salgo
+		return;
+	}
 }

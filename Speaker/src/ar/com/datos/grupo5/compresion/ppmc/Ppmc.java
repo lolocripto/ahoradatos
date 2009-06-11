@@ -324,7 +324,7 @@ public class Ppmc implements Compresor{
 
 	@Override
 	public String descomprimir(String datos) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

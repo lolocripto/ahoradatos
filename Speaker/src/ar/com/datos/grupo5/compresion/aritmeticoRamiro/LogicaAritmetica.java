@@ -3,12 +3,25 @@ package ar.com.datos.grupo5.compresion.aritmeticoRamiro;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
+
+import ar.com.datos.grupo5.compresion.ppmc.Orden;
+
 public class LogicaAritmetica {
 
 	// private ArrayList<ParCharProb> listaCaracterProb;
 	//private int bitsUnderflow;
 	private Segmento intervalo;
-
+	
+	/**
+	 * Mantiene la cantidad de bits que machean con el codigo a descomprimir.
+	 */
+	private int cantidadMatchBits;
+	
+	/**
+	 * Logger para la clase.
+	 */
+	private static Logger logger = Logger.getLogger(LogicaAritmetica.class);
 	
 	private ParCharProb segmentar(ArrayList<ParCharProb> contexto,
 			char caracterAcodificar) {
@@ -115,11 +128,112 @@ public class LogicaAritmetica {
 		return emision;
 	}
 
+	/**
+	 * Se encarga de buscar cual es el elemento que fue comprimido.
+	 * @param contexto
+	 * @param binaryString
+	 * @return
+	 */
 	private ParCharProb segmentar(ArrayList<ParCharProb> contexto,
 			String binaryString) {
-		return null;
+		
+		//Establezco el piso y el techo hasta el momento
+		UnsignedInt piso = this.intervalo.getPiso();
+		UnsignedInt techo = this.intervalo.getTecho();
+		
+		UnsignedInt longitudInterv = techo.menos(piso);
+		
+		this.cantidadMatchBits = 0;
+
+		// ordeno el contexto por orden alfabetico
+		// Collections.sort(contexto);
+
+		Iterator<ParCharProb> it = contexto.iterator();
+
+		//boolean encontrado = false;
+		ParCharProb elemAnterior = null;
+		ParCharProb elemActual = null;
+
+		// inicializo el primer elemento
+		if (it.hasNext()) {
+			elemAnterior = it.next();
+			elemAnterior.setTecho(piso, longitudInterv);
+			//Valido el match
+		}
+
+		//Si tiene un solo elemento entonces directamente devuelvo ese elemento
+		//no actualizo los bits dado que al ser un solo elemento entonces no
+		if (contexto.size() == 1) {
+			//Valido el match
+			//FIXME: Esto es asi? tengo que validar si hay un solo elemento?
+			 
+			this.validarMatch(elemAnterior.getPiso(),elemAnterior.getTecho(), binaryString);
+			this.actualizarBinaryString(binaryString);
+			return elemAnterior;
+		}
+
+		ParCharProb mejorMatch = null;
+
+		while (it.hasNext()) {
+			// tomo el objeto actual
+			elemActual = it.next();
+
+			// el piso del elemento actual, sera el techo + 1 del elemento
+			// anterior
+			elemActual.setTecho(elemAnterior.getTecho() + 1, longitudInterv.getLongAsociado());
+
+			//Valido el match
+			if (this.validarMatch(elemAnterior.getPiso(),elemActual.getPiso(), binaryString)){
+				mejorMatch = elemActual;
+			}
+			
+			elemAnterior = elemActual;
+		}
+		this.actualizarBinaryString(binaryString);
+		return mejorMatch;
 	}
 	
+	/**
+	 * Elimina los bits usados para decodificar el caracter.
+	 * @param binaryString
+	 */
+	private void actualizarBinaryString(String binaryString) {
+		binaryString = binaryString.substring(this.cantidadMatchBits);
+	}
+
+	/**
+	 * . 
+	 * @param pisoAnterior
+	 * @param pisoActual
+	 * @param binaryString
+	 * @return True si el caracter analizado es el mas acorde a emitir, false si no.
+	 */
+	private boolean validarMatch(long pisoAnterior, long pisoActual, String binaryString) {
+		// TODO Auto-generated method stub
+		UnsignedInt anterior = new UnsignedInt(pisoAnterior);
+		UnsignedInt actual = new UnsignedInt(pisoActual);
+		int longitudMatchBits = 0;
+		
+		//Obtengo la representacion de cada piso
+		String anterior32Rep = anterior.get32BitsRepresentation();
+		String actual32Rep = actual.get32BitsRepresentation();
+		
+		for (int i = 0; i < anterior32Rep.length(); i++) {
+			if(anterior32Rep.charAt(i) == actual32Rep.charAt(i) && actual32Rep.charAt(i) == binaryString.charAt(i)){
+				//Tengo un match entre techo, piso y string a descomprimir 
+				longitudMatchBits++;
+			} else {
+				break;
+			}
+		}
+		
+		if (longitudMatchBits > this.cantidadMatchBits) {
+			this.cantidadMatchBits = longitudMatchBits;
+			return true; 
+		}
+		return false;
+	}
+
 	/**
 	 * Recibe un BinaryString del cual va a leer los bits y los va modificar
 	 * dependiendo de los bits que use.
@@ -145,7 +259,9 @@ public class LogicaAritmetica {
 		
 		// con los nuevos piso y techo, estoy en condiciones de proceder a la
 		// normalizacion y emitir bits en el proceso.
-		//return this.intervalo.normalizar();
-		return null;
+		this.intervalo.normalizarDescompresion(cadenaBits);
+		
+		//Devuelvo el elemento descomprimido
+		return subIntervalo.getSimboloUnicode();
 	}
 }
