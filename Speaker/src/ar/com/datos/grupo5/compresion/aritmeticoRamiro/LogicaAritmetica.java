@@ -156,7 +156,6 @@ public class LogicaAritmetica {
 		//boolean encontrado = false;
 		ParCharProb elemAnterior = null;
 		ParCharProb elemActual = null;
-		ParCharProb elemSiguiente = null;
 
 		// inicializo el primer elemento
 		if (it.hasNext()) {
