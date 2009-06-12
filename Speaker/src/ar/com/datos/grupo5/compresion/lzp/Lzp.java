@@ -285,6 +285,11 @@ public class Lzp implements Compresor {
 		return result.toString();
 	}
 
+	/**
+	 * 
+	 * @param cadena
+	 * @return
+	 */
 	@Override
 	public String descomprimir(String cadena) {
 		
@@ -301,8 +306,11 @@ public class Lzp implements Compresor {
 		return result;
 	}
 	
-	/*
+	/**
 	 * 
+	 * @param cadena
+	 * @return
+	 * @throws SessionException
 	 */
 	public String descomprimirInterno(String cadena) throws SessionException{
 		if (!sesionIniciada) {
@@ -328,21 +336,31 @@ public class Lzp implements Compresor {
 		long pos = CodePoint.getCodePoint(longitud.charAt(0));		
 		// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
 		// buscar match.
-		try {
+		posActual += 2;
+		if (pos > 0) {
+				// Matchea con un contexto.
+			try {
+				
+				// TODO Arreglar lo que va aca
+				archivoTrabajo.seek(pos);
+				// Cuanto leo?
+				
+				byte[] bytes = null;
+				archivoTrabajo.read(bytes, 0, posActual - (int)pos);
+				//ir replicando todos los cambios en la cadena, y luego 
+				//escribirlos en el archivo
+			} catch (IOException e) {
+				//TODO: Hacer algo
+				e.printStackTrace();
+			}
+		} else {
+			// No matchea con ningun contexto -> long 0 
 			
-			// TODO Arreglar lo que va aca
-			archivoTrabajo.seek(pos);
-			// Cuanto leo?
-			
-			byte[] bytes = null;
-			archivoTrabajo.read(bytes, 0, posActual - (int)pos);
-			//ir replicando todos los cambios en la cadena, y luego 
-			//escribirlos en el archivo
-		} catch (IOException e) {
-			//TODO: Hacer algo
-			e.printStackTrace();
+			resultado += motorAritCaracteres.descomprimir(cadena);
+			ultCtx = resultado.substring(resultado.length() - 2);
+			listaContextos.setPosicion(ultCtx, posActual);
 		}
-		resultado += descomprimirInterno(cadena);
+		//resultado += descomprimirInterno(cadena);
 		return resultado;
 	}
 	@Override
