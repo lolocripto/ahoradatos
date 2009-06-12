@@ -280,15 +280,16 @@ public class Lzp implements Compresor {
 		}
 		longitud = motorAritLongitudes.descomprimir(cadena);
 		//long pos = archivoTrabajo.length();
-		long pos = CodePoint.getCodePoint(longitud.charAt(0));		
+		long lon = CodePoint.getCodePoint(longitud.charAt(0));		
 		// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
 		// buscar match.
 		posActual += 2;
-		if (pos > 0) {
+		if (lon > 0) {
 				// Matchea con un contexto.
 			try {
 				
 				// TODO Arreglar lo que va aca
+				int pos = this.listaContextos.getPosicion(ultCtx);
 				archivoTrabajo.seek(pos);
 				// Cuanto leo?
 				
