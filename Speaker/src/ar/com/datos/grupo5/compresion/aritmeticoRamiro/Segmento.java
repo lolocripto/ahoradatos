@@ -5,6 +5,7 @@ public class Segmento {
 	private UnsignedInt techo;
 	private UnsignedInt piso;
 	private int bitsUnderflow;
+	private boolean overFlow;
 
 	/**
 	 * Constructor que recibe por parámetro el numero máximo posible para el
@@ -57,10 +58,14 @@ public class Segmento {
 		String bitsTecho = this.techo.get32BitsRepresentation();
 		String bitsPiso = this.piso.get32BitsRepresentation();
 
-		if (bitsPiso.charAt(0) == bitsTecho.charAt(0))
+		if (bitsPiso.charAt(0) == bitsTecho.charAt(0)) {
+			this.overFlow = true;
 			return true;
-		else
-			return false;
+		} else {
+			this.overFlow = false;
+			return false;	
+		}
+		
 
 	}
 
@@ -193,7 +198,7 @@ public class Segmento {
 		this.techo.leftShiftOne();
 		//en el piso corro a la izq y agrego un 0 al final
 		this.piso.leftShiftCero();
-		
+	
 		return emision;
 	}
 
@@ -276,7 +281,10 @@ public class Segmento {
 
 		// proceso el overflow actual, bit por bit
 		while (this.hayOverflow()) {
+			//Emito los bits iguales del techo y piso
 			emision = emision.concat(this.emitirBitOverflow());
+			//Saco esos bits iguales del BinaryString
+			
 		}
 
 		// si procesé overflow y anteriormente el contador de underflow no
@@ -287,11 +295,8 @@ public class Segmento {
 			// uso ese bit para rellenar tantas veces como me diga el contador
 			// de underflow
 			while (this.bitsUnderflow > 0) {
-				//emision = emision.concat(rellenoCon);
-				//Saco los birs de UnderFlow del string y al no ser final se modifica
-				//hacia arriba
-				binaryString = binaryString.substring(1);
-				this.bitsUnderflow--;
+				emision = emision.concat("0");
+				
 			}
 
 
@@ -308,5 +313,31 @@ public class Segmento {
 		System.out.println("Piso: " + Long.toHexString(new Long(this.piso.getLongAsociado())));
 		//Salgo
 		return;
+	}
+	
+	/**
+	 * Permite saber si hay UnderFlow
+	 * @return
+	 */
+	public boolean estadoUnderFlow() {
+		if (this.bitsUnderflow > 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Permite saber si en la pasada anterior existio OverFlow
+	 * @return
+	 */
+	public boolean estadoOverFlow() {
+		return this.overFlow;
+	}
+	
+	public final String generarCadenaSinUndeFlow(String binaryString){
+		String nuevaCadena = "";
+		nuevaCadena += binaryString.charAt(0);
+		nuevaCadena += binaryString.substring(1 + this.bitsUnderflow);
+		return nuevaCadena;
 	}
 }
