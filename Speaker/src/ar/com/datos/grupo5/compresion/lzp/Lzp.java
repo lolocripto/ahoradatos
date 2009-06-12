@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.charset.Charset;
 
 import org.apache.log4j.Logger;
 
@@ -165,7 +164,7 @@ public class Lzp implements Compresor {
 		}
 		
 		try {
-			resultado += ComprimirInterno2(buffer);
+			resultado += ComprimirInterno(buffer);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -173,75 +172,17 @@ public class Lzp implements Compresor {
 		return resultado;
 	}
 
+	/**
+	 * 
+	 * @param cadena
+	 * @return
+	 * @throws IOException
+	 */
 	private String ComprimirInterno(StringBuffer cadena) throws IOException {
 		
 		StringBuffer result = new StringBuffer();
-		char charActual = 0;
-		char charAnterior = ultCtx.charAt(1);
-		Integer posMatch = 0;
 		int longMatchActual = 0;
-		
-		while (cadena.length() > 0){
-			
-			if (!matchCompleto) {
-				// Leer de a uno e ir revisando y comprimiendo en la salida
-				charAnterior = ultCtx.charAt(1);
-				charActual = cadena.charAt(0);
-				ultCtx = String.valueOf(charAnterior) + String.valueOf(charActual);
-				//Sumo 1 posicion en el archivo.
-				posActual += 2;
-			}
-			LOG.info("Ultimo Contexto: " + ultCtx);
-			// Buscar el contexto...
-			posMatch = listaContextos.getPosicion(ultCtx);
-			if ( posMatch == null) {
-				// Creo el contexto y emito con long de match 0
-				listaContextos.setPosicion(ultCtx, posActual);
-				result.append("0" + charActual);
-				// Lo saco porque ya lo procese
-				cadena.delete(0, 1);
-				longMatch = 0;
-			} else {
-				//Busco la longitud de match.
-				if (matchCompleto) {
-					posMatch += (longMatch * 2);
-					longMatchActual = longMatch(cadena, posMatch);
-				} else {
-					longMatchActual = longMatch(new StringBuffer(cadena.substring(1)), posMatch);
-				}
-				
-				if (matchCompleto ) {
-					longMatch += longMatchActual;
-					posActual += (longMatchActual * 2) - 2;
-				} else {
-					longMatch += longMatchActual;
-					charActual = cadena.charAt(longMatchActual + 1);
-					result.append(String.valueOf(longMatch) + charActual);
-					if (longMatchActual > 0) {
-						posActual += (longMatchActual * 2) + 2;
-						posMatch += listaContextos.getPosicion(ultCtx) + (longMatch*2) - 2;
-						listaContextos.setPosicion(ultCtx, posMatch);
-					}
-					longMatch = 0;
-				}
-				// Lo saco porque ya lo procese
-				cadena.delete(0, longMatchActual + 1);
-			}
-
-			// Actualizo el ultimo contexto
-			
-			// La pos del contexto que se modifico es:
-			// posActual - (length(match) + 1)
-		}
-		
-		return result.toString();
-	}
-
-	private String ComprimirInterno2(StringBuffer cadena) throws IOException {
-		
-		StringBuffer result = new StringBuffer();
-		int longMatchActual = 0;
-		int posMatch = 0;
+		Integer posMatch = null;
 		
 		while (cadena.length() > 0){
 			
@@ -254,15 +195,15 @@ public class Lzp implements Compresor {
 				cadena.delete(0, 1);
 			} else {
 				posMatch = listaContextos.getPosicion(ultCtx);
-				if (posMatch > 0) {
+				if (posMatch != null) {
 					if (matchCompleto) {
 						posMatch += longMatch * 2;
 					}
 					longMatchActual = longMatch(cadena, posMatch);
-					if (matchCompleto) {
+					if (matchCompleto && longMatchActual > 0) {
 						longMatch += longMatchActual;
 						break;
-					} else {
+					} else if (longMatchActual > 0){
 						String match = cadena.substring(0, longMatchActual);
 						ultCtx = String.valueOf(cadena.charAt(longMatchActual-1));
 						cadena.delete(0, longMatchActual);
@@ -271,6 +212,12 @@ public class Lzp implements Compresor {
 						cadena.deleteCharAt(0);
 						posActual += (longMatch + longMatchActual) * 2;
 						longMatch = 0;
+					} else {
+						posActual += 2;
+						ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
+						result.append("0" + cadena.substring(0, 1));
+						cadena.delete(0, 1);
+						listaContextos.setPosicion(ultCtx, posActual);
 					}
 				} else {
 					posActual += 2;

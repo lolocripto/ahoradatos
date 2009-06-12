@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.lzp.Lzp;
 import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.Compresor;
@@ -16,7 +15,7 @@ public class TestLZP {
 	public static void main(String[] args) throws IOException, SessionException {
 		
 		Compresor comp = new Lzp();
-		String cadena = "ABCCBABC,CBCCBCCX";
+		String cadena = "ABCCBABC,CBCCBCCABA";
 		String[] cadena2 = cadena.split(",");
 		String result = "";
 		
