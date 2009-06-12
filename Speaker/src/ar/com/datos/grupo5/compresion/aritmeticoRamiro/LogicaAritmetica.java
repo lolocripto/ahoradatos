@@ -3,23 +3,13 @@ package ar.com.datos.grupo5.compresion.aritmeticoRamiro;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.naming.BinaryRefAddr;
-import javax.swing.text.html.HTMLDocument.HTMLReader.ParagraphAction;
-
 import org.apache.log4j.Logger;
-
-import ar.com.datos.grupo5.compresion.ppmc.Orden;
 
 public class LogicaAritmetica {
 
 	// private ArrayList<ParCharProb> listaCaracterProb;
 	//private int bitsUnderflow;
 	private Segmento intervalo;
-	
-	/**
-	 * Mantiene la cantidad de bits que machean con el codigo a descomprimir.
-	 */
-	private int cantidadMatchBits;
 	
 	/**
 	 * Logger para la clase.
@@ -146,7 +136,6 @@ public class LogicaAritmetica {
 		
 		UnsignedInt longitudInterv = techo.menos(piso);
 		
-		this.cantidadMatchBits = 0;
 		String V = "";
 		//Valido si tengo que trabajar con una cadena normal o con una cadena con UndeFLow
 		if (!this.intervalo.estadoOverFlow() && this.intervalo.estadoUnderFlow()) {
@@ -175,33 +164,10 @@ public class LogicaAritmetica {
 			elemAnterior.setTecho(piso, longitudInterv);
 
 			if (this.ValidarIntervalo(elemAnterior,valor)) {
-				//Esta en este intervalo!!
-				//FIXME: corresponde aca sacar los bits??
-				//Veo cuantos bits tiene en comun
-				this.validarMatch(elemAnterior, binaryString);
-				//Le saco los bits en comun
-				this.actualizarBinaryString(binaryString);
 				return elemAnterior;
 			}
-			/*
-			 * Codigo Viejo
-			//Valido el match
-			if (this.validarMatch(elemAnterior, binaryString) == 1) {
-				return elemAnterior;
-			}
-			*/
 		} 
-		
-		//Si tiene un solo elemento entonces directamente devuelvo ese elemento
-		//no actualizo los bits dado que al ser un solo elemento entonces no
-		if (contexto.size() == 1) {
-			//Valido el match
-			//FIXME: Esto es asi? tengo que validar si hay un solo elemento?
-			this.validarMatch(elemAnterior, binaryString);
-			this.actualizarBinaryString(binaryString);
-			return elemAnterior;
-		}
-
+	
 		while (it.hasNext()) {
 			// tomo el objeto actual
 			elemActual = it.next();
@@ -209,32 +175,15 @@ public class LogicaAritmetica {
 			// el piso del elemento actual, sera el techo + 1 del elemento
 			// anterior
 			elemActual.setTecho(elemAnterior.getTecho() + 1, longitudInterv.getLongAsociado());
+			
 			//Valido que el numero este entre el techo y el piso del elemento. Si esta es el elemento a emitir
 			//sino sigo buscando
 			if (this.ValidarIntervalo(elemActual, valor)) {
-				this.validarMatch(elemActual, binaryString);	
-				this.actualizarBinaryString(binaryString);
 				return elemActual;
 			}
 			
 			//Preparo para la siguiente iteracion.
 			elemAnterior = elemActual;
-			/*
-			 * CODIGO VIEJO, VA PARA EL UNDERFLOW
-			//Valido el match
-			switch (this.validarMatch(elemActual, binaryString)) {
-				case -1:
-					//Siguiente elemento
-					elemAnterior = elemActual;
-					continue;
-				case 0:
-					//Elemento Anterior
-					return elemAnterior;
-				case 1:
-					//Elemento buscado
-					return elemActual;
-			}
-			*/
 		}
 		return null;
 	}
@@ -249,73 +198,12 @@ public class LogicaAritmetica {
 	/**
 	 * Elimina los bits usados para decodificar el caracter.
 	 * @param binaryString
+	 * @param cantidadMatchBits 
 	 */
-	private void actualizarBinaryString(String binaryString) {
-		binaryString = binaryString.substring(this.cantidadMatchBits);
+	private void actualizarBinaryString(String binaryString, int cantidadMatchBits) {
+		binaryString = binaryString.substring(cantidadMatchBits);
 	}
 
-	/**
-	 * . 
-	 * @param elemAnterior
-	 * @param elemActual
-	 * @param elemSiguiente 
-	 * @param binaryString
-	 * @return True si el caracter analizado es el mas acorde a emitir, false si no.
-	 */
-	private int validarMatch(ParCharProb elemAnterior, String binaryString) {
-		//Trabajo con un solo elemento y veo el match que tiene con la cadena de bits
-		UnsignedInt piso = new UnsignedInt(elemAnterior.getPiso());
-		UnsignedInt techo = new UnsignedInt(elemAnterior.getTecho());
-		
-		//Obtengo la representacion de cada piso
-		String piso32Rep = piso.get32BitsRepresentation();
-		String techo32Rep = techo.get32BitsRepresentation();
-		
-		if(piso32Rep.charAt(0) == techo32Rep.charAt(0) && piso32Rep.charAt(0) == binaryString.charAt(0)){
-			//Tengo un match entre techo, piso y string a descomprimir
-			if (this.cantidadMatchBits > 0) {
-				return this.calcularMatch(piso32Rep, techo32Rep, binaryString, true);
-			} else {
-				return this.calcularMatch(piso32Rep, techo32Rep, binaryString, false);
-			}
-		} 
-		
-		return -1;
-	}
-
-	/**
-	 * Calculo cuantos bits tienen en común el piso con el techo y con los bits
-	 * @param piso32Bits
-	 * @param techo32Bits
-	 * @param bits
-	 * @param moreBits
-	 * @return
-	 */
-	private int calcularMatch(String piso32Bits, String techo32Bits, String bits, boolean moreBits){
-		int match = 1;
-		if (moreBits) {
-			//Significa que tengo que ver los primeros X bits
-			String bitsPrimeros = bits.substring(0, this.cantidadMatchBits);
-			if(!piso32Bits.startsWith(bitsPrimeros)){
-				//Retornar que el anterior elemento era el valido
-				return 0;
-			}
-		}
-		while (piso32Bits.charAt(match) == techo32Bits.charAt(match) && piso32Bits.charAt(match) == bits.charAt(match)) {
-			match++;
-		}
-		this.cantidadMatchBits = match;	
-		if (piso32Bits.charAt(match) == bits.charAt(match)) {
-			//Entonces es el elemento buscado
-			return 1;
-		} else {
-			if (techo32Bits.charAt(match) == bits.charAt(match)) {
-				//Busco el siguiente
-				return -1;
-			}
-		}
-		return 0;
-	}
 	/**
 	 * Recibe un BinaryString del cual va a leer los bits y los va modificar
 	 * dependiendo de los bits que use.
@@ -343,10 +231,10 @@ public class LogicaAritmetica {
 		// normalizacion y emitir bits en el proceso.
 		String emision = this.intervalo.normalizar();
 		
-		//Corto la emision del string de bits
-		StringBuffer buffer = new StringBuffer(cadenaBits);
-		buffer.delete(0, emision.length());
-		cadenaBits = buffer.toString();
+		if (emision.length() > 0)  {
+			//Corto la emision del string de bits
+			this.actualizarBinaryString(cadenaBits, emision.length());
+		}
 		
 		//Devuelvo el elemento descomprimido
 		return subIntervalo.getSimboloUnicode();

@@ -286,14 +286,14 @@ public final class Constantes {
 			getXML("ORDER_MAX_PPMC"));
 	
 	/**
-	 * Valor para el caracter EOF
+	 * Valor para el caracter ESC
 	 */
-	public static final Character ESC = new Character('\uFFFF');  
+	public static final Character ESC = new Character('\uFFFE');  
 	
 	/**
 	 * Valor para el caracter EOF
 	 */
-	public static final Character EOF = new Character('\uFFFE');  
+	public static final Character EOF = new Character('\uFFFF');  
 	
 	/**
 	 * Nro de bloque de la raiz del arbol.

@@ -147,7 +147,8 @@ public class TestBinario {
 		hola = c.toString();
 		System.out.println("New character.tostring: " + hola);
 		*/
-					
+		
+		/*
 		CodePoint cp = new CodePoint();
 		Character letra1 = null;
 		try {
@@ -161,7 +162,17 @@ public class TestBinario {
 			e.printStackTrace();
 			System.out.println("Fuera del Intervalo.");
 		}
+		*/
 		
+		for (int i = 0; i < 65533; i++) {
+			if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
+				System.out.println(i);
+			} else {
+				if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
+					System.out.println(i);
+				}
+			}
+		}
 
 	}
 

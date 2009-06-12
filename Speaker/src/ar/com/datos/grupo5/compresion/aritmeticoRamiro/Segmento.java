@@ -337,7 +337,7 @@ public class Segmento {
 	public final String generarCadenaSinUndeFlow(String binaryString){
 		String nuevaCadena = "";
 		nuevaCadena += binaryString.charAt(0);
-		nuevaCadena += binaryString.substring(1 + this.bitsUnderflow);
+		nuevaCadena += binaryString.substring(1 + this.bitsUnderflow, 7 + (1 + this.bitsUnderflow));
 		return nuevaCadena;
 	}
 }

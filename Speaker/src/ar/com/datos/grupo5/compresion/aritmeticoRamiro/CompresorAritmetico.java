@@ -6,9 +6,11 @@ package ar.com.datos.grupo5.compresion.aritmeticoRamiro;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.ppmc.Contexto;
 import ar.com.datos.grupo5.compresion.ppmc.Orden;
 import ar.com.datos.grupo5.excepciones.SessionException;
+import ar.com.datos.grupo5.excepciones.insufficientBitsException;
 import ar.com.datos.grupo5.interfaces.Compresor;
 
 /**
@@ -94,8 +96,40 @@ public class CompresorAritmetico implements Compresor{
 
 	@Override
 	public String descomprimir(String datos) {
-		// TODO Auto-generated method stub
-		return null;
+		//Ver tema de la excepcion, me conviene?
+		if (datos.length() < 32) {
+			return null;
+		}
+		
+		Orden ordenActual = this.listaOrdenes.get(0);
+		Contexto ctx = null;
+		
+		/*
+		 *  Obtengo el contexto con el cual voy a trabajar, si era 
+		 * 	orden-0 entonces el contexto debe ser ""
+		 *  orden-1 el contexto debe ser != ""
+		 */
+		switch(this.orden){
+		case 1:
+			ctx = ordenActual.getContexto(contexto.toString());
+			break;
+		default:
+			//Orden 0
+			ctx = ordenActual.getContexto("");
+			break;
+		}
+		//Ya tengo donde trabajar con el motorAritmetico
+		
+		//FIXME: Genero una lista temporal porque no puedo castear de un HASHMAP$Values a ArrayList 
+		ArrayList<ParCharProb> temp = new ArrayList<ParCharProb>(ctx.getArrayCharProb());
+		
+		Character letra = this.motorAritmetico.descomprimir(temp, datos);
+		
+		ctx.actualizarContexto(letra);
+		
+		ctx.actualizarProbabilidades();
+		
+		return letra.toString();
 	}
 
 	@Override
@@ -137,10 +171,10 @@ public class CompresorAritmetico implements Compresor{
 	}
 	
 	private void cargarCtxConUnicodeCompleto(Contexto ctx){
-		//for (int i = 0; i < 65533; i++) {
-		for (int i = 0; i < 655; i++) {
+		for (int i = 0; i < 65534; i++) {
 			ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
 		}
+		ctx.crearCharEnContexto(Constantes.EOF);
 	}
 	
 	/**
@@ -165,8 +199,10 @@ public class CompresorAritmetico implements Compresor{
 		if (this.charset) {
 			switch(this.orden){
 			case 0:
+				
 				//Cargo todo el orden con contexto ""
 				ctx = verificarCtx("");
+				
 				//Cargo el contexto
 				//Crear letras dentro del contexto del charset!
 				this.cargarCtxConUnicodeBlock(ctx);
@@ -174,7 +210,7 @@ public class CompresorAritmetico implements Compresor{
 			case 1:
 				//bucle Crear contextos dentro del charset!
 				//bucle crear letras dentro del contexto del charset!
-				for (int i = 0; i < 65533; i++) {
+				for (int i = 0; i < 300; i++) {
 					if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
 						ctx = this.verificarCtx(new Character(Character.toChars(i)[0]).toString());
 						this.cargarCtxConUnicodeBlock(ctx);
@@ -187,6 +223,7 @@ public class CompresorAritmetico implements Compresor{
 				}
 				break;
 			}
+			ctx.crearCharEnContexto(Constantes.EOF);
 			//Cargo el charset LATIN
 		} else {
 			//Cargo el UNICODE completo
@@ -201,7 +238,7 @@ public class CompresorAritmetico implements Compresor{
 			case 1:
 				//bucle Crear contextos dentro del charset!
 				//bucle crear letras dentro del contexto del charset!
-				for (int i = 0; i < 65533; i++) {
+				for (int i = 0; i < 65534; i++) {
 					if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
 						ctx = this.verificarCtx(new Character(Character.toChars(i)[0]).toString());
 						this.cargarCtxConUnicodeCompleto(ctx);
@@ -214,6 +251,7 @@ public class CompresorAritmetico implements Compresor{
 				}
 				break;
 			}
+			ctx.crearCharEnContexto(Constantes.EOF);
 		}
 	}
 }
