@@ -36,7 +36,7 @@ public interface Compresor {
 	 * @param datos Los datos comprimidos en binario.
 	 * @return la cadena descomprimida.
 	 */
-	public String descomprimir(String datos);
+	public String descomprimir(String datos) throws SessionException;
 	
 	/**
 	 * Imprime los valores de la lista de Contexto

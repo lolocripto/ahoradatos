@@ -26,25 +26,34 @@ public class CompresorAritmetico implements Compresor{
 	private String bits;
 	private boolean charset;
 	//private String bits;
+	private boolean sessionInit;
 	
 	public CompresorAritmetico(){
 		contexto = new Character('\b');
 		listaOrdenes = null;
 		this.motorAritmetico = new LogicaAritmetica();
+		this.sessionInit = false;
 	}
 	
 	public CompresorAritmetico(final int ordenCompresor){
 		this.charset = true;
 		this.orden = ordenCompresor;
+		this.sessionInit = false;
 	}
 
 	public CompresorAritmetico(final int ordenCompresor, final boolean charSet){
 		this.orden = ordenCompresor;
 		this.charset = charSet;
+		this.sessionInit = false;
 	}
 	
 	@Override
 	public String comprimir(String cadena) throws SessionException {
+		
+		if	(!this.sessionInit) {
+			throw new SessionException();
+		}
+		
 		Orden ordenActual = this.listaOrdenes.get(0);
 		Contexto ctx = null;
 		
@@ -95,9 +104,23 @@ public class CompresorAritmetico implements Compresor{
 	}
 
 	@Override
-	public String descomprimir(String datos) {
-		//Ver tema de la excepcion, me conviene?
+	public String descomprimir(String datos) throws SessionException{
+		
+		if	(!this.sessionInit) {
+			throw new SessionException();
+		}
+		
+		//Tengo algo en el buffer que quedo de otra pasada
+		//lo concateno con lo nuevo
+		if (this.bits.length() > 0) {
+			this.bits += datos;
+			datos = this.bits;
+		}
+		
+		//Si los datos del buffer mas los datos de entrada son menores
+		//a la malla de bits entonces devuelvo null ya que no puedo seguir
 		if (datos.length() < 32) {
+			this.bits = datos;
 			return null;
 		}
 		
@@ -131,11 +154,19 @@ public class CompresorAritmetico implements Compresor{
 		
 		return letra.toString();
 	}
-
+	
+	//Al finalizar la compresion me manda el EOF o simplemente lo mando yo
+	//internamente?? Es que en realidad es un caracter mas. lo unico que tendría que
+	//hacer aca es finalizar la compresion devolviendo el piso ultimo
+	public String finalizarCompresion(){
+		return this.motorAritmetico.finalizarCompresion();
+	}
+	
 	@Override
 	public void finalizarSession() {
-		// TODO Auto-generated method stub
-		
+		if (this.sessionInit) {
+			this.sessionInit = false;	
+		}
 	}
 
 	@Override
@@ -146,6 +177,9 @@ public class CompresorAritmetico implements Compresor{
 
 	@Override
 	public void iniciarSesion() {
+		if (!this.sessionInit) {
+			this.sessionInit = true;	
+		}
 		// TODO Auto-generated method stub
 		this.listaOrdenes = new ArrayList<Orden>(this.orden);
 		Orden ordenContexto;
@@ -153,7 +187,6 @@ public class CompresorAritmetico implements Compresor{
 		ordenContexto = new Orden();
 		this.listaOrdenes.add(ordenContexto);
 		this.inicializarContexto();
-	
 		this.contexto = new Character('\b');
 		this.motorAritmetico = new LogicaAritmetica();
 	}
