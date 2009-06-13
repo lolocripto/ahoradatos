@@ -15,8 +15,8 @@ public class TestLZP {
 	public static void main(String[] args) throws IOException, SessionException {
 		
 		Compresor comp = new Lzp();
-		//String cadena = "ABCCBABC,CBCCBCCABA";
-		String cadena = "AAAAAA,AAAAAA";
+		String cadena = "ABCCBABC,CBCCBCCABA";
+		//String cadena = "AAAAAA,AAAAAA";
 		String[] cadena2 = cadena.split(",");
 		String result = "";
 		
@@ -25,8 +25,12 @@ public class TestLZP {
 			result += comp.comprimir(cadena2[i]);
 			comp.imprimirHashMap();
 		}
+		
 		LOG.info(cadena.replace(",", ""));
-		LOG.info(result + comp.finalizarSession());
+		LOG.info("Longitud en bytes antes de comprimir: " + cadena.length() * 2);
+		result += comp.finalizarSession();
+		LOG.info(result);
+		LOG.info("Longitud despues de comprimi: " + (result.length() / 8));
 
 	}
 }

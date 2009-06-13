@@ -148,6 +148,9 @@ public class Lzp implements Compresor {
 			resultado += motorAritCaracteres.comprimir(cadena.substring(1,2));
 			resultado += motorAritLongitudes.comprimir("0");
 			resultado +=  motorAritCaracteres.comprimir(String.valueOf(cadena.charAt(2)));
+			
+			//resultado = ultCtx + "0" + String.valueOf(cadena.charAt(2));
+			
 			ultCtx = cadena.substring(1, 3);
 			
 			//Saco los 3 primeros.
