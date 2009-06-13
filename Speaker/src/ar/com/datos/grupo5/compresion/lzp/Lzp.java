@@ -155,7 +155,7 @@ public class Lzp implements Compresor {
 			long pos = archivoTrabajo.length();
 			archivoTrabajo.seek(pos);
 			//Escribo en el archivo temporal en unicode.
-			byte[] bytes = cadena.getBytes(Constantes.CHARSET_UTF16 + "BE");
+			byte[] bytes = cadena.getBytes(Constantes.CHARSET_UTF16);
 			//Parece que el getBytes pone un /0 al final.
 			archivoTrabajo.write(bytes, 0, bytes.length);
 		} catch (IOException e) {
@@ -375,7 +375,7 @@ public class Lzp implements Compresor {
 				((this.longMatch + longitudMatch) < Constantes.MAX_LONGITD_MATCH)) {
 			
 			//Me armo un string con los datos leidos en UNICODE.
-			charsLeidos = new String(datos, Constantes.CHARSET_UTF16 + "BE");
+			charsLeidos = new String(datos, Constantes.CHARSET_UTF16);
 			LOG.info("Lei del temporal: " + charsLeidos);
 			for (int i = 0; i < charsLeidos.length() && i < cadena.length(); i++) {
 				if (charsLeidos.charAt(i) == cadena.charAt(i)) {
