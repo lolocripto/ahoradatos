@@ -70,6 +70,8 @@ public class ListaContextos {
 	 */
 	public Integer getPosicion(String contexto) {
 		
+		// return mapaContexto.get(contexto)
+		
 		int result = buscarElemento(contexto);
 		if (result == 0) {
 			return null;
@@ -82,6 +84,8 @@ public class ListaContextos {
 	 * 
 	 */
 	public void setPosicion(String contexto, Integer posicion) {
+		
+		//mapaContexto.put(contexto, posicion);
 		
 		//Primero tengo que ver si esta en alguna pagina.
 		buscarElemento(contexto);
