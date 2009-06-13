@@ -19,7 +19,7 @@ public class TestCompresorAritemetico {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-		CompresorAritmetico compressOrder0 = new CompresorAritmetico(0, true);
+		CompresorAritmetico compressOrder0 = new CompresorAritmetico(1, true);
 		
 		//CompresorAritmetico compressOrder1 = new CompresorAritmetico(1, true);
 		//String cadena = "TATATAAAAALO";
@@ -44,7 +44,7 @@ public class TestCompresorAritemetico {
 		
 		compressOrder0.iniciarSesion();
 		StringBuffer cadenaBuffer = new StringBuffer(bitOrden0);
-		//StringBuffer cadenaBuffer = new StringBuffer("01000101111111101011110010000111011111110010110001110111110110010110001111000000000");
+		//StringBuffer cadenaBuffer = new StringBuffer("011111111100000001000000001111101000011100001100001101100100101111010110000000000");
 		String salida = " ";
 		while (salida != null && !Constantes.EOF.equals(salida.charAt(salida.length()-1))){
 			if (Constantes.EOF.equals(salida.charAt(salida.length()-1))) {

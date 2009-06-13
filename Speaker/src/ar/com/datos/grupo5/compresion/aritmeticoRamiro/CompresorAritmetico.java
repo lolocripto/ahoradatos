@@ -156,6 +156,11 @@ public class CompresorAritmetico implements Compresor{
 		
 		//ctx.actualizarProbabilidades();
 		
+		if (this.orden > 0) {
+			//Si es de orden mayor a 0 entonces actualizo el contexto
+			this.contexto = letra;
+		}
+		
 		return letra.toString();
 	}
 	
