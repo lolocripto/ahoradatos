@@ -239,17 +239,19 @@ public class Lzp implements Compresor {
 	 */
 	@Override
 	public String descomprimir(StringBuffer cadena) {
-		
 		String result = new String();
-		int longMatchActual = 0;
-		int posMatch = 0;
 		
-		// Los primeros 2 son literales, y con ellos armo el prim contexto
-		// -> como sabe el aritmetico que son literales?
-		while (cadena.length() > 0){
-			//aun quedan strings
+		// Solo la primera vez.
+		listaContextos.clear();
+		try {
 			
+			result = descomprimirInterno(cadena);
+			
+		} catch (SessionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 		return result;
 	}
 	

@@ -98,6 +98,13 @@ public class ListaContextos {
 			paginarADisco();
 		}
 	}
+	
+	/**
+	 * 
+	 */
+	public void clear(){
+		mapaContexto.clear();
+	}
 
 	/**
 	 * 
