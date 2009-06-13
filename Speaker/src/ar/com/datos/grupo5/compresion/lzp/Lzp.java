@@ -88,8 +88,8 @@ public class Lzp implements Compresor {
 	}
 
 	public Lzp(){
-		motorAritCaracteres = new CompresorAritmetico();
-		motorAritLongitudes = new CompresorAritmetico();
+		motorAritCaracteres = new CompresorAritmetico(1, true);
+		motorAritLongitudes = new CompresorAritmetico(0, false);
 		motorAritCaracteres.iniciarSesion();
 		motorAritLongitudes.iniciarSesion();
 		ultCtx = "";
@@ -389,8 +389,8 @@ public class Lzp implements Compresor {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		motorAritCaracteres = new CompresorAritmetico();
-		motorAritLongitudes = new CompresorAritmetico();
+		motorAritCaracteres = new CompresorAritmetico(1, true);
+		motorAritLongitudes = new CompresorAritmetico(0, false);
 		motorAritCaracteres.iniciarSesion();
 		motorAritLongitudes.iniciarSesion();
 		sesionIniciada = true;
