@@ -344,7 +344,7 @@ public class Lzp implements Compresor {
 					archivoTrabajo.seek(pos);
 					// Cuanto leo?
 					
-					byte[] bytes = null;
+					byte[] bytes = new byte[lon * Constantes.SIZE_OF_SHORT];
 					archivoTrabajo.read(bytes, 0, lon * Constantes.SIZE_OF_SHORT);
 					//ir replicando todos los cambios en la cadena, y luego 
 					//escribirlos en el archivo

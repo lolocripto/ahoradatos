@@ -1,8 +1,5 @@
 package ar.com.datos.grupo5.compresion.lz78;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 
 import ar.com.datos.grupo5.compresion.ConversorABytes;
@@ -274,5 +271,11 @@ public class CompresorLZ78 implements Compresor {
 	public void imprimirHashMap() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public boolean isFinalizada() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

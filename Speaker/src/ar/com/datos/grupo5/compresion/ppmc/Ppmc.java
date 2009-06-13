@@ -142,7 +142,7 @@ public class Ppmc implements Compresor{
 				this.actualizarOrdenes(cadena.charAt(pos));
 				//FIXME: Imprimo los ordenes, es solo para debug. Por lo tanto borrarlo.
 				this.imprimirEstado();
-				this.logger.debug("Letra: " + cadena.charAt(pos) + ", Emision: " + this.tiraBits);
+				logger.debug("Letra: " + cadena.charAt(pos) + ", Emision: " + this.tiraBits);
 				pos++;
 			}
 			//FIXME: Probar
@@ -355,5 +355,11 @@ public class Ppmc implements Compresor{
 		this.compresorAritmetico = new LogicaAritmetica();
 		this.initSession = true;
 		this.tiraBits = "";
+	}
+
+	@Override
+	public boolean isFinalizada() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

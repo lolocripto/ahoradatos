@@ -10,14 +10,13 @@ import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.ppmc.Contexto;
 import ar.com.datos.grupo5.compresion.ppmc.Orden;
 import ar.com.datos.grupo5.excepciones.SessionException;
-import ar.com.datos.grupo5.excepciones.insufficientBitsException;
 import ar.com.datos.grupo5.interfaces.Compresor;
 
 /**
  * @author Led Zeppelin
  *
  */
-public class CompresorAritmetico implements Compresor{
+public class CompresorAritmetico implements Compresor {
 
 	private Character contexto;
 	private List<Orden> listaOrdenes;
@@ -315,6 +314,12 @@ public class CompresorAritmetico implements Compresor{
 				break;
 			}
 		}
+	}
+
+	@Override
+	public boolean isFinalizada() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
