@@ -4,6 +4,7 @@
 package ar.com.datos.grupo5.compresion.aritmeticoRamiro;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import ar.com.datos.grupo5.Constantes;
@@ -26,6 +27,7 @@ public class CompresorAritmetico implements Compresor {
 	private boolean charset;
 	private StringBuffer bitsBuffer;
 	private boolean sessionInit;
+	private boolean sessionCompresion;
 	
 	public CompresorAritmetico(){
 		contexto = new Character('\b');
@@ -55,53 +57,58 @@ public class CompresorAritmetico implements Compresor {
 		if	(!this.sessionInit) {
 			throw new SessionException();
 		}
+		//Indico que la sesion actual es de compresion
+		this.sessionCompresion = true;
 		
 		Orden ordenActual = this.listaOrdenes.get(0);
 		Contexto ctx = null;
-		
-		/*
-		 *  Obtengo el contexto con el cual voy a trabajar, si era 
-		 * 	orden-0 entonces el contexto debe ser ""
-		 *  orden-1 el contexto debe ser != ""
-		 */
-		switch(this.orden){
-		case 1:
-			ctx = ordenActual.getContexto(contexto.toString());
-			break;
-		default:
-			//Orden 0
-			ctx = ordenActual.getContexto("");
-			break;
-		}
-		
-		
-		
-		//Si el contexto no existe lo creo, no debería entrar nunca aca
-		if (ctx == null){
-			//Creo el contexto 
-			ctx = this.listaOrdenes.get(orden).crearContexto(contexto.toString());
-		} else {
-			//El contexto existe, verifico que exista la letra a agregar en el contexto
-			if (ctx.existeChar(cadena.charAt(0))){
-				//Exite la letra por lo tanto actualizo la frecuencia
-				ctx.actualizarProbabilidades();
-				
-				//FIXME: Genero una lista temporal porque no puedo castear de un HASHMAP$Values a ArrayList 
-				ArrayList<ParCharProb> temp = new ArrayList<ParCharProb>(ctx.getArrayCharProb());
-				
-				this.bits = this.motorAritmetico.comprimir(temp, cadena.charAt(0));
-				ctx.actualizarContexto(cadena.charAt(0));
-			} else {
-				//Creo la letra. No debería entrar nunca.
-				ctx.crearCharEnContexto(cadena.charAt(0));
+		int pos = 0;
+		//Recorro el String de entrada
+		while (pos < cadena.length()) {
+			/*
+			 *  Obtengo el contexto con el cual voy a trabajar, si era 
+			 * 	orden-0 entonces el contexto debe ser ""
+			 *  orden-1 el contexto debe ser != ""
+			 */
+			switch(this.orden){
+			case 1:
+				ctx = ordenActual.getContexto(contexto.toString());
+				break;
+			default:
+				//Orden 0
+				ctx = ordenActual.getContexto("");
+				break;
 			}
+			
+			
+			
+			//Si el contexto no existe lo creo, no debería entrar nunca aca
+			if (ctx == null){
+				//Creo el contexto 
+				ctx = this.listaOrdenes.get(orden).crearContexto(contexto.toString());
+			} else {
+				//El contexto existe, verifico que exista la letra a agregar en el contexto
+				if (ctx.existeChar(cadena.charAt(pos))){
+					//Exite la letra por lo tanto actualizo la frecuencia
+					ctx.actualizarProbabilidades();
+					
+					//FIXME: Genero una lista temporal porque no puedo castear de un HASHMAP$Values a ArrayList 
+					ArrayList<ParCharProb> temp = new ArrayList<ParCharProb>(ctx.getArrayCharProb());
+					
+					this.bits = this.motorAritmetico.comprimir(temp, cadena.charAt(pos));
+					ctx.actualizarContexto(cadena.charAt(pos));
+				} else {
+					//Creo la letra. No debería entrar nunca.
+					ctx.crearCharEnContexto(cadena.charAt(pos));
+				}
+			}
+			
+			if (this.orden > 0) {
+				//Si es de orden mayor a 0 entonces actualizo el contexto
+				this.contexto = cadena.charAt(pos);
+			}
+		//Termina la iteracion de los caracteres del string
 		}
-		
-		if (this.orden > 0) {
-			//Si es de orden mayor a 0 entonces actualizo el contexto
-			this.contexto = cadena.charAt(0);
-		}
-
 		return this.bits;
 	}
 
@@ -112,6 +119,7 @@ public class CompresorAritmetico implements Compresor {
 			throw new SessionException();
 		}
 		
+		this.sessionCompresion = false;
 		//Tengo algo en el buffer que quedo de otra pasada
 		//lo concateno con lo nuevo
 		if (this.bitsBuffer.length() > 0) {
@@ -123,6 +131,7 @@ public class CompresorAritmetico implements Compresor {
 		//a la malla de bits entonces devuelvo null ya que no puedo seguir
 		if (datos.length() < 32) {
 			this.bitsBuffer = new StringBuffer(datos);
+			datos.delete(0, datos.length());
 			return null;
 		}
 		
@@ -153,8 +162,6 @@ public class CompresorAritmetico implements Compresor {
 		
 		ctx.actualizarContexto(letra);
 		
-		//ctx.actualizarProbabilidades();
-		
 		if (this.orden > 0) {
 			//Si es de orden mayor a 0 entonces actualizo el contexto
 			this.contexto = letra;
@@ -166,7 +173,7 @@ public class CompresorAritmetico implements Compresor {
 	//Al finalizar la compresion me manda el EOF o simplemente lo mando yo
 	//internamente?? Es que en realidad es un caracter mas. lo unico que tendría que
 	//hacer aca es finalizar la compresion devolviendo el piso ultimo
-	public String finalizarCompresion(){
+	private String finalizarCompresion(){
 		String datos = "";
 		try {
 			datos = this.comprimir(Constantes.EOF.toString());
@@ -191,6 +198,9 @@ public class CompresorAritmetico implements Compresor {
 		if (this.sessionInit) {
 			this.sessionInit = false;	
 		}
+		if (this.sessionCompresion) {
+			return this.finalizarCompresion();
+		} 
 		return "";
 	}
 
@@ -219,6 +229,15 @@ public class CompresorAritmetico implements Compresor {
 
 	private void cargarCtxConUnicodeBlock(Contexto ctx){
 		//for (int i = 0; i < 300; i++) {
+		
+		Iterator<Character> it = Constantes.LISTA_CHARSET_LATIN.iterator();
+		Character letra;
+		while (it.hasNext()) {
+			letra = it.next();
+			ctx.crearCharEnContexto(letra);
+			//System.out.println(letra);
+		}
+		/*
 		for (int i = 0; i < 300; i++) {
 			if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
 				ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
@@ -230,6 +249,7 @@ public class CompresorAritmetico implements Compresor {
 				}
 			}
 		}
+		*/
 		ctx.crearCharEnContexto(Constantes.EOF);
 	}
 	
@@ -273,6 +293,14 @@ public class CompresorAritmetico implements Compresor {
 			case 1:
 				//bucle Crear contextos dentro del charset!
 				//bucle crear letras dentro del contexto del charset!
+				Iterator<Character> it = Constantes.LISTA_CHARSET_LATIN.iterator();
+				Character letra;
+				while (it.hasNext()) {
+					letra = it.next();
+					ctx = this.verificarCtx(letra.toString());
+					this.cargarCtxConUnicodeBlock(ctx);
+				}
+				/*
 				for (int i = 0; i < 300; i++) {
 					if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
 						ctx = this.verificarCtx(new Character(Character.toChars(i)[0]).toString());
@@ -284,6 +312,7 @@ public class CompresorAritmetico implements Compresor {
 						}
 					}
 				}
+				*/
 				break;
 			}
 			//Cargo el charset LATIN

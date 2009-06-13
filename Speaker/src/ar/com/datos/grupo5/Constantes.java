@@ -371,6 +371,7 @@ public final class Constantes {
 	 */
 	public static final List<IunidadDeHabla> LISTA_STOP_WORDS = stopWords();
 
+	
 	/**
 	 * Carga un listado de palabras a filtrar.
 	 * @return listado de palabras.
@@ -378,19 +379,22 @@ public final class Constantes {
 	private static List<Character> alfabetoDisponible() {
 		List<Character> lista = new ArrayList<Character>();
 		Character letra;
-		/*
-		for (int i = 0; i < 65533; i++) {
+		
+		for (int i = 0; i < 300; i++) {
 			letra = new Character(Character.toChars(i)[0]);
 			if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(letra)) {
 				lista.add(letra);
 			} else {
 				if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(letra)) {
-					ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
+					lista.add(letra);
 				}
 			}
 		}
-		*/
 		return lista;
 	}
 	
+	/**
+	 * Lista de palabras a filtrar.
+	 */
+	public static final List<Character> LISTA_CHARSET_LATIN = alfabetoDisponible();
 }
