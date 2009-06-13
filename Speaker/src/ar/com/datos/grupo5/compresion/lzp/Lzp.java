@@ -84,13 +84,13 @@ public class Lzp implements Compresor {
 	private int longMatch = 0;
 
 	public Lzp(){
-		listaContextos = new ListaContextos();
 		motorAritCaracteres = new CompresorAritmetico();
 		motorAritLongitudes = new CompresorAritmetico();
 		letrasCtx = new Orden();
 		longitudesCtx = new Contexto();
 		ultCtx = "";
 		try {
+			listaContextos = new ListaContextos();
 			archivoTrabajo = new RandomAccessFile("./lzpTemp.txt", "rw");
 			archivoTrabajo.setLength(0);
 		} catch (FileNotFoundException e) {
@@ -332,7 +332,11 @@ public class Lzp implements Compresor {
 
 	@Override
 	public void iniciarSesion() {
-		listaContextos = new ListaContextos();
+		try {
+			listaContextos = new ListaContextos();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		motorAritCaracteres = new CompresorAritmetico();
 		motorAritLongitudes = new CompresorAritmetico();
 		letrasCtx = new Orden();

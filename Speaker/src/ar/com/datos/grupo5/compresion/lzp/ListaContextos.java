@@ -188,7 +188,7 @@ public class ListaContextos {
 			int contador = 0;
 			byte[] clave = new byte[4];
 			int pos = 0;
-			Charset charset = Charset.forName(Constantes.CHARSET_UTF16 + "BE");
+			Charset charset = Charset.forName(Constantes.CHARSET_UTF16);
 			
 			while (contador < cantidad) {
 
@@ -220,7 +220,7 @@ public class ListaContextos {
 			dos.write(cantidad, 0, cantidad.length);
 			
 			byte[] regBytes = new byte[4];
-			Charset charset = Charset.forName(Constantes.CHARSET_UTF16 + "BE");
+			Charset charset = Charset.forName(Constantes.CHARSET_UTF16);
 			
 			for (Entry<String, Integer> entry: mapaContexto.entrySet()) {
 				regBytes = entry.getKey().getBytes(charset);

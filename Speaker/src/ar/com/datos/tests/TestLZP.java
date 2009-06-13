@@ -27,9 +27,6 @@ public class TestLZP {
 		LOG.info(cadena.replace(",", ""));
 		LOG.info(result);
 		comp.finalizarSession();
-/*		
-		byte[] cad = "A".getBytes(Constantes.CHARSET_UTF16);
-		LOG.info("Cad (A) en 16 bits = " + cad.toString());
-		*/
+
 	}
 }
