@@ -80,6 +80,11 @@ public class Lzp implements Compresor {
 	private static String ARCHIVO_TRABAJO = "./lzp.tmp";
 
 	/**
+	 * 
+	 */
+	public boolean simular = false;
+	
+	/**
 	 * @return the finalizada
 	 */
 	@Override
@@ -115,7 +120,7 @@ public class Lzp implements Compresor {
 		}
 		System.out.println("Valores de la lista de contextos:");
 		System.out.println(listaContextos.toString());
-		}
+	}
 	
 	/**
 	 * 
@@ -127,6 +132,7 @@ public class Lzp implements Compresor {
 		}
 		
 		String resultado = "";
+		String resultado2 = "";
 
 		//Trabajar con un StringBuffer es mas rapido.
 		StringBuffer buffer = new StringBuffer(cadena);
@@ -149,7 +155,7 @@ public class Lzp implements Compresor {
 			resultado += motorAritLongitudes.comprimir("0");
 			resultado +=  motorAritCaracteres.comprimir(String.valueOf(cadena.charAt(2)));
 			
-			//resultado = ultCtx + "0" + String.valueOf(cadena.charAt(2));
+			resultado2 = ultCtx + "0" + String.valueOf(cadena.charAt(2));
 			
 			ultCtx = cadena.substring(1, 3);
 			
@@ -167,13 +173,16 @@ public class Lzp implements Compresor {
 			//Parece que el getBytes pone un /0 al final.
 			archivoTrabajo.write(bytes, 0, bytes.length);
 			
-			resultado += ComprimirInterno(buffer);
+			String aux = ComprimirInterno(buffer);
+			resultado += aux;
+
+			resultado2 += aux;
+			
 		} catch (IOException e) {
-			//TODO: Hacer algo
 			e.printStackTrace();
 		}
 		
-		return resultado;
+		return simular?resultado2:resultado;
 	}
 
 	/**
@@ -247,8 +256,7 @@ public class Lzp implements Compresor {
 			}
 		}
 		
-		//return result2.toString();
-		return result.toString();
+		return simular?result2.toString():result.toString();
 	}
 
 	/**
@@ -374,11 +382,13 @@ public class Lzp implements Compresor {
 		File file = new File("./lzpTemp.txt");
 		file.delete();
 		String result = "";
+		String result2 = "";
 		
 		if (matchCompleto) {
 			
 			try {
 				result += motorAritLongitudes.comprimir(String.valueOf(longMatch));
+				result2 = String.valueOf(longMatch);
 			} catch (SessionException e) {
 				e.printStackTrace();
 			}
@@ -388,7 +398,7 @@ public class Lzp implements Compresor {
 			result += motorAritCaracteres.finalizarSession();
 		}
 		
-		return result;
+		return simular?result2:result;
 	}
 
 	@Override

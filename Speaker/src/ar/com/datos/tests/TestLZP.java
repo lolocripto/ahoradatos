@@ -16,11 +16,12 @@ public class TestLZP {
 		
 		Compresor comp = new Lzp();
 		//String cadena = "ABCCBABC,CBCCBCCABA";
-		String cadena = "AAAAAA,AAAAAA";
+		String cadena = "AAAAAA,AAAAAAB";
 		String[] cadena2 = cadena.split(",");
 		String result = "";
 		
 		comp.iniciarSesion();
+		((Lzp)comp).simular = true;
 		for (int i = 0; i < cadena2.length; i++) {
 			result += comp.comprimir(cadena2[i]);
 			comp.imprimirHashMap();
@@ -30,7 +31,7 @@ public class TestLZP {
 		LOG.info("Longitud en bytes antes de comprimir: " + cadena.replace(",", "").length() * 2);
 		result += comp.finalizarSession();
 		LOG.info(result);
-		LOG.info("Longitud despues de comprimi: " + (result.length() / 8));
+		LOG.info("Longitud despues de comprimir: " + (result.length() / 8));
 
 	}
 }
