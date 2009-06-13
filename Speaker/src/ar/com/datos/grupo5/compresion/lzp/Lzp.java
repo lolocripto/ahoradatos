@@ -73,11 +73,11 @@ public class Lzp implements Compresor {
 	 * Longitud de match
 	 */
 	private int longMatch = 0;
-
+	
 	/**
-	 * Ultimo char leido para el caso de macth completo.
+	 * Archivo de trabajo temporal.
 	 */
-	private char ultimoChar = 0;
+	private static String ARCHIVO_TRABAJO = "./lzp.tmp";
 
 	/**
 	 * @return the finalizada
@@ -95,7 +95,7 @@ public class Lzp implements Compresor {
 		ultCtx = "";
 		try {
 			listaContextos = new ListaContextos();
-			archivoTrabajo = new RandomAccessFile("./lzpTemp.txt", "rw");
+			archivoTrabajo = new RandomAccessFile(ARCHIVO_TRABAJO, "rw");
 			archivoTrabajo.setLength(0);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -207,7 +207,6 @@ public class Lzp implements Compresor {
 					longMatchActual = longMatch(cadena, posMatch);
 					if (matchCompleto && longMatchActual > 0) {
 						longMatch += longMatchActual;
-						ultimoChar = cadena.charAt(cadena.length() - 1);
 						break;
 					} else if (longMatchActual > 0){
 						//String match = cadena.substring(0, longMatchActual);
