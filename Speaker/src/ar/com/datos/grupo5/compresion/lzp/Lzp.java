@@ -238,7 +238,7 @@ public class Lzp implements Compresor {
 	 * @return
 	 */
 	@Override
-	public String descomprimir(String cadena) {
+	public String descomprimir(StringBuffer cadena) {
 		
 		String result = new String();
 		int longMatchActual = 0;
@@ -259,7 +259,7 @@ public class Lzp implements Compresor {
 	 * @return
 	 * @throws SessionException
 	 */
-	public String descomprimirInterno(String cadena) throws SessionException{
+	public String descomprimirInterno(StringBuffer cadena) throws SessionException{
 		if (!sesionIniciada) {
 			throw new SessionException();
 		}
@@ -268,7 +268,9 @@ public class Lzp implements Compresor {
 		String longitud = "";
 		
 		//Si no hay nada aca, entonces es la primera iteracion.
-		if (ultCtx.length() == 0) {
+		if (listaContextos.size() == 0) {
+			// Reseteo el ultimo contexto
+			ultCtx = "";
 			// Genero el CTX.
 			ultCtx = motorAritCaracteres.descomprimir(cadena);
 			ultCtx += motorAritCaracteres.descomprimir(cadena);
@@ -277,10 +279,17 @@ public class Lzp implements Compresor {
 
 			listaContextos.setPosicion(ultCtx, 4);
 			posActual = 4;
+			
+			longitud = motorAritLongitudes.descomprimir(cadena);
+			posActual += 2;
+			resultado += motorAritCaracteres.descomprimir(cadena);
+			ultCtx = resultado.substring(resultado.length() - 2);
+			listaContextos.setPosicion(ultCtx, posActual);
 		}
+		
 		longitud = motorAritLongitudes.descomprimir(cadena);
 		//long pos = archivoTrabajo.length();
-		long lon = CodePoint.getCodePoint(longitud.charAt(0));		
+		int lon = CodePoint.getCodePoint(longitud.charAt(0));		
 		// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
 		// buscar match.
 		posActual += 2;
@@ -294,9 +303,10 @@ public class Lzp implements Compresor {
 				// Cuanto leo?
 				
 				byte[] bytes = null;
-				archivoTrabajo.read(bytes, 0, posActual - (int)pos);
+				archivoTrabajo.read(bytes, 0, lon * Constantes.SIZE_OF_SHORT);
 				//ir replicando todos los cambios en la cadena, y luego 
 				//escribirlos en el archivo
+				resultado += bytes.toString();
 			} catch (IOException e) {
 				//TODO: Hacer algo
 				e.printStackTrace();
