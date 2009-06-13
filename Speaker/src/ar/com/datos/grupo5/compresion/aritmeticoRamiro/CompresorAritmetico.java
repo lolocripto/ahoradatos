@@ -217,11 +217,11 @@ public class CompresorAritmetico implements Compresor{
 		for (int i = 0; i < 300; i++) {
 			if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
 				ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
-				System.out.println(new Character(Character.toChars(i)[0]));
+				//System.out.println(new Character(Character.toChars(i)[0]));
 			} else {
 				if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
 					ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
-					System.out.println(new Character(Character.toChars(i)[0]));
+					//System.out.println(new Character(Character.toChars(i)[0]));
 				}
 			}
 		}

@@ -140,17 +140,18 @@ public class Segmento {
 			// niego
 			String rellenoCon = this.negarBit(emision.substring(0, 1));
 
-//			StringBuffer buffer = new StringBuffer(emision);
+			StringBuffer buffer = new StringBuffer(emision);
 			
-			//int i = 1;
+			int i = 1;
 			// uso ese bit para rellenar tantas veces como me diga el contador
 			// de underflow
 			while (this.bitsUnderflow > 0) {
-				emision = emision.concat(rellenoCon);
-				//buffer.insert(i, rellenoCon.charAt(0));
-				//i++;
+				//emision = emision.concat(rellenoCon);
+				buffer.insert(i, rellenoCon.charAt(0));
+				i++;
 				this.bitsUnderflow--;
 			}
+			emision = buffer.toString();
 			//Antes de devolver la emision no deberia seguir mirando si hay UnderFlow??
 //FIXME:			return emision;
 
@@ -292,6 +293,7 @@ public class Segmento {
 	//FIXME:
 	public final String generarCadenaSinUndeFlow(StringBuffer binaryString){
 		String nuevaCadena = "";
+		/*
 		//Obtengo el primer bit y lo invierto
 		Character bit = binaryString.charAt(0);
 		String charABuscar = this.negarBit(bit.toString());
@@ -309,6 +311,9 @@ public class Segmento {
 			cantidad--;
 		}
 		nuevaCadena += binaryString.substring(inicio, (32 - nuevaCadena.length()) + inicio);
+		*/
+		nuevaCadena += binaryString.charAt(0);
+		nuevaCadena += binaryString.substring(1+this.bitsUnderflow,31 + (1+this.bitsUnderflow));
 		return nuevaCadena;
 	}
 }
