@@ -329,7 +329,7 @@ public class Ppmc implements Compresor{
 	}
 
 	@Override
-	public void finalizarSession() {
+	public String finalizarSession() {
 		// TODO Auto-generated method stub
 		// Lleno contextoOrdenMenosUno con todos los caracteres del UNICODE
 		this.contextoOrdenMenosUno = null;
@@ -340,6 +340,7 @@ public class Ppmc implements Compresor{
 		this.compresorAritmetico = null;
 		this.initSession = false;
 		this.tiraBits = "";
+		return "";
 	}
 
 	@Override

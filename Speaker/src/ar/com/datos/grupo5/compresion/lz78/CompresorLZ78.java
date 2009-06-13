@@ -258,9 +258,10 @@ public class CompresorLZ78 implements Compresor {
 		return textoDesComprimido;
 	}
 
-	public void finalizarSession() {
+	public String finalizarSession() {
 		limpiaTabla();
 		estadoInicio = 0;
+		return "";
 
 	}
 

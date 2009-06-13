@@ -188,10 +188,11 @@ public class CompresorAritmetico implements Compresor{
 	}
 	
 	@Override
-	public void finalizarSession() {
+	public String finalizarSession() {
 		if (this.sessionInit) {
 			this.sessionInit = false;	
 		}
+		return "";
 	}
 
 	@Override

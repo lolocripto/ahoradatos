@@ -30,7 +30,7 @@ public interface Compresor {
 	 * Finaliza la sesion actual y deja todo lista para comprimir/descomprimir
 	 * otro archivo.
 	 */
-	public void finalizarSession();
+	public String finalizarSession();
 	
 	/**
 	 * @param datos Los datos comprimidos en binario.

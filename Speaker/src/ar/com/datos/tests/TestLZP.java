@@ -15,7 +15,8 @@ public class TestLZP {
 	public static void main(String[] args) throws IOException, SessionException {
 		
 		Compresor comp = new Lzp();
-		String cadena = "ABCCBABC,CBCCBCCABA";
+		//String cadena = "ABCCBABC,CBCCBCCABA";
+		String cadena = "AAAAAA,AAAAAA";
 		String[] cadena2 = cadena.split(",");
 		String result = "";
 		

@@ -26,18 +26,6 @@ public class Lzp implements Compresor {
 	 */
 	private static final Logger LOG = Logger.getLogger(Lzp.class);
 	
-	private IndiceContexto Indice;
-	
-	/**
-	 * Contexto para las letra? porque carajo se llama Orden?
-	 */
-	private Orden letrasCtx;
-	
-	/**
-	 * Contextos para las longitudes, para pasar al compresor aritmetico.
-	 */
-	private Contexto longitudesCtx;
-	
 	/**
 	 * Motor aritmetico para los cararteres emitodos.
 	 */
@@ -86,8 +74,6 @@ public class Lzp implements Compresor {
 	public Lzp(){
 		motorAritCaracteres = new CompresorAritmetico();
 		motorAritLongitudes = new CompresorAritmetico();
-		letrasCtx = new Orden();
-		longitudesCtx = new Contexto();
 		ultCtx = "";
 		try {
 			listaContextos = new ListaContextos();
@@ -186,15 +172,14 @@ public class Lzp implements Compresor {
 		
 		while (cadena.length() > 0){
 			
-			Integer pos = listaContextos.getPosicion(ultCtx);
-			if ( pos == null) {
+			posMatch = listaContextos.getPosicion(ultCtx);
+			if ( posMatch == null) {
 				posActual += 2;
 				listaContextos.setPosicion(ultCtx, posActual);
 				ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
 				result.append("0" + cadena.substring(0, 1));
 				cadena.delete(0, 1);
 			} else {
-				posMatch = listaContextos.getPosicion(ultCtx);
 				if (posMatch != null) {
 					if (matchCompleto) {
 						posMatch += longMatch * 2;
@@ -204,7 +189,7 @@ public class Lzp implements Compresor {
 						longMatch += longMatchActual;
 						break;
 					} else if (longMatchActual > 0){
-						String match = cadena.substring(0, longMatchActual);
+						//String match = cadena.substring(0, longMatchActual);
 						ultCtx = String.valueOf(cadena.charAt(longMatchActual-1));
 						cadena.delete(0, longMatchActual);
 						ultCtx += String.valueOf(cadena.charAt(0));
@@ -324,10 +309,11 @@ public class Lzp implements Compresor {
 		return resultado;
 	}
 	@Override
-	public void finalizarSession() {
+	public String finalizarSession() {
 		sesionIniciada = false;
 		File file = new File("./lzpTemp.txt");
 		file.delete();
+		return "";
 	}
 
 	@Override
@@ -339,8 +325,6 @@ public class Lzp implements Compresor {
 		}
 		motorAritCaracteres = new CompresorAritmetico();
 		motorAritLongitudes = new CompresorAritmetico();
-		letrasCtx = new Orden();
-		longitudesCtx = new Contexto();
 		sesionIniciada = true;
 		ultCtx = "";
 	}
