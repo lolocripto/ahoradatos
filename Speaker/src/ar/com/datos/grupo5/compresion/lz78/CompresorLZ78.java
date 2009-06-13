@@ -173,7 +173,7 @@ public class CompresorLZ78 implements Compresor {
 	 * @param datoscomprimidos, String expresada en bits a descomprimir.
 	 * @return String, texto descomprimido.
 	 */
-	public String descomprimir(String datoscomprimidos) throws SessionException {
+	public String descomprimir(StringBuffer datoscomprimidos) throws SessionException {
 		if (estadoInicio == 0)
 			throw new SessionException("Error!: Sesion no iniciada");
 		

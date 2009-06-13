@@ -32,7 +32,7 @@ public class TestLZ78 {
 			fileOut2.write(cachirla);
 			fileOut2.close();
 			compresorBIS.finalizarSession();
-			String y = compresorBIS.descomprimir(enbites);
+			String y = compresorBIS.descomprimir(new StringBuffer(enbites));
 			System.out.println("comprimio? " + y.equals(paracomp));
 			System.out.println("y=" + y + "|");
 			System.out.println("x=" + paracomp + "|");

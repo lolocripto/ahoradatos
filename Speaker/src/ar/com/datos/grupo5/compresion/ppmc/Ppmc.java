@@ -323,7 +323,7 @@ public class Ppmc implements Compresor{
 	}
 
 	@Override
-	public String descomprimir(String datos) {
+	public String descomprimir(StringBuffer datos) {
 		
 		return null;
 	}
