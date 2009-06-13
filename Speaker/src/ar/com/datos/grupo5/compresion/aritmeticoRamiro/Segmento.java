@@ -140,14 +140,19 @@ public class Segmento {
 			// niego
 			String rellenoCon = this.negarBit(emision.substring(0, 1));
 
+//			StringBuffer buffer = new StringBuffer(emision);
+			
+			//int i = 1;
 			// uso ese bit para rellenar tantas veces como me diga el contador
 			// de underflow
 			while (this.bitsUnderflow > 0) {
 				emision = emision.concat(rellenoCon);
+				//buffer.insert(i, rellenoCon.charAt(0));
+				//i++;
 				this.bitsUnderflow--;
 			}
 			//Antes de devolver la emision no deberia seguir mirando si hay UnderFlow??
-			return emision;
+//FIXME:			return emision;
 
 		}
 

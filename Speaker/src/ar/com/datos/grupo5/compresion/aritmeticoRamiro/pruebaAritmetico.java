@@ -32,7 +32,7 @@ public class pruebaAritmetico {
 		lista.add(p4);
 		
 		String salida="";
-/*
+		
 		salida = la.comprimir(lista, 'b');
 		System.out.println(salida);
 		
@@ -56,7 +56,7 @@ public class pruebaAritmetico {
 
 		salida += la.finalizarCompresion();
 		System.out.println(salida);
-*/		
+
 		la = new LogicaAritmetica(); 
 		String bits = new String("01110110011010100011111110100100100000000000");
 		StringBuffer bitsBuffer = new StringBuffer(bits);
