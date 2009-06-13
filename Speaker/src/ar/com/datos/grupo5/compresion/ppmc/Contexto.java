@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import ar.com.datos.grupo5.compresion.aritmeticoRamiro.ParCharProb;
+import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
 
 /**
  * @author Led Zeppelin

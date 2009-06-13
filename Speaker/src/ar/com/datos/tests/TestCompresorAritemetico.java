@@ -4,7 +4,7 @@
 package ar.com.datos.tests;
 
 import ar.com.datos.grupo5.Constantes;
-import ar.com.datos.grupo5.compresion.aritmeticoRamiro.CompresorAritmetico;
+import ar.com.datos.grupo5.compresion.aritmetico.CompresorAritmetico;
 import ar.com.datos.grupo5.excepciones.SessionException;
 
 /**
@@ -35,11 +35,11 @@ public class TestCompresorAritemetico {
 			bitOrden0 += compressOrder0.comprimir(letra.toString());
 			//bitOrden1 += compressOrder1.comprimir(letra.toString());
 		}
-		bitOrden0 += compressOrder0.finalizarCompresion();
+		bitOrden0 += compressOrder0.finalizarSession();
 		//bitOrden1 += compressOrder1.finalizarCompresion();
 		System.out.println("Salida comprimida orden0: " + bitOrden0);
 		//System.out.println("Salida comprimida orden1: " + bitOrden1);
-		compressOrder0.finalizarSession();
+		
 		
 		
 		compressOrder0.iniciarSesion();

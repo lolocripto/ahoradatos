@@ -5,6 +5,7 @@ public class Segmento {
 	private UnsignedInt techo;
 	private UnsignedInt piso;
 	private int bitsUnderflow;
+	private boolean overFlow;
 
 	/**
 	 * Constructor que recibe por parámetro el numero máximo posible para el
@@ -57,10 +58,14 @@ public class Segmento {
 		String bitsTecho = this.techo.get32BitsRepresentation();
 		String bitsPiso = this.piso.get32BitsRepresentation();
 
-		if (bitsPiso.charAt(0) == bitsTecho.charAt(0))
+		if (bitsPiso.charAt(0) == bitsTecho.charAt(0)) {
+			this.overFlow = true;
 			return true;
-		else
-			return false;
+		} else {
+			this.overFlow = false;
+			return false;	
+		}
+		
 
 	}
 
@@ -135,21 +140,30 @@ public class Segmento {
 			// niego
 			String rellenoCon = this.negarBit(emision.substring(0, 1));
 
+			StringBuffer buffer = new StringBuffer(emision);
+			
+			int i = 1;
 			// uso ese bit para rellenar tantas veces como me diga el contador
 			// de underflow
 			while (this.bitsUnderflow > 0) {
-				emision = emision.concat(rellenoCon);
+				//emision = emision.concat(rellenoCon);
+				buffer.insert(i, rellenoCon.charAt(0));
+				i++;
 				this.bitsUnderflow--;
 			}
-
-			return emision;
+			emision = buffer.toString();
+			//Antes de devolver la emision no deberia seguir mirando si hay UnderFlow??
+//FIXME:			return emision;
 
 		}
 
 		while (this.hayUnderflow()) {
 			this.trabajarUnderFlow();
 		}
-		return null;
+		System.out.println("Luego de Normalizar:");
+		System.out.println("Techo: " + Long.toHexString(new Long(this.techo.getLongAsociado())));
+		System.out.println("Piso: " + Long.toHexString(new Long(this.piso.getLongAsociado())));
+		return emision;
 	}
 
 	/**
@@ -256,4 +270,50 @@ public class Segmento {
 
 	}
 
+	
+	/**
+	 * Permite saber si hay UnderFlow
+	 * @return
+	 */
+	public boolean estadoUnderFlow() {
+		if (this.bitsUnderflow > 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Permite saber si en la pasada anterior existio OverFlow
+	 * @return
+	 */
+	public boolean estadoOverFlow() {
+		return this.overFlow;
+	}
+	
+	//FIXME:
+	public final String generarCadenaSinUndeFlow(StringBuffer binaryString){
+		String nuevaCadena = "";
+		/*
+		//Obtengo el primer bit y lo invierto
+		Character bit = binaryString.charAt(0);
+		String charABuscar = this.negarBit(bit.toString());
+		//Busco la primer ocurrencia de ese bit
+		int lugar = binaryString.indexOf(charABuscar);
+		int cantidad = this.bitsUnderflow;
+		int inicio = 0;
+		while (cantidad > 0) {
+			//copio hasta el lugar
+			nuevaCadena += binaryString.substring(inicio, lugar);
+			//omito el caracter
+			lugar++;
+			inicio = lugar;
+			lugar = binaryString.indexOf(charABuscar,lugar);
+			cantidad--;
+		}
+		nuevaCadena += binaryString.substring(inicio, (32 - nuevaCadena.length()) + inicio);
+		*/
+		nuevaCadena += binaryString.charAt(0);
+		nuevaCadena += binaryString.substring(1+this.bitsUnderflow,31 + (1+this.bitsUnderflow));
+		return nuevaCadena;
+	}
 }

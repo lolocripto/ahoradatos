@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
-import ar.com.datos.grupo5.compresion.aritmeticoRamiro.ParCharProb;
+import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
 /**
  * @author Led Zeppiln
  *

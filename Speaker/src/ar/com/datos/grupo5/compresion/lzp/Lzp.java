@@ -7,7 +7,7 @@ import java.io.RandomAccessFile;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
-import ar.com.datos.grupo5.compresion.aritmeticoRamiro.CompresorAritmetico;
+import ar.com.datos.grupo5.compresion.aritmetico.CompresorAritmetico;
 import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.Compresor;
 import ar.com.datos.grupo5.utils.CodePoint;

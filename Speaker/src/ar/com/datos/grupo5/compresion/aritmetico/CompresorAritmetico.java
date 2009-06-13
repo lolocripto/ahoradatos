@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ar.com.datos.grupo5.compresion.aritmeticoRamiro;
+package ar.com.datos.grupo5.compresion.aritmetico;
 
 import java.util.ArrayList;
 import java.util.Iterator;

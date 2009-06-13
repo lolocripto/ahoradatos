@@ -4,13 +4,13 @@ public class ParCharProb implements Comparable<ParCharProb>{
 
 	
 	private char simboloUnicode;
-	private float probabilidad;
+	private double probabilidad;
 	private long techo;
 	private long piso;
 	private long frecuencia;
 	
 
-	public ParCharProb(char simboloUnicode, float probabilidad) {
+	public ParCharProb(char simboloUnicode, double probabilidad) {
 		super();
 		this.simboloUnicode = simboloUnicode;
 		this.probabilidad = probabilidad;
@@ -26,7 +26,7 @@ public class ParCharProb implements Comparable<ParCharProb>{
 	}
 
 
-	public float getProbabilidad() {
+	public double getProbabilidad() {
 		return probabilidad;
 	}
 
@@ -42,9 +42,12 @@ public class ParCharProb implements Comparable<ParCharProb>{
 
 
 	public void setTecho(long longTotalIntervalo) {
-		
-       double sky = Math.floor(piso + longTotalIntervalo*this.probabilidad);
-	   this.techo = (int)sky;
+		//FIXME:Creo que no es sumarle el intervalo al piso directamente porque le estoy sumando uno a toda la suma total
+		//Supongo que despues de sacar el techo se aumenta en uno al piso para no agregar unidades de más. Será así?
+       double sky = piso + Math.ceil(longTotalIntervalo*this.probabilidad) - 1;
+       //double sky = Math.floor(piso + longTotalIntervalo*this.probabilidad);
+	   this.techo = new Double(sky).longValue(); 
+		   
 	}
 
 
@@ -56,7 +59,10 @@ public class ParCharProb implements Comparable<ParCharProb>{
 	public void setTecho(UnsignedInt piso, UnsignedInt longitudInterv) {
 		this.piso = piso.getLongAsociado();
 		
-		this.techo = (piso.mas(longitudInterv)).porFloat(this.probabilidad).getLongAsociado();
+		//Seteo el techo
+		double valorRedondeadoArriba = longitudInterv.porFloat(this.probabilidad).getLongAsociado();
+		this.techo = piso.mas(new UnsignedInt(new Double(valorRedondeadoArriba).longValue())).getLongAsociado();
+		//this.techo = (piso.mas(longitudInterv)).porFloat(this.probabilidad).getLongAsociado();
 		}
 	
 	public long getPiso() {

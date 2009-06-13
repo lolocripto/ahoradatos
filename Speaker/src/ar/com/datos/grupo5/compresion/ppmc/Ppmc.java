@@ -6,8 +6,8 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
-import ar.com.datos.grupo5.compresion.aritmeticoRamiro.LogicaAritmetica;
-import ar.com.datos.grupo5.compresion.aritmeticoRamiro.ParCharProb;
+import ar.com.datos.grupo5.compresion.aritmetico.LogicaAritmetica;
+import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
 import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.Compresor;
 
