@@ -38,6 +38,7 @@ public class LogicaAritmetica {
 		if (it.hasNext()) {
 			elemAnterior = it.next();
 			elemAnterior.setTecho(piso, longitudInterv);
+			//System.out.println("Letra: "+elemAnterior.getSimboloUnicode()+", techo: "+elemAnterior.getTecho()+", piso: "+elemAnterior.getPiso());
 			if (elemAnterior.getSimboloUnicode() == caracterAcodificar) {
 				return elemAnterior;
 			}
@@ -50,7 +51,7 @@ public class LogicaAritmetica {
 			// el piso del elemento actual, sera el techo + 1 del elemento
 			// anterior
 			elemActual.setTecho(elemAnterior.getTecho() + 1, longitudInterv.getLongAsociado());
-
+			//System.out.println("Letra: "+elemActual.getSimboloUnicode()+", techo: "+elemActual.getTecho()+", piso: "+elemActual.getPiso());
 			// me fijo si es el que debo codificar para no seguir segmentando
 			// sin sentido
 			if (elemActual.getSimboloUnicode() == caracterAcodificar) {
@@ -143,6 +144,7 @@ public class LogicaAritmetica {
 			//Si hay bits en UnderFlow es que no huvo overFlow!!! no bastaría con preguntar solo por underFlow? 
 			V = this.intervalo.generarCadenaSinUndeFlow(binaryString);
 		} else {
+		
 			//Corto el valor de 32bits
 			V = binaryString.substring(0, 32);
 		}

@@ -146,7 +146,7 @@ public class Segmento {
 				emision = emision.concat(rellenoCon);
 				this.bitsUnderflow--;
 			}
-
+			//Antes de devolver la emision no deberia seguir mirando si hay UnderFlow??
 			return emision;
 
 		}
@@ -195,12 +195,10 @@ public class Segmento {
 		
 		// hago una corrimiento de bits
 		//en el techo corro a la izq y agrego un 1 al final
-		//this.techo.leftShiftOne();
-		this.techo.leftShift();
+		this.techo.leftShiftOne();
 		//en el piso corro a la izq y agrego un 0 al final
-		//this.piso.leftShiftCero();
-		this.piso.leftShift();
-	
+		this.piso.leftShiftCero();
+		
 		return emision;
 	}
 
@@ -266,56 +264,6 @@ public class Segmento {
 
 	}
 
-	/**
-	 * normaliza el segmento despues de una descompresión.
-	 * El objetivo es correr los bits necesarios en el piso y techo
-	 * del segmento y si hay OverFlow eliminar los bits de UnderFlow
-	 */
-	public final void normalizarDescompresion(String binaryString){
-		boolean procesarBitsUnderflow = false;
-		String emision = "";
-		
-		// verifico si luego de procesar el overflow debo emitir bits de
-		// underflow
-		if (this.hayOverflow() && (this.bitsUnderflow != 0)) {
-			procesarBitsUnderflow = true;
-		}
-
-		// proceso el overflow actual, bit por bit
-		while (this.hayOverflow()) {
-			//Emito los bits iguales del techo y piso
-			emision = emision.concat(this.emitirBitOverflow());
-			//Saco esos bits iguales del BinaryString
-			
-		}
-
-		// si procesé overflow y anteriormente el contador de underflow no
-		// estaba
-		// en cero, entonces debo emitir tantos bits como me diga el contador.
-		if (procesarBitsUnderflow) {
-
-			// uso ese bit para rellenar tantas veces como me diga el contador
-			// de underflow
-			while (this.bitsUnderflow > 0) {
-				emision = emision.concat("0");
-				
-			}
-
-
-			return;
-
-		}
-
-		while (this.hayUnderflow()) {
-			this.trabajarUnderFlow();
-		}
-		
-		System.out.println("Luego de Normalizar:");
-		System.out.println("Techo: " + Long.toHexString(new Long(this.techo.getLongAsociado())));
-		System.out.println("Piso: " + Long.toHexString(new Long(this.piso.getLongAsociado())));
-		//Salgo
-		return;
-	}
 	
 	/**
 	 * Permite saber si hay UnderFlow
@@ -339,8 +287,23 @@ public class Segmento {
 	//FIXME:
 	public final String generarCadenaSinUndeFlow(StringBuffer binaryString){
 		String nuevaCadena = "";
-		nuevaCadena += binaryString.charAt(0);
-		nuevaCadena += binaryString.substring(1 + this.bitsUnderflow, 31 + (1 + this.bitsUnderflow));
+		//Obtengo el primer bit y lo invierto
+		Character bit = binaryString.charAt(0);
+		String charABuscar = this.negarBit(bit.toString());
+		//Busco la primer ocurrencia de ese bit
+		int lugar = binaryString.indexOf(charABuscar);
+		int cantidad = this.bitsUnderflow;
+		int inicio = 0;
+		while (cantidad > 0) {
+			//copio hasta el lugar
+			nuevaCadena += binaryString.substring(inicio, lugar);
+			//omito el caracter
+			lugar++;
+			inicio = lugar;
+			lugar = binaryString.indexOf(charABuscar,lugar);
+			cantidad--;
+		}
+		nuevaCadena += binaryString.substring(inicio, (32 - nuevaCadena.length()) + inicio);
 		return nuevaCadena;
 	}
 }
