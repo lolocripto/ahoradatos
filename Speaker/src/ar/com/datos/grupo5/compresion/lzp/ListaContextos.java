@@ -61,6 +61,7 @@ public class ListaContextos {
 	 * 
 	 */
 	public ListaContextos(){
+		archivo = new ArchivoBloques(4096);
 		mapaContexto = new HashMap<String, Integer>();
 	}
 
