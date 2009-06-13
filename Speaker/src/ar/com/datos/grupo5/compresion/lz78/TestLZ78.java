@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import ar.com.datos.grupo5.compresion.ConversorABytes;
 import ar.com.datos.grupo5.compresion.conversionBitToByte;
 import ar.com.datos.grupo5.excepciones.SessionException;
 

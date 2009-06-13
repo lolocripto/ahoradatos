@@ -8,8 +8,6 @@ import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.aritmeticoRamiro.CompresorAritmetico;
-import ar.com.datos.grupo5.compresion.ppmc.Contexto;
-import ar.com.datos.grupo5.compresion.ppmc.Orden;
 import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.Compresor;
 import ar.com.datos.grupo5.utils.CodePoint;
@@ -70,6 +68,11 @@ public class Lzp implements Compresor {
 	 * Longitud de match
 	 */
 	private int longMatch = 0;
+
+	/**
+	 * Ultimo char leido para el caso de macth completo.
+	 */
+	private char ultimoChar = 0;
 
 	public Lzp(){
 		motorAritCaracteres = new CompresorAritmetico();
@@ -144,14 +147,10 @@ public class Lzp implements Compresor {
 			byte[] bytes = cadena.getBytes(Constantes.CHARSET_UTF16);
 			//Parece que el getBytes pone un /0 al final.
 			archivoTrabajo.write(bytes, 0, bytes.length);
-		} catch (IOException e) {
-			//TODO: Hacer algo
-			e.printStackTrace();
-		}
-		
-		try {
+			
 			resultado += ComprimirInterno(buffer);
 		} catch (IOException e) {
+			//TODO: Hacer algo
 			e.printStackTrace();
 		}
 		
@@ -187,6 +186,7 @@ public class Lzp implements Compresor {
 					longMatchActual = longMatch(cadena, posMatch);
 					if (matchCompleto && longMatchActual > 0) {
 						longMatch += longMatchActual;
+						ultimoChar = cadena.charAt(cadena.length() - 1);
 						break;
 					} else if (longMatchActual > 0){
 						//String match = cadena.substring(0, longMatchActual);
@@ -308,12 +308,19 @@ public class Lzp implements Compresor {
 		//resultado += descomprimirInterno(cadena);
 		return resultado;
 	}
+	
 	@Override
 	public String finalizarSession() {
 		sesionIniciada = false;
 		File file = new File("./lzpTemp.txt");
 		file.delete();
-		return "";
+		String result = "";
+		
+		if (matchCompleto) {
+			result += String.valueOf(longMatch - 1) + String.valueOf(ultimoChar);
+		}
+		
+		return result;
 	}
 
 	@Override

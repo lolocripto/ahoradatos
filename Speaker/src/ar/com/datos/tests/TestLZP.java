@@ -26,8 +26,7 @@ public class TestLZP {
 			comp.imprimirHashMap();
 		}
 		LOG.info(cadena.replace(",", ""));
-		LOG.info(result);
-		comp.finalizarSession();
+		LOG.info(result + comp.finalizarSession());
 
 	}
 }
