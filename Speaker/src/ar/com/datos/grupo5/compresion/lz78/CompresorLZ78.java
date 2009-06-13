@@ -87,18 +87,23 @@ public class CompresorLZ78 implements Compresor {
 	}
 
 	/**
-	 * Devuelve el codigo asociado
+	 * Devuelve el valor  asociado a un codigo
 	 * @param valor asociado al codigo buscado
-	 * @return int -1 si n(ParLZW)o).getValor() o se encuentra el codigo
+	 * @return String null si no se encuentra el codigo en la tabla
 	 */
 	private String buscaValorDescompresion(int valor) {
 		String codigo = tablaLZWDescompresion.get(new Integer(valor));
 		return codigo;
 	}
-
+    /**
+     * Comprime la cadena pasa en LZ78
+     * @param cadena, cadena a comprimir
+     * @throws SessionException, si la sesion no fue iniciada
+     * @return String, string con la cadena comprimida, expresa en bits
+     */
 	public String comprimir(String cadena) throws SessionException {
 		if (estadoInicio == 0)
-			throw new SessionException();
+			throw new SessionException("Error!: Sesion no iniciada");
 		String textoComprimidoEnBytes = new String();
 		String textoComprimido = new String();
 		int posicion = 0;
@@ -141,6 +146,7 @@ public class CompresorLZ78 implements Compresor {
 						textoComprimidoEnBytes += ConversorABytes
 								.shortToBinaryString(ultimoMatch);
 					} else {
+						//ultimo Caracter a comprimir
 						textoComprimido += actual.substring(0, actual.length()
 								- this.caracterEOF.length());
 						int longDif = actual.length()
@@ -161,8 +167,16 @@ public class CompresorLZ78 implements Compresor {
 		return textoComprimidoEnBytes;
 
 	}
-
-	public String descomprimir(String datoscomprimidos) {
+	
+	/**
+	 * Descomprime una String expresada en bits, comprimida con LZ78.
+	 * @param datoscomprimidos, String expresada en bits a descomprimir.
+	 * @return String, texto descomprimido.
+	 */
+	public String descomprimir(String datoscomprimidos) throws SessionException {
+		if (estadoInicio == 0)
+			throw new SessionException("Error!: Sesion no iniciada");
+		
 		String anterior = new String();
 		String actual = new String();
 		String ultimoValor = new String();
