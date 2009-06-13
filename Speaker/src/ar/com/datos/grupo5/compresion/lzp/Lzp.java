@@ -360,7 +360,16 @@ public class Lzp implements Compresor {
 					archivoTrabajo.read(bytes, 0, lon * Constantes.SIZE_OF_SHORT);
 					//ir replicando todos los cambios en la cadena, y luego 
 					//escribirlos en el archivo
-					resultado += bytes.toString();
+					devuelto = new String(bytes, Constantes.CHARSET_UTF16);
+					while (lon >0) {
+						if (devuelto.length() > lon){
+							resultado += devuelto;
+							lon -= devuelto.length();
+						} else {
+							resultado += devuelto.substring(0, lon);
+							lon = 0;
+						}
+					}
 				} catch (IOException e) {
 					//TODO: Hacer algo
 					e.printStackTrace();
@@ -413,6 +422,7 @@ public class Lzp implements Compresor {
 		motorAritCaracteres.iniciarSesion();
 		motorAritLongitudes.iniciarSesion();
 		sesionIniciada = true;
+		finalizada = false;
 		ultCtx = "";
 	}
 		
