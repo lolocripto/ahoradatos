@@ -11,6 +11,13 @@ import ar.com.datos.grupo5.excepciones.SessionException;
  */
 public interface Compresor {
 
+	
+	/**
+	 * Devuelve el estado. Si termino o no.
+	 * @return the finalizada
+	 */
+	public boolean isFinalizada(); 
+	
 	/**
 	 * Inicia una session de compresion/descompresion.
 	 */

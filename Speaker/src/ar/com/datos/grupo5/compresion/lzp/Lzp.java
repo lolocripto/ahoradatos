@@ -45,6 +45,11 @@ public class Lzp implements Compresor {
 	private boolean sesionIniciada = true;
 	
 	/**
+	 * Flag para saber si compresion o descompresion fue finalizada. 
+	 */
+	private boolean finalizada = false;
+	
+	/**
 	 * Ultimo Contexto, para saber que emito. 
 	 */
 	private String ultCtx;
@@ -73,6 +78,14 @@ public class Lzp implements Compresor {
 	 * Ultimo char leido para el caso de macth completo.
 	 */
 	private char ultimoChar = 0;
+
+	/**
+	 * @return the finalizada
+	 */
+	@Override
+	public final boolean isFinalizada() {
+		return finalizada;
+	}
 
 	public Lzp(){
 		motorAritCaracteres = new CompresorAritmetico();
@@ -271,59 +284,84 @@ public class Lzp implements Compresor {
 		
 		String resultado = "";
 		String longitud = "";
-		
+		String devuelto = "";
+		boolean sigoDesc = true;
 		//Si no hay nada aca, entonces es la primera iteracion.
 		if (listaContextos.size() == 0) {
 			// Reseteo el ultimo contexto
 			ultCtx = "";
 			// Genero el CTX.
-			ultCtx = motorAritCaracteres.descomprimir(cadena);
-			ultCtx += motorAritCaracteres.descomprimir(cadena);
-
+			
+			devuelto = motorAritCaracteres.descomprimir(cadena);
+			ultCtx = devuelto;
+			
+			devuelto = motorAritCaracteres.descomprimir(cadena);
+			if (devuelto == null){
+				return ultCtx;
+			} else if ( devuelto.charAt(0) == Constantes.EOF ){
+				finalizada = true;
+				return ultCtx;
+			}
+			ultCtx += devuelto;
 			resultado = ultCtx;
 
 			listaContextos.setPosicion(ultCtx, 4);
-			posActual = 4;
-			
+			posActual = 4;		
 			longitud = motorAritLongitudes.descomprimir(cadena);
-			posActual += 2;
-			resultado += motorAritCaracteres.descomprimir(cadena);
-			ultCtx = resultado.substring(resultado.length() - 2);
-			listaContextos.setPosicion(ultCtx, posActual);
-		}
-		
-		longitud = motorAritLongitudes.descomprimir(cadena);
-		//long pos = archivoTrabajo.length();
-		int lon = CodePoint.getCodePoint(longitud.charAt(0));		
-		// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
-		// buscar match.
-		posActual += 2;
-		if (lon > 0) {
-				// Matchea con un contexto.
-			try {
-				
-				// TODO Arreglar lo que va aca
-				int pos = this.listaContextos.getPosicion(ultCtx);
-				archivoTrabajo.seek(pos);
-				// Cuanto leo?
-				
-				byte[] bytes = null;
-				archivoTrabajo.read(bytes, 0, lon * Constantes.SIZE_OF_SHORT);
-				//ir replicando todos los cambios en la cadena, y luego 
-				//escribirlos en el archivo
-				resultado += bytes.toString();
-			} catch (IOException e) {
-				//TODO: Hacer algo
-				e.printStackTrace();
+			if (longitud == null){
+				return resultado;
+			} else if ( longitud.charAt(0) == Constantes.EOF ){
+				finalizada = true;
+				return resultado;
 			}
-		} else {
-			// No matchea con ningun contexto -> long 0 
+			// Que hago aca para descomprimir
+			posActual += 2;
+		}
+		while ( sigoDesc ) {
 			
-			resultado += motorAritCaracteres.descomprimir(cadena);
+			devuelto = motorAritCaracteres.descomprimir(cadena);
+			if (devuelto == null){
+				return resultado;
+			} else if ( devuelto.charAt(0) == Constantes.EOF ){
+				finalizada = true;
+				return resultado;
+			}
+			resultado += devuelto;
 			ultCtx = resultado.substring(resultado.length() - 2);
 			listaContextos.setPosicion(ultCtx, posActual);
+			posActual += 2;
+			longitud = motorAritLongitudes.descomprimir(cadena);
+			//long pos = archivoTrabajo.length();
+			int lon = CodePoint.getCodePoint(longitud.charAt(0));		
+			// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
+			// buscar match.
+			posActual += 2;
+			if (lon > 0) {
+					// Matchea con un contexto.
+				try {
+					
+					// TODO Arreglar lo que va aca
+					int pos = this.listaContextos.getPosicion(ultCtx);
+					archivoTrabajo.seek(pos);
+					// Cuanto leo?
+					
+					byte[] bytes = null;
+					archivoTrabajo.read(bytes, 0, lon * Constantes.SIZE_OF_SHORT);
+					//ir replicando todos los cambios en la cadena, y luego 
+					//escribirlos en el archivo
+					resultado += bytes.toString();
+				} catch (IOException e) {
+					//TODO: Hacer algo
+					e.printStackTrace();
+				}
+			} else {
+				// No matchea con ningun contexto -> long 0 
+				
+				resultado += motorAritCaracteres.descomprimir(cadena);
+				ultCtx = resultado.substring(resultado.length() - 2);
+				listaContextos.setPosicion(ultCtx, posActual);
+			}
 		}
-		//resultado += descomprimirInterno(cadena);
 		return resultado;
 	}
 	
