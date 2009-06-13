@@ -375,12 +375,17 @@ public class Lzp implements Compresor {
 		file.delete();
 		String result = "";
 		
-		motorAritCaracteres.finalizarSession();
-		motorAritLongitudes.finalizarSession();
-		
 		if (matchCompleto) {
 			
-			result += String.valueOf(longMatch);
+			try {
+				result += motorAritLongitudes.comprimir(String.valueOf(longMatch));
+			} catch (SessionException e) {
+				e.printStackTrace();
+			}
+			
+			//FIXME: esto no seria asi, ver que carajo hacen estos metodos.
+			result += motorAritLongitudes.finalizarSession();
+			result += motorAritCaracteres.finalizarSession();
 		}
 		
 		return result;
