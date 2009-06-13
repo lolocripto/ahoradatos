@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -43,7 +44,7 @@ public class ListaContextos {
 	 * elementos en el map. Tambien necesito 4 bytes para guardar la cantidad de
 	 * elementos que hay. Entonces puedo tener 511 elementos.
 	 */
-	private int maxCantidadPorPagina = 511;
+	private int maxCantidadPorPagina = 5;
 	
 	/**
 	 * 
@@ -58,10 +59,12 @@ public class ListaContextos {
 	}
 
 	/**
+	 * @throws FileNotFoundException  
 	 * 
 	 */
-	public ListaContextos(){
+	public ListaContextos() throws FileNotFoundException {
 		archivo = new ArchivoBloques(4096);
+		archivo.crear("./lzpPaginacion.tmp");
 		mapaContexto = new HashMap<String, Integer>();
 	}
 
@@ -72,7 +75,7 @@ public class ListaContextos {
 		
 		// return mapaContexto.get(contexto)
 		
-		int result = buscarElemento(contexto);
+		int result = buscarElemento(contexto, 0, false);
 		if (result == 0) {
 			return null;
 		} else {
@@ -85,17 +88,19 @@ public class ListaContextos {
 	 */
 	public void setPosicion(String contexto, Integer posicion) {
 		
-		//mapaContexto.put(contexto, posicion);
-		
 		//Primero tengo que ver si esta en alguna pagina.
-		buscarElemento(contexto);
+		int pos = buscarElemento(contexto, posicion, true);
 		
-		if (mapaContexto.size() < maxCantidadPorPagina) {
-			mapaContexto.put(contexto, posicion);
-		} else {
-			nroPaginaActual++;
-			paginas++;
-			paginarADisco();
+		if (pos == 0) {
+			if (mapaContexto.size() < maxCantidadPorPagina) {
+				mapaContexto.put(contexto, posicion);
+			} else {
+				paginarADisco();
+				nroPaginaActual++;
+				paginas++;
+				mapaContexto = new HashMap<String, Integer>();
+				mapaContexto.put(contexto, posicion);
+			}
 		}
 	}
 	
@@ -126,9 +131,10 @@ public class ListaContextos {
 	 * @return El numero de la pagina en donde se encuentra, 0 si no se
 	 *         encuentra.
 	 */
-	private int buscarElemento(final String clave) {
+	private int buscarElemento(final String clave, Integer pos, boolean actualizar) {
 		
 		Integer resultado = null;
+		Map<String, Integer> mapAux = mapaContexto;
 		
 		//Primero busco en memoria.
 		resultado = mapaContexto.get(clave);
@@ -141,12 +147,24 @@ public class ListaContextos {
 		//Busco en el resto de las paginas.
 		for (int i = 1; i <= paginas; i++) {
 			if (i != pagina) {
-				cargarPaginaEnMemoria(i);
+				cargarPaginaEnMemoria(i-1);
 				resultado = mapaContexto.get(clave);
 				if (resultado != null) {
+					if (actualizar) {
+						mapaContexto.put(clave, pos);
+						paginarADisco();
+					}
+					mapaContexto = mapAux;
+					nroPaginaActual = pagina;
 					return resultado;
 				}
 			}
+		}
+		
+		//Vuelvo a la pagina que estaba en memoria.
+		if (paginas > 1) {
+			mapaContexto = mapAux;
+			nroPaginaActual = pagina;
 		}
 
 		return 0;
@@ -159,7 +177,7 @@ public class ListaContextos {
 	private void cargarPaginaEnMemoria(int nroPagina) {
 		
 		try {
-			mapaContexto.clear();
+			mapaContexto = new HashMap<String, Integer>();
 			byte[] datos = archivo.leerBloque(nroPagina);
 			
 			ByteArrayInputStream bis = new ByteArrayInputStream(datos);
@@ -180,7 +198,7 @@ public class ListaContextos {
 				contador++;
 			}
 			
-			nroPaginaActual = nroPagina;
+			nroPaginaActual = nroPagina + 1;
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -211,11 +229,24 @@ public class ListaContextos {
 				dos.write(regBytes);
 			}
 			
-			archivo.escribirBloque(bos.toByteArray(), nroPaginaActual) ;
+			archivo.escribirBloque(bos.toByteArray(), nroPaginaActual - 1) ;
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void listar() {
+		
+		System.out.println(mapaContexto.toString());
+		int pagina = nroPaginaActual;
+		//Busco en el resto de las paginas.
+		for (int i = 1; i <= paginas; i++) {
+			if (i != pagina) {
+				cargarPaginaEnMemoria(i-1);
+				System.out.println(mapaContexto.toString());
+			}
+		}
 	}
 }
