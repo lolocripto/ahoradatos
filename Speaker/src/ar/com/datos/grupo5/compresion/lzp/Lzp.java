@@ -133,9 +133,7 @@ public class Lzp implements Compresor {
 		
 		//Si no hay nada aca, entonces es la primera iteracion.
 		if (ultCtx.length() == 0) {
-			//char primero = buffer.charAt(0);
-			//char segundo = buffer.charAt(1);
-
+	
 			// Genero el CTX.
 			ultCtx = buffer.substring(0, 2);
 
@@ -145,8 +143,11 @@ public class Lzp implements Compresor {
 			// porque son 2 inicode de 2 bytes c/u.
 			listaContextos.setPosicion(ultCtx, 4);
 			posActual = 4;
-			
-			resultado = ultCtx + "0" + String.valueOf(cadena.charAt(2));
+	
+			resultado = motorAritCaracteres.comprimir(cadena.substring(0,1));
+			resultado += motorAritCaracteres.comprimir(cadena.substring(1,2));
+			resultado += motorAritLongitudes.comprimir("0");
+			resultado +=  motorAritCaracteres.comprimir(String.valueOf(cadena.charAt(2)));
 			ultCtx = cadena.substring(1, 3);
 			
 			//Saco los 3 primeros.
