@@ -77,6 +77,8 @@ public class Lzp implements Compresor {
 	public Lzp(){
 		motorAritCaracteres = new CompresorAritmetico();
 		motorAritLongitudes = new CompresorAritmetico();
+		motorAritCaracteres.iniciarSesion();
+		motorAritLongitudes.iniciarSesion();
 		ultCtx = "";
 		try {
 			listaContextos = new ListaContextos();
@@ -162,12 +164,15 @@ public class Lzp implements Compresor {
 	 * @param cadena
 	 * @return
 	 * @throws IOException
+	 * @throws SessionException 
 	 */
-	private String ComprimirInterno(StringBuffer cadena) throws IOException {
+	private String ComprimirInterno(StringBuffer cadena) throws IOException, SessionException {
 		
 		StringBuffer result = new StringBuffer();
+		StringBuffer result2 = new StringBuffer();
 		int longMatchActual = 0;
 		Integer posMatch = null;
+		String resultAux = "";
 		
 		while (cadena.length() > 0){
 			
@@ -176,7 +181,10 @@ public class Lzp implements Compresor {
 				posActual += 2;
 				listaContextos.setPosicion(ultCtx, posActual);
 				ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
-				result.append("0" + cadena.substring(0, 1));
+				result2.append("0" + cadena.substring(0, 1));
+				resultAux = motorAritLongitudes.comprimir("0");
+				resultAux += motorAritCaracteres.comprimir(cadena.substring(0, 1));
+				result.append(resultAux);
 				cadena.delete(0, 1);
 			} else {
 				if (posMatch != null) {
@@ -193,27 +201,37 @@ public class Lzp implements Compresor {
 						ultCtx = String.valueOf(cadena.charAt(longMatchActual-1));
 						cadena.delete(0, longMatchActual);
 						ultCtx += String.valueOf(cadena.charAt(0));
-						result.append(String.valueOf(longMatch + longMatchActual) + String.valueOf(cadena.charAt(0)));
+						result2.append(String.valueOf(longMatch + longMatchActual) + String.valueOf(cadena.charAt(0)));
+						resultAux = motorAritLongitudes.comprimir(String.valueOf(longMatch + longMatchActual));
+						resultAux += motorAritCaracteres.comprimir(String.valueOf(cadena.charAt(0)));
+						result.append(resultAux);
 						cadena.deleteCharAt(0);
 						posActual += (longMatch + longMatchActual) * 2;
 						longMatch = 0;
 					} else {
 						posActual += 2;
 						ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
-						result.append("0" + cadena.substring(0, 1));
+						result2.append("0" + cadena.substring(0, 1));
+						resultAux = motorAritLongitudes.comprimir("0");
+						resultAux += motorAritCaracteres.comprimir(cadena.substring(0, 1));
+						result.append(resultAux);
 						cadena.delete(0, 1);
 						listaContextos.setPosicion(ultCtx, posActual);
 					}
 				} else {
 					posActual += 2;
 					ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
-					result.append("0" + cadena.substring(0, 1));
+					result2.append("0" + cadena.substring(0, 1));
+					resultAux = motorAritLongitudes.comprimir("0");
+					resultAux += motorAritCaracteres.comprimir(cadena.substring(0, 1));
+					result.append(resultAux);
 					cadena.delete(0, 1);
 					listaContextos.setPosicion(ultCtx, posActual);
 				}
 			}
 		}
 		
+		//return result2.toString();
 		return result.toString();
 	}
 
@@ -316,8 +334,12 @@ public class Lzp implements Compresor {
 		file.delete();
 		String result = "";
 		
+		motorAritCaracteres.finalizarSession();
+		motorAritLongitudes.finalizarSession();
+		
 		if (matchCompleto) {
-			result += String.valueOf(longMatch) + "EOF";
+			
+			result += String.valueOf(longMatch);
 		}
 		
 		return result;
@@ -332,6 +354,8 @@ public class Lzp implements Compresor {
 		}
 		motorAritCaracteres = new CompresorAritmetico();
 		motorAritLongitudes = new CompresorAritmetico();
+		motorAritCaracteres.iniciarSesion();
+		motorAritLongitudes.iniciarSesion();
 		sesionIniciada = true;
 		ultCtx = "";
 	}
