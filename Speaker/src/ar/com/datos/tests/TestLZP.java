@@ -27,7 +27,7 @@ public class TestLZP {
 		}
 		
 		LOG.info(cadena.replace(",", ""));
-		LOG.info("Longitud en bytes antes de comprimir: " + cadena.length() * 2);
+		LOG.info("Longitud en bytes antes de comprimir: " + cadena.replace(",", "").length() * 2);
 		result += comp.finalizarSession();
 		LOG.info(result);
 		LOG.info("Longitud despues de comprimi: " + (result.length() / 8));
