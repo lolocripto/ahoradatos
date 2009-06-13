@@ -326,6 +326,17 @@ public class Lzp implements Compresor {
 				return resultado;
 			}
 			// Que hago aca para descomprimir
+			try {
+				archivoTrabajo.seek(0);
+				//Escribo en el archivo temporal en unicode.
+				byte[] escAux = ultCtx.getBytes(Constantes.CHARSET_UTF16);
+				//Parece que el getBytes pone un /0 al final.
+				archivoTrabajo.write(escAux, 0, escAux.length);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			posActual += 2;
 		}
 		while ( sigoDesc ) {
@@ -342,15 +353,24 @@ public class Lzp implements Compresor {
 			listaContextos.setPosicion(ultCtx, posActual);
 			posActual += 2;
 			longitud = motorAritLongitudes.descomprimir(cadena);
-			//long pos = archivoTrabajo.length();
+			if (longitud == null){
+				return resultado;
+			} else if ( longitud.charAt(0) == Constantes.EOF ){
+				finalizada = true;
+				return resultado;
+			}
 			int lon = CodePoint.getCodePoint(longitud.charAt(0));		
 			// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
 			// buscar match.
 			posActual += 2;
 			if (lon > 0) {
 					// Matchea con un contexto.
-				try {
-					
+				try {		
+					archivoTrabajo.seek(archivoTrabajo.length());
+					//Escribo en el archivo temporal en unicode.
+					byte[] escAux = ultCtx.getBytes(Constantes.CHARSET_UTF16);
+					//Parece que el getBytes pone un /0 al final.
+					archivoTrabajo.write(escAux, 0, escAux.length);
 					// TODO Arreglar lo que va aca
 					int pos = this.listaContextos.getPosicion(ultCtx);
 					archivoTrabajo.seek(pos);
@@ -361,15 +381,22 @@ public class Lzp implements Compresor {
 					//ir replicando todos los cambios en la cadena, y luego 
 					//escribirlos en el archivo
 					devuelto = new String(bytes, Constantes.CHARSET_UTF16);
+					archivoTrabajo.seek(archivoTrabajo.length());
+					String persit = new String();
 					while (lon >0) {
 						if (devuelto.length() > lon){
-							resultado += devuelto;
+							persit += devuelto;
 							lon -= devuelto.length();
 						} else {
 							resultado += devuelto.substring(0, lon);
 							lon = 0;
 						}
 					}
+					//Escribo en el archivo temporal en unicode.
+					escAux = persit.getBytes(Constantes.CHARSET_UTF16);
+					//Parece que el getBytes pone un /0 al final.
+					archivoTrabajo.write(escAux, 0, escAux.length);
+					resultado += persit;
 				} catch (IOException e) {
 					//TODO: Hacer algo
 					e.printStackTrace();
