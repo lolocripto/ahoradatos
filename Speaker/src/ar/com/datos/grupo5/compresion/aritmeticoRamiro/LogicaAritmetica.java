@@ -10,6 +10,7 @@ public class LogicaAritmetica {
 	// private ArrayList<ParCharProb> listaCaracterProb;
 	//private int bitsUnderflow;
 	private Segmento intervalo;
+	private String bits;
 	
 	/**
 	 * Logger para la clase.
@@ -128,7 +129,7 @@ public class LogicaAritmetica {
 	 * @return
 	 */
 	private ParCharProb segmentar(ArrayList<ParCharProb> contexto,
-			String binaryString) {
+			StringBuffer binaryString) {
 		
 		//Establezco el piso y el techo hasta el momento
 		UnsignedInt piso = this.intervalo.getPiso();
@@ -200,8 +201,8 @@ public class LogicaAritmetica {
 	 * @param binaryString
 	 * @param cantidadMatchBits 
 	 */
-	private void actualizarBinaryString(String binaryString, int cantidadMatchBits) {
-		binaryString = binaryString.substring(cantidadMatchBits);
+	private void actualizarBinaryString(StringBuffer binaryString, int cantidadMatchBits) {
+		binaryString.delete(0, cantidadMatchBits);
 	}
 
 	/**
@@ -210,12 +211,11 @@ public class LogicaAritmetica {
 	 * @param cadenaBits bit emitidos en la compresion.
 	 * @return El caracter encontrado
 	 */
-	public final Character descomprimir(ArrayList<ParCharProb> Contexto, String cadenaBits){
+	public final Character descomprimir(ArrayList<ParCharProb> Contexto, StringBuffer cadenaBits){
 		
 		System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
 		System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
 		// obtengo el segmento del espacio de probabilidades del contexto y luego busco el intervalo donde esta la letra
-		
 		ParCharProb subIntervalo = this.segmentar(Contexto, cadenaBits);
 
 		// con el sub intervalo de la letra seleccionada, hago un zoom, es decir

@@ -113,7 +113,25 @@ public class UnsignedInt {
 	 * hace un corrimiento de 1 bit a la izquierda y agrega 
 	 * un 1 a la derecha 
 	 */
+	public void leftShift(){
+		
+		int aux1 = Integer.parseInt(this.Bit32Repr.substring(0, 1));
+		//corro un bit a la izquierda
+		long aux  = this.longAsociado <<1;
+		//cambio el ultimo cero por un 1
+		aux += aux1;
+		//saco todos los bits luego del 32
+		aux = aux & 0xffffffffL;
+		//seteo el nuevo long
+		this.setLongAsociado(aux);
+	}
+	
+	/**
+	 * hace un corrimiento de 1 bit a la izquierda y agrega 
+	 * un 1 a la derecha 
+	 */
 	public void leftShiftOne(){
+		
 		//corro un bit a la izquierda
 		long aux  = this.longAsociado <<1;
 		//cambio el ultimo cero por un 1

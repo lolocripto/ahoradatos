@@ -25,7 +25,7 @@ public class CompresorAritmetico implements Compresor{
 	private int orden;
 	private String bits;
 	private boolean charset;
-	//private String bits;
+	private StringBuffer bitsBuffer;
 	private boolean sessionInit;
 	
 	public CompresorAritmetico(){
@@ -33,18 +33,21 @@ public class CompresorAritmetico implements Compresor{
 		listaOrdenes = null;
 		this.motorAritmetico = new LogicaAritmetica();
 		this.sessionInit = false;
+		this.bitsBuffer = new StringBuffer();
 	}
 	
 	public CompresorAritmetico(final int ordenCompresor){
 		this.charset = true;
 		this.orden = ordenCompresor;
 		this.sessionInit = false;
+		this.bitsBuffer = new StringBuffer();
 	}
 
 	public CompresorAritmetico(final int ordenCompresor, final boolean charSet){
 		this.orden = ordenCompresor;
 		this.charset = charSet;
 		this.sessionInit = false;
+		this.bitsBuffer = new StringBuffer();
 	}
 	
 	@Override
@@ -104,7 +107,7 @@ public class CompresorAritmetico implements Compresor{
 	}
 
 	@Override
-	public String descomprimir(String datos) throws SessionException{
+	public String descomprimir(StringBuffer datos) throws SessionException{
 		
 		if	(!this.sessionInit) {
 			throw new SessionException();
@@ -112,15 +115,15 @@ public class CompresorAritmetico implements Compresor{
 		
 		//Tengo algo en el buffer que quedo de otra pasada
 		//lo concateno con lo nuevo
-		if (this.bits.length() > 0) {
-			this.bits += datos;
-			datos = this.bits;
+		if (this.bitsBuffer.length() > 0) {
+			datos.insert(0,this.bitsBuffer);
+			this.bitsBuffer = null;
 		}
 		
 		//Si los datos del buffer mas los datos de entrada son menores
 		//a la malla de bits entonces devuelvo null ya que no puedo seguir
 		if (datos.length() < 32) {
-			this.bits = datos;
+			this.bitsBuffer = new StringBuffer(datos);
 			return null;
 		}
 		
@@ -143,6 +146,7 @@ public class CompresorAritmetico implements Compresor{
 		}
 		//Ya tengo donde trabajar con el motorAritmetico
 		
+		ctx.actualizarProbabilidades();
 		//FIXME: Genero una lista temporal porque no puedo castear de un HASHMAP$Values a ArrayList 
 		ArrayList<ParCharProb> temp = new ArrayList<ParCharProb>(ctx.getArrayCharProb());
 		
@@ -150,7 +154,7 @@ public class CompresorAritmetico implements Compresor{
 		
 		ctx.actualizarContexto(letra);
 		
-		ctx.actualizarProbabilidades();
+		//ctx.actualizarProbabilidades();
 		
 		return letra.toString();
 	}
@@ -159,7 +163,23 @@ public class CompresorAritmetico implements Compresor{
 	//internamente?? Es que en realidad es un caracter mas. lo unico que tendría que
 	//hacer aca es finalizar la compresion devolviendo el piso ultimo
 	public String finalizarCompresion(){
-		return this.motorAritmetico.finalizarCompresion();
+		String datos = "";
+		try {
+			datos = this.comprimir(Constantes.EOF.toString());
+		} catch (SessionException e) {
+			//Inicio la sesion
+			this.iniciarSesion();
+			
+			try {
+				datos = this.comprimir(Constantes.EOF.toString());
+			} catch (SessionException i) {
+				//FIXME:Tiro la excepcion para afuera? 
+				//No se pudo iniciar la session
+				i.printStackTrace();
+				return null;
+			}
+		}
+		return (datos + this.motorAritmetico.finalizarCompresion());
 	}
 	
 	@Override
@@ -181,7 +201,7 @@ public class CompresorAritmetico implements Compresor{
 			this.sessionInit = true;	
 		}
 		// TODO Auto-generated method stub
-		this.listaOrdenes = new ArrayList<Orden>(this.orden);
+		this.listaOrdenes = new ArrayList<Orden>(0);
 		Orden ordenContexto;
 		//Al final solo tengo un contexto o vacio o una letra
 		ordenContexto = new Orden();
@@ -189,18 +209,23 @@ public class CompresorAritmetico implements Compresor{
 		this.inicializarContexto();
 		this.contexto = new Character('\b');
 		this.motorAritmetico = new LogicaAritmetica();
+		this.bits = new String();
 	}
 
 	private void cargarCtxConUnicodeBlock(Contexto ctx){
-		for (int i = 0; i < 65533; i++) {
+		//for (int i = 0; i < 300; i++) {
+		for (int i = 0; i < 300; i++) {
 			if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
 				ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
+				System.out.println(new Character(Character.toChars(i)[0]));
 			} else {
 				if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
 					ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
+					System.out.println(new Character(Character.toChars(i)[0]));
 				}
 			}
 		}
+		ctx.crearCharEnContexto(Constantes.EOF);
 	}
 	
 	private void cargarCtxConUnicodeCompleto(Contexto ctx){
@@ -256,7 +281,6 @@ public class CompresorAritmetico implements Compresor{
 				}
 				break;
 			}
-			ctx.crearCharEnContexto(Constantes.EOF);
 			//Cargo el charset LATIN
 		} else {
 			//Cargo el UNICODE completo
@@ -284,7 +308,7 @@ public class CompresorAritmetico implements Compresor{
 				}
 				break;
 			}
-			ctx.crearCharEnContexto(Constantes.EOF);
 		}
 	}
+
 }

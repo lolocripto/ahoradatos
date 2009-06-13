@@ -195,9 +195,11 @@ public class Segmento {
 		
 		// hago una corrimiento de bits
 		//en el techo corro a la izq y agrego un 1 al final
-		this.techo.leftShiftOne();
+		//this.techo.leftShiftOne();
+		this.techo.leftShift();
 		//en el piso corro a la izq y agrego un 0 al final
-		this.piso.leftShiftCero();
+		//this.piso.leftShiftCero();
+		this.piso.leftShift();
 	
 		return emision;
 	}
@@ -334,10 +336,11 @@ public class Segmento {
 		return this.overFlow;
 	}
 	
-	public final String generarCadenaSinUndeFlow(String binaryString){
+	//FIXME:
+	public final String generarCadenaSinUndeFlow(StringBuffer binaryString){
 		String nuevaCadena = "";
 		nuevaCadena += binaryString.charAt(0);
-		nuevaCadena += binaryString.substring(1 + this.bitsUnderflow, 7 + (1 + this.bitsUnderflow));
+		nuevaCadena += binaryString.substring(1 + this.bitsUnderflow, 31 + (1 + this.bitsUnderflow));
 		return nuevaCadena;
 	}
 }

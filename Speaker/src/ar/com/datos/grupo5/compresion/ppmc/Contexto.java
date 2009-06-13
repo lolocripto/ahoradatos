@@ -60,7 +60,7 @@ public class Contexto {
 			
 			//Obtengo el elemento vinculado a la letra y actualizo.
 			par = this.listaOcurrenciaPorCaracter.get(letra);
-			par.setFrecuencia(par.getFrecuencia());
+			par.setFrecuencia(par.getFrecuencia()+1);
 			this.cantidadLetras++;
 			
 			
