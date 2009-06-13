@@ -317,7 +317,7 @@ public class Lzp implements Compresor {
 		String result = "";
 		
 		if (matchCompleto) {
-			result += String.valueOf(longMatch - 1) + String.valueOf(ultimoChar);
+			result += String.valueOf(longMatch) + "EOF";
 		}
 		
 		return result;
