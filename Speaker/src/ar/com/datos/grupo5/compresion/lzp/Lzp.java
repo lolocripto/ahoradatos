@@ -80,7 +80,7 @@ public class Lzp implements Compresor {
 	private static String ARCHIVO_TRABAJO = "./lzp.tmp";
 
 	/**
-	 * 
+	 * Para debug y que la salida no se vea en binario.
 	 */
 	public boolean simular = false;
 	
@@ -142,8 +142,6 @@ public class Lzp implements Compresor {
 	
 			// Genero el CTX.
 			ultCtx = buffer.substring(0, 2);
-
-			//TODO: Hay que emitir estos caracteres sin longitudes.
 			
 			// Luego de emitir, meto el primer contexto en la tabla. Pos 4
 			// porque son 2 inicode de 2 bytes c/u.
@@ -198,7 +196,8 @@ public class Lzp implements Compresor {
 		StringBuffer result2 = new StringBuffer();
 		int longMatchActual = 0;
 		Integer posMatch = null;
-		String resultAux = "";
+		String longitud = "0";
+		String caracter = "";
 		
 		while (cadena.length() > 0){
 			
@@ -207,10 +206,12 @@ public class Lzp implements Compresor {
 				posActual += 2;
 				listaContextos.setPosicion(ultCtx, posActual);
 				ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
-				result2.append("0" + cadena.substring(0, 1));
-				resultAux = motorAritLongitudes.comprimir("0");
-				resultAux += motorAritCaracteres.comprimir(cadena.substring(0, 1));
-				result.append(resultAux);
+				longitud = "0";
+				caracter = cadena.substring(0, 1);
+				//result2.append("0" + cadena.substring(0, 1));
+				//resultAux = motorAritLongitudes.comprimir("0");
+				//resultAux += motorAritCaracteres.comprimir(cadena.substring(0, 1));
+				//result.append(resultAux);
 				cadena.delete(0, 1);
 			} else {
 				if (posMatch != null) {
@@ -226,34 +227,43 @@ public class Lzp implements Compresor {
 						ultCtx = String.valueOf(cadena.charAt(longMatchActual-1));
 						cadena.delete(0, longMatchActual);
 						ultCtx += String.valueOf(cadena.charAt(0));
-						result2.append(String.valueOf(longMatch + longMatchActual) + String.valueOf(cadena.charAt(0)));
-						resultAux = motorAritLongitudes.comprimir(String.valueOf(longMatch + longMatchActual));
-						resultAux += motorAritCaracteres.comprimir(String.valueOf(cadena.charAt(0)));
-						result.append(resultAux);
+						longitud = String.valueOf(longMatch + longMatchActual);
+						caracter = String.valueOf(cadena.charAt(0));
+//						result2.append(String.valueOf(longMatch + longMatchActual) + String.valueOf(cadena.charAt(0)));
+//						resultAux = motorAritLongitudes.comprimir(String.valueOf(longMatch + longMatchActual));
+//						resultAux += motorAritCaracteres.comprimir(String.valueOf(cadena.charAt(0)));
+//						result.append(resultAux);
 						cadena.deleteCharAt(0);
 						posActual += (longMatch + longMatchActual) * 2;
 						longMatch = 0;
 					} else {
 						posActual += 2;
 						ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
-						result2.append("0" + cadena.substring(0, 1));
-						resultAux = motorAritLongitudes.comprimir("0");
-						resultAux += motorAritCaracteres.comprimir(cadena.substring(0, 1));
-						result.append(resultAux);
+						longitud = "0";
+						caracter = cadena.substring(0, 1);
+//						result2.append("0" + cadena.substring(0, 1));
+//						resultAux = motorAritLongitudes.comprimir("0");
+//						resultAux += motorAritCaracteres.comprimir(cadena.substring(0, 1));
+//						result.append(resultAux);
 						cadena.delete(0, 1);
 						listaContextos.setPosicion(ultCtx, posActual);
 					}
 				} else {
 					posActual += 2;
 					ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
-					result2.append("0" + cadena.substring(0, 1));
-					resultAux = motorAritLongitudes.comprimir("0");
-					resultAux += motorAritCaracteres.comprimir(cadena.substring(0, 1));
-					result.append(resultAux);
+					longitud = "0";
+					caracter = cadena.substring(0, 1);
+//					result2.append("0" + cadena.substring(0, 1));
+//					resultAux = motorAritLongitudes.comprimir("0");
+//					resultAux += motorAritCaracteres.comprimir(cadena.substring(0, 1));
+//					result.append(resultAux);
 					cadena.delete(0, 1);
 					listaContextos.setPosicion(ultCtx, posActual);
 				}
 			}
+			result.append(motorAritLongitudes.comprimir(longitud));
+			result.append(motorAritCaracteres.comprimir(caracter));
+			result2.append(longitud + caracter);
 		}
 		
 		return simular?result2.toString():result.toString();

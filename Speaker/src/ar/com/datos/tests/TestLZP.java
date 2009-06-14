@@ -21,11 +21,11 @@ public class TestLZP {
 		String result = "";
 		
 		comp.iniciarSesion();
+		((Lzp)comp).simular = true;
 		for (int i = 0; i < cadena2.length; i++) {
 			result += comp.comprimir(cadena2[i]);
 			comp.imprimirHashMap();
 		}
-		LOG.info("Cadena -> " + cadena);
 		LOG.info(cadena.replace(",", ""));
 		result += comp.finalizarSession();
 		LOG.info(result);
