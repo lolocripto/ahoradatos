@@ -27,7 +27,10 @@ public class TestLZP {
 		}
 		LOG.info("Cadena -> " + cadena);
 		LOG.info(cadena.replace(",", ""));
-		LOG.info(result + comp.finalizarSession());
+		result += comp.finalizarSession();
+		LOG.info(result);
+		LOG.info("Aca comienza la Descompresion");
+		LOG.info("Cadena -> " + result);
 		comp.iniciarSesion();
 		StringBuffer cadenaBuffer = new StringBuffer(result);
 		result = comp.descomprimir(cadenaBuffer);
