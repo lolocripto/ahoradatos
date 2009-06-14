@@ -117,7 +117,7 @@ public class CompresorAritmetico implements Compresor {
 		//lo concateno con lo nuevo
 		if (this.bitsBuffer.length() > 0) {
 			datos.insert(0,this.bitsBuffer);
-			this.bitsBuffer = null;
+			this.bitsBuffer = new StringBuffer();
 		}
 		
 		//Si los datos del buffer mas los datos de entrada son menores
@@ -172,7 +172,7 @@ public class CompresorAritmetico implements Compresor {
 		String intermedio = new String();
 		boolean llegoEOF = false;
 		
-		while (salida != null && !llegoEOF){
+		while (intermedio != null && !llegoEOF){
 			
 			try {
 				intermedio = this.descomprimir(datos);
