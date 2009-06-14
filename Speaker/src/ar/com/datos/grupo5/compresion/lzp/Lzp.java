@@ -415,8 +415,9 @@ public class Lzp implements Compresor {
 	@Override
 	public String finalizarSession() {
 		sesionIniciada = false;
-		File file = new File("./lzpTemp.txt");
-		file.delete();
+		File file = new File(ARCHIVO_TRABAJO);
+		
+		boolean res = file.delete();
 		String result = "";
 		String result2 = "";
 		
@@ -429,7 +430,6 @@ public class Lzp implements Compresor {
 				e.printStackTrace();
 			}
 			
-			//FIXME: esto no seria asi, ver que carajo hacen estos metodos.
 			result += motorAritLongitudes.finalizarSession();
 			result += motorAritCaracteres.finalizarSession();
 		}
