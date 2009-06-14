@@ -177,8 +177,10 @@ public class CompresorAritmetico implements Compresor {
 			try {
 				intermedio = this.descomprimir(datos);
 				if (intermedio != null)	{
-					salida += intermedio;
-					llegoEOF = Constantes.EOF.equals(intermedio);
+					llegoEOF = Constantes.EOF.equals(intermedio.charAt(0));
+					if (!llegoEOF) {
+						salida += intermedio;
+					}
 				}
 			} catch (SessionException e) {
 				e.printStackTrace();
