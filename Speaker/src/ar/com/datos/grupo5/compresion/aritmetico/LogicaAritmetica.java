@@ -129,9 +129,86 @@ public class LogicaAritmetica {
 	private ParCharProb segmentarMetodoAlternativoLZP(Collection<ParCharProb> contexto,
 			StringBuffer binaryString) {
 		ParCharProb par = null;
+
+		//Establezco el piso y el techo hasta el momento
+		UnsignedInt piso = this.intervalo.getPiso();
+		UnsignedInt techo = this.intervalo.getTecho();
+		
+		UnsignedInt longitudInterv = techo.menos(piso);
+		
+		String V = "";
+		//Lo siguiente lo hago para no modificar el string real aún.
+		//Valido si tengo que trabajar con una cadena normal o con una cadena con UndeFLow
+		if (!this.intervalo.estadoOverFlow() && this.intervalo.estadoUnderFlow()) {
+			//Si hay bits en UnderFlow es que no huvo overFlow!!! no bastaría con preguntar solo por underFlow? 
+			V = this.intervalo.generarCadenaSinUndeFlow(binaryString);
+		} else {
+			
+			V = binaryString.toString();
+		}
+		System.out.println("Techo:            "+techo.get32BitsRepresentation());
+		System.out.println("Cadena bits de V: "+V);
+		System.out.println("Piso:             "+piso.get32BitsRepresentation());
+		
+		//Lo convierto a un entero sin signo.
+		UnsignedInt valor = new UnsignedInt(V);
+
+		// ordeno el contexto por orden alfabetico
+		// Collections.sort(contexto);
+
+		Iterator<ParCharProb> it = contexto.iterator();
+
+		//boolean encontrado = false;
+		ParCharProb elemAnterior = null;
+		ParCharProb elemActual = null;
+
+		// inicializo el primer elemento
+		if (it.hasNext()) {
+			elemAnterior = it.next();
+			elemAnterior.setTecho(piso, longitudInterv);
+		} 
+	
+		while (it.hasNext()) {
+			// tomo el objeto actual
+			elemActual = it.next();
+
+			// el piso del elemento actual, sera el techo + 1 del elemento
+			// anterior
+			elemActual.setTecho(elemAnterior.getTecho() + 1, longitudInterv.getLongAsociado());
+
+			//Preparo para la siguiente iteracion.
+			elemAnterior = elemActual;
+		}
+		
+		//A estas alturas ya generé todos los techos y piso, ahora comienzo a ver los bits que tengo.
+		it = contexto.iterator();
+
+		//boolean encontrado = false;
+		elemAnterior = null;
+		elemActual = null;		
+		
+		//Itero para encontrar el intervalo
+		while (it.hasNext()) {
+			elemActual = it.next();
+			
+			if (validarBitsIntervalo(elemActual,V)) {
+				
+			}
+			
+			
+			
+			elemAnterior = elemActual;
+		}
 		
 		return par;
 	}
+	private boolean validarBitsIntervalo(ParCharProb elemActual, String v) {
+		UnsignedInt techo = new UnsignedInt(elemActual.getTecho());
+		UnsignedInt piso = new UnsignedInt(elemActual.getPiso());
+		
+		return false;
+	}
+
 	/**
 	 * Se encarga de buscar cual es el elemento que fue comprimido.
 	 * @param contexto

@@ -37,7 +37,7 @@ public class TestCompresorAritmetico2 {
 			
 			cadenaRestaur = comp.StringCompleto(sb);
 			
-			sb = new StringBuffer(bits.substring(15));
+			sb.append(bits.substring(15));
 			
 			cadenaRestaur += comp.StringCompleto(sb);
 			
