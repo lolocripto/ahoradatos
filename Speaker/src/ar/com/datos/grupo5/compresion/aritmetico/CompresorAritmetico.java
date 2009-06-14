@@ -95,7 +95,7 @@ public class CompresorAritmetico implements Compresor {
 					//FIXME: Genero una lista temporal porque no puedo castear de un HASHMAP$Values a ArrayList 
 					ArrayList<ParCharProb> temp = new ArrayList<ParCharProb>(ctx.getArrayCharProb());
 					
-					this.bits = this.motorAritmetico.comprimir(temp, cadena.charAt(pos));
+					this.bits += this.motorAritmetico.comprimir(temp, cadena.charAt(pos));
 					ctx.actualizarContexto(cadena.charAt(pos));
 				} else {
 					//Creo la letra. No debería entrar nunca.
