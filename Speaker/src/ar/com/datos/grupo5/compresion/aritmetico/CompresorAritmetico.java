@@ -108,6 +108,7 @@ public class CompresorAritmetico implements Compresor {
 				this.contexto = cadena.charAt(pos);
 			}
 		//Termina la iteracion de los caracteres del string
+			pos++;
 		}
 		return this.bits;
 	}
@@ -195,12 +196,17 @@ public class CompresorAritmetico implements Compresor {
 	
 	@Override
 	public String finalizarSession() {
+		String datos = new String();
+		
 		if (this.sessionInit) {
-			this.sessionInit = false;	
+			if (this.sessionCompresion) {
+				datos = this.finalizarCompresion();
+			} 			
+			this.sessionInit = false;
 		}
-		if (this.sessionCompresion) {
-			return this.finalizarCompresion();
-		} 
+		if (datos.length() > 0) {
+			return datos;
+		}
 		return "";
 	}
 

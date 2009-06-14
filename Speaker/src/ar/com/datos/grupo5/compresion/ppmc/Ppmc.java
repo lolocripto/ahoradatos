@@ -397,7 +397,7 @@ public class Ppmc implements Compresor{
 	 * @param emision Caracter emitido que será parte del contexto en la proxima iteracion
 	 */
 	private void actualizarContexto(String emision) {
-		if (this.contextoActual.length() == 4){
+		if (this.contextoActual.length() == this.orden){
 			//El maximo permitido es 4 entonces tengo que sacar el elemento 0
 			this.contextoActual = this.contextoActual.substring(1);
 		}

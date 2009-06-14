@@ -19,11 +19,11 @@ public class TestCompresorAritemetico {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-		CompresorAritmetico compressOrder0 = new CompresorAritmetico(1, true);
+		CompresorAritmetico compressOrder0 = new CompresorAritmetico(0, true);
 		
 		//CompresorAritmetico compressOrder1 = new CompresorAritmetico(1, true);
-		//String cadena = "TATATAAAAALO";
-		String cadena = "BAABCA";
+		String cadena = "TATATAAAAALO";
+		//String cadena = "BAABCA";
 		String bitOrden0 = "";
 		//String bitOrden1 = "";
 		Character letra;
@@ -32,6 +32,9 @@ public class TestCompresorAritemetico {
 		
 		for (int i = 0; i < cadena.length(); i++) {
 			letra = cadena.charAt(i);
+			if (letra == 'O') {
+				System.out.println("Letra Dañina");
+			}
 			bitOrden0 += compressOrder0.comprimir(letra.toString());
 			//bitOrden1 += compressOrder1.comprimir(letra.toString());
 		}
@@ -51,6 +54,9 @@ public class TestCompresorAritemetico {
 				System.out.println("Son iguales");
 			} else {
 				System.out.println("No son iguales");
+			}
+			if (salida.charAt(salida.length()-1) == 'L') {
+				System.out.println("letra L");
 			}
 			System.out.println("Salida: " + salida);
 			salida += compressOrder0.descomprimir(cadenaBuffer);
