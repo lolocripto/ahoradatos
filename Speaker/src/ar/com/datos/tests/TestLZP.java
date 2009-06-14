@@ -34,6 +34,7 @@ public class TestLZP {
 		LOG.info("Cadena -> " + result);
 		comp.iniciarSesion();
 		StringBuffer cadenaBuffer = new StringBuffer(result);
+		cadenaBuffer.append('\uFFFF');
 		result = comp.descomprimir(cadenaBuffer);
 		LOG.info(result + comp.finalizarSession());
 		
