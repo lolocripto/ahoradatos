@@ -1,10 +1,16 @@
-package ar.com.datos.grupo5.compresion.lz78;
+package ar.com.datos.tests;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 
 import ar.com.datos.grupo5.compresion.conversionBitToByte;
+import ar.com.datos.grupo5.compresion.lz78.CompresorLZ78;
 import ar.com.datos.grupo5.excepciones.SessionException;
 
 public class TestLZ78 {
@@ -22,21 +28,23 @@ public class TestLZ78 {
 
 			conversionBitToByte conver = new conversionBitToByte();
 			compresorBIS.iniciarSesion();
-			String paracomp = "lksdalskdalk12 l1k23l1k2 3109310293 09 0 909 0909sd0a9sd09asd0 9as0d9 10923019230912389235098         asdlo ixlkjcl jklkj lkj  j el teto medina se la lastra a 4 manos /11111111111111111111111111111111111111111111\\\\\\\\\111111111111111 ";
-			String enbites = compresorBIS.comprimir(paracomp);
-			conver.setBits(enbites);
-			byte[] cachirla = conver.getBytes();
-			String out2 = new String("compresion0001.lzw");
-			FileOutputStream fileOut2 = new FileOutputStream(out2);
-			fileOut2.write(cachirla);
-			fileOut2.close();
-			compresorBIS.finalizarSession();
-			String y = compresorBIS.descomprimir(new StringBuffer(enbites));
-			System.out.println("comprimio? " + y.equals(paracomp));
-			System.out.println("y=" + y + "|");
-			System.out.println("x=" + paracomp + "|");
-			System.out.println("comprimio? " + y.length() + " " + " "
-					+ paracomp.length());
+			String archivo = new String("poemas.txt");
+		    BufferedReader br      = new BufferedReader (new FileReader(new File (archivo)));
+		    String linea = new String();
+		    compresorBIS.iniciarSesion();
+		    while ((linea = br.readLine()) != null) {
+		    	String enbites = compresorBIS.comprimir(linea);
+			    compresorBIS.finalizarSession();
+			    compresorBIS.iniciarSesion();
+		    	
+				String y = compresorBIS.descomprimir(new StringBuffer(enbites));
+				System.out.println("comprimio? " + y.equals(linea));
+				compresorBIS.finalizarSession();
+				compresorBIS.iniciarSesion();
+		    	
+		    	
+		    }
+		    compresorBIS.finalizarSession();
 		} catch (SessionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

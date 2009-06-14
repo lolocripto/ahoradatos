@@ -14,15 +14,15 @@ public class CompresorLZ78 implements Compresor {
 
 	private HashMap<Integer, String> tablaLZWDescompresion;
 
-	private final int capacidadTabla = 65535;
+	private final char caracterClearing = 1; 
 
 	private int ultimoCodigo;
 
 	private final short codigosReservados = 255; //para los ASCII
 
 	private final String caracterEOF = "^EOF";
-
-	private final int codigoClearing = 256; //codigo perteniciente al caracter de clearing
+	//codigo perteniciente al caracter de clearing, primer caracter no imprimible
+	private final int codigoClearing = 11260; 
 
 	private int estadoInicio = 0;
 
@@ -60,6 +60,7 @@ public class CompresorLZ78 implements Compresor {
 					tablaLZWDescompresion.put(i, valor);
 				}
 			}
+
 		}
 
 		i++;
@@ -107,8 +108,9 @@ public class CompresorLZ78 implements Compresor {
 		String anterior = new String();
 		String actual = new String();
 		int ultimoMatch = -1;
+		boolean clearing = false;
 		while (posicion <= cadena.length()) {
-
+            clearing = false;
 			if (posicion == 0 && (cadena.length() > 1)) {
 				actual = anterior + cadena.substring(0, 2);
 				posicion++;
@@ -126,6 +128,11 @@ public class CompresorLZ78 implements Compresor {
 				//no esta en la tabla
 				ultimoCodigo++;
 				if (!actual.contains(this.caracterEOF)) {
+					if (ultimoCodigo == codigoClearing ) {
+						//Clearing parcial
+						clearingParcial();
+						clearing = true;
+					}
 					this.tablaLZWCompresion.put(actual, ultimoCodigo);
 				}
 				//me quedo con el ultimo
@@ -133,10 +140,10 @@ public class CompresorLZ78 implements Compresor {
 						.charAt(actual.length() - 1));
 				//Emito el primer caracter del actual
 				if (ultimoMatch < 0) {
+					
 					textoComprimidoEnBytes += ConversorABytes
 							.charToBinaryString(actual.charAt(0));
 					textoComprimido += actual.charAt(0);
-
 				} else {
 					if (!actual.contains(this.caracterEOF)) {
 						textoComprimido += Integer.toString(ultimoMatch);
@@ -152,15 +159,23 @@ public class CompresorLZ78 implements Compresor {
 							textoComprimidoEnBytes += ConversorABytes
 									.charToBinaryString(actual.charAt(i));
 						}
-
+						//ver si emitir caracter Clearing
 					}
 
 					ultimoMatch = -1;
 				}
 
 			}
+			if ( clearing  && !actual.contains(this.caracterEOF)) {
+				textoComprimidoEnBytes += ConversorABytes
+				.charToBinaryString(this.caracterClearing);
+				
+				textoComprimido += this.caracterClearing;
+				}
+	
 			posicion++;
 		}
+		
 		return textoComprimidoEnBytes;
 
 	}
@@ -179,7 +194,6 @@ public class CompresorLZ78 implements Compresor {
 		String ultimoValor = new String();
 		String textoDesComprimido = new String();
 		int posicion = 0;
-		int ultimoMatch = -1;
 		int caracter = -1;
 		conversionBitToByte conversor = new conversionBitToByte();
 		while (posicion < datoscomprimidos.length()) {
@@ -188,33 +202,52 @@ public class CompresorLZ78 implements Compresor {
 						posicion + 16));
 				caracter = Conversiones.arrayByteToShort(conversor.getBytes());
 			}
+			
 			if (caracter < 255 || posicion == datoscomprimidos.length()) {
 				//era una letra
-				if ((posicion + 16) < datoscomprimidos.length())
-					actual = anterior + Character.toString((char) caracter);
-				else
-					actual = (char) caracter + this.caracterEOF;
-				if (!tablaLZWDescompresion.containsValue(actual)) {
-					//no esta en la tabla
-					ultimoCodigo++;
-					if (!actual.contains(this.caracterEOF)) {
-						this.tablaLZWDescompresion.put(ultimoCodigo, actual);
-						textoDesComprimido += actual
-								.charAt(actual.length() - 1);
-						anterior = Character.toString(actual.charAt(actual
-								.length() - 1));
-					} else {
-						actual = actual.substring(0, actual.length()
-								- this.caracterEOF.length());
-						textoDesComprimido += actual;
-					}
-				} else {
-					//esta en la tabla
-					anterior = actual;
-					if (posicion == 0) {
-						textoDesComprimido += actual;
-					}
+				if ( caracter == 1 ){
+					//Hubo un Clearing de la tabla
+					
+					clearingParcial();
+					actual = anterior;
 
+				}
+				else {
+
+					if ((posicion + 16) < datoscomprimidos.length())
+						actual = anterior + Character.toString((char) caracter);
+					else
+						actual = (char) caracter + this.caracterEOF;
+					
+					if (!tablaLZWDescompresion.containsValue(actual)) {
+						// no esta en la tabla
+
+						ultimoCodigo++;
+						if (!actual.contains(this.caracterEOF)) {
+							this.tablaLZWDescompresion
+									.put(ultimoCodigo, actual);
+							textoDesComprimido += actual
+									.charAt(actual.length() - 1);
+							anterior = Character.toString(actual.charAt(actual
+									.length() - 1));
+						} else {
+							actual = actual.substring(0, actual.length()
+									- this.caracterEOF.length());
+							if (tablaLZWDescompresion.containsValue(anterior)
+									&& (anterior.charAt(anterior.length() - 1) == actual
+											.charAt(0)))
+								textoDesComprimido += anterior.substring(0,anterior.length()-1);
+						
+							textoDesComprimido += actual;
+						}
+					} else {
+						// esta en la tabla
+						anterior = actual;
+						if (posicion == 0) {
+							textoDesComprimido += actual;
+						}
+
+					}
 				}
 
 			} else {
@@ -224,12 +257,18 @@ public class CompresorLZ78 implements Compresor {
 					actual = anterior + ultimoValor.charAt(0);
 				else
 					actual = anterior;
-				if (!tablaLZWDescompresion.containsValue(actual) /*&& ultimoValor !=null*/) {
+				if (!tablaLZWDescompresion.containsValue(actual) ) {
 					//no esta en la tabla
 					ultimoCodigo++;
 					if (!actual.contains(this.caracterEOF)) {
 						this.tablaLZWDescompresion.put(ultimoCodigo, actual);
 					}
+					else {
+						if (tablaLZWDescompresion.containsValue(anterior)
+								&& (anterior.charAt(anterior.length() - 1) == actual
+										.charAt(0)))
+							textoDesComprimido += anterior.substring(0,anterior.length()-1);
+					}	
 					textoDesComprimido += ultimoValor;
 					anterior = ultimoValor;
 				} else {
@@ -250,6 +289,7 @@ public class CompresorLZ78 implements Compresor {
 
 			}
 			//recorre de a 2 bytes
+			
 			posicion += 16;
 		}
 		return textoDesComprimido;
@@ -267,15 +307,22 @@ public class CompresorLZ78 implements Compresor {
 		estadoInicio = 1;
 
 	}
-
+	/**
+	 * Realiza el clearing parcial sobre la tabla
+	 *
+	 */
+    private void clearingParcial() {
+    	limpiaTabla();
+    	ultimoCodigo++;
+    	
+    }
 	public void imprimirHashMap() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public boolean isFinalizada() {
 		// TODO Auto-generated method stub
-		return false;
+		return (estadoInicio == 0);
 	}
 }
