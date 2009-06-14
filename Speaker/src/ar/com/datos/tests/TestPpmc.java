@@ -28,7 +28,7 @@ public class TestPpmc {
 			cadena += compresorPpmc.finalizarSession();
 			conversor.setBits(cadena);
 			
-			System.out.println("Compresion TATATAAAAALO: 12Bytes, "+cadena.length()+" bits \n "+cadena);
+			System.out.println("Compresion TATATAAAAALO: 12Bytes, "+cadena.length()+" bits \n"+cadena);
 			
 			try {
 			RandomAccessFile file = new RandomAccessFile("pruebaConvertir.data", Constantes.ABRIR_PARA_LECTURA_ESCRITURA);

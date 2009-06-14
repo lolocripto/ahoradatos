@@ -22,7 +22,7 @@ public class TestCompresorAritemetico {
 		CompresorAritmetico compressOrder0 = new CompresorAritmetico(0, true);
 		
 		//CompresorAritmetico compressOrder1 = new CompresorAritmetico(1, true);
-		String cadena = "TATATAAAAALO";
+		String cadena = "TATATAAAAALO dllfdfasdf faskdf dsgñkjqpioq adsfkjadsfñoikj \tadsfñkjadsf \rñkdf wjgnñpaskd\n";
 		//String cadena = "BAABCA";
 		String bitOrden0 = "";
 		//String bitOrden1 = "";

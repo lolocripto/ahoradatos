@@ -446,7 +446,7 @@ public class Ppmc implements Compresor{
 				ParCharProb par = new ParCharProb(Constantes.ESC,1);
 				temp.add(par);
 				
-				this.compresorAritmetico.descomprimir(temp, datos);
+				emision = this.compresorAritmetico.descomprimir(temp, datos);
 				
 				if (ordenContexto > 0){
 					ordenContexto--;
