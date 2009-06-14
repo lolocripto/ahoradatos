@@ -26,9 +26,9 @@ public class TestLZP {
 			result += comp.comprimir(cadena2[i]);
 			comp.imprimirHashMap();
 		}
-		LOG.info(cadena.replace(",", ""));
+		LOG.info("Cadena sin comprimir: " + cadena.replace(",", ""));
 		result += comp.finalizarSession();
-		LOG.info(result);
+		LOG.info("Cadena comprimida: "+ result);
 		LOG.info("Aca comienza la Descompresion");
 		LOG.info("Cadena -> " + result);
 		comp.iniciarSesion();

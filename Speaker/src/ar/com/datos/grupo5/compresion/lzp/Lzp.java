@@ -199,7 +199,7 @@ public class Lzp implements Compresor {
 		String longitud = "0";
 		String caracter = "";
 		
-		while (cadena.length() > 0){
+		while (cadena.length() > 0) {
 			
 			posMatch = listaContextos.getPosicion(ultCtx);
 			if ( posMatch == null) {
@@ -427,7 +427,7 @@ public class Lzp implements Compresor {
 		sesionIniciada = false;
 		File file = new File(ARCHIVO_TRABAJO);
 		
-		boolean res = file.delete();
+		file.delete();
 		String result = "";
 		String result2 = "";
 		
