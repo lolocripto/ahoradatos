@@ -406,7 +406,7 @@ public class Lzp implements Compresor {
 							persit += devuelto;
 							lon -= devuelto.length();
 						} else {
-							resultado += devuelto.substring(0, lon);
+							persit += devuelto.substring(0, lon);
 							lon = 0;
 						}
 					}
