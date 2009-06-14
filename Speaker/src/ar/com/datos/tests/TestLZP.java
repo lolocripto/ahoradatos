@@ -30,7 +30,7 @@ public class TestLZP {
 		LOG.info(result + comp.finalizarSession());
 		comp.iniciarSesion();
 		StringBuffer cadenaBuffer = new StringBuffer(result);
-		comp.descomprimir(cadenaBuffer);
+		result = comp.descomprimir(cadenaBuffer);
 		LOG.info(result + comp.finalizarSession());
 
 	}
