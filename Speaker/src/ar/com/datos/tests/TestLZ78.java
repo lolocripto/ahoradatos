@@ -36,8 +36,7 @@ public class TestLZ78 {
 		    	String enbites = compresorBIS.comprimir(linea);
 			    compresorBIS.finalizarSession();
 			    compresorBIS.iniciarSesion();
-		    	
-				String y = compresorBIS.descomprimir(new StringBuffer(enbites));
+			    String y = compresorBIS.descomprimir(new StringBuffer(enbites));
 				System.out.println("comprimio? " + y.equals(linea));
 				compresorBIS.finalizarSession();
 				compresorBIS.iniciarSesion();
