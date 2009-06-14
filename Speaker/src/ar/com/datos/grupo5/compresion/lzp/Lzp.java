@@ -367,8 +367,6 @@ public class Lzp implements Compresor {
 			}
 			resultado += devuelto;
 			ultCtx = resultado.substring(resultado.length() - 2);
-			listaContextos.setPosicion(ultCtx, posActual);
-			posActual += 2;
 			//longitud = motorAritLongitudes.descomprimir(cadena);
 			longitud = cadena.substring(0, 1);
 			cadena.delete(0, 1);
@@ -383,7 +381,6 @@ public class Lzp implements Compresor {
 			
 			// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
 			// buscar match.
-			posActual += 2;
 			if (lon > 0) {
 					// Matchea con un contexto.
 				try {		
@@ -422,7 +419,7 @@ public class Lzp implements Compresor {
 					//TODO: Hacer algo
 					e.printStackTrace();
 				}
-			} else {
+			} /*else {
 				// No matchea con ningun contexto -> long 0 
 				
 				//resultado += motorAritCaracteres.descomprimir(cadena);
@@ -430,7 +427,9 @@ public class Lzp implements Compresor {
 				cadena.delete(0, 1);
 				ultCtx = resultado.substring(resultado.length() - 2);
 				listaContextos.setPosicion(ultCtx, posActual);
-			}
+			}*/
+			listaContextos.setPosicion(ultCtx, posActual);
+			posActual += 2;
 		}
 		return resultado;
 	}
