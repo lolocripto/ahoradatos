@@ -16,7 +16,7 @@ import ar.com.datos.grupo5.Constantes;
  * @author zeke
  * 
  */
-public class ArchivoDocumentos extends Directo {
+public class ArchivoDocumentosdelete extends Directo {
 
 	/**
 	 * Mantiene la longitud del documento actual.
@@ -41,7 +41,7 @@ public class ArchivoDocumentos extends Directo {
 	 * Atributo para administrar el nivel de logueo mediante Log4j.
 	 */
 	private static Logger LOG = Logger
-			.getLogger(ArchivoDocumentos.class);
+			.getLogger(ArchivoDocumentosdelete.class);
 
    private String rutaArchivo = Constantes.ARCHIVO_DOCUMENTOS;
 
@@ -53,7 +53,7 @@ public class ArchivoDocumentos extends Directo {
 	 * @throws Exception
 	 */
 
-	public ArchivoDocumentos() {
+	public ArchivoDocumentosdelete() {
 	
 	}
 	

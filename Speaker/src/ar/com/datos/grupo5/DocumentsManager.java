@@ -55,7 +55,7 @@ public class DocumentsManager {
 	}
 	
 	public void initReadSession(Long offsetArchivo){
-		
+		this.offsetUltDocEscrito = offsetArchivo;
 		this.archivo.documentToRead(offsetArchivo);
 	}
 	
@@ -79,15 +79,16 @@ public class DocumentsManager {
 	public void initDocWriteSession(String nombre, long longitud){
 		
 		this.offsetUltDocEscrito = this.archivo.documentToWrite(nombre, this.tipoCompresion, longitud);
+		
 	}
 	
 	public Long getCantidadDocsAlmacenados(){
 		return (long) this.archivo.getCantidadDocs();
 	}
 	
-	/*
-	 * Para usar esta funcion debe haberse iniciado una sesion de lectura
-	 */
+   /*
+	* Para usar esta funcion debe haberse iniciado una sesion de lectura
+	*/
 	public String getNombreDoc(Long offsetDoc){
 		
 		return this.archivo.nombreDoc(offsetDoc);
@@ -101,6 +102,10 @@ public class DocumentsManager {
 	public void cerrarSesion(){
 		this.archivo.cerrarArchivo();
 	}
+	
+	public void finalizaEscritura(){
+		this.archivo.cerrarSesionDeEscritura();
+	}
 
 
 	/**
@@ -110,6 +115,13 @@ public class DocumentsManager {
 		this.tipoCompresion = MetodoCompresion.valueOf(tipoCompresionString);
 	}
 
+	/**
+	 * @param tipoCompresion the tipoCompresion to set
+	 */
+	public void setTipoCompresion(MetodoCompresion tipo) {
+		this.tipoCompresion = tipo;
+	}
+	
 
 	/**
 	 * @return the tipoCompresion

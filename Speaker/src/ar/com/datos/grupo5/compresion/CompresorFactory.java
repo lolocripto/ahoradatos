@@ -36,6 +36,36 @@ public class CompresorFactory {
 		if (MetodoCompresion.valueOf(metodo) == MetodoCompresion.ARIT) {
 			moduloCompresor = null;
 			return moduloCompresor;
+		}
+		if (MetodoCompresion.valueOf(metodo) == MetodoCompresion.NINGUNO) {
+			moduloCompresor = null;
+			return moduloCompresor;
+		}
+		
+		return moduloCompresor; 
+	}
+	
+	public static Compresor getCompresor(MetodoCompresion m){
+		Compresor moduloCompresor = null;
+		if (m == MetodoCompresion.PPMC) {
+			moduloCompresor = new Ppmc();
+			return moduloCompresor;
+		}
+		if (m == MetodoCompresion.LZP) {
+			moduloCompresor = null;
+			return moduloCompresor;
+		} 
+		if (m == MetodoCompresion.LZ78) {
+			moduloCompresor = null;
+			return moduloCompresor;
+		} 
+		if (m == MetodoCompresion.ARIT) {
+			moduloCompresor = null;
+			return moduloCompresor;
+		} 
+		if (m == MetodoCompresion.NINGUNO) {
+			moduloCompresor = null;
+			return moduloCompresor;
 		} 
 		
 		return moduloCompresor; 

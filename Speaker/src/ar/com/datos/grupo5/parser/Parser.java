@@ -268,6 +268,7 @@ public class Parser implements BufferRecharger<IunidadDeHabla> {
 				}}
 			} catch (IOException e) {
 				e.printStackTrace();
+				docMan.finalizaEscritura();
 				this.moreLines = false;
 				return null;
 			}

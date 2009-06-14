@@ -12,7 +12,8 @@ import java.io.IOException;
  *
  */
 public final class Conversiones {
-	
+
+
 	/**
 	 * Constructor.
 	 */
@@ -171,6 +172,65 @@ public final class Conversiones {
 		}
 		return binaryInt;
 
+	}
+	
+	public static short metodoDeCompresion(MetodoCompresion m){
+		
+		switch (m) {
+		case PPMC:
+			return 1;
+		case LZP:
+			return 2;
+		case LZ78:
+			return 3;
+		case ARIT:
+			return 4;
+		case NINGUNO:
+			return 0;
+		default:
+			return 0;
+		}
+		
+	}
+	
+	public static MetodoCompresion metodoDeCompresion (short s){
+		
+		switch (s) {
+		
+		case 0:
+			return MetodoCompresion.NINGUNO;
+		case 1:
+			return MetodoCompresion.PPMC;
+		case 2:
+			return MetodoCompresion.LZP;
+		case 3:
+			return MetodoCompresion.LZ78;
+		case 4:
+			return MetodoCompresion.ARIT;
+		default:
+			return MetodoCompresion.NINGUNO;
+		}
+		
+}
+	
+	public static String ByteToBinaryString(byte b){
+
+	String binaryString = Integer.toBinaryString(b & 0xFF);
+
+	while(binaryString.length() < 8) binaryString = "0" + binaryString;
+
+	return binaryString;
+	}
+	
+	
+	public static String arrayByteToBinaryString(byte[] array){
+		
+		String retorno = new String();
+		for (int i = 0; i < array.length; i++) {
+			retorno.concat(ByteToBinaryString(array[i]));
+		}
+		
+		return retorno;
 	}
 	
 	public static String charToBinaryString(final Character letra) {
