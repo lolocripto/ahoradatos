@@ -176,7 +176,7 @@ public final class Constantes {
 	/**
 	 * Definición de juego de caracteres UTF16.
 	 */
-	public static final String CHARSET_UTF16 = "UTF-16BE";
+	public static final String CHARSET_UTF16 = "UTF-16LE";
 	
 	/**
 	 * Definición de juego de caracteres ASCII.
