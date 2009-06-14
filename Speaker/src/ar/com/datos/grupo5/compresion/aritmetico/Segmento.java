@@ -154,6 +154,10 @@ public class Segmento {
 			emision = buffer.toString();
 			//Antes de devolver la emision no deberia seguir mirando si hay UnderFlow??
 //FIXME:			return emision;
+			System.out.println("Luego de Normalizar:");
+			System.out.println("Techo: " + Long.toHexString(new Long(this.techo.getLongAsociado())));
+			System.out.println("Piso: " + Long.toHexString(new Long(this.piso.getLongAsociado())));
+			return emision;
 
 		}
 

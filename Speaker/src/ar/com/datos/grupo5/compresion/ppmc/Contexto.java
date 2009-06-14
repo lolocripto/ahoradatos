@@ -159,7 +159,7 @@ public class Contexto {
 		while (it.hasNext()) {
 			elemento = it.next();
 			par = elemento.getValue();
-			par.setProbabilidad((float) par.getFrecuencia()/ (float) this.cantidadLetras);
+			par.setProbabilidad((double) par.getFrecuencia()/ (double) this.cantidadLetras);
 		}
 	}
 }

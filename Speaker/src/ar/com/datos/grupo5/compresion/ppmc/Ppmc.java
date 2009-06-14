@@ -103,7 +103,9 @@ public class Ppmc implements Compresor{
 				ParCharProb par = contextoActual.getChar(Constantes.ESC);
 				
 				nuevaListaContexto.removeAll(contextoAnterior.getArrayCharProb());
-				nuevaListaContexto.add(par);
+				if (par != null) {
+					nuevaListaContexto.add(par);
+				}
 			}
 		}
 		return nuevaListaContexto;
@@ -142,6 +144,9 @@ public class Ppmc implements Compresor{
 			while (pos < cadena.length() ) {
 				//Obtengo el contexto
 				this.getContexto(cadena, pos);
+				if (cadena.charAt(pos) == 'O') {
+					System.out.println("Pausa para ver la letra O");
+				}
 				//Recorro los contextos para las emisiones
 				this.recorrerContextos(cadena.charAt(pos));
 				//Actualizo los contextos para la próxima recorrida.
@@ -305,7 +310,7 @@ public class Ppmc implements Compresor{
 			
 			nuevoOrdenContexto = this.obtenerExclusionCompleta(this.contextoOrdenMenosUno, contextoMasUno);
 
-			this.calcularProbabilidadLista(nuevoOrdenContexto);
+			nuevoOrdenContexto = this.calcularProbabilidadLista(nuevoOrdenContexto);
 			
 			this.tiraBits += this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra);
 		}
@@ -313,6 +318,7 @@ public class Ppmc implements Compresor{
 	
 	private final String finalizarCompresion(){
 		
+		this.tiraBits = "";
 		//Recorro los contextos para las emisiones
 		this.recorrerContextos(Constantes.EOF);
 		//Actualizo los contextos para la próxima recorrida.
@@ -320,7 +326,7 @@ public class Ppmc implements Compresor{
 		//FIXME: Imprimo los ordenes, es solo para debug. Por lo tanto borrarlo.
 		this.imprimirEstado();
 		
-		this.tiraBits = this.compresorAritmetico.finalizarCompresion();
+		this.tiraBits += this.compresorAritmetico.finalizarCompresion();
 		
 		return this.tiraBits;
 	}
@@ -357,6 +363,10 @@ public class Ppmc implements Compresor{
 			//Recorro los contextos para las emisiones
 			emision = this.recorrerContextosDescompresion(datos);
 
+			if (emision.charAt(pos) == 'L') {
+				System.out.println("Pausa para ver la letra O");
+			}
+			
 			//Si es null entonces lo devuelvo porque necesito mas bits
 			//TODO: Buffer para manter los bits anteriores.
 			if (emision == null) {
@@ -457,7 +467,7 @@ public class Ppmc implements Compresor{
 			contexto.actualizarProbabilidades();
 			nuevoOrdenContexto = this.obtenerExclusionCompleta(contexto, contextoMasUno);
 			
-			this.calcularProbabilidadLista(nuevoOrdenContexto);
+			nuevoOrdenContexto = this.calcularProbabilidadLista(nuevoOrdenContexto);
 			
 			emision = this.compresorAritmetico.descomprimir(nuevoOrdenContexto, datos);
 			
@@ -482,7 +492,7 @@ public class Ppmc implements Compresor{
 			
 			nuevoOrdenContexto = this.obtenerExclusionCompleta(this.contextoOrdenMenosUno, contextoMasUno);
 
-			this.calcularProbabilidadLista(nuevoOrdenContexto);
+			nuevoOrdenContexto = this.calcularProbabilidadLista(nuevoOrdenContexto);
 			
 			emision = this.compresorAritmetico.descomprimir(nuevoOrdenContexto, datos);
 		}
@@ -547,17 +557,12 @@ public class Ppmc implements Compresor{
 		Iterator<ParCharProb> it = lista.iterator();
 		while (it.hasNext()) {
 			par = it.next();
-			if (par == null) {
-				continue;
-			}
 			cantidadElementos += par.getFrecuencia();
 		}
+		
 		it = lista.iterator();
 		while (it.hasNext()) {
 			par = it.next();
-			if (par == null) {
-				continue;
-			}
 			par.setProbabilidad((double) par.getFrecuencia()/(double)cantidadElementos);
 		}
 		return lista;

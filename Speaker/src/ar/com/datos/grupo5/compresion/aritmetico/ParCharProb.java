@@ -31,7 +31,7 @@ public class ParCharProb implements Comparable<ParCharProb>{
 	}
 
 
-	public void setProbabilidad(float probabilidad) {
+	public void setProbabilidad(double probabilidad) {
 		this.probabilidad = probabilidad;
 	}
 
