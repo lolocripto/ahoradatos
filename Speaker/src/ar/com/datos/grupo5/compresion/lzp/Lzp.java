@@ -313,10 +313,13 @@ public class Lzp implements Compresor {
 			ultCtx = "";
 			// Genero el CTX.
 			
-			devuelto = motorAritCaracteres.descomprimir(cadena);
+			//devuelto = motorAritCaracteres.descomprimir(cadena);
+			devuelto = String.valueOf(cadena.charAt(0));
 			ultCtx = devuelto;
 			
-			devuelto = motorAritCaracteres.descomprimir(cadena);
+			//devuelto = motorAritCaracteres.descomprimir(cadena);
+			devuelto = String.valueOf(cadena.charAt(1));
+			cadena.delete(0, 2);
 			if (devuelto == null){
 				return ultCtx;
 			} else if ( devuelto.charAt(0) == Constantes.EOF ){
@@ -328,7 +331,9 @@ public class Lzp implements Compresor {
 
 			listaContextos.setPosicion(ultCtx, 4);
 			posActual = 4;		
-			longitud = motorAritLongitudes.descomprimir(cadena);
+			//longitud = motorAritLongitudes.descomprimir(cadena);
+			longitud = cadena.substring(0, 1);
+			cadena.delete(0, 1);
 			if (longitud == null){
 				return resultado;
 			} else if ( longitud.charAt(0) == Constantes.EOF ){
@@ -351,7 +356,9 @@ public class Lzp implements Compresor {
 		}
 		while ( sigoDesc ) {
 			
-			devuelto = motorAritCaracteres.descomprimir(cadena);
+			//devuelto = motorAritCaracteres.descomprimir(cadena);
+			devuelto = cadena.substring(0,1);
+			cadena.delete(0, 1);
 			if (devuelto == null){
 				return resultado;
 			} else if ( devuelto.charAt(0) == Constantes.EOF ){
@@ -362,14 +369,18 @@ public class Lzp implements Compresor {
 			ultCtx = resultado.substring(resultado.length() - 2);
 			listaContextos.setPosicion(ultCtx, posActual);
 			posActual += 2;
-			longitud = motorAritLongitudes.descomprimir(cadena);
+			//longitud = motorAritLongitudes.descomprimir(cadena);
+			longitud = cadena.substring(0, 1);
+			cadena.delete(0, 1);
 			if (longitud == null){
 				return resultado;
 			} else if ( longitud.charAt(0) == Constantes.EOF ){
 				finalizada = true;
 				return resultado;
 			}
-			int lon = CodePoint.getCodePoint(longitud.charAt(0));		
+			//int lon = CodePoint.getCodePoint(longitud.charAt(0));
+			int lon = Integer.parseInt(longitud);
+			
 			// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
 			// buscar match.
 			posActual += 2;
@@ -414,7 +425,9 @@ public class Lzp implements Compresor {
 			} else {
 				// No matchea con ningun contexto -> long 0 
 				
-				resultado += motorAritCaracteres.descomprimir(cadena);
+				//resultado += motorAritCaracteres.descomprimir(cadena);
+				resultado += cadena.substring(0, 1);
+				cadena.delete(0, 1);
 				ultCtx = resultado.substring(resultado.length() - 2);
 				listaContextos.setPosicion(ultCtx, posActual);
 			}

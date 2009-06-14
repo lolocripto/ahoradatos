@@ -22,7 +22,7 @@ public class TestLZP {
 		String result = "";
 		
 		comp.iniciarSesion();
-		//((Lzp)comp).simular = true;
+		((Lzp)comp).simular = true;
 		for (int i = 0; i < cadena2.length; i++) {
 			result += comp.comprimir(cadena2[i]);
 			comp.imprimirHashMap();
@@ -42,7 +42,7 @@ public class TestLZP {
 //		CompresorAritmetico compresor = new  CompresorAritmetico(0, true);
 //		compresor.iniciarSesion();
 //		
-//		String comprimido = compresor.comprimir("A");
+//		String comprimido = compresor.comprimir("ABC");
 //		comprimido += compresor.comprimir("B");
 //		comprimido += compresor.comprimir("C");
 //		
