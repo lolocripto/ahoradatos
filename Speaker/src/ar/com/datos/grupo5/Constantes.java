@@ -382,11 +382,13 @@ public final class Constantes {
 		
 		for (int i = 0; i < 300; i++) {
 			letra = new Character(Character.toChars(i)[0]);
-			if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(letra)) {
-				lista.add(letra);
-			} else {
-				if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(letra)) {
+			if (letra != null){
+				if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(letra)) {
 					lista.add(letra);
+				} else {
+					if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(letra)) {
+						lista.add(letra);
+					}
 				}
 			}
 		}

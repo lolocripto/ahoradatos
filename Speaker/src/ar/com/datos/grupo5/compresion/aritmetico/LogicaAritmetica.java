@@ -126,6 +126,12 @@ public class LogicaAritmetica {
 		return emision;
 	}
 
+	private ParCharProb segmentarMetodoAlternativoLZP(Collection<ParCharProb> contexto,
+			StringBuffer binaryString) {
+		ParCharProb par = null;
+		
+		return par;
+	}
 	/**
 	 * Se encarga de buscar cual es el elemento que fue comprimido.
 	 * @param contexto

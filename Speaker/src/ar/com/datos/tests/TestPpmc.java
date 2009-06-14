@@ -24,7 +24,7 @@ public class TestPpmc {
 			System.out.println("TATATAAAAALO: 12Bytes, 96bits");
 			compresorPpmc.iniciarSesion();
 			String cadena;
-			cadena = compresorPpmc.comprimir("TATATAAAAALO");
+			cadena = compresorPpmc.comprimir("·$%&/()=?¿*^¨_:;,.-´+");
 			cadena += compresorPpmc.finalizarSession();
 			conversor.setBits(cadena);
 			
@@ -43,7 +43,7 @@ public class TestPpmc {
 			compresorPpmc.iniciarSesion();
 			StringBuffer buffer = new StringBuffer(cadena);
 			String cadenaDescomprimida = "";
-			while (Constantes.EOF.compareTo(cadena.charAt(0)) != 0) {//Contantes.EOF) {
+			while (cadena != null && Constantes.EOF.compareTo(cadena.charAt(0)) != 0) {//Contantes.EOF) {
 				cadena = compresorPpmc.descomprimir(buffer);
 				cadenaDescomprimida += cadena;
 			}
