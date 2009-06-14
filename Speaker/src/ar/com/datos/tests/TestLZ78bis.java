@@ -23,7 +23,8 @@ public class TestLZ78bis {
 			binario += comp.comprimir(cadena2);
 			
 			binario += comp.finalizarSession();
-			
+			System.out.println("quedo "+binario);
+			System.out.println("quedo de long "+binario.length());
 			
 			//descomprimo
 			comp.iniciarSesion();

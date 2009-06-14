@@ -195,10 +195,15 @@ public class CompresorLZ78 implements Compresor {
 		StringBuffer bitsAdescomprimir = new StringBuffer();
 		if (datoscomprimidos.length() < 16) {
 			this.bufferBits.append(datoscomprimidos);
+			System.out.println("guarda "+bufferBits);
+			
 			return new String();
 		}
 		else {
+			System.out.println("era   "+bufferBits);
+			System.out.println("erA "+datoscomprimidos+" long "+bitsAdescomprimir.length());
 			bitsAdescomprimir = bufferBits.append(datoscomprimidos);
+			System.out.println("quedo "+bitsAdescomprimir+" long "+bitsAdescomprimir.length());
 			bufferBits = new StringBuffer();
 		}
 			
@@ -211,8 +216,21 @@ public class CompresorLZ78 implements Compresor {
 		conversionBitToByte conversor = new conversionBitToByte();
 		while (posicion < bitsAdescomprimir.length()) {
 			if (posicion < bitsAdescomprimir.length()) {
-				conversor.setBits(bitsAdescomprimir.substring(posicion,
+				
+				if (posicion + 16 > bitsAdescomprimir.length()) {
+					StringBuffer aux = new StringBuffer();
+					//completa a 2 bytes
+					for (int i = 0 ; i<(posicion + 16 - bitsAdescomprimir.length()); i++)
+						aux.append("0");
+					aux.append(bitsAdescomprimir);
+					bitsAdescomprimir = aux;
+					System.out.println("long "+bitsAdescomprimir.length()+"p"+posicion);	
+					conversor.setBits(bitsAdescomprimir.substring(posicion,posicion+16));
+				}
+				else {
+					conversor.setBits(bitsAdescomprimir.substring(posicion,
 						posicion + 16));
+				}
 				caracter = Conversiones.arrayByteToShort(conversor.getBytes());
 			}
 			
@@ -289,6 +307,7 @@ public class CompresorLZ78 implements Compresor {
 					if ((actual == anterior) && (ultimoValor == null)) {
 						if (caracter - 2 > this.codigosReservados) {
 							String fix = buscaValorDescompresion(caracter - 1);
+							if (fix !=null)
 							actual = actual + fix.charAt(fix.length() - 1);
 						} else
 							actual = anterior + actual;
