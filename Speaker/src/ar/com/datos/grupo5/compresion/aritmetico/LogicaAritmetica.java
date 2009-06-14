@@ -142,12 +142,14 @@ public class LogicaAritmetica {
 		//Valido si tengo que trabajar con una cadena normal o con una cadena con UndeFLow
 		if (!this.intervalo.estadoOverFlow() && this.intervalo.estadoUnderFlow()) {
 			//Si hay bits en UnderFlow es que no huvo overFlow!!! no bastaría con preguntar solo por underFlow? 
-			V = this.intervalo.generarCadenaSinUndeFlow(binaryString);
+			V = this.intervalo.generarCadenaSinUndeFlow(binaryString).substring(0, 32);
 		} else {
 			//Corto el valor de 32bits
 			V = binaryString.substring(0, 32);
 		}
-		
+		System.out.println("Techo:            "+techo.get32BitsRepresentation());
+		System.out.println("Cadena bits de V: "+V);
+		System.out.println("Piso:             "+piso.get32BitsRepresentation());
 		//Lo convierto a un entero sin signo.
 		UnsignedInt valor = new UnsignedInt(V);
 
@@ -192,6 +194,8 @@ public class LogicaAritmetica {
 	
 	private boolean ValidarIntervalo(ParCharProb elemAnterior, UnsignedInt valor) {
 		if (elemAnterior.getPiso() <= valor.getLongAsociado() && elemAnterior.getTecho() >= valor.getLongAsociado()) {
+			System.out.println("Letra: "+elemAnterior.getSimboloUnicode()+" Piso: "+elemAnterior.getPiso());
+			System.out.println("Techo: "+elemAnterior.getTecho()+" Valor: "+valor.getLongAsociado());
 			return true;
 		}
 		return false;
@@ -214,8 +218,8 @@ public class LogicaAritmetica {
 	 */
 	public final Character descomprimir(ArrayList<ParCharProb> Contexto, StringBuffer cadenaBits){
 		
-		System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
-		System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
+//		System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
+//		System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
 		// obtengo el segmento del espacio de probabilidades del contexto y luego busco el intervalo donde esta la letra
 		ParCharProb subIntervalo = this.segmentar(Contexto, cadenaBits);
 
@@ -225,8 +229,9 @@ public class LogicaAritmetica {
 		this.intervalo.setPiso(subIntervalo.getPiso());
 		this.intervalo.setTecho(subIntervalo.getTecho());
 
-		System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
-		System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
+		
+		//System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
+		//System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
 		
 		// con los nuevos piso y techo, estoy en condiciones de proceder a la
 		// normalizacion y emitir bits en el proceso.

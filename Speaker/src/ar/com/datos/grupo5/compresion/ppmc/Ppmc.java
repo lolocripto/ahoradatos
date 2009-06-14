@@ -92,7 +92,7 @@ public class Ppmc implements Compresor{
 	 */
 	private final ArrayList<ParCharProb> 
 		obtenerExclusionCompleta(final Contexto contextoActual, final Contexto contextoAnterior){
-	
+			
 		ArrayList<ParCharProb> nuevaListaContexto = new ArrayList<ParCharProb>();
 		//Agrego todos los elementos del contexto actual
 		nuevaListaContexto.addAll(contextoActual.getArrayCharProb());
@@ -101,7 +101,7 @@ public class Ppmc implements Compresor{
 			if (!contextoAnterior.getArrayCharProb().isEmpty()) {		
 				//Me copio el elemento ESC porque se va a borrar al hacer removeAll
 				ParCharProb par = contextoActual.getChar(Constantes.ESC);
-		
+				
 				nuevaListaContexto.removeAll(contextoAnterior.getArrayCharProb());
 				nuevaListaContexto.add(par);
 			}
@@ -276,6 +276,7 @@ public class Ppmc implements Compresor{
 			contexto.actualizarProbabilidades();
 			nuevoOrdenContexto = this.obtenerExclusionCompleta(contexto, contextoMasUno);
 			
+			this.calcularProbabilidadLista(nuevoOrdenContexto);
 			//Busco la letra en el contexto
 			if (contexto.existeChar(letra)) {
 				this.tiraBits += this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra);	
@@ -304,6 +305,8 @@ public class Ppmc implements Compresor{
 			
 			nuevoOrdenContexto = this.obtenerExclusionCompleta(this.contextoOrdenMenosUno, contextoMasUno);
 
+			this.calcularProbabilidadLista(nuevoOrdenContexto);
+			
 			this.tiraBits += this.compresorAritmetico.comprimir(nuevoOrdenContexto,letra);
 		}
 	}
@@ -454,6 +457,8 @@ public class Ppmc implements Compresor{
 			contexto.actualizarProbabilidades();
 			nuevoOrdenContexto = this.obtenerExclusionCompleta(contexto, contextoMasUno);
 			
+			this.calcularProbabilidadLista(nuevoOrdenContexto);
+			
 			emision = this.compresorAritmetico.descomprimir(nuevoOrdenContexto, datos);
 			
 			if (Constantes.ESC.compareTo(emision) != 0) {
@@ -477,6 +482,8 @@ public class Ppmc implements Compresor{
 			
 			nuevoOrdenContexto = this.obtenerExclusionCompleta(this.contextoOrdenMenosUno, contextoMasUno);
 
+			this.calcularProbabilidadLista(nuevoOrdenContexto);
+			
 			emision = this.compresorAritmetico.descomprimir(nuevoOrdenContexto, datos);
 		}
 		
@@ -531,5 +538,28 @@ public class Ppmc implements Compresor{
 	public boolean isFinalizada() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	private ArrayList<ParCharProb> calcularProbabilidadLista(ArrayList<ParCharProb> lista) {
+		//Calculo las nuevas probabilidades
+		double cantidadElementos = 0;
+		ParCharProb par;
+		Iterator<ParCharProb> it = lista.iterator();
+		while (it.hasNext()) {
+			par = it.next();
+			if (par == null) {
+				continue;
+			}
+			cantidadElementos += par.getFrecuencia();
+		}
+		it = lista.iterator();
+		while (it.hasNext()) {
+			par = it.next();
+			if (par == null) {
+				continue;
+			}
+			par.setProbabilidad((double) par.getFrecuencia()/(double)cantidadElementos);
+		}
+		return lista;
 	}
 }
