@@ -104,6 +104,7 @@ public class CompresorAritmetico implements Compresor {
 		return this.bits;
 	}
 
+	
 	@Override
 	public String descomprimir(StringBuffer datos) throws SessionException{
 		
@@ -162,6 +163,35 @@ public class CompresorAritmetico implements Compresor {
 		return letra.toString();
 	}
 	
+	
+	
+	public String StringCompleto(StringBuffer datos){
+		
+		
+		String salida =new String();
+		
+		boolean llegoEOF = false;
+		
+		while (salida != null && !llegoEOF){
+			
+			try {
+				salida += this.descomprimir(datos);
+				if (salida != null)	llegoEOF = Constantes.EOF.equals(salida);
+			} catch (SessionException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return salida;
+		
+	}
+		
+		
+		
+		
+		
+		
+
 	//Al finalizar la compresion me manda el EOF o simplemente lo mando yo
 	//internamente?? Es que en realidad es un caracter mas. lo unico que tendría que
 	//hacer aca es finalizar la compresion devolviendo el piso ultimo
