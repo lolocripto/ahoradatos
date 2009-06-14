@@ -60,6 +60,8 @@ public class CompresorAritmetico implements Compresor {
 		//Indico que la sesion actual es de compresion
 		this.sessionCompresion = true;
 		
+		this.bits = "";
+		
 		Orden ordenActual = this.listaOrdenes.get(0);
 		Contexto ctx = null;
 		int pos = 0;
@@ -80,27 +82,16 @@ public class CompresorAritmetico implements Compresor {
 				break;
 			}
 			
-			
-			
-			//Si el contexto no existe lo creo, no debería entrar nunca aca
-			if (ctx == null){
-				//Creo el contexto 
-				ctx = this.listaOrdenes.get(orden).crearContexto(contexto.toString());
-			} else {
-				//El contexto existe, verifico que exista la letra a agregar en el contexto
-				if (ctx.existeChar(cadena.charAt(pos))){
-					//Exite la letra por lo tanto actualizo la frecuencia
-					ctx.actualizarProbabilidades();
+			//El contexto existe, verifico que exista la letra a agregar en el contexto
+			if (ctx.existeChar(cadena.charAt(pos))){
+				//Exite la letra por lo tanto actualizo la frecuencia
+				ctx.actualizarProbabilidades();
 					
-					//FIXME: Genero una lista temporal porque no puedo castear de un HASHMAP$Values a ArrayList 
-					ArrayList<ParCharProb> temp = new ArrayList<ParCharProb>(ctx.getArrayCharProb());
+				//FIXME: Genero una lista temporal porque no puedo castear de un HASHMAP$Values a ArrayList 
+				ArrayList<ParCharProb> temp = new ArrayList<ParCharProb>(ctx.getArrayCharProb());
 					
-					this.bits += this.motorAritmetico.comprimir(temp, cadena.charAt(pos));
-					ctx.actualizarContexto(cadena.charAt(pos));
-				} else {
-					//Creo la letra. No debería entrar nunca.
-					ctx.crearCharEnContexto(cadena.charAt(pos));
-				}
+				this.bits += this.motorAritmetico.comprimir(temp, cadena.charAt(pos));
+				ctx.actualizarContexto(cadena.charAt(pos));
 			}
 			
 			if (this.orden > 0) {

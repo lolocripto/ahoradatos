@@ -232,7 +232,6 @@ public class LogicaAritmetica {
 		this.intervalo.setPiso(subIntervalo.getPiso());
 		this.intervalo.setTecho(subIntervalo.getTecho());
 
-		
 		//System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
 		//System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
 		
