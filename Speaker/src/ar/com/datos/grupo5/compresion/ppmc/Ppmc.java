@@ -71,17 +71,6 @@ public class Ppmc implements Compresor{
 			this.contextoOrdenMenosUno.crearCharEnContexto(letra);
 			//System.out.println(letra);
 		}
-		/*
-		for (int i = 0; i < 65533; i++) {
-			if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
-				this.contextoOrdenMenosUno.crearCharEnContexto(new Character(Character.toChars(i)[0]));
-			} else {
-				if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
-					this.contextoOrdenMenosUno.crearCharEnContexto(new Character(Character.toChars(i)[0]));
-				}
-			}
-		}
-		*/
 		
 		this.contextoOrdenMenosUno.crearCharEnContexto(Constantes.EOF);
 		
@@ -294,8 +283,6 @@ public class Ppmc implements Compresor{
 				this.tiraBits += this.compresorAritmetico.comprimir(nuevoOrdenContexto,Constantes.ESC);
 			}
 			
-			
-			
 			if (contexto.existeChar(letra)) {
 				finalizarRecorrida = true;
 				continue;
@@ -381,11 +368,9 @@ public class Ppmc implements Compresor{
 			
 			this.logger.debug("Letra: " + emision.charAt(pos) + ", Contexto: " + this.contextoActual);
 			
-			//FIXME: Probar
-			//this.getContexto(emision, pos);
-			
 			//Actualizo el contexto
 			this.actualizarContexto(emision);
+			
 			return emision;
 		} else {
 			throw new SessionException();
