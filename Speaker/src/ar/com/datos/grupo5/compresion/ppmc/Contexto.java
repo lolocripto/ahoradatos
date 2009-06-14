@@ -3,6 +3,7 @@
  */
 package ar.com.datos.grupo5.compresion.ppmc;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -94,6 +95,7 @@ public class Contexto {
 	public final Collection<ParCharProb> getArrayCharProb(){
 		return this.listaOcurrenciaPorCaracter.values();
 	}
+
 
 	/**
 	 * @param contexto the contexto to set

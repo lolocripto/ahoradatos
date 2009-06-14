@@ -30,6 +30,7 @@ public class TestCompresorAritemetico {
 		compressOrder0.iniciarSesion();
 		//compressOrder1.iniciarSesion();
 		
+		
 		for (int i = 0; i < cadena.length(); i++) {
 			letra = cadena.charAt(i);
 			if (letra == 'O') {
@@ -38,6 +39,8 @@ public class TestCompresorAritemetico {
 			bitOrden0 += compressOrder0.comprimir(letra.toString());
 			//bitOrden1 += compressOrder1.comprimir(letra.toString());
 		}
+		
+		
 		bitOrden0 += compressOrder0.finalizarSession();
 		//bitOrden1 += compressOrder1.finalizarCompresion();
 		System.out.println("Salida comprimida orden0: " + bitOrden0);

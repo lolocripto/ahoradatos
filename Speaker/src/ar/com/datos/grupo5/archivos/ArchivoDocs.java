@@ -22,12 +22,18 @@ public class ArchivoDocs {
 	
 	private MetodoCompresion tipoCompresion;
 	
-	private long longDocActualRead; //longitud en bytes del texto que debo leer
-	private long offsetInicio;      //offset donde empieza la seccion de datos del documento a leer
+	//longitud en bytes del texto que debo leer
+	private long longTextoDoc; 				
 	
-	private long offsetInicioDocumento; //offset desde donde comienza el documento actual sera el file.lenght para
-									 //docs en escritura o el offset pasado por parametro en docs para lectura
-	private int bytesParaHeader;       //cantidad de bytes empleados para datos administrativos del documento
+	//offset donde empieza la sección de datos del documento a leer
+	private long offsetInicioRegistro; 
+	
+	//offset desde donde comienza el documento actual sera el file.lenght para
+	//docs en escritura o el offset pasado por parametro en docs para lectura
+	private long offsetInicioTexto; 
+	
+	//cantidad de bytes empleados para datos administrativos del documento
+	private int bytesParaHeader;       
 	
 	private int cantDocsAlmacenados;
 	
@@ -129,7 +135,7 @@ public class ArchivoDocs {
 			
 		//	offsetDelNuevoArchivo = miArchivo.file.length();
 			
-			this.offsetInicioDocumento = miArchivo.file.length();
+			this.offsetInicioRegistro = miArchivo.file.length();
 			
 			//me voy al final del archivo
 			this.miArchivo.file.seek(this.miArchivo.file.length());
@@ -139,23 +145,23 @@ public class ArchivoDocs {
 			//ya queda preparado para escribir informacion;
 			
 			//guardo en memoria cuantos bytes estoy usando para el header
-			this.bytesParaHeader = (int) (miArchivo.file.length() - this.offsetInicioDocumento);
+			this.bytesParaHeader = (int) (miArchivo.file.length() - this.offsetInicioRegistro);
 			
 			//almaceno la posicion desde donde empieza la seccion de datos del doc
-			this.offsetInicio = miArchivo.file.length(); 
+			this.offsetInicioTexto = miArchivo.file.length(); 
 
 		} catch (IOException e) {
 			LOG.error("no se pudo setear el Archivo de almacenamiento de documentos para escribir",e);
 			e.printStackTrace();
 		}
-		return this.offsetInicioDocumento;
+		return this.offsetInicioRegistro;
 
 	}
 	
 	
 	public void documentToRead(long offset){
 		
-		this.offsetInicioDocumento = offset;
+		this.offsetInicioRegistro = offset;
 		
 		try {
 			//voy al offset que me dicen
@@ -164,10 +170,12 @@ public class ArchivoDocs {
 			byte[] nombre =new byte[longNombre];
 			this.miArchivo.file.read(nombre);  //leo el nombre
 			
-			this.longDocActualRead = this.miArchivo.file.readLong(); //cargo la longitud que debo leer
+			this.longTextoDoc = this.miArchivo.file.readLong(); //cargo la longitud que debo leer
 			
 			byte compresion = this.miArchivo.file.readByte();	//Leo el tipo de compresion
 			this.tipoCompresion = Conversiones.metodoDeCompresion(compresion); //la guardo
+			
+			this.offsetInicioTexto = this.miArchivo.file.getFilePointer();//guardo la posicion desde donde empiezo a leer lineas
 			
 			if (this.tipoCompresion != MetodoCompresion.NINGUNO){
 			this.comp = CompresorFactory.getCompresor(this.tipoCompresion); //genero el compresor
@@ -179,8 +187,6 @@ public class ArchivoDocs {
 			
 			//guardo en memoria los bytes usados para el header
 			this.bytesParaHeader = (int) (this.miArchivo.file.getFilePointer() - offset);
-			
-			this.offsetInicio = this.miArchivo.file.getFilePointer();//guardo la posicion desde donde empiezo a leer lineas
 			
 		} catch (IOException e) {
 			LOG.error("no se pudo setear el Archivo de almacenamiento de documentos para leer",e);
@@ -226,7 +232,7 @@ public class ArchivoDocs {
 			long marcaRetorno = this.miArchivo.file.getFilePointer();
 			
 			//voy al inicio del documento actual
-			this.miArchivo.file.seek(this.offsetInicioDocumento);
+			this.miArchivo.file.seek(this.offsetInicioRegistro);
 			
 			//leo la longitud del nombre y el nombre
 			short longitudNombre = miArchivo.file.readByte();
@@ -236,7 +242,7 @@ public class ArchivoDocs {
 			
 			//escribo la longitud actual del archivo que será donde estamos menos
 			//donde comenzaba la seccion de datos del doc
-			miArchivo.file.writeLong(marcaRetorno - this.offsetInicio);
+			miArchivo.file.writeLong(marcaRetorno - this.offsetInicioTexto);
 			
 			miArchivo.file.seek(marcaRetorno);
 			
@@ -274,7 +280,7 @@ public class ArchivoDocs {
 	
 	public boolean masLineasParaLeer (){
 		
-		long finDeDoc = this.offsetInicio + this.longDocActualRead;
+		long finDeDoc = this.offsetInicioTexto + this.longTextoDoc;
 		long posActual=0;
 		try {
 			posActual = this.miArchivo.file.getFilePointer();
@@ -352,6 +358,9 @@ public class ArchivoDocs {
 			//guardo la tira de bits
 			this.miArchivo.file.write(tirabits);
 			
+			//guardo nuevamente la longitud del documento
+			this.escribirLongDoc();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -425,13 +434,31 @@ public class ArchivoDocs {
 			//dejo marcado el archivo para que se borre solito cuando termina la maquina virtual
 			this.sourceArchivoTemp.deleteOnExit();
 			
+			//obtengo el offset donde terminar la lectura
+			long terminoEn = this.offsetInicioTexto + this.longTextoDoc;
+			
+			long estoyEn = this.miArchivo.file.getFilePointer();
+			
 			//leo el archivo de documentos y genero el temporal
-			while (archivoTemp.length() > archivoTemp.getFilePointer()){
+			while (this.miArchivo.file.getFilePointer() < terminoEn){
 				
-				byte[] datos = new byte[10];
-				String binario = new String();
+				long bytesRestantes = terminoEn - this.miArchivo.file.getFilePointer();
+				
+				//instancio todos las estructuras
+				byte[] datos;
+				String binario;
 				String descomprimidos = new String();
 				StringBuffer sb = new StringBuffer();
+				
+				//me fijo si puedo leer 10 bytes, para que array tenga ese tamaño
+				//en caso contrario tendrá solo la cantidad restante
+				if (bytesRestantes > 10){
+					datos = new byte[10];
+				}else{
+					datos = new byte[(int)bytesRestantes];
+				}
+				
+				
 				
 				//leo 10 bytes del archivo
 				this.miArchivo.file.read(datos);
@@ -444,7 +471,7 @@ public class ArchivoDocs {
 				
 				//obtengo los datos descomprimidos
 				descomprimidos = this.comp.descomprimir(sb);
-				
+			
 				//guardo en el temporal los datos en utf
 				this.archivoTemp.writeUTF(descomprimidos);
 			}

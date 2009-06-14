@@ -1,9 +1,12 @@
 package ar.com.datos.grupo5.compresion.aritmetico;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+
+import ar.com.datos.grupo5.compresion.ppmc.Contexto;
 
 public class LogicaAritmetica {
 
@@ -17,7 +20,7 @@ public class LogicaAritmetica {
 	 */
 	private static Logger logger = Logger.getLogger(LogicaAritmetica.class);
 	
-	private ParCharProb segmentar(ArrayList<ParCharProb> contexto,
+	private ParCharProb segmentar(Collection<ParCharProb> contexto,
 			char caracterAcodificar) {
 
 		UnsignedInt piso = this.intervalo.getPiso();
@@ -86,7 +89,7 @@ public class LogicaAritmetica {
 	 *            caracter leido que pretende codificarse
 	 * @return un string con los bits correspondientes.
 	 */
-	public String comprimir(ArrayList<ParCharProb> Contexto, char Caracter) {
+	public String comprimir(Collection<ParCharProb> Contexto, char Caracter) {
 		
 		System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
 		System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
@@ -129,7 +132,7 @@ public class LogicaAritmetica {
 	 * @param binaryString
 	 * @return
 	 */
-	private ParCharProb segmentar(ArrayList<ParCharProb> contexto,
+	private ParCharProb segmentar(Collection<ParCharProb> contexto,
 			StringBuffer binaryString) {
 		
 		//Establezco el piso y el techo hasta el momento
@@ -216,7 +219,7 @@ public class LogicaAritmetica {
 	 * @param cadenaBits bit emitidos en la compresion.
 	 * @return El caracter encontrado
 	 */
-	public final Character descomprimir(ArrayList<ParCharProb> Contexto, StringBuffer cadenaBits){
+	public final Character descomprimir(Collection<ParCharProb> Contexto, StringBuffer cadenaBits){
 		
 //		System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
 //		System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
@@ -244,5 +247,5 @@ public class LogicaAritmetica {
 		
 		//Devuelvo el elemento descomprimido
 		return subIntervalo.getSimboloUnicode();
-	}
+	}	
 }

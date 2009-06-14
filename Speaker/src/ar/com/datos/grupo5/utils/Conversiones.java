@@ -226,8 +226,15 @@ public final class Conversiones {
 	public static String arrayByteToBinaryString(byte[] array){
 		
 		String retorno = new String();
-		for (int i = 0; i < array.length; i++) {
-			retorno.concat(ByteToBinaryString(array[i]));
+		String vuelta;
+		
+		if (array.length > 0){
+			retorno = ByteToBinaryString(array[0]);
+		}
+		
+		for (int i = 1; i < array.length; i++) {
+			vuelta = ByteToBinaryString(array[i]);
+			retorno = retorno + vuelta;    //no se porque mierda si uso el concat acá no funciona
 		}
 		
 		return retorno;
@@ -272,7 +279,11 @@ public final class Conversiones {
 			bufferString.delete(start,end);
 		}
 		if (faltante > 0){
-			for(int i = 0; i < faltante; i++) {
+			
+//			for(int i = 0; i < faltante; i++) {   //el faltante esta mal calculado, en este caso el faltante es en realidad
+//				bufferString.append("0");		  //el sobrante de dividir la long por 8, por eso modifique esta linea
+			
+			for (int i =0; i< (8-faltante);i++){
 				bufferString.append("0");
 			}
 			byteString = bufferString.substring(start,end);
