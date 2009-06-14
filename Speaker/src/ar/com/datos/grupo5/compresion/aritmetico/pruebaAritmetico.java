@@ -3,75 +3,79 @@ package ar.com.datos.grupo5.compresion.aritmetico;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import ar.com.datos.grupo5.Constantes;
-
 public class pruebaAritmetico {
 
 	 public static void main(String args[]) throws IOException {
+//		    int n = 170; // 10101010
+
+//		    System.out.println("Value in binary: 10101010");
+//
+//		    System.out.println("Number of one bits: " + Integer.bitCount(n));
+//
+//		    System.out.println("Highest one bit: " + Integer.highestOneBit(n));
+//
+//		    System.out.println("Lowest one bit: " + Integer.lowestOneBit(n));
+//
+//		    System.out.println("Number of leading zeros : " + Integer.numberOfLeadingZeros(n));
+//
+//		    System.out.println("Number of trailing zeros : " + Integer.numberOfTrailingZeros(n));
+//
+//		    System.out.println("\nBeginning with the value 1, " + "rotate left 16 times.");
+//		    n = 1;
+//		    for (int i = 0; i < 16; i++) {
+//		      n = Integer.rotateLeft(n, 1);
+//		      System.out.println(n);
+//		    }
+		    
+//		    
+//		    String s = "1010";
+//		    
+//		    int a = Integer.parseInt(s, 2);
+//		    
+//		    System.out.println(a);
+//
+//		  }
 		 
-		//A comprimir BAABCA 
-		LogicaAritmetica la = new LogicaAritmetica();
-		
-		ArrayList<ParCharProb>lista = new ArrayList<ParCharProb>();
-		
-		double n1 = 3;
-		double n2 = 7;
-		ParCharProb p1 = new ParCharProb('a',n1/n2);
-		
-		n1 = 2;
-		ParCharProb p2 = new ParCharProb('b',n1/n2);
-		
-		n1 = 1;
-		ParCharProb p3 = new ParCharProb('c',n1/n2);
-		
-		n1 = 1;
-		ParCharProb p4 = new ParCharProb(Constantes.EOF,n1/n2);
-		lista.add(p1);
-		lista.add(p2);
-		lista.add(p3);
-		lista.add(p4);
-		
-		String salida="";
-		
-		salida = la.comprimir(lista, 'b');
-		System.out.println(salida);
-		
-		salida += la.comprimir(lista, 'a');
-		System.out.print(salida);
-	
-		salida += la.comprimir(lista, 'a');
-		System.out.println(salida);
-		
-		salida += la.comprimir(lista, 'b');
-		System.out.println(salida);
+		 
+//		LogicaAritmetica la = new LogicaAritmetica();
+//		
+//		ArrayList<ParCharProb>lista = new ArrayList<ParCharProb>();
+//		
+//		ParCharProb p1 = new ParCharProb('a',0.25F);
+//		
+//		ParCharProb p2 = new ParCharProb('f',0.25F);
+//		
+////		ParCharProb p3 = new ParCharProb(';',0.13F);
+//		
+//		ParCharProb p4 = new ParCharProb('u',0.25F);
+//		
+////		ParCharProb p5 = new ParCharProb('8',0.21F);
+//		
+//		ParCharProb p6 = new ParCharProb('w',0.25F);
+//		
+//		lista.add(p1);
+//		lista.add(p2);
+//	//	lista.add(p3);
+//		lista.add(p4);
+//	//	lista.add(p5);
+//		lista.add(p6);
+//
+//		System.out.print(la.comprimir(lista, 'a'));
+//	
+//		System.out.print(la.comprimir(lista, 'f'));
+//		
+//		System.out.print(la.comprimir(lista, 'u'));
+//		
+//		System.out.print(la.comprimir(lista, 'w'));
+//		
+//		System.out.print(la.finalizarCompresion());
+//		 
+		 
+		 
+		 
+		char a = '\ufffe';
+		char b;
 
-		salida += la.comprimir(lista, 'c');
-		System.out.println(salida);
-		
-		salida += la.comprimir(lista, 'a');
-		System.out.println(salida);
-
-		salida += la.comprimir(lista, Constantes.EOF);
-		System.out.println(salida);
-
-		salida += la.finalizarCompresion();
-		System.out.println(salida);
-
-		la = new LogicaAritmetica(); 
-		String bits = new String("01110110011010100011111110100100100000000000");
-		StringBuffer bitsBuffer = new StringBuffer(bits);
-		salida = "0";
-		while (salida != null && !Constantes.EOF.equals(salida.charAt(salida.length()-1))){
-			if (Constantes.EOF.equals(salida.charAt(salida.length()-1))) {
-				System.out.println("Son iguales");
-			} else {
-				System.out.println("No son iguales");
-			}
-			System.out.println("Salida: " + salida);
-			salida += la.descomprimir(lista, bitsBuffer).toString();
-			System.out.println("buffer: " + bitsBuffer);
-		}
-		System.out.println("descompresion terminada: " + salida);
 	 }
 	
 	

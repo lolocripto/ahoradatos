@@ -76,14 +76,9 @@ public class UnsignedInt {
 	 * @param numero
 	 * @return
 	 */
-	public UnsignedInt porFloat (double numero){
-		//Por aproximaciones al multiplicar por 1.0 y hacer el floor pierdo datos y me da otro resultado
-		//FIXME: Puede ser que computacionalmente hablando sea valido ya que lo hace siempre asi.
-		if (numero != 1) {
-			double sky = Math.floor(this.longAsociado*numero);
-			return new UnsignedInt (new Double(sky).longValue());
-		}
-		return new UnsignedInt(this.longAsociado);
+	public UnsignedInt porFloat (float numero){
+		double sky = Math.floor(this.longAsociado*numero);
+		return new UnsignedInt ((long)sky);
 	}
 	
 	/**
@@ -113,25 +108,7 @@ public class UnsignedInt {
 	 * hace un corrimiento de 1 bit a la izquierda y agrega 
 	 * un 1 a la derecha 
 	 */
-	public void leftShift(){
-		
-		int aux1 = Integer.parseInt(this.Bit32Repr.substring(0, 1));
-		//corro un bit a la izquierda
-		long aux  = this.longAsociado <<1;
-		//cambio el ultimo cero por un 1
-		aux += aux1;
-		//saco todos los bits luego del 32
-		aux = aux & 0xffffffffL;
-		//seteo el nuevo long
-		this.setLongAsociado(aux);
-	}
-	
-	/**
-	 * hace un corrimiento de 1 bit a la izquierda y agrega 
-	 * un 1 a la derecha 
-	 */
 	public void leftShiftOne(){
-		
 		//corro un bit a la izquierda
 		long aux  = this.longAsociado <<1;
 		//cambio el ultimo cero por un 1
