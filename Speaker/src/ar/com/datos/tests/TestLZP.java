@@ -16,7 +16,7 @@ public class TestLZP {
 		
 		Compresor comp = new Lzp();
 		//String cadena = "ABCCBABC,CBCCBCCABA";
-		String cadena = "AAAAAA,AAAAAA,B";
+		String cadena = "AAAAAA,AAAAAA";
 		String[] cadena2 = cadena.split(",");
 		String result = "";
 		
@@ -27,6 +27,10 @@ public class TestLZP {
 		}
 		LOG.info("Cadena -> " + cadena);
 		LOG.info(cadena.replace(",", ""));
+		LOG.info(result + comp.finalizarSession());
+		comp.iniciarSesion();
+		StringBuffer cadenaBuffer = new StringBuffer(result);
+		comp.descomprimir(cadenaBuffer);
 		LOG.info(result + comp.finalizarSession());
 
 	}
