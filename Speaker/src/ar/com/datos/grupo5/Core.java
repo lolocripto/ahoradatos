@@ -70,9 +70,31 @@ public class Core {
 
 	private String metodo;
 	
+	
+	/** 
+	 * Permite al usuario agregar un documento sin especificar el compresor a utilizar
+	 * utilizando el compresor por defecto definido en la configuracion.
+	 * @param invocador
+	 * @param pathDocumento
+	 * @return
+	 */
 	public final String loadWithoutAudio(final InterfazUsuario invocador,
-			final String pathDocumento ) {
+			final String pathDocumento) {
+		return this.loadWithoutAudio(invocador, pathDocumento, this.metodo);
+	}
+	
+	public final String loadWithoutAudio(final InterfazUsuario invocador,
+			final String pathDocumento, final String metodoExt) {
 		logger.debug("Entre en loadWithAudio");
+		
+		
+		MetodoCompresion met = Conversiones.metodoDeCompresion(metodoExt);
+		
+		if (met == null){
+			DocumentsManager.getInstance().setTipoCompresion(this.metodo);
+		} else {
+			DocumentsManager.getInstance().setTipoCompresion(metodoExt);			
+		}
 		
 		try {
 			Iterator<IunidadDeHabla> iterador;
@@ -138,10 +160,17 @@ public class Core {
 	 * @return devuelve un mensaje informando el estado final del proceso.
 	 */
 	public final String load(final InterfazUsuario invocador,
-			final String pathDocumento, final String metodo) {
+			final String pathDocumento, final String metodoExt) {
 		
 		logger.debug("Entre en load");
 		
+		MetodoCompresion met = Conversiones.metodoDeCompresion(metodoExt);
+		
+		if (met == null){
+			DocumentsManager.getInstance().setTipoCompresion(this.metodo);
+		} else {
+			DocumentsManager.getInstance().setTipoCompresion(metodoExt);			
+		}
 		try {
 			Iterator<IunidadDeHabla> iterador;
 			// Cargo el parser con el documento en modo aprendizaje
