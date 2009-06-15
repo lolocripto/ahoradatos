@@ -34,7 +34,7 @@ public class Lzp implements Compresor {
 	private static final Logger LOG = Logger.getLogger(Lzp.class);
 	
 	/**
-	 * Motor aritmetico para los cararteres emitodos.
+	 * Motor aritmetico para los cararteres emitidos.
 	 */
 	private CompresorAritmetico motorAritCaracteres;
 	
@@ -116,8 +116,9 @@ public class Lzp implements Compresor {
 	/**
 	 * Lista de ParCharProb
 	 */
+	private ArrayList<ParCharProb> listaParCharProb;
+
 	
-	ArrayList<ParCharProb> listaParCharProb;
 	/**
 	 * @return the finalizada
 	 */
@@ -126,7 +127,7 @@ public class Lzp implements Compresor {
 		return finalizada;
 	}
 
-	public Lzp(){
+	public Lzp() {
 		motorAritCaracteres = new CompresorAritmetico(1, true);
 		motorAritLongitudes = new CompresorAritmetico(0, false);
 		motorAritCaracteres.iniciarSesion();
@@ -223,7 +224,7 @@ public class Lzp implements Compresor {
 			/*
 			resultado = motorAritCaracteres.comprimir(cadena.substring(0,1));
 			resultado += motorAritCaracteres.comprimir(cadena.substring(1,2));
-if ( cadena.length() > 2) {
+			if ( cadena.length() > 2) {
 				resultado += motorAritLongitudes.comprimir("0");
 				resultado +=  motorAritCaracteres.comprimir(String.valueOf(cadena.charAt(2)));
 				
@@ -242,29 +243,20 @@ if ( cadena.length() > 2) {
 			resultado = motorAritmetico.comprimir(ctx.getArrayCharProb(), letra);
 			
 			ctx.actualizarContexto(letra);
-			
 			ctx = this.caracteresContexto.getContexto(letra.toString());
-			
 			ctx.actualizarProbabilidades();
-			
 			letra = cadena.substring(1, 2).charAt(0);
 			
 			resultado += this.motorAritmetico.comprimir(ctx.getArrayCharProb(), letra);
 			
 			ctx.actualizarContexto(letra);
-			
 			if ( cadena.length() > 2) {
 				
 				ctx = caracteresContexto.getContexto(letra.toString());
-				
 				ctx.actualizarProbabilidades();
-				
 				letra = cadena.charAt(2);
-				
 				resultado +=  motorAritmetico.comprimir(ctx.getArrayCharProb(), letra);
-				
 				ctx.actualizarContexto(letra);
-				
 				ultCtx = cadena.substring(1, 3);
 			} else {
 				resultado2 = ultCtx;
@@ -365,41 +357,29 @@ if ( cadena.length() > 2) {
 			
 			//Obtengo el contexto vacio
 			ctx = listaLongitudes.getContexto("");
-			
 			ctx.actualizarProbabilidades();
 			
 			try {
 				letra = CodePoint.getChar(Integer.valueOf(longitud));
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LOG.error("Error en formato de numero.", e);
 			} catch (CodePointException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LOG.error("Error en codepoint.", e);
 			}
 			
 			//Comprimo la longitud
 			result.append(motorAritmetico.comprimir(ctx.getArrayCharProb(),letra));
-			
 			//Actualizo el contexto
 			ctx.actualizarContexto(letra);
-			
 			//Ahora voy por la letra
 			//Obtengo el contexto ultCtx[1]
-			
 			ctx = caracteresContexto.getContexto(ultCtx.substring(1,2));
-			
 			ctx.actualizarProbabilidades();
-
 			//Comprimo la longitud
 			result.append(motorAritmetico.comprimir(ctx.getArrayCharProb(),caracter.charAt(0)));
-			
 			//Actualizo el contexto
 			ctx.actualizarContexto(caracter.charAt(0));
-			
-			
-//			caracteresContexto;
-			
+
 			//result.append(motorAritLongitudes.comprimir(longitud));
 			//result.append(motorAritCaracteres.comprimir(caracter));
 			result2.append(longitud + caracter);
