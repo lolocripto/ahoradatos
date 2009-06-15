@@ -91,8 +91,8 @@ public class LogicaAritmetica {
 	 */
 	public String comprimir(Collection<ParCharProb> Contexto, char Caracter) {
 		
-		//System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
-		//System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
+		System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
+		System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
 		// obtengo el segmento del espacio de probabilidades asociado a la letra
 		// que quiero emitir
 		ParCharProb subIntervalo = this.segmentar(Contexto, Caracter);
@@ -103,8 +103,8 @@ public class LogicaAritmetica {
 		this.intervalo.setPiso(subIntervalo.getPiso());
 		this.intervalo.setTecho(subIntervalo.getTecho());
 
-		//System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
-		//System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
+		System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
+		System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
 		
 		// con los nuevos piso y techo, estoy en condiciones de proceder a la
 		// normalizacion y emitir bits en el proceso.
@@ -324,8 +324,8 @@ public class LogicaAritmetica {
 	 */
 	public final Character descomprimir(Collection<ParCharProb> Contexto, StringBuffer cadenaBits){
 		
-//		System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
-//		System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
+		System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
+		System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
 		// obtengo el segmento del espacio de probabilidades del contexto y luego busco el intervalo donde esta la letra
 		ParCharProb subIntervalo;
 		try {
@@ -341,8 +341,8 @@ public class LogicaAritmetica {
 		this.intervalo.setPiso(subIntervalo.getPiso());
 		this.intervalo.setTecho(subIntervalo.getTecho());
 
-		//System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
-		//System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
+		System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
+		System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
 		
 		// con los nuevos piso y techo, estoy en condiciones de proceder a la
 		// normalizacion y emitir bits en el proceso.
