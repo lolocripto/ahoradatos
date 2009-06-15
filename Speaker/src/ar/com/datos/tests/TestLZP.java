@@ -59,7 +59,7 @@ public class TestLZP {
 		//((Lzp)comp).simular = true;
 		StringBuffer resultado = new StringBuffer();
 
-		FileInputStream fis = new FileInputStream("testLzp.txt");
+		FileInputStream fis = new FileInputStream("testLzp2.txt");
 		InputStreamReader isr = new InputStreamReader(fis, Constantes.CHARSET_UTF16);
 		BufferedReader buffer = new BufferedReader(isr);
 		
@@ -75,13 +75,18 @@ public class TestLZP {
 		comp.iniciarSesion();
 		// Descomprimir en bucle
 		int start = 0;
-		int largo = 40;
+		//int largo = 40;
+		int largo = resultado.length();
 		String res = resultado.substring(start, start + largo);
 		String result = null;
 		while (res != null) {
 			result += comp.descomprimir(new StringBuffer(res));
 			start += largo;
-			res += resultado.substring(start, start + largo);
+			if (start + largo >= resultado.length()) {
+				res += resultado.substring(start);
+			} else {
+				res += resultado.substring(start, start + largo);
+			}
 		}
 		LOG.info(result + comp.finalizarSession());
 		buffer.close();

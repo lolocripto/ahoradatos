@@ -493,13 +493,8 @@ public class Lzp implements Compresor {
 		while ( sigoDesc ) {
 
 			//devuelto = motorAritCaracteres.descomprimir(cadena);
-			if (lon > 0) {
-				ctx = caracteresContexto.getContexto(ultCtx.substring(1, 2));
-				ctx.actualizarProbabilidades();
-			} else {
-				ctx = caracteresContexto.getContexto(resultado.substring(resultado.length() - 1));
-				ctx.actualizarProbabilidades();
-			}
+			ctx = caracteresContexto.getContexto(resultado.substring(resultado.length() - 1));
+			ctx.actualizarProbabilidades();
 			//Comprimo la longitud
 			devuelto = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena).toString();
 			
