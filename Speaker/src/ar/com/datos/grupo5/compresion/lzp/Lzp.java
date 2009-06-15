@@ -393,8 +393,6 @@ if ( cadena.length() > 2) {
 		if (listaContextos.size() == 0) {
 			// Reseteo el ultimo contexto
 			ultCtx = "";
-			// Genero el CTX.
-			
 			//devuelto = motorAritCaracteres.descomprimir(cadena);
 			devuelto = String.valueOf(cadena.charAt(0));
 			ultCtx = devuelto;
@@ -413,16 +411,6 @@ if ( cadena.length() > 2) {
 
 			listaContextos.setPosicion(ultCtx, 4);
 			posActual = 4;		
-			//longitud = motorAritLongitudes.descomprimir(cadena);
-			longitud = cadena.substring(0, 1);
-			cadena.delete(0, 1);
-			if (longitud == null){
-				return resultado;
-			} else if ( longitud.charAt(0) == Constantes.EOF ){
-				finalizada = true;
-				return resultado;
-			}
-			// Que hago aca para descomprimir
 			try {
 				archivoTrabajo.seek(0);
 				//Escribo en el archivo temporal en unicode.
@@ -472,7 +460,6 @@ if ( cadena.length() > 2) {
 					byte[] escAux = ultCtx.getBytes(Constantes.CHARSET_UTF16);
 					//Parece que el getBytes pone un /0 al final.
 					archivoTrabajo.write(escAux, 0, escAux.length);
-					// TODO Arreglar lo que va aca
 					int pos = this.listaContextos.getPosicion(ultCtx);
 					archivoTrabajo.seek(pos);
 					// Cuanto leo?
@@ -502,15 +489,7 @@ if ( cadena.length() > 2) {
 					//TODO: Hacer algo
 					e.printStackTrace();
 				}
-			} /*else {
-				// No matchea con ningun contexto -> long 0 
-				
-				//resultado += motorAritCaracteres.descomprimir(cadena);
-				resultado += cadena.substring(0, 1);
-				cadena.delete(0, 1);
-				ultCtx = resultado.substring(resultado.length() - 2);
-				listaContextos.setPosicion(ultCtx, posActual);
-			}*/
+			}
 			listaContextos.setPosicion(ultCtx, posActual);
 			posActual += 2;
 		}
