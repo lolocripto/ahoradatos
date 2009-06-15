@@ -492,7 +492,7 @@ public class Lzp implements Compresor {
 			ctx.actualizarContexto(devuelto.charAt(0));
 			
 			//devuelto = cadena.substring(0,1);
-			cadena.delete(0, 1);
+			//cadena.delete(0, 1);
 			if (devuelto == null){
 				return resultado;
 			} else if ( devuelto.charAt(0) == Constantes.EOF ){
