@@ -167,10 +167,10 @@ public class Lzp implements Compresor {
 				ctx = this.caracteresContexto.getContexto(letra.toString());
 			}
 			
-			//Iterator<Character> it2 = Constantes.LISTA_CHARSET_LATIN.iterator();
+			Iterator<Character> it2 = Constantes.LISTA_CHARSET_LATIN.iterator();
 			//Lleno el contexto
-			while (it.hasNext()) {
-				letra = it.next();
+			while (it2.hasNext()) {
+				letra = it2.next();
 				ctx.crearCharEnContexto(letra);
 			}
 		}
@@ -235,7 +235,7 @@ if ( cadena.length() > 2) {
 			}
 			*/
 			
-			ctx = caracteresContexto.getContexto("\b");
+			ctx = caracteresContexto.getContexto(new Character('\b').toString());
 			ctx.actualizarProbabilidades();
 			
 			letra = cadena.substring(0, 1).charAt(0);
