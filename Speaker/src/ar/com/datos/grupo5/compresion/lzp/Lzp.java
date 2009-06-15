@@ -588,7 +588,6 @@ public class Lzp implements Compresor {
 		Contexto ctx;
 		if (matchCompleto && esCompresion) {
 			
-			
 			//Obtengo el contexto vacio
 			ctx = listaLongitudes.getContexto("");
 			
@@ -628,7 +627,7 @@ public class Lzp implements Compresor {
 			
 		} else {
 			if (esCompresion) {
-				ctx = listaLongitudes.getContexto("");
+				ctx = listaLongitudes.getContexto(ultCtx.substring(1, 2));
 				
 				ctx.actualizarProbabilidades();
 
