@@ -506,20 +506,27 @@ public class Lzp implements Compresor {
 		while ( sigoDesc ) {
 
 			//devuelto = motorAritCaracteres.descomprimir(cadena);
+			this.LOG.debug("Variable resultado: " + resultado.substring(resultado.length() - 1));
 			ctx = caracteresContexto.getContexto(resultado.substring(resultado.length() - 1));
 			ctx.actualizarProbabilidades();
+			this.LOG.debug("Map: " + ctx);
 			//Comprimo la longitud
-			devuelto = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena).toString();
+			this.LOG.debug("Cadena: " + cadena);
+			this.LOG.debug("array: " + ctx.getArrayCharProb());
+			
+			//FIXME::Sacar el algo que es temporal.
+			Character algo = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena);
 			
 			//devuelto = cadena.substring(0,1);
 			//cadena.delete(0, 1);
-			if (devuelto == null){
+			if (algo == null){
 				return resultado;
-			} else if ( Constantes.EOF.equals(devuelto.charAt(0)) ) {
+			//} else if ( Constantes.EOF.equals(algo.charAt(0)) ) {
+			} else if ( Constantes.EOF.equals(algo) ) {				
 				finalizada = true;
 				return resultado;
 			}
-
+			devuelto = algo.toString();
 			//Actualizo el contexto
 			ctx.actualizarContexto(devuelto.charAt(0));
 			
