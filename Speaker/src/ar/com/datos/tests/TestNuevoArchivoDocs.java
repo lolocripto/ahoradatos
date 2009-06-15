@@ -17,18 +17,18 @@ public class TestNuevoArchivoDocs {
 	public static void main(String[] args) {
 		
 
-		String ruta1 = "./test.txt";
-		String ruta2 = "./test2.txt";
-		String ruta3 = "./test3.txt";
-		
-		
+//		String ruta1 = "./testLzp.txt";
+////		String ruta2 = "./test2.txt";
+////		String ruta3 = "./test3.txt";
+//		
+//		
 //		DocumentsManager.getInstance().setTipoCompresion(MetodoCompresion.ARIT);
 //		
 //		ArrayList<String> lista = new ArrayList<String>();
 //		
 //		lista.add(ruta1);
-//		lista.add(ruta2);
-//		lista.add(ruta3);
+////		lista.add(ruta2);
+////		lista.add(ruta3);
 ////		lista.add(ruta4);
 ////		lista.add(ruta5);
 ////		lista.add(ruta6);

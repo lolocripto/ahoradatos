@@ -1,11 +1,17 @@
 package ar.com.datos.grupo5.archivos;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.RandomAccessFile;
 
 import org.apache.log4j.Logger;
@@ -302,12 +308,15 @@ public class ArchivoDocs {
 	private boolean masLineasConCompresion(){
 		
 		try {
-			if (this.archivoTemp.getFilePointer() >= this.archivoTemp.length()){
+			
+			long posActual = this.archivoTemp.getFilePointer();
+			long longitud = this.archivoTemp.length();
+			
+			if ( posActual >= longitud ){
 				return false;
 			}else
 			{
 				return true;
-			
 		}
 			}
 			catch (IOException e) {
@@ -379,6 +388,7 @@ public class ArchivoDocs {
 	private void escribirLineaSinCompresion(String linea){
 		
 		try {
+			
 			this.miArchivo.file.writeUTF(linea);
 			
 		} catch (IOException e) {
@@ -486,7 +496,8 @@ public class ArchivoDocs {
 		try {
 			//genero el archivo temporal
 			this.sourceArchivoTemp = new File ("./descomp.temp");
-			this.archivoTemp = new RandomAccessFile(this.sourceArchivoTemp,Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			this.archivoTemp = new RandomAccessFile(this.sourceArchivoTemp, Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
+			
 			
 			//dejo marcado el archivo para que se borre solito cuando termina la maquina virtual
 			this.sourceArchivoTemp.deleteOnExit();
@@ -501,6 +512,8 @@ public class ArchivoDocs {
 			byte[] datos;
 			String binario;
 			String descomprimidos;
+			
+			//genero las estructuras necesarias para escirbir en utf16
 			
 			//leo el archivo de documentos y genero el temporal
 			while (this.miArchivo.file.getFilePointer() < terminoEn){
@@ -521,7 +534,7 @@ public class ArchivoDocs {
 				//convierto los 10 bytes en un string binario
 				binario = Conversiones.arrayByteToBinaryString(datos);
 				
-				System.out.println(binario);
+			//	System.out.println(binario);
 				
 				//cargo ese string binario en un buffer
 				sb = new StringBuffer(binario);
@@ -535,9 +548,11 @@ public class ArchivoDocs {
 				}
 			
 				//guardo en el temporal los datos en utf
+				
 				this.archivoTemp.writeUTF(descomprimidos);
 			}
 			
+		
 			//cuando ya tengo toda la info cargada vuelvo al inicio
 			this.archivoTemp.seek(0);
 			
@@ -550,8 +565,7 @@ public class ArchivoDocs {
 		}
 	}
 	
-	
-		
+			
 	public void cerrarArchivo(){
 		
 		try {
