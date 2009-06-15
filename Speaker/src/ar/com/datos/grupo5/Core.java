@@ -390,11 +390,10 @@ public class Core {
 	 * @param invocador .
 	 */
 	public final void help(final InterfazUsuario invocador) {
-		//TODO: Actualizar Help
 		String mensaje = "Funcion: load \n"
 			+ "Caracteristicas: carga un documento para almacenar las palabras "
 			+ "desconocidas y almacena al documento lo almacena comprimido.\n"
-			+ "Los metodos de compresión disponibles son: PPMC, LZP, LZ78.\n"
+			+ "Los metodos de compresión disponibles son: ppmc, lzp, lz78, aritmetico, aritmetico-1.\n"
 			+ "En el caso de no elegir un metodo de compresión se comprimirá\n"
 			+ "con el metodo especificado por default.\n"
 			+ "Uso: load <\"path_absoluto_del_documento\"> [<\"metodo_para_comprimir\">]\n"

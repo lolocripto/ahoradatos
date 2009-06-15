@@ -185,6 +185,8 @@ public final class Conversiones {
 			return 3;
 		case ARIT:
 			return 4;
+		case ARIT1:
+			return 5;
 		case NINGUNO:
 			return 0;
 		default:
@@ -203,6 +205,7 @@ public final class Conversiones {
 		if(s.equalsIgnoreCase("lzp")) return MetodoCompresion.LZP;
 		if(s.equalsIgnoreCase("lz78")) return MetodoCompresion.LZ78;
 		if(s.equalsIgnoreCase("aritmetico")) return MetodoCompresion.ARIT;
+		if(s.equalsIgnoreCase("aritmetico-1")) return MetodoCompresion.ARIT1;
 		if(s.equalsIgnoreCase("ninguno")) return MetodoCompresion.NINGUNO;
 		
 		return null;	
@@ -222,6 +225,8 @@ public final class Conversiones {
 			return MetodoCompresion.LZ78;
 		case 4:
 			return MetodoCompresion.ARIT;
+		case 5:
+			return MetodoCompresion.ARIT1;
 		default:
 			return MetodoCompresion.NINGUNO;
 		}

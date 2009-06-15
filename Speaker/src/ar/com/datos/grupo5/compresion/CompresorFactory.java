@@ -36,6 +36,10 @@ public class CompresorFactory {
 			return moduloCompresor;
 		} 
 		if (MetodoCompresion.valueOf(metodo) == MetodoCompresion.ARIT) {
+			moduloCompresor = new CompresorAritmetico(0,true);
+			return moduloCompresor;
+		}
+		if (MetodoCompresion.valueOf(metodo) == MetodoCompresion.ARIT1) {
 			moduloCompresor = new CompresorAritmetico(1,true);
 			return moduloCompresor;
 		}
@@ -62,6 +66,10 @@ public class CompresorFactory {
 			return moduloCompresor;
 		} 
 		if (m == MetodoCompresion.ARIT) {
+			moduloCompresor = new CompresorAritmetico(0,true);
+			return moduloCompresor;
+		} 
+		if (m == MetodoCompresion.ARIT1) {
 			moduloCompresor = new CompresorAritmetico(1,true);
 			return moduloCompresor;
 		} 
