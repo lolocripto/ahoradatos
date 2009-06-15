@@ -504,6 +504,7 @@ public class Lzp implements Compresor {
 			ctx.actualizarContexto(devuelto.charAt(0));
 			
 			resultado += devuelto;
+			LOG.info("Cadena descomprimida: " + resultado);
 			ultCtx = resultado.substring(resultado.length() - 2);
 			
 			//devuelto = motorAritCaracteres.descomprimir(cadena);
