@@ -316,52 +316,41 @@ public class Lzp implements Compresor {
 				caracter = cadena.substring(0, 1);
 				cadena.delete(0, 1);
 			} else {
-				if (posMatch != null) {
-					if (matchCompleto) {
-						posMatch += longMatch * 2;
-					}
-					longMatchActual = longMatch(cadena, posMatch);
-					if (matchCompleto && longMatchActual > 0) {
-						longMatch += longMatchActual;
-						ultimaLetra = cadena.substring(cadena.length() -1);
-						break;
-					} else if (longMatchActual > 0){
-						posActual += 2;
-						listaContextos.setPosicion(ultCtx, posActual);
-						//String match = cadena.substring(0, longMatchActual);
-						ultCtx = String.valueOf(cadena.charAt(longMatchActual-1));
-						cadena.delete(0, longMatchActual);
-						ultCtx += String.valueOf(cadena.charAt(0));
-						longitud = String.valueOf(longMatch + longMatchActual);
-						caracter = String.valueOf(cadena.charAt(0));
-						cadena.deleteCharAt(0);
-						posActual += ((longMatch + longMatchActual) * 2) - 2;
-						longMatch = 0;
-					} else {
-						if (longMatch > 0) {
-							posActual += ((longMatch + longMatchActual) * 2);
-							longitud = String.valueOf(longMatch);
-						} else {
-							posActual += 2;
-							longitud = "0";
-						}
-						listaContextos.setPosicion(ultCtx, posActual);
-						if (longMatch > 0) {
-							ultCtx = ultimaLetra + String.valueOf(cadena.charAt(0));
-						} else {
-							ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
-						}
-						longMatch = 0;
-						caracter = cadena.substring(0, 1);
-						cadena.delete(0, 1);
-					}
+				
+				if (matchCompleto) {
+					posMatch += longMatch * 2;
+				}
+				longMatchActual = longMatch(cadena, posMatch);
+				if (matchCompleto && longMatchActual > 0) {
+					longMatch += longMatchActual;
+					ultimaLetra = cadena.substring(cadena.length() -1);
+					break;
+				} else if (longMatchActual > 0){
+					posActual += 2;
+					listaContextos.setPosicion(ultCtx, posActual);
+					//String match = cadena.substring(0, longMatchActual);
+					ultCtx = String.valueOf(cadena.charAt(longMatchActual-1));
+					cadena.delete(0, longMatchActual);
+					ultCtx += String.valueOf(cadena.charAt(0));
+					longitud = String.valueOf(longMatch + longMatchActual);
+					caracter = String.valueOf(cadena.charAt(0));
+					cadena.deleteCharAt(0);
+					posActual += ((longMatch + longMatchActual) * 2);
+					longMatch = 0;
 				} else {
 					posActual += 2;
-					ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
-					longitud = "0";
+					listaContextos.setPosicion(ultCtx, posActual);
+					if (longMatch > 0) {
+						posActual += ((longMatch + longMatchActual) * 2);
+						longitud = String.valueOf(longMatch);
+						ultCtx = ultimaLetra + String.valueOf(cadena.charAt(0));
+					} else {
+						longitud = "0";
+						ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
+					}
+					longMatch = 0;
 					caracter = cadena.substring(0, 1);
 					cadena.delete(0, 1);
-					listaContextos.setPosicion(ultCtx, posActual);
 				}
 			}
 
@@ -607,7 +596,7 @@ public class Lzp implements Compresor {
 					}
 				}
 			}
-			LOG.info("Seteo contexto: " + ultCtx + " pos: " + posActual);
+			//LOG.info("Seteo contexto: " + ultCtx + " pos: " + posActual);
 			listaContextos.setPosicion(ultCtx, posActual);
 			posActual += 2;
 		}
@@ -679,7 +668,6 @@ public class Lzp implements Compresor {
 			}
 		}
 		
-		listaContextos.listar();
 		return simular?result2:result;
 	}
 
