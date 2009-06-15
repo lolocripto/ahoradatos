@@ -513,23 +513,23 @@ public class Lzp implements Compresor {
 			if ((ultIncompleto == null)||(ultIncompleto == 'C')) {
 				//devuelto = motorAritCaracteres.descomprimir(cadena);
 				ctx = caracteresContexto.getContexto(resultado.substring(resultado.length() - 1));
-				if (ultIncompleto == 'C') {
+				if (ultIncompleto == null) {
 					ctx.actualizarProbabilidades();
 				}
 				//FIXME::Sacar el algo que es temporal.
-				Character algo = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena);
+				Character aux = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena);
 				
 				//devuelto = cadena.substring(0,1);
 				//cadena.delete(0, 1);
-				if (algo == null){
+				if (aux == null){
 					ultIncompleto = 'C';
 					return resultado;
 				//} else if ( Constantes.EOF.equals(algo.charAt(0)) ) {
-				} else if ( Constantes.EOF.equals(algo) ) {				
+				} else if ( Constantes.EOF.equals(aux) ) {				
 					finalizada = true;
 					return resultado;
 				}
-				devuelto = algo.toString();
+				devuelto = aux.toString();
 				//Actualizo el contexto
 				ctx.actualizarContexto(devuelto.charAt(0));
 				
@@ -537,70 +537,74 @@ public class Lzp implements Compresor {
 				LOG.info("Cadena descomprimida: " + resultado);
 				ultCtx = resultado.substring(resultado.length() - 2);
 			}
-			//devuelto = motorAritCaracteres.descomprimir(cadena);
-			ctx = listaLongitudes.getContexto("");
-			ctx.actualizarProbabilidades();
-			//Comprimo la longitud
-			longitud = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena).toString();
-
-			
-			//longitud = motorAritLongitudes.descomprimir(cadena);
-			//longitud = cadena.substring(0, 1);
-			//cadena.delete(0, 1);
-			if (longitud == null){
-				ultIncompleto = 'L';
-				return resultado;
-			} else if ( Constantes.EOF.equals(longitud.charAt(0)) ){
-				finalizada = true;
-				return resultado;
-			}
-			
-			//Actualizo el contexto
-			ctx.actualizarContexto(longitud.charAt(0));
-			lon = CodePoint.getCodePoint(longitud.charAt(0));
-			
-			//int lon = Integer.parseInt(longitud);
-			
-			// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
-			// buscar match.
-			if (lon > 0) {
-					// Matchea con un contexto.
-				try {
-					posActual += 2 * lon;
-					archivoTrabajo.seek(archivoTrabajo.length());
-					//Escribo en el archivo temporal en unicode.
-					byte[] escAux = ultCtx.getBytes(Constantes.CHARSET_UTF16);
-					//Parece que el getBytes pone un /0 al final.
-					archivoTrabajo.write(escAux, 0, escAux.length);
-					LOG.info("busco contexto: " + ultCtx);
-					int pos = this.listaContextos.getPosicion(ultCtx);
-					archivoTrabajo.seek(pos);
-					// Cuanto leo?
-					
-					byte[] bytes = new byte[lon * Constantes.SIZE_OF_SHORT];
-					archivoTrabajo.read(bytes, 0, lon * Constantes.SIZE_OF_SHORT);
-					//ir replicando todos los cambios en la cadena, y luego 
-					//escribirlos en el archivo
-					devuelto = new String(bytes, Constantes.CHARSET_UTF16);
-					archivoTrabajo.seek(archivoTrabajo.length());
-					String persit = new String();
-					while (lon >0) {
-						if (devuelto.length() > lon){
-							persit += devuelto;
-							lon -= devuelto.length();
-						} else {
-							persit += devuelto.substring(0, lon);
-							lon = 0;
+			if ((ultIncompleto == null)||(ultIncompleto == 'L')) {
+				//devuelto = motorAritCaracteres.descomprimir(cadena);
+				ctx = listaLongitudes.getContexto("");
+				if (ultIncompleto == null) {
+					ctx.actualizarProbabilidades();
+				}
+				//Comprimo la longitud
+				Character aux = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena);
+	
+				
+				//longitud = motorAritLongitudes.descomprimir(cadena);
+				//longitud = cadena.substring(0, 1);
+				//cadena.delete(0, 1);
+				if (aux == null){
+					ultIncompleto = 'L';
+					return resultado;
+				} else if ( Constantes.EOF.equals(aux) ){
+					finalizada = true;
+					return resultado;
+				}
+				longitud = aux.toString();
+				//Actualizo el contexto
+				ctx.actualizarContexto(longitud.charAt(0));
+				lon = CodePoint.getCodePoint(longitud.charAt(0));
+				
+				//int lon = Integer.parseInt(longitud);
+				
+				// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
+				// buscar match.
+				if (lon > 0) {
+						// Matchea con un contexto.
+					try {
+						posActual += 2 * lon;
+						archivoTrabajo.seek(archivoTrabajo.length());
+						//Escribo en el archivo temporal en unicode.
+						byte[] escAux = ultCtx.getBytes(Constantes.CHARSET_UTF16);
+						//Parece que el getBytes pone un /0 al final.
+						archivoTrabajo.write(escAux, 0, escAux.length);
+						LOG.info("busco contexto: " + ultCtx);
+						int pos = this.listaContextos.getPosicion(ultCtx);
+						archivoTrabajo.seek(pos);
+						// Cuanto leo?
+						
+						byte[] bytes = new byte[lon * Constantes.SIZE_OF_SHORT];
+						archivoTrabajo.read(bytes, 0, lon * Constantes.SIZE_OF_SHORT);
+						//ir replicando todos los cambios en la cadena, y luego 
+						//escribirlos en el archivo
+						devuelto = new String(bytes, Constantes.CHARSET_UTF16);
+						archivoTrabajo.seek(archivoTrabajo.length());
+						String persit = new String();
+						while (lon >0) {
+							if (devuelto.length() > lon){
+								persit += devuelto;
+								lon -= devuelto.length();
+							} else {
+								persit += devuelto.substring(0, lon);
+								lon = 0;
+							}
 						}
+						//Escribo en el archivo temporal en unicode.
+						escAux = persit.getBytes(Constantes.CHARSET_UTF16);
+						//Parece que el getBytes pone un /0 al final.
+						archivoTrabajo.write(escAux, 0, escAux.length);
+						resultado += persit;
+					} catch (IOException e) {
+						//TODO: Hacer algo
+						e.printStackTrace();
 					}
-					//Escribo en el archivo temporal en unicode.
-					escAux = persit.getBytes(Constantes.CHARSET_UTF16);
-					//Parece que el getBytes pone un /0 al final.
-					archivoTrabajo.write(escAux, 0, escAux.length);
-					resultado += persit;
-				} catch (IOException e) {
-					//TODO: Hacer algo
-					e.printStackTrace();
 				}
 			}
 			LOG.info("Seteo contexto: " + ultCtx + " pos: " + posActual);
