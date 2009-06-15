@@ -155,7 +155,7 @@ public class CompresorConsola {
 				sb.append(binario);
 				String lineaDescom = null;
 
-				if (met == MetodoCompresion.ARIT) {
+				if (met == MetodoCompresion.ARIT || met == MetodoCompresion.ARIT1) {
 
 					lineaDescom = ((CompresorAritmetico) comp)
 							.StringCompleto(sb); // descomprimo
@@ -164,7 +164,7 @@ public class CompresorConsola {
 
 					lineaDescom = comp.descomprimir(sb);
 				}
-
+				
 				bw.write(lineaDescom);
 				sb.delete(0, sb.length());
 			}

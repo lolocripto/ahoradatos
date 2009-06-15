@@ -42,6 +42,10 @@ public class Ppmc implements Compresor{
 	private boolean finalizada;
 	
 	private boolean contextoPrevio;
+
+	private Integer ordenActual;
+
+	private String result;
 	
 	/**
 	 * Logger para la clase.
@@ -380,7 +384,7 @@ public class Ppmc implements Compresor{
 		
 		boolean llegoEOF = false;
 		String emision = "";
-		String result = "";
+		this.result = "";
 		
 		if (this.initSession) {
 			sessionCompresion = true;
@@ -393,14 +397,15 @@ public class Ppmc implements Compresor{
 				//Si es null entonces lo devuelvo porque necesito mas bits
 				//TODO: Buffer para manter los bits anteriores.
 				if (emision == null) {
-					return null;
+					this.bitsBuffer.append(datos);
+					return result;
 				}
 					
 				//Actualizo los contextos para la próxima recorrida.
 				this.actualizarOrdenes(emision.charAt(0));
 					
 				//FIXME: Imprimo los ordenes, es solo para debug. Por lo tanto borrarlo.
-				this.imprimirEstado();
+			//	this.imprimirEstado();
 				
 				this.logger.debug("Letra: " + emision.charAt(0) + ", Contexto: " + this.contextoActual);
 				
@@ -417,9 +422,8 @@ public class Ppmc implements Compresor{
 				this.bitsBuffer.append(datos);
 			}
 			
-			if (Constantes.EOF.equals(emision.charAt(0))) {
-				this.finalizada = true;
-			}
+			
+			this.finalizada = llegoEOF;
 			
 			return result;
 		} else {
@@ -447,7 +451,12 @@ public class Ppmc implements Compresor{
 	private final String recorrerContextosDescompresion(StringBuffer datos) {
 		
 		//Obtengo el largo del contexto para saber donde empiezo
-		int ordenContexto = this.contextoActual.length();
+		int ordenContexto;
+		if (this.ordenActual == null) {
+			ordenContexto = this.contextoActual.length();
+		} else {
+			ordenContexto = this.ordenActual;
+		}
 		//Obtengo mi contexto actual
 		String contextoString = this.contextoActual.substring(0, ordenContexto);
 		
@@ -466,7 +475,7 @@ public class Ppmc implements Compresor{
 			//Recorro los contextos
 			contexto = this.listaOrdenes.get(ordenContexto).getContexto(contextoString);
 			
-			if (contexto == null) {
+			if (contexto == null || contexto.getCantidadLetras() == 0) {
 				/*
 				 * No existe el contexto, por lo tanto emito ESC, lo agrego al contexto,
 				 * como el contexto no existia no tiene sentido usar exclusion completa,
@@ -482,6 +491,18 @@ public class Ppmc implements Compresor{
 				temp.add(par);
 				
 				emision = this.compresorAritmetico.descomprimir(temp, datos);
+				
+				//Valido la insuficiencia del buffer de bits
+				this.logger.debug("Cadena: " + datos + ", emite: " + emision);
+				if (emision == null) {
+					//Guardo Contexto string para la proxima
+					//ordenActual
+					this.ordenActual = ordenContexto;
+					return null;
+				} else {
+					//Seteo el ordenActual en null;
+					this.ordenActual = null;
+				}
 				
 				if (ordenContexto > 0){
 					ordenContexto--;
@@ -507,7 +528,18 @@ public class Ppmc implements Compresor{
 			nuevoOrdenContexto = this.calcularProbabilidadLista(nuevoOrdenContexto);
 			
 			emision = this.compresorAritmetico.descomprimir(nuevoOrdenContexto, datos);
-			
+
+			//Valido la insuficiencia del buffer de bits			
+			this.logger.debug("Cadena: " + datos + ", emite: " + emision);
+			if (emision == null) {
+				//Guardo Contexto string para la proxima
+				//ordenActual
+				this.ordenActual = ordenContexto;
+				return null;
+			} else {
+				//Seteo el ordenActual en null;
+				this.ordenActual = null;
+			}
 			if (Constantes.ESC.compareTo(emision) != 0) {
 				finalizarRecorrida = true;	
 				return emision.toString();
@@ -532,6 +564,18 @@ public class Ppmc implements Compresor{
 			nuevoOrdenContexto = this.calcularProbabilidadLista(nuevoOrdenContexto);
 			
 			emision = this.compresorAritmetico.descomprimir(nuevoOrdenContexto, datos);
+			
+			//Valido la insuficiencia del buffer de bits			
+			this.logger.debug("Cadena: " + datos + ", emite: " + emision);
+			if (emision == null) {
+				//Guardo Contexto string para la proxima
+				//ordenActual
+				this.ordenActual = ordenContexto;
+				return null;
+			} else {
+				//Seteo el ordenActual en null;
+				this.ordenActual = null;
+			}
 		}
 		
 		return emision.toString();
