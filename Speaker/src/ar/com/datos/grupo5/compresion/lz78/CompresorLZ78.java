@@ -195,15 +195,15 @@ public class CompresorLZ78 implements Compresor {
 		StringBuffer bitsAdescomprimir = new StringBuffer();
 		if (datoscomprimidos.length() < 16) {
 			this.bufferBits.append(datoscomprimidos);
-			System.out.println("guarda "+bufferBits);
+		//	System.out.println("guarda "+bufferBits);
 			
 			return new String();
 		}
 		else {
-			System.out.println("era   "+bufferBits);
-			System.out.println("erA "+datoscomprimidos+" long "+bitsAdescomprimir.length());
+		//	System.out.println("era   "+bufferBits);
+		//	System.out.println("erA "+datoscomprimidos+" long "+bitsAdescomprimir.length());
 			bitsAdescomprimir = bufferBits.append(datoscomprimidos);
-			System.out.println("quedo "+bitsAdescomprimir+" long "+bitsAdescomprimir.length());
+		//	System.out.println("quedo "+bitsAdescomprimir+" long "+bitsAdescomprimir.length());
 			bufferBits = new StringBuffer();
 		}
 			
@@ -224,7 +224,7 @@ public class CompresorLZ78 implements Compresor {
 						aux.append("0");
 					aux.append(bitsAdescomprimir);
 					bitsAdescomprimir = aux;
-					System.out.println("long "+bitsAdescomprimir.length()+"p"+posicion);	
+				//	System.out.println("long "+bitsAdescomprimir.length()+"p"+posicion);	
 					conversor.setBits(bitsAdescomprimir.substring(posicion,posicion+16));
 				}
 				else {
