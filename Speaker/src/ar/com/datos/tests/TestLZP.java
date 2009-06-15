@@ -56,7 +56,7 @@ public class TestLZP {
 		//TEST CON ARCHIVOS
 		Compresor comp = new Lzp();
 		comp.iniciarSesion();
-		((Lzp)comp).simular = false;
+		//((Lzp)comp).simular = true;
 		StringBuffer resultado = new StringBuffer();
 
 		FileInputStream fis = new FileInputStream("testLzp.txt");
