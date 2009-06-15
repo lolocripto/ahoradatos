@@ -1,5 +1,8 @@
 package ar.com.datos.grupo5.archivos;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,6 +12,8 @@ import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.CompresorFactory;
+import ar.com.datos.grupo5.compresion.conversionBitToByte;
+import ar.com.datos.grupo5.compresion.aritmetico.CompresorAritmetico;
 import ar.com.datos.grupo5.compresion.ppmc.Ppmc;
 import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.Compresor;
@@ -42,6 +47,8 @@ public class ArchivoDocs {
 	private RandomAccessFile archivoTemp;
 	
 	private File sourceArchivoTemp;
+	
+	private conversionBitToByte conversor;
 
 	/**
 	 * Atributo para administrar el nivel de logueo mediante Log4j.
@@ -119,6 +126,8 @@ public class ArchivoDocs {
 	public long documentToWrite(String nombre, MetodoCompresion metodoCompresion, long longitud){
 		
 		this.tipoCompresion = metodoCompresion;
+		
+		this.conversor = new conversionBitToByte();
 		
 		this.comp = CompresorFactory.getCompresor(this.tipoCompresion);
 		
@@ -301,7 +310,7 @@ public class ArchivoDocs {
 	public void escribirLinea(String linea){
 		
 		//la linea recibida si bien es una linea, no contiene el caracter de salto, lo agrego a mano
-		linea.concat("\\n");
+		linea = linea.concat("\n");
 		
 		if (this.tipoCompresion == MetodoCompresion.NINGUNO) 
 			this.escribirLineaSinCompresion(linea);
@@ -316,18 +325,21 @@ public class ArchivoDocs {
 	
 	private void escribirLineaComprimida(String linea){
 		try {
+			
 			//obtengo el string binario del compresor
 			String stringComprimido =this.comp.comprimir(linea);
 			
+			this.conversor.setBits(stringComprimido);
+			
 			//obtengo el array de bits para guardar
-			byte[] tirabits = Conversiones.BinaryStringToBytes(stringComprimido);
+			byte[] tirabits =  this.conversor.getBytes();
 			
 			//guardo la tira de bits
 			this.miArchivo.file.write(tirabits);
 			
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 	}
@@ -352,14 +364,26 @@ public class ArchivoDocs {
 			//obtengo el string binario del compresor
 			String stringComprimido =this.comp.finalizarSession();
 			
-			//obtengo el array de bits para guardar
-			byte[] tirabits = Conversiones.BinaryStringToBytes(stringComprimido);
+			//seteo los bits que obtengo 
+			this.conversor.setBits(stringComprimido);
 			
-			//guardo la tira de bits
-			this.miArchivo.file.write(tirabits);
+			//guardo los ultimos bits obtenidos
+			this.miArchivo.file.write(this.conversor.getBytes());
+			
+			this.escribirLongDoc();
+			
+			byte [] padding = this.conversor.finalizarConversion();
+			
+			if (padding != null){
+			
+			//pongo el padding final
+			this.miArchivo.file.write(padding);
 			
 			//guardo nuevamente la longitud del documento
 			this.escribirLongDoc();
+			
+			}
+			
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -426,6 +450,7 @@ public class ArchivoDocs {
 	 */
 	private void generarArchivoTemp (){
 
+		
 		try {
 			//genero el archivo temporal
 			this.sourceArchivoTemp = new File ("./descomp.temp");
@@ -439,16 +464,16 @@ public class ArchivoDocs {
 			
 			long estoyEn = this.miArchivo.file.getFilePointer();
 			
+			//instancio todos las estructuras
+			StringBuffer sb;
+			byte[] datos;
+			String binario;
+			String descomprimidos;
+			
 			//leo el archivo de documentos y genero el temporal
 			while (this.miArchivo.file.getFilePointer() < terminoEn){
 				
 				long bytesRestantes = terminoEn - this.miArchivo.file.getFilePointer();
-				
-				//instancio todos las estructuras
-				byte[] datos;
-				String binario;
-				String descomprimidos = new String();
-				StringBuffer sb = new StringBuffer();
 				
 				//me fijo si puedo leer 10 bytes, para que array tenga ese tamaño
 				//en caso contrario tendrá solo la cantidad restante
@@ -457,20 +482,25 @@ public class ArchivoDocs {
 				}else{
 					datos = new byte[(int)bytesRestantes];
 				}
-				
-				
-				
+
 				//leo 10 bytes del archivo
 				this.miArchivo.file.read(datos);
 				
 				//convierto los 10 bytes en un string binario
 				binario = Conversiones.arrayByteToBinaryString(datos);
 				
+				System.out.println(binario);
+				
 				//cargo ese string binario en un buffer
-				sb.append(binario);
+				sb = new StringBuffer(binario);
 				
 				//obtengo los datos descomprimidos
-				descomprimidos = this.comp.descomprimir(sb);
+				
+				if(this.tipoCompresion == MetodoCompresion.ARIT ){
+				descomprimidos = ((CompresorAritmetico)this.comp).StringCompleto(sb);
+				}else{
+					descomprimidos = this.comp.descomprimir(sb);
+				}
 			
 				//guardo en el temporal los datos en utf
 				this.archivoTemp.writeUTF(descomprimidos);

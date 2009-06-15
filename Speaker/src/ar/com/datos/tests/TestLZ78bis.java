@@ -13,7 +13,7 @@ public class TestLZ78bis {
 		//inicio sesion
 		comp.iniciarSesion();
 		
-		String cadena = "Hola diccionario complejo \n";
+		String cadena = "Hola diccionario complejo\n";
 		String cadena2 = "esto es una mierda no funciona";
 		
 		try {
@@ -25,6 +25,7 @@ public class TestLZ78bis {
 			binario += comp.finalizarSession();
 			System.out.println("quedo "+binario);
 			System.out.println("quedo de long "+binario.length());
+			System.out.println(binario);
 			
 			//descomprimo
 			comp.iniciarSesion();
@@ -33,16 +34,17 @@ public class TestLZ78bis {
 			StringBuffer sb = new StringBuffer ();
 			
 			//para simular el funcionamiento real le agrego solo algunos bytes
-			sb.append(binario.substring(0, 10));
+			sb.append(binario.substring(0, 15));
 			
 			//y descomprimo
+			
+			
 			String descomprimido = comp.descomprimir(sb);
 			
-			//despues le agrego el resto de los bytes
-			sb.append(binario.substring(10));
 			
+			sb = new StringBuffer(binario.substring(15));
 			//y descomprimo
-			descomprimido = comp.descomprimir(sb);
+			descomprimido += comp.descomprimir(sb);
 			
 			System.out.println(descomprimido);
 			

@@ -214,9 +214,10 @@ public class LogicaAritmetica {
 	 * @param contexto
 	 * @param binaryString
 	 * @return
+	 * @throws Exception 
 	 */
 	private ParCharProb segmentar(Collection<ParCharProb> contexto,
-			StringBuffer binaryString) {
+			StringBuffer binaryString) throws Exception {
 		
 		//Establezco el piso y el techo hasta el momento
 		UnsignedInt piso = this.intervalo.getPiso();
@@ -225,13 +226,26 @@ public class LogicaAritmetica {
 		UnsignedInt longitudInterv = techo.menos(piso);
 		
 		String V = "";
+		
+		try {
+		
 		//Valido si tengo que trabajar con una cadena normal o con una cadena con UndeFLow
 		if (!this.intervalo.estadoOverFlow() && this.intervalo.estadoUnderFlow()) {
-			//Si hay bits en UnderFlow es que no huvo overFlow!!! no bastaría con preguntar solo por underFlow? 
-			V = this.intervalo.generarCadenaSinUndeFlow(binaryString).substring(0, 32);
+			//Si hay bits en UnderFlow es que no hubo overFlow!!! no bastaría con preguntar solo por underFlow?
+				
+			String cadena = this.intervalo.generarCadenaSinUndeFlow(binaryString);
+			V = cadena.substring(0, 32);
+			
 		} else {
 			//Corto el valor de 32bits
 			V = binaryString.substring(0, 32);
+		}
+		
+		}catch(Exception e){
+			
+			//si al momento de hacer un substring no hay suficientes datos se lanza excepcion
+			throw new Exception();
+			
 		}
 		System.out.println("Techo:            "+techo.get32BitsRepresentation());
 		System.out.println("Cadena bits de V: "+V);
@@ -307,7 +321,13 @@ public class LogicaAritmetica {
 //		System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
 //		System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
 		// obtengo el segmento del espacio de probabilidades del contexto y luego busco el intervalo donde esta la letra
-		ParCharProb subIntervalo = this.segmentar(Contexto, cadenaBits);
+		ParCharProb subIntervalo;
+		try {
+			subIntervalo = this.segmentar(Contexto, cadenaBits);
+		} catch (Exception e) {
+			
+			return null;
+		}
 
 		// con el sub intervalo de la letra seleccionada, hago un zoom, es decir
 		// seteo los nuevos piso y techo del segmento mayor o espacio de

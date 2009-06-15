@@ -13,43 +13,24 @@ public class TestCompresorAritmetico2 {
 
 		CompresorAritmetico comp = new CompresorAritmetico(1,true);
 		
-		comp.iniciarSesion();
-		
-		String cadena ="Hola como estas\n";
-		String cadena2 ="Espero no del todo mal";
-		String bits;
-		
-		String cadenaRestaur;
-		
-		
 		try {
 			 
-			bits = comp.comprimir(cadena);
-			bits += comp.comprimir(cadena2);
-			bits += comp.finalizarSession();
-			
-		
-			//descomprimir
+		    //descomprimir
 			
 			comp.iniciarSesion();
 			
-			StringBuffer sb = new StringBuffer(bits.substring(0, 15));
+			String bits = "0100110000011100111001000001100100110001001111001000000010100100111010111110001110011011000000101101100111101111000001011101011101011011010110100101100100110000100100010000101110010111100010001001011011101001111100110100100001110011110010010101010011001101111101101001011110011100111010111100101101100010000010011010010000100110001100001111001111000111111110110010001001101101111001101100011100010011111010010001000000110001";
 			
-			cadenaRestaur = comp.StringCompleto(sb);
+			StringBuffer sb = new StringBuffer(bits);
 			
-			sb.append(bits.substring(15));
-			
-			cadenaRestaur += comp.StringCompleto(sb);
-			
-			cadenaRestaur += comp.finalizarSession();
-			
+			String cadenaRestaur = comp.StringCompleto(sb);
 			
 			System.out.println(cadenaRestaur);
 			
 			
 			
 			 
-		} catch (SessionException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

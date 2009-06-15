@@ -41,7 +41,6 @@ public class TestLZ78 {
 				compresorBIS.finalizarSession();
 				compresorBIS.iniciarSesion();
 		    	
-		    	
 		    }
 		    compresorBIS.finalizarSession();
 		} catch (SessionException e) {

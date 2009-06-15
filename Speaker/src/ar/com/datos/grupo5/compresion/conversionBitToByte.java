@@ -37,7 +37,7 @@ public class conversionBitToByte {
 	 * @param bits datos binarios.
 	 */
 	public final void setBits(String bits){
-		this.datosBinarios += bits; 
+		this.datosBinarios += bits;
 	}
 		
 	
@@ -272,7 +272,7 @@ public class conversionBitToByte {
 			beginIndex += Byte.SIZE;
 		}
 		
-		int faltante = this.datosBinarios.length() % (Byte.SIZE);
+		int faltante = 8-(this.datosBinarios.length() % (Byte.SIZE));
 		if (faltante > 0) {
 			this.completarByte(faltante);
 			Long elemento = Long.parseLong(this.datosBinarios.substring((int) (cantidad*Byte.SIZE)), 2);
