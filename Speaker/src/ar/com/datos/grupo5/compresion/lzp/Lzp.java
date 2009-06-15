@@ -512,14 +512,9 @@ public class Lzp implements Compresor {
 		while ( sigoDesc ) {
 			if ((ultIncompleto == null)||(ultIncompleto == 'C')) {
 				//devuelto = motorAritCaracteres.descomprimir(cadena);
-				this.LOG.debug("Variable resultado: " + resultado.substring(resultado.length() - 1));
 				ctx = caracteresContexto.getContexto(resultado.substring(resultado.length() - 1));
 				if (ultIncompleto == 'C') {
 					ctx.actualizarProbabilidades();
-					this.LOG.debug("Map: " + ctx);
-					//Comprimo la longitud
-					this.LOG.debug("Cadena: " + cadena);
-					this.LOG.debug("array: " + ctx.getArrayCharProb());
 				}
 				//FIXME::Sacar el algo que es temporal.
 				Character algo = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena);
