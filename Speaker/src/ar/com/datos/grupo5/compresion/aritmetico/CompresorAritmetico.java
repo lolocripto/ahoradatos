@@ -153,6 +153,17 @@ public class CompresorAritmetico implements Compresor {
 		
 		Character letra = this.motorAritmetico.descomprimir(temp, datos);
 		
+		
+		
+		if (letra == null){
+			
+			this.bitsBuffer = new StringBuffer(datos);
+			datos.delete(0, datos.length());
+			return null;
+		}
+		
+		
+		
 		ctx.actualizarContexto(letra);
 		
 		if (this.orden > 0) {
