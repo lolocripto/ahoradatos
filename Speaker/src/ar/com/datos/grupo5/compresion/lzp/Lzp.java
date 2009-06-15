@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+//import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -17,7 +17,7 @@ import ar.com.datos.grupo5.compresion.ppmc.Contexto;
 import ar.com.datos.grupo5.compresion.ppmc.Orden;
 import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.Compresor;
-import ar.com.datos.grupo5.utils.CodePoint;
+//import ar.com.datos.grupo5.utils.CodePoint;
 
 /**
  * @author Led Zeppelin
@@ -163,7 +163,7 @@ public class Lzp implements Compresor {
 				ctx = this.caracteresContexto.getContexto(letra.toString());
 			}
 			
-			Iterator<Character> it2 = Constantes.LISTA_CHARSET_LATIN.iterator();
+			//Iterator<Character> it2 = Constantes.LISTA_CHARSET_LATIN.iterator();
 			//Lleno el contexto
 			while (it.hasNext()) {
 				letra = it.next();
