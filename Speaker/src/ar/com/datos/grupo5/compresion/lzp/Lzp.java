@@ -146,6 +146,7 @@ public class Lzp implements Compresor {
 		for (int i = 0; i < 65534; i++) {
 			ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
 		}
+		ctx.crearCharEnContexto(Constantes.EOF);
 		
 		Iterator<Character> it = Constantes.LISTA_CHARSET_LATIN.iterator();
 		Character letra;
@@ -165,6 +166,7 @@ public class Lzp implements Compresor {
 				letra = it2.next();
 				ctx.crearCharEnContexto(letra);
 			}
+			ctx.crearCharEnContexto(Constantes.EOF);
 		}
 		
 	}
@@ -497,6 +499,7 @@ public class Lzp implements Compresor {
 				finalizada = true;
 				return resultado;
 			}
+
 			//Actualizo el contexto
 			ctx.actualizarContexto(devuelto.charAt(0));
 			
@@ -581,11 +584,11 @@ public class Lzp implements Compresor {
 		file.delete();
 		String result = "";
 		String result2 = "";
-		
+		Character letra;
+		Contexto ctx;
 		if (matchCompleto && esCompresion) {
 			
-			Character letra;
-			Contexto ctx;
+			
 			//Obtengo el contexto vacio
 			ctx = listaLongitudes.getContexto("");
 			
@@ -616,7 +619,18 @@ public class Lzp implements Compresor {
 			//result += motorAritLongitudes.finalizarSession();
 			//result += motorAritCaracteres.finalizarSession();
 		}
-		result += motorAritmetico.finalizarCompresion();
+		if (esCompresion) {
+			ctx = listaLongitudes.getContexto(ultCtx.substring(1, 2));
+			
+			ctx.actualizarProbabilidades();
+
+			//Comprimo la longitud
+			result += motorAritmetico.comprimir(ctx.getArrayCharProb(),Constantes.EOF);
+				
+			//Actualizo el contexto
+			ctx.actualizarContexto(Constantes.EOF);
+			result += motorAritmetico.finalizarCompresion();
+		}
 		
 		return simular?result2:result;
 	}
