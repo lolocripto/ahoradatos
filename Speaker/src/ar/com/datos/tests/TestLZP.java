@@ -59,7 +59,7 @@ public class TestLZP {
 		((Lzp)comp).simular = false;
 		StringBuffer resultado = new StringBuffer();
 
-		FileInputStream fis = new FileInputStream("testLzp.txt");
+		FileInputStream fis = new FileInputStream("poemasLzp.txt");
 		InputStreamReader isr = new InputStreamReader(fis, Constantes.CHARSET_UTF16);
 		BufferedReader buffer = new BufferedReader(isr);
 		
@@ -91,9 +91,13 @@ public class TestLZP {
 			start += largo;
 			if (start + largo < resultado.length()) {
 				res = resultado.substring(start, start + largo);
-			}
-			else {
-				res = resultado.substring(start);
+			} else {
+				try {
+					res = resultado.substring(start);
+				} catch (Exception e) {
+					// FIXME: ACA no deberia caer
+					break;
+				}
 			}
 		}
 		LOG.info(result + comp.finalizarSession());
