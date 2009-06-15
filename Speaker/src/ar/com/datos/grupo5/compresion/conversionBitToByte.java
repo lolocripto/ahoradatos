@@ -302,7 +302,6 @@ public class conversionBitToByte {
 		this.setCompletarA16Bits(false);
 	}
 
-
 	/**
 	 * @param completarA16Bits the completarA16Bits to set
 	 */

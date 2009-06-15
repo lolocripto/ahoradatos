@@ -91,8 +91,8 @@ public class LogicaAritmetica {
 	 */
 	public String comprimir(Collection<ParCharProb> Contexto, char Caracter) {
 		
-		System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
-		System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
+		//System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
+		//System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
 		// obtengo el segmento del espacio de probabilidades asociado a la letra
 		// que quiero emitir
 		ParCharProb subIntervalo = this.segmentar(Contexto, Caracter);
@@ -103,8 +103,8 @@ public class LogicaAritmetica {
 		this.intervalo.setPiso(subIntervalo.getPiso());
 		this.intervalo.setTecho(subIntervalo.getTecho());
 
-		System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
-		System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
+		//System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
+		//System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
 		
 		// con los nuevos piso y techo, estoy en condiciones de proceder a la
 		// normalizacion y emitir bits en el proceso.
@@ -146,9 +146,9 @@ public class LogicaAritmetica {
 			
 			V = binaryString.toString();
 		}
-		System.out.println("Techo:            "+techo.get32BitsRepresentation());
-		System.out.println("Cadena bits de V: "+V);
-		System.out.println("Piso:             "+piso.get32BitsRepresentation());
+		//System.out.println("Techo:            "+techo.get32BitsRepresentation());
+		//System.out.println("Cadena bits de V: "+V);
+		//System.out.println("Piso:             "+piso.get32BitsRepresentation());
 		
 		//Lo convierto a un entero sin signo.
 		UnsignedInt valor = new UnsignedInt(V);
@@ -206,6 +206,11 @@ public class LogicaAritmetica {
 		UnsignedInt techo = new UnsignedInt(elemActual.getTecho());
 		UnsignedInt piso = new UnsignedInt(elemActual.getPiso());
 		
+		//Puntero al bit analizado
+		int posBit = 0;
+		
+		
+		
 		return false;
 	}
 
@@ -240,16 +245,17 @@ public class LogicaAritmetica {
 			//Corto el valor de 32bits
 			V = binaryString.substring(0, 32);
 		}
-		
+
 		}catch(Exception e){
 			
 			//si al momento de hacer un substring no hay suficientes datos se lanza excepcion
 			throw new Exception();
 			
 		}
-		System.out.println("Techo:            "+techo.get32BitsRepresentation());
-		System.out.println("Cadena bits de V: "+V);
-		System.out.println("Piso:             "+piso.get32BitsRepresentation());
+		//System.out.println("Techo:            "+techo.get32BitsRepresentation());
+		//System.out.println("Cadena bits de V: "+V);
+		//System.out.println("Piso:             "+piso.get32BitsRepresentation());
+
 		//Lo convierto a un entero sin signo.
 		UnsignedInt valor = new UnsignedInt(V);
 
@@ -294,8 +300,8 @@ public class LogicaAritmetica {
 	
 	private boolean ValidarIntervalo(ParCharProb elemAnterior, UnsignedInt valor) {
 		if (elemAnterior.getPiso() <= valor.getLongAsociado() && elemAnterior.getTecho() >= valor.getLongAsociado()) {
-			System.out.println("Letra: "+elemAnterior.getSimboloUnicode()+" Piso: "+elemAnterior.getPiso());
-			System.out.println("Techo: "+elemAnterior.getTecho()+" Valor: "+valor.getLongAsociado());
+			//System.out.println("Letra: "+elemAnterior.getSimboloUnicode()+" Piso: "+elemAnterior.getPiso());
+			//System.out.println("Techo: "+elemAnterior.getTecho()+" Valor: "+valor.getLongAsociado());
 			return true;
 		}
 		return false;

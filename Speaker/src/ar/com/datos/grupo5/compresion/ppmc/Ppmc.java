@@ -38,6 +38,10 @@ public class Ppmc implements Compresor{
 	private boolean sessionCompresion;
 
 	private StringBuffer bitsBuffer;
+
+	private boolean finalizada;
+	
+	private boolean contextoPrevio;
 	
 	/**
 	 * Logger para la clase.
@@ -119,6 +123,9 @@ public class Ppmc implements Compresor{
 	 */
 	private final void getContexto(final String cadena, final int posicion){
 		//FIXME: Ver si es > o >=
+		if (this.contextoPrevio) {
+			this.contextoPrevio = false;
+		} else {
 		if (posicion > this.orden) {
 			//Obtengo un contexto de maximo orden
 			// casados -> pos = d => el contexto = casa
@@ -128,6 +135,7 @@ public class Ppmc implements Compresor{
 			//Obtengo un contexto parcial por no tener un contexto mayor
 			// casados -> pos = s => el contexto = ca
 			contextoActual = cadena.substring(0, posicion);
+		}
 		}
 	}
 	
@@ -139,14 +147,12 @@ public class Ppmc implements Compresor{
 	 */
 	public final String comprimir(final String cadena) throws SessionException{
 		int pos = 0;
+		this.tiraBits = "";
 		if (this.initSession) {
 			sessionCompresion = true;
 			while (pos < cadena.length() ) {
 				//Obtengo el contexto
 				this.getContexto(cadena, pos);
-				if (cadena.charAt(pos) == 'O') {
-					System.out.println("Pausa para ver la letra O");
-				}
 				//Recorro los contextos para las emisiones
 				this.recorrerContextos(cadena.charAt(pos));
 				//Actualizo los contextos para la próxima recorrida.
@@ -158,6 +164,7 @@ public class Ppmc implements Compresor{
 			}
 			//FIXME: Probar
 			this.getContexto(cadena, pos);
+			this.contextoPrevio = true;
 			return this.tiraBits;
 		} else {
 			throw new SessionException();
@@ -343,7 +350,7 @@ public class Ppmc implements Compresor{
 		//lo concateno con lo nuevo
 		if (this.bitsBuffer.length() > 0) {
 			datos.insert(0,this.bitsBuffer);
-			this.bitsBuffer = null;
+			this.bitsBuffer = new StringBuffer();
 		}
 		
 		//Si los datos del buffer mas los datos de entrada son menores
@@ -354,37 +361,46 @@ public class Ppmc implements Compresor{
 			return null;
 		}
 		
+		boolean llegoEOF = false;
 		String emision = "";
+		String result = "";
 		
-		int pos = 0;
 		if (this.initSession) {
 			sessionCompresion = true;
-				
-			//Recorro los contextos para las emisiones
-			emision = this.recorrerContextosDescompresion(datos);
 
-			if (emision.charAt(pos) == 'L') {
-				System.out.println("Pausa para ver la letra O");
+			while (datos.length() >= 32 && !llegoEOF ) {
+					
+				//Recorro los contextos para las emisiones
+				emision = this.recorrerContextosDescompresion(datos);
+	
+				//Si es null entonces lo devuelvo porque necesito mas bits
+				//TODO: Buffer para manter los bits anteriores.
+				if (emision == null) {
+					return null;
+				}
+					
+				//Actualizo los contextos para la próxima recorrida.
+				this.actualizarOrdenes(emision.charAt(0));
+					
+				//FIXME: Imprimo los ordenes, es solo para debug. Por lo tanto borrarlo.
+				this.imprimirEstado();
+				
+				this.logger.debug("Letra: " + emision.charAt(0) + ", Contexto: " + this.contextoActual);
+				
+				//Actualizo el contexto
+				this.actualizarContexto(emision);
+				result += emision;
+				llegoEOF = Constantes.EOF.equals(emision.charAt(0));				
+			}
+			if (datos.length() < 32) {
+				this.bitsBuffer.append(datos);
 			}
 			
-			//Si es null entonces lo devuelvo porque necesito mas bits
-			//TODO: Buffer para manter los bits anteriores.
-			if (emision == null) {
-				return null;
+			if (Constantes.EOF.equals(emision.charAt(0))) {
+				this.finalizada = true;
 			}
-				
-			//Actualizo los contextos para la próxima recorrida.
-			this.actualizarOrdenes(emision.charAt(0));
-				
-			//FIXME: Imprimo los ordenes, es solo para debug. Por lo tanto borrarlo.
-			this.imprimirEstado();
 			
-			this.logger.debug("Letra: " + emision.charAt(pos) + ", Contexto: " + this.contextoActual);
-			
-			//Actualizo el contexto
-			this.actualizarContexto(emision);
-			
-			return emision;
+			return result;
 		} else {
 			throw new SessionException();
 		}
@@ -502,7 +518,6 @@ public class Ppmc implements Compresor{
 	
 	@Override
 	public String finalizarSession() {
-		// TODO Auto-generated method stub
 		if (!this.initSession){
 			return "";
 		}
@@ -542,12 +557,13 @@ public class Ppmc implements Compresor{
 		this.initSession = true;
 		this.tiraBits = "";
 		this.bitsBuffer = new StringBuffer();
+		this.finalizada = true;
+		this.contextoPrevio = false;
 	}
 
 	@Override
 	public boolean isFinalizada() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.finalizada;
 	}
 	
 	private ArrayList<ParCharProb> calcularProbabilidadLista(ArrayList<ParCharProb> lista) {
@@ -563,7 +579,7 @@ public class Ppmc implements Compresor{
 		it = lista.iterator();
 		while (it.hasNext()) {
 			par = it.next();
-			par.setProbabilidad((double) par.getFrecuencia()/(double)cantidadElementos);
+			par.setProbabilidad((double) par.getFrecuencia()/(double) cantidadElementos);
 		}
 		return lista;
 	}

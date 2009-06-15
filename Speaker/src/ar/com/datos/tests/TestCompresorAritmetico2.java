@@ -24,12 +24,9 @@ public class TestCompresorAritmetico2 {
 			StringBuffer sb = new StringBuffer(bits);
 			
 			String cadenaRestaur = comp.StringCompleto(sb);
-			
+		
 			System.out.println(cadenaRestaur);
-			
-			
-			
-			 
+						 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
