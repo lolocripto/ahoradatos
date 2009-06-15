@@ -17,6 +17,7 @@ import ar.com.datos.grupo5.compresion.ppmc.Contexto;
 import ar.com.datos.grupo5.compresion.ppmc.Orden;
 import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.Compresor;
+import ar.com.datos.grupo5.utils.CodePoint;
 //import ar.com.datos.grupo5.utils.CodePoint;
 
 /**
@@ -244,7 +245,10 @@ if ( cadena.length() > 2) {
 			ctx.actualizarProbabilidades();
 			
 			letra = cadena.substring(1, 2).charAt(0);
+			
 			resultado += this.motorAritmetico.comprimir(ctx.getArrayCharProb(), letra);
+			
+			ctx.actualizarContexto(letra);
 			
 			if ( cadena.length() > 2) {
 				
@@ -255,6 +259,8 @@ if ( cadena.length() > 2) {
 				letra = cadena.charAt(2);
 				
 				resultado +=  motorAritmetico.comprimir(ctx.getArrayCharProb(), letra);
+				
+				ctx.actualizarContexto(letra);
 				
 				ultCtx = cadena.substring(1, 3);
 			} else {
@@ -302,6 +308,8 @@ if ( cadena.length() > 2) {
 		Integer posMatch = null;
 		String longitud = "0";
 		String caracter = "";
+		Contexto ctx;
+		Character letra;
 		
 		while (cadena.length() > 0) {
 
@@ -351,7 +359,35 @@ if ( cadena.length() > 2) {
 					listaContextos.setPosicion(ultCtx, posActual);
 				}
 			}
-			result.append(motorAritLongitudes.comprimir(longitud));
+			
+			//Obtengo el contexto vacio
+			ctx = listaLongitudes.getContexto("");
+			
+			ctx.actualizarProbabilidades();
+			letra = CodePoint.getChar(Integer.valueOf(longitud)));
+			//Comprimo la longitud
+			result.append(motorAritmetico.comprimir(ctx.getArrayCharProb(),letra);
+			
+			//Actualizo el contexto
+			ctx.actualizarContexto(letra);
+			
+			//Ahora voy por la letra
+			//Obtengo el contexto ultCtx[1]
+			
+			ctx = listaLongitudes.getContexto(ultCtx.substring(1,1));
+			
+			ctx.actualizarProbabilidades();
+
+			//Comprimo la longitud
+			result.append(motorAritmetico.comprimir(ctx.getArrayCharProb(),caracter));
+			
+			//Actualizo el contexto
+			ctx.actualizarContexto(CodePoint.getChar(Integer.valueOf(longitud)));
+			
+			
+//			caracteresContexto;
+			
+			//result.append(motorAritLongitudes.comprimir(longitud));
 			result.append(motorAritCaracteres.comprimir(caracter));
 			result2.append(longitud + caracter);
 		}
