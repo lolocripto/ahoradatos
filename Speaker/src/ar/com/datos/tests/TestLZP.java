@@ -77,12 +77,12 @@ public class TestLZP {
 		comp.iniciarSesion();
 		// Descomprimir en bucle
 		int start = 0;
-		//int largo = 40;
-		int largo = resultado.length();
+		int largo = 40;
+		//int largo = resultado.length();
 		String res = resultado.substring(start, start + largo);
 		String result = "";
-		result = comp.descomprimir(resultado);
-		res = null;
+		//result = comp.descomprimir(resultado);
+		//res = null;
 		StringBuffer Sbuffer = new StringBuffer();
 		while (res != null) {
 			Sbuffer.append(res);
