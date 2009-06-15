@@ -3,16 +3,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
 import java.util.Iterator;
-//import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.aritmetico.CompresorAritmetico;
 import ar.com.datos.grupo5.compresion.aritmetico.LogicaAritmetica;
-import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
 import ar.com.datos.grupo5.compresion.ppmc.Contexto;
 import ar.com.datos.grupo5.compresion.ppmc.Orden;
 import ar.com.datos.grupo5.excepciones.CodePointException;
@@ -112,12 +109,6 @@ public class Lzp implements Compresor {
 	 * Compresor aritmetica
 	 */
 	private LogicaAritmetica motorAritmetico;
-	
-	/**
-	 * Lista de ParCharProb
-	 */
-	private ArrayList<ParCharProb> listaParCharProb;
-
 	
 	/**
 	 * @return the finalizada
@@ -433,7 +424,6 @@ public class Lzp implements Compresor {
 		String longitud = "";
 		String devuelto = "";
 		Contexto ctx;
-		Character letra;
 		boolean sigoDesc = true;
 		//Si no hay nada aca, entonces es la primera iteracion.
 		if (listaContextos.size() == 0) {
@@ -450,13 +440,16 @@ public class Lzp implements Compresor {
 			
 			
 			//devuelto = motorAritCaracteres.descomprimir(cadena);
-			devuelto = String.valueOf(cadena.charAt(0));
+			//devuelto = String.valueOf(cadena.charAt(0));
 			ultCtx = devuelto;
 			
 			//Pide la letra 2
 			//devuelto = motorAritCaracteres.descomprimir(cadena);
-			devuelto = String.valueOf(cadena.charAt(1));
-			cadena.delete(0, 2);
+			//devuelto = String.valueOf(cadena.charAt(1));
+			devuelto = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena).toString();
+			//Actualizo el contexto
+			ctx.actualizarContexto(devuelto.charAt(0));
+			//cadena.delete(0, 2);
 			if (devuelto == null){
 				return ultCtx;
 			} else if ( devuelto.charAt(0) == Constantes.EOF ){
