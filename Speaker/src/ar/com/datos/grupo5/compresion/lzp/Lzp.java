@@ -156,13 +156,16 @@ public class Lzp implements Compresor {
 	
 			resultado = motorAritCaracteres.comprimir(cadena.substring(0,1));
 			resultado += motorAritCaracteres.comprimir(cadena.substring(1,2));
-			resultado += motorAritLongitudes.comprimir("0");
-			resultado +=  motorAritCaracteres.comprimir(String.valueOf(cadena.charAt(2)));
-			
-			resultado2 = ultCtx + "0" + String.valueOf(cadena.charAt(2));
-			
-			ultCtx = cadena.substring(1, 3);
-			
+			if ( cadena.length() > 2) {
+				resultado += motorAritLongitudes.comprimir("0");
+				resultado +=  motorAritCaracteres.comprimir(String.valueOf(cadena.charAt(2)));
+				
+				resultado2 = ultCtx + "0" + String.valueOf(cadena.charAt(2));
+				
+				ultCtx = cadena.substring(1, 3);
+			} else {
+				resultado2 = ultCtx;
+			}
 			//Saco los 3 primeros.
 			buffer.delete(0, 3);
 		}

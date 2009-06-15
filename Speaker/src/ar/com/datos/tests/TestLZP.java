@@ -59,13 +59,13 @@ public class TestLZP {
 		((Lzp)comp).simular = true;
 		StringBuffer resultado = new StringBuffer();
 
-		FileInputStream fis = new FileInputStream("testLzp2.txt");
+		FileInputStream fis = new FileInputStream("testLzp.txt");
 		InputStreamReader isr = new InputStreamReader(fis, Constantes.CHARSET_UTF16);
 		BufferedReader buffer = new BufferedReader(isr);
 		
 		String datos = buffer.readLine();
 		while (datos != null)  {
-			resultado.append(comp.comprimir(datos));
+			resultado.append(comp.comprimir(datos + "\n"));
 			datos = buffer.readLine();
 		}
 		resultado.append(comp.finalizarSession());
