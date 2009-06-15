@@ -44,7 +44,7 @@ public class ListaContextos {
 	 * elementos en el map. Tambien necesito 4 bytes para guardar la cantidad de
 	 * elementos que hay. Entonces puedo tener 511 elementos.
 	 */
-	private int maxCantidadPorPagina = 5;
+	private int maxCantidadPorPagina = 511;
 	
 	/**
 	 * 
