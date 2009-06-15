@@ -406,8 +406,12 @@ public class Ppmc implements Compresor{
 				
 				//Actualizo el contexto
 				this.actualizarContexto(emision);
-				result += emision;
-				llegoEOF = Constantes.EOF.equals(emision.charAt(0));				
+				llegoEOF = Constantes.EOF.equals(emision.charAt(0));
+				if (!llegoEOF) {
+					result += emision;	
+				}
+				
+								
 			}
 			if (datos.length() < 32) {
 				this.bitsBuffer.append(datos);
