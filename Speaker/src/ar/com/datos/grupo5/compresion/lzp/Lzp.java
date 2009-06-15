@@ -355,7 +355,7 @@ public class Lzp implements Compresor {
 
 	private void emitir(String caracter, String longitud, StringBuffer result) {
 		
-		Character letra = ' ';
+		Character letra = null;
 		Contexto ctx = null;
 		
 		//Obtengo el contexto vacio
@@ -584,39 +584,39 @@ public class Lzp implements Compresor {
 		
 		if (matchCompleto && esCompresion) {
 			
-				Character letra;
-				Contexto ctx;
-				//Obtengo el contexto vacio
-				ctx = listaLongitudes.getContexto("");
-				
-				ctx.actualizarProbabilidades();
-				
-				try {
-					
-					letra = CodePoint.getChar(longMatch);
-					//Comprimo la longitud
-					result += motorAritmetico.comprimir(ctx.getArrayCharProb(),letra);
-					
-					//Actualizo el contexto
-					ctx.actualizarContexto(letra);
-					
-					
-				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (CodePointException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				
-				//result += motorAritLongitudes.comprimir(String.valueOf(longMatch));
-				result2 = String.valueOf(longMatch);
+			Character letra;
+			Contexto ctx;
+			//Obtengo el contexto vacio
+			ctx = listaLongitudes.getContexto("");
 			
-			result += motorAritmetico.finalizarCompresion();
+			ctx.actualizarProbabilidades();
+			
+			try {
+				
+				letra = CodePoint.getChar(longMatch);
+				//Comprimo la longitud
+				result += motorAritmetico.comprimir(ctx.getArrayCharProb(),letra);
+				
+				//Actualizo el contexto
+				ctx.actualizarContexto(letra);
+				
+				
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (CodePointException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			//result += motorAritLongitudes.comprimir(String.valueOf(longMatch));
+			result2 = String.valueOf(longMatch);
+			
 			//result += motorAritLongitudes.finalizarSession();
 			//result += motorAritCaracteres.finalizarSession();
 		}
+		result += motorAritmetico.finalizarCompresion();
 		
 		return simular?result2:result;
 	}
