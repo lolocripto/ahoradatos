@@ -329,7 +329,7 @@ public class Lzp implements Compresor {
 						longitud = String.valueOf(longMatch + longMatchActual);
 						caracter = String.valueOf(cadena.charAt(0));
 						cadena.deleteCharAt(0);
-						posActual += ((longMatch + longMatchActual) * 2);
+						posActual += ((longMatch + longMatchActual) * 2) - 2;
 						longMatch = 0;
 					} else {
 						if (longMatch > 0) {
@@ -664,6 +664,7 @@ public class Lzp implements Compresor {
 			}
 		}
 		
+		listaContextos.listar();
 		return simular?result2:result;
 	}
 
