@@ -164,9 +164,9 @@ public class Segmento {
 		while (this.hayUnderflow()) {
 			this.trabajarUnderFlow();
 		}
-//		System.out.println("Luego de Normalizar:");
-//		System.out.println("Techo: " + Long.toHexString(new Long(this.techo.getLongAsociado())));
-//		System.out.println("Piso: " + Long.toHexString(new Long(this.piso.getLongAsociado())));
+	//	System.out.println("Luego de Normalizar:");
+	//	System.out.println("Techo: " + Long.toHexString(new Long(this.techo.getLongAsociado())));
+	//	System.out.println("Piso: " + Long.toHexString(new Long(this.piso.getLongAsociado())));
 		return emision;
 	}
 
