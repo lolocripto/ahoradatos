@@ -406,6 +406,7 @@ public class ArchivoDocs {
 			//obtengo el string binario del compresor
 			String stringComprimido =this.comp.finalizarSession();
 			
+			if (stringComprimido != null){
 			//seteo los bits que obtengo 
 			this.conversor.setBits(stringComprimido);
 			
@@ -414,6 +415,7 @@ public class ArchivoDocs {
 			
 			this.escribirLongDoc();
 			
+			}
 			byte [] padding = this.conversor.finalizarConversion();
 			
 			if (padding != null){
@@ -508,10 +510,11 @@ public class ArchivoDocs {
 			long estoyEn = this.miArchivo.file.getFilePointer();
 			
 			//instancio todos las estructuras
-			StringBuffer sb;
+			StringBuffer sb = new StringBuffer();
+			StringBuffer desc = new StringBuffer();
 			byte[] datos;
 			String binario;
-			String descomprimidos;
+			String descomprimidos = new String();
 			
 			//genero las estructuras necesarias para escirbir en utf16
 			
@@ -522,8 +525,8 @@ public class ArchivoDocs {
 				
 				//me fijo si puedo leer 10 bytes, para que array tenga ese tamaño
 				//en caso contrario tendrá solo la cantidad restante
-				if (bytesRestantes > 10){
-					datos = new byte[10];
+				if (bytesRestantes > 150){
+					datos = new byte[150];
 				}else{
 					datos = new byte[(int)bytesRestantes];
 				}
@@ -532,24 +535,27 @@ public class ArchivoDocs {
 				this.miArchivo.file.read(datos);
 				
 				//convierto los 10 bytes en un string binario
+				
+				
 				binario = Conversiones.arrayByteToBinaryString(datos);
 				
 			//	System.out.println(binario);
 				
 				//cargo ese string binario en un buffer
-				sb = new StringBuffer(binario);
+				sb.append(binario);
 				
 				//obtengo los datos descomprimidos
 				
 				if(this.tipoCompresion == MetodoCompresion.ARIT ){
-				descomprimidos = ((CompresorAritmetico)this.comp).StringCompleto(sb);
+				desc.append(((CompresorAritmetico)this.comp).StringCompleto(sb));
 				}else{
-					descomprimidos = this.comp.descomprimir(sb);
+					desc.append(this.comp.descomprimir(sb));
 				}
 			
 				//guardo en el temporal los datos en utf
+				this.guardarEnSalto(this.archivoTemp, desc);
+				sb.delete(0, sb.length());
 				
-				this.archivoTemp.writeUTF(descomprimidos);
 			}
 			
 		
@@ -563,6 +569,31 @@ public class ArchivoDocs {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	
+	/**
+	 * Permite guardar en el archivo temporal los string obtenidos de la descompresion
+	 * pero de forma tal que no se corten las palabras.
+	 * @param archivo
+	 * @param linea
+	 */
+	private void guardarEnSalto(RandomAccessFile archivo, StringBuffer linea){
+		
+		int ultimaAparicionEspacio = linea.lastIndexOf("\n");
+		
+		if (ultimaAparicionEspacio != -1 ){
+		try {
+			archivo.writeUTF(linea.substring(0, ultimaAparicionEspacio));
+			linea.delete(0, ultimaAparicionEspacio);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+		
+		
+		
 	}
 	
 			
