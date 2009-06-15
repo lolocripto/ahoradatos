@@ -73,16 +73,25 @@ public class Core {
 	
 	/** 
 	 * Permite al usuario agregar un documento sin especificar el compresor a utilizar
-	 * utilizando el compresor por defecto definido en la configuracion.
-	 * @param invocador
-	 * @param pathDocumento
-	 * @return
+	 * utilizando el compresor por defecto definido en la configuracion. La carga del 
+	 * documento se realizará sin la carga de audio.
+	 * @param invocador Comunicación con el usuario
+	 * @param pathDocumento Dirección del archivo que se leerá
+	 * @return String con mensaje del resultado final.
 	 */
 	public final String loadWithoutAudio(final InterfazUsuario invocador,
 			final String pathDocumento) {
 		return this.loadWithoutAudio(invocador, pathDocumento, this.metodo);
 	}
 	
+	/** 
+	 * Permite al usuario agregar un documento utilizando el compresor definido por el usuario. 
+	 * La carga del documento se realizará sin la carga de audio.
+	 * @param invocador Comunicación con el usuario
+	 * @param pathDocumento Dirección del archivo que se leerá
+	 * @param metodoExt Método de compresión elegido por el usuario.
+	 * @return String con mensaje del resultado final.
+	 */
 	public final String loadWithoutAudio(final InterfazUsuario invocador,
 			final String pathDocumento, final String metodoExt) {
 		logger.debug("Entre en loadWithAudio");
@@ -92,8 +101,9 @@ public class Core {
 		
 		if (met == null){
 			DocumentsManager.getInstance().setTipoCompresion(this.metodo);
+			invocador.mensaje("Método de compresión no se reconoce, se utilizará: " + this.metodo);
 		} else {
-			DocumentsManager.getInstance().setTipoCompresion(metodoExt);			
+			DocumentsManager.getInstance().setTipoCompresion(metodoExt);	
 		}
 		
 		try {
@@ -168,6 +178,7 @@ public class Core {
 		
 		if (met == null){
 			DocumentsManager.getInstance().setTipoCompresion(this.metodo);
+			invocador.mensaje("Método de compresión no se reconoce, se utilizará: " + this.metodo);
 		} else {
 			DocumentsManager.getInstance().setTipoCompresion(metodoExt);			
 		}
