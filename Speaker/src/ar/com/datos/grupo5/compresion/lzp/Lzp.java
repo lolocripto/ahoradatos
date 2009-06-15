@@ -15,6 +15,7 @@ import ar.com.datos.grupo5.compresion.aritmetico.LogicaAritmetica;
 import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
 import ar.com.datos.grupo5.compresion.ppmc.Contexto;
 import ar.com.datos.grupo5.compresion.ppmc.Orden;
+import ar.com.datos.grupo5.excepciones.CodePointException;
 import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.Compresor;
 import ar.com.datos.grupo5.utils.CodePoint;
@@ -132,6 +133,9 @@ public class Lzp implements Compresor {
 		motorAritCaracteres.iniciarSesion();
 		motorAritLongitudes.iniciarSesion();
 		ultCtx = "";
+		motorAritmetico = new LogicaAritmetica();
+		listaLongitudes = new Orden();
+		caracteresContexto = new Orden();
 		try {
 			listaContextos = new ListaContextos();
 			archivoTrabajo = new RandomAccessFile(ARCHIVO_TRABAJO, "rw");
@@ -309,7 +313,7 @@ if ( cadena.length() > 2) {
 		String longitud = "0";
 		String caracter = "";
 		Contexto ctx;
-		Character letra;
+		Character letra = ' ';
 		
 		while (cadena.length() > 0) {
 
@@ -364,9 +368,19 @@ if ( cadena.length() > 2) {
 			ctx = listaLongitudes.getContexto("");
 			
 			ctx.actualizarProbabilidades();
-			letra = CodePoint.getChar(Integer.valueOf(longitud)));
+			
+			try {
+				letra = CodePoint.getChar(Integer.valueOf(longitud));
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (CodePointException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			//Comprimo la longitud
-			result.append(motorAritmetico.comprimir(ctx.getArrayCharProb(),letra);
+			result.append(motorAritmetico.comprimir(ctx.getArrayCharProb(),letra));
 			
 			//Actualizo el contexto
 			ctx.actualizarContexto(letra);
@@ -374,21 +388,21 @@ if ( cadena.length() > 2) {
 			//Ahora voy por la letra
 			//Obtengo el contexto ultCtx[1]
 			
-			ctx = listaLongitudes.getContexto(ultCtx.substring(1,1));
+			ctx = caracteresContexto.getContexto(ultCtx.substring(1,2));
 			
 			ctx.actualizarProbabilidades();
 
 			//Comprimo la longitud
-			result.append(motorAritmetico.comprimir(ctx.getArrayCharProb(),caracter));
+			result.append(motorAritmetico.comprimir(ctx.getArrayCharProb(),caracter.charAt(0)));
 			
 			//Actualizo el contexto
-			ctx.actualizarContexto(CodePoint.getChar(Integer.valueOf(longitud)));
+			ctx.actualizarContexto(caracter.charAt(0));
 			
 			
 //			caracteresContexto;
 			
 			//result.append(motorAritLongitudes.comprimir(longitud));
-			result.append(motorAritCaracteres.comprimir(caracter));
+			//result.append(motorAritCaracteres.comprimir(caracter));
 			result2.append(longitud + caracter);
 		}
 		
@@ -553,15 +567,38 @@ if ( cadena.length() > 2) {
 		
 		if (matchCompleto && esCompresion) {
 			
-			try {
-				result += motorAritLongitudes.comprimir(String.valueOf(longMatch));
+				Character letra;
+				Contexto ctx;
+				//Obtengo el contexto vacio
+				ctx = listaLongitudes.getContexto("");
+				
+				ctx.actualizarProbabilidades();
+				
+				try {
+					
+					letra = CodePoint.getChar(longMatch);
+					//Comprimo la longitud
+					result += motorAritmetico.comprimir(ctx.getArrayCharProb(),letra);
+					
+					//Actualizo el contexto
+					ctx.actualizarContexto(letra);
+					
+					
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (CodePointException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				//result += motorAritLongitudes.comprimir(String.valueOf(longMatch));
 				result2 = String.valueOf(longMatch);
-			} catch (SessionException e) {
-				e.printStackTrace();
-			}
 			
-			result += motorAritLongitudes.finalizarSession();
-			result += motorAritCaracteres.finalizarSession();
+			result += motorAritmetico.finalizarCompresion();
+			//result += motorAritLongitudes.finalizarSession();
+			//result += motorAritCaracteres.finalizarSession();
 		}
 		
 		return simular?result2:result;
@@ -574,6 +611,10 @@ if ( cadena.length() > 2) {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		motorAritmetico = new LogicaAritmetica();
+		listaLongitudes = new Orden();
+		caracteresContexto = new Orden();
+
 		motorAritCaracteres = new CompresorAritmetico(1, true);
 		motorAritLongitudes = new CompresorAritmetico(0, false);
 		motorAritCaracteres.iniciarSesion();
