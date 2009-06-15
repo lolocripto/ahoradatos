@@ -427,15 +427,28 @@ public class Lzp implements Compresor {
 		String resultado = "";
 		String longitud = "";
 		String devuelto = "";
+		Contexto ctx;
+		Character letra;
 		boolean sigoDesc = true;
 		//Si no hay nada aca, entonces es la primera iteracion.
 		if (listaContextos.size() == 0) {
 			// Reseteo el ultimo contexto
 			ultCtx = "";
+			
+			//Pide el primer caracter con contexto \b
+			ctx = caracteresContexto.getContexto("\b");
+			ctx.actualizarProbabilidades();
+			//Comprimo la longitud
+			devuelto = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena).toString();
+			//Actualizo el contexto
+			ctx.actualizarContexto(devuelto.charAt(0));
+			
+			
 			//devuelto = motorAritCaracteres.descomprimir(cadena);
 			devuelto = String.valueOf(cadena.charAt(0));
 			ultCtx = devuelto;
 			
+			//Pide la letra 2
 			//devuelto = motorAritCaracteres.descomprimir(cadena);
 			devuelto = String.valueOf(cadena.charAt(1));
 			cadena.delete(0, 2);
