@@ -576,6 +576,7 @@ public class Ppmc implements Compresor{
 		this.bitsBuffer = new StringBuffer();
 		this.finalizada = true;
 		this.contextoPrevio = false;
+		this.contextoActual = new String();
 	}
 
 	@Override
