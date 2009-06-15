@@ -81,12 +81,18 @@ public class TestLZP {
 		int largo = resultado.length();
 		String res = resultado.substring(start, start + largo);
 		String result = "";
-		result += comp.descomprimir(new StringBuffer(resultado));
-//		while (res != null) {
-//			result += comp.descomprimir(new StringBuffer(res));
-//			start += largo;
-//			res += resultado.substring(start, start + largo);
-//		}
+		//result += comp.descomprimir(new StringBuffer(resultado));
+		while (res != null) {
+			result += comp.descomprimir(new StringBuffer(res));
+			start += largo;
+			if (start + largo < resultado.length()) {
+				result += resultado.substring(start, start + largo);
+			}
+			else {
+				result += resultado.substring(start);
+				res = null;
+			}
+		}
 		LOG.info(result + comp.finalizarSession());
 		buffer.close();
 		isr.close();
