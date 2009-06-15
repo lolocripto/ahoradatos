@@ -506,7 +506,7 @@ public class Lzp implements Compresor {
 			ctx = listaLongitudes.getContexto("");
 			ctx.actualizarProbabilidades();
 			//Comprimo la longitud
-			devuelto = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena).toString();
+			longitud = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena).toString();
 
 			
 			//longitud = motorAritLongitudes.descomprimir(cadena);
@@ -520,7 +520,7 @@ public class Lzp implements Compresor {
 			}
 			
 			//Actualizo el contexto
-			ctx.actualizarContexto(devuelto.charAt(0));
+			ctx.actualizarContexto(longitud.charAt(0));
 			int lon = CodePoint.getCodePoint(longitud.charAt(0));
 			
 			//int lon = Integer.parseInt(longitud);
