@@ -510,6 +510,7 @@ public class Lzp implements Compresor {
 				//cadena.delete(0, 1);
 				if (aux == null){
 					ultIncompleto = 'C';
+					ultCtx = resultado.substring(resultado.length() - 2);
 					return resultado;
 				//} else if ( Constantes.EOF.equals(algo.charAt(0)) ) {
 				} else if ( Constantes.EOF.equals(aux) ) {				
@@ -539,6 +540,7 @@ public class Lzp implements Compresor {
 				//cadena.delete(0, 1);
 				if (aux == null){
 					ultIncompleto = 'L';
+					ultCtx = resultado.substring(resultado.length() - 2);
 					return resultado;
 				} else if ( Constantes.EOF.equals(aux) ){
 					finalizada = true;
