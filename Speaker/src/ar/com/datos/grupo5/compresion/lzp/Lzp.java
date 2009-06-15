@@ -129,7 +129,6 @@ public class Lzp implements Compresor {
 	public Lzp(){
 		motorAritCaracteres = new CompresorAritmetico(1, true);
 		motorAritLongitudes = new CompresorAritmetico(0, false);
-		iniciarOrdenes();
 		motorAritCaracteres.iniciarSesion();
 		motorAritLongitudes.iniciarSesion();
 		ultCtx = "";
@@ -614,7 +613,7 @@ if ( cadena.length() > 2) {
 		motorAritmetico = new LogicaAritmetica();
 		listaLongitudes = new Orden();
 		caracteresContexto = new Orden();
-
+		iniciarOrdenes();
 		motorAritCaracteres = new CompresorAritmetico(1, true);
 		motorAritLongitudes = new CompresorAritmetico(0, false);
 		motorAritCaracteres.iniciarSesion();
