@@ -537,6 +537,7 @@ public class Lzp implements Compresor {
 					ctx.actualizarProbabilidades();
 				} else {
 					ultIncompleto = null;
+					resultado = ultCtx;
 				}
 				//Comprimo la longitud
 				Character aux = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena);
