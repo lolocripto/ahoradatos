@@ -695,7 +695,7 @@ public class Lzp implements Compresor {
 		int leidos = 0;
 		// Voy a la posicion en la cual puede haber un match.
 		archivoTrabajo.seek(pos);
-		LOG.info("Me posiciono en el archivo temporal: " + pos);
+		//LOG.info("Me posiciono en el archivo temporal: " + pos);
 		int longitudMatch = 0;
 		String charsLeidos = "";
 		matchCompleto = false;
@@ -708,7 +708,7 @@ public class Lzp implements Compresor {
 			
 			//Me armo un string con los datos leidos en UNICODE.
 			charsLeidos = new String(datos, Constantes.CHARSET_UTF16);
-			LOG.info("Lei del temporal: " + charsLeidos);
+			//LOG.info("Lei del temporal: " + charsLeidos);
 			for (int i = 0; i < charsLeidos.length() && i < cadena.length(); i++) {
 				if (charsLeidos.charAt(i) == cadena.charAt(i)) {
 					longitudMatch++;
