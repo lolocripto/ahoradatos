@@ -240,7 +240,7 @@ public class Core {
 		if (met == null){
 			
 			invocador.mensaje("no se reconoce el tipo de compresion, intente con alguno de los siguientes:");
-			invocador.mensaje("ppmc, aritmetico, lzp, lz78, ninguno");
+			invocador.mensaje("ppmc, aritmetico, lzp, lz78");
 			return null;
 			
 		}else{
@@ -275,7 +275,7 @@ public class Core {
 		if (met == null){
 			
 			invocador.mensaje("no se reconoce el tipo de compresion, intente con alguno de los siguientes:");
-			invocador.mensaje("ppmc, aritmetico, lzp, lz78, ninguno");
+			invocador.mensaje("ppmc, aritmetico, lzp, lz78");
 			return null;
 			
 		}else{
