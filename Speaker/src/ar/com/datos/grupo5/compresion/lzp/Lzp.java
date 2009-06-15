@@ -488,8 +488,6 @@ public class Lzp implements Compresor {
 			ctx.actualizarProbabilidades();
 			//Comprimo la longitud
 			devuelto = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena).toString();
-			//Actualizo el contexto
-			ctx.actualizarContexto(devuelto.charAt(0));
 			
 			//devuelto = cadena.substring(0,1);
 			//cadena.delete(0, 1);
@@ -499,6 +497,9 @@ public class Lzp implements Compresor {
 				finalizada = true;
 				return resultado;
 			}
+			//Actualizo el contexto
+			ctx.actualizarContexto(devuelto.charAt(0));
+			
 			resultado += devuelto;
 			ultCtx = resultado.substring(resultado.length() - 2);
 			
