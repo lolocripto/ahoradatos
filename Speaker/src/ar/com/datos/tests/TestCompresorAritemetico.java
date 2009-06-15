@@ -19,7 +19,7 @@ public class TestCompresorAritemetico {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-		CompresorAritmetico compressOrder0 = new CompresorAritmetico(0, true);
+		CompresorAritmetico compressOrder0 = new CompresorAritmetico(0, false);
 		
 		//CompresorAritmetico compressOrder1 = new CompresorAritmetico(1, true);
 		String cadena = "TATATAAAAALO dllfdfasdf faskdf dsgñkjqpioq adsfkjadsfñoikj \tadsfñkjadsf \rñkdf wjgnñpaskd\n";

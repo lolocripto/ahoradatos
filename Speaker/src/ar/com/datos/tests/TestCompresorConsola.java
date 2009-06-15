@@ -21,8 +21,9 @@ public class TestCompresorConsola {
 		String archivoComp = "./poemasComp.comp";
 		String destinoDescomp = "./poemasDesc.txt";
 		
-	//	CompresorConsola.comprimir(MetodoCompresion.ARIT, archivoPlano, archivoComp);
-	
+
+		CompresorConsola.comprimir(MetodoCompresion.PPMC, archivoPlano, archivoComp);
+
 		CompresorConsola.descomprimir(MetodoCompresion.ARIT, archivoComp, destinoDescomp);
 		
 		
