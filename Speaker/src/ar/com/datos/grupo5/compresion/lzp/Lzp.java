@@ -234,22 +234,35 @@ if ( cadena.length() > 2) {
 			ctx = caracteresContexto.getContexto("\b");
 			ctx.actualizarProbabilidades();
 			
-			listaParCharProb = new ArrayList<ParCharProb>();
-			listaParCharProb.addAll(ctx.getArrayCharProb());
-			
 			letra = cadena.substring(0, 1).charAt(0);
-			resultado = motorAritmetico.comprimir(listaParCharProb, letra);
+			resultado = motorAritmetico.comprimir(ctx.getArrayCharProb(), letra);
 			
-			ctx.actualizarContexto(cadena.substring(0, 1).charAt(0));
+			ctx.actualizarContexto(letra);
 			
 			ctx = this.caracteresContexto.getContexto(letra.toString());
 			
-			listaParCharProb = new ArrayList<ParCharProb>();
-			listaParCharProb.addAll(ctx.getArrayCharProb());
+			ctx.actualizarProbabilidades();
 			
-			resultado += this.motorAritmetico.comprimir(listaParCharProb, cadena.substring(1, 2).charAt(0));
+			letra = cadena.substring(1, 2).charAt(0);
+			resultado += this.motorAritmetico.comprimir(ctx.getArrayCharProb(), letra);
 			
-			
+			if ( cadena.length() > 2) {
+				
+				ctx = caracteresContexto.getContexto(letra.toString());
+				
+				ctx.actualizarProbabilidades();
+				listaParCharProb = new ArrayList<ParCharProb>();
+				listaParCharProb.addAll(ctx.getArrayCharProb());
+				
+				
+				resultado +=  motorAritCaracteres.comprimir(String.valueOf(cadena.charAt(2)));
+				
+				resultado2 = ultCtx + "0" + String.valueOf(cadena.charAt(2));
+				
+				ultCtx = cadena.substring(1, 3);
+			} else {
+				resultado2 = ultCtx;
+			}
 
 			//Saco los 3 primeros.
 			buffer.delete(0, 3);
