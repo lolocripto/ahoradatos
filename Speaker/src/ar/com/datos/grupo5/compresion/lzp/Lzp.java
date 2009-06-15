@@ -3,11 +3,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.aritmetico.CompresorAritmetico;
+import ar.com.datos.grupo5.compresion.aritmetico.LogicaAritmetica;
+import ar.com.datos.grupo5.compresion.aritmetico.ParCharProb;
+import ar.com.datos.grupo5.compresion.ppmc.Contexto;
+import ar.com.datos.grupo5.compresion.ppmc.Orden;
 import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.Compresor;
 import ar.com.datos.grupo5.utils.CodePoint;
@@ -90,6 +97,21 @@ public class Lzp implements Compresor {
 	private boolean esCompresion = true;
 	
 	/**
+	 * Lista con longitudes 
+	 */
+	private Orden listaLongitudes;
+	
+	/**
+	 * Caracteres con contexto
+	 */
+	private Orden caracteresContexto;
+	
+	/**
+	 * Compresor aritmetica
+	 */
+	private LogicaAritmetica motorAritmetico;
+	
+	/**
 	 * @return the finalizada
 	 */
 	@Override
@@ -100,6 +122,7 @@ public class Lzp implements Compresor {
 	public Lzp(){
 		motorAritCaracteres = new CompresorAritmetico(1, true);
 		motorAritLongitudes = new CompresorAritmetico(0, false);
+		iniciarOrdenes();
 		motorAritCaracteres.iniciarSesion();
 		motorAritLongitudes.iniciarSesion();
 		ultCtx = "";
@@ -112,6 +135,37 @@ public class Lzp implements Compresor {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void iniciarOrdenes() {
+	
+		//Cargo la lista de letras con contextos
+		this.listaLongitudes.crearContexto("");
+		Contexto ctx = this.listaLongitudes.getContexto("");
+		for (int i = 0; i < 65534; i++) {
+			ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
+		}
+		
+		Iterator<Character> it = Constantes.LISTA_CHARSET_LATIN.iterator();
+		Character letra;
+		while (it.hasNext()) {
+			letra = it.next();
+			//Verifica que exista el contexto
+			if (!this.caracteresContexto.existeContexto(letra.toString())) {
+				this.caracteresContexto.crearContexto(letra.toString());
+				ctx = this.caracteresContexto.getContexto(letra.toString());
+			} else {
+				ctx = this.caracteresContexto.getContexto(letra.toString());
+			}
+			
+			Iterator<Character> it2 = Constantes.LISTA_CHARSET_LATIN.iterator();
+			//Lleno el contexto
+			while (it.hasNext()) {
+				letra = it.next();
+				ctx.crearCharEnContexto(letra);
+			}
+		}
+		
 	}
 
 	/**
@@ -154,9 +208,10 @@ public class Lzp implements Compresor {
 			listaContextos.setPosicion(ultCtx, 4);
 			posActual = 4;
 	
+			/*
 			resultado = motorAritCaracteres.comprimir(cadena.substring(0,1));
 			resultado += motorAritCaracteres.comprimir(cadena.substring(1,2));
-			if ( cadena.length() > 2) {
+if ( cadena.length() > 2) {
 				resultado += motorAritLongitudes.comprimir("0");
 				resultado +=  motorAritCaracteres.comprimir(String.valueOf(cadena.charAt(2)));
 				
@@ -166,6 +221,18 @@ public class Lzp implements Compresor {
 			} else {
 				resultado2 = ultCtx;
 			}
+			*/
+			
+			ArrayList<ParCharProb> temp = new ArrayList<ParCharProb>();
+			temp.addAll(this.caracteresContexto.getContexto("\b").getArrayCharProb());
+			resultado = this.motorAritmetico.comprimir(temp, cadena.substring(0, 1).charAt(0));
+			
+			this.caracteresContexto.getContexto("\b");
+			
+			resultado += this.motorAritmetico.comprimir(temp, cadena.substring(1, 2).charAt(0));
+			
+			
+
 			//Saco los 3 primeros.
 			buffer.delete(0, 3);
 		}
