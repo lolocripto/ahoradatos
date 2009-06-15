@@ -440,11 +440,6 @@ public class Core {
 			+ "Uso: comprimir <\"metodo_para_comprimir\"> <\"path_archivo_origen\"> <\"path_archivo_destino\"> \n"
 			+ "Ej: comprimir \"lzp\" \"/home/usuario/Escritorio/prueba.txt\" \"/home/usuario/Escritorio/pruebaComprimida.tsp\" \n\n"
 			
-			+ "Funcion: comprimir\n"
-			+ "Caracteristicas: Comprime un archivo según el método elegido. \n"
-			+ "Uso: comprimir <\"metodo_para_comprimir\"> <\"path_archivo_origen\"> <\"path_archivo_destino\"> \n"
-			+ "Ej: comprimir \"lzp\" \"/home/usuario/Escritorio/prueba.txt\" \"/home/usuario/Escritorio/pruebaComprimida.tsp\" \n\n"
-			
 			+ "Funcion: descomprimir\n"
 			+ "Caracteristicas: Descomprime un archivo según el método elegido. \n"
 			+ "Uso: descomprimir <\"metodo_para_descomprimir\"> <\"path_archivo_origen\"> <\"path_archivo_destino\"> \n"
