@@ -112,6 +112,11 @@ public class Lzp implements Compresor {
 	private LogicaAritmetica motorAritmetico;
 	
 	/**
+	 * Lista de ParCharProb
+	 */
+	
+	ArrayList<ParCharProb> listaParCharProb;
+	/**
 	 * @return the finalizada
 	 */
 	@Override
@@ -193,7 +198,10 @@ public class Lzp implements Compresor {
 		esCompresion = true;
 		String resultado = "";
 		String resultado2 = "";
+		Contexto ctx;
 
+		Character letra;
+		
 		//Trabajar con un StringBuffer es mas rapido.
 		StringBuffer buffer = new StringBuffer(cadena);
 		
@@ -223,13 +231,23 @@ if ( cadena.length() > 2) {
 			}
 			*/
 			
-			ArrayList<ParCharProb> temp = new ArrayList<ParCharProb>();
-			temp.addAll(this.caracteresContexto.getContexto("\b").getArrayCharProb());
-			resultado = this.motorAritmetico.comprimir(temp, cadena.substring(0, 1).charAt(0));
+			ctx = caracteresContexto.getContexto("\b");
+			ctx.actualizarProbabilidades();
 			
-			this.caracteresContexto.getContexto("\b");
+			listaParCharProb = new ArrayList<ParCharProb>();
+			listaParCharProb.addAll(ctx.getArrayCharProb());
 			
-			resultado += this.motorAritmetico.comprimir(temp, cadena.substring(1, 2).charAt(0));
+			letra = cadena.substring(0, 1).charAt(0);
+			resultado = motorAritmetico.comprimir(listaParCharProb, letra);
+			
+			ctx.actualizarContexto(cadena.substring(0, 1).charAt(0));
+			
+			ctx = this.caracteresContexto.getContexto(letra.toString());
+			
+			listaParCharProb = new ArrayList<ParCharProb>();
+			listaParCharProb.addAll(ctx.getArrayCharProb());
+			
+			resultado += this.motorAritmetico.comprimir(listaParCharProb, cadena.substring(1, 2).charAt(0));
 			
 			
 
