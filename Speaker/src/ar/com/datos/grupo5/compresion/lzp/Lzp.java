@@ -616,7 +616,7 @@ public class Lzp implements Compresor {
 			//result += motorAritCaracteres.finalizarSession();
 		}
 		if (esCompresion) {
-			ctx = listaLongitudes.getContexto(ultCtx.substring(1, 2));
+			ctx = caracteresContexto.getContexto(ultCtx.substring(1, 2));
 			
 			ctx.actualizarProbabilidades();
 
