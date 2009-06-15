@@ -21,9 +21,9 @@ public class TestCompresorConsola {
 		String archivoComp = "./testLzpComp.comp";
 		String destinoDescomp = "./testLzpDesc.txt";
 		
-	//	CompresorConsola.comprimir(MetodoCompresion.LZ78, archivoPlano, archivoComp);
-		
-		CompresorConsola.descomprimir(MetodoCompresion.LZ78, archivoComp, destinoDescomp);
+		CompresorConsola.comprimir(MetodoCompresion.PPMC, archivoPlano, archivoComp);
+	
+	//	CompresorConsola.descomprimir(MetodoCompresion.PPMC, archivoComp, destinoDescomp);
 		
 		
 	}

@@ -14,11 +14,14 @@ import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.UnidadesDeExpresion.IunidadDeHabla;
 import ar.com.datos.grupo5.UnidadesDeExpresion.Palabra;
+import ar.com.datos.grupo5.compresion.CompresorConsola;
 import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.grupo5.parser.ITextInput;
 import ar.com.datos.grupo5.parser.PalabrasFactory;
 import ar.com.datos.grupo5.parser.TextInterpreter;
+import ar.com.datos.grupo5.utils.Conversiones;
+import ar.com.datos.grupo5.utils.MetodoCompresion;
 import ar.com.datos.reproduccionaudio.exception.SimpleAudioPlayerException;
 
 
@@ -218,7 +221,7 @@ public class Core {
 			final String pathDocumento) {
 		return this.load(invocador, pathDocumento, this.metodo);
 	}
-
+	
 	/**
 	 * Permite comprimir un archivo de texto cualquiera especificando los path's
 	 * de los archivos de origen y el de destino.
@@ -229,18 +232,29 @@ public class Core {
 	 * el archivo comprimido. 
 	 * @return Aviso del resultado de la compresión.
 	 */
-	public final String comprimir(final InterfazUsuario invodador, final String metodoExt,
+	public final String comprimir(final InterfazUsuario invocador, final String metodoExt,
 					final String pathArchivoOrigen,final String pathArchivoDestino) {
-		//El manejador del compresor, le indico el compresor a usar.
-		CompresorManager compresorManager = new CompresorManager(metodoExt, pathArchivoOrigen, pathArchivoDestino);
+
+		MetodoCompresion met = Conversiones.metodoDeCompresion(metodoExt);
 		
-		try {
-			return compresorManager.ComprimirArchivo();
-		} catch (SessionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		if (met == null){
+			
+			invocador.mensaje("no se reconoce el tipo de compresion, intente con alguno de los siguientes:");
+			invocador.mensaje("ppmc, aritmetico, lzp, lz78, ninguno");
+			return null;
+			
+		}else{
+		
+		try{
+		CompresorConsola.comprimir(met, pathArchivoOrigen, pathArchivoDestino);
+		invocador.mensaje("archivo: "+pathArchivoDestino+ " creado");
 		return "";
+		
+		}catch(Exception e){
+			invocador.mensaje("hubo un error al comprimir el archivo, se aborta");
+			return null;
+		}
+		}
 	}
 	
 	/**
@@ -253,12 +267,29 @@ public class Core {
 	 * el archivo descomprimido
 	 * @return Aviso del resultado de la descompresión.
 	 */
-	public final String descomprimir(final InterfazUsuario invodador, final String metodoExt,
+	public final String descomprimir(final InterfazUsuario invocador, final String metodoExt,
 			final String pathArchivoOrigen,final String pathArchivoDestino) {
-		//El manejador del compresor, le indico el compresor a usar.
-		CompresorManager compresorManager = new CompresorManager(metodoExt, pathArchivoOrigen, pathArchivoDestino);
+	
+		MetodoCompresion met = Conversiones.metodoDeCompresion(metodoExt);
 		
-		return compresorManager.DesComprimirArchivo();
+		if (met == null){
+			
+			invocador.mensaje("no se reconoce el tipo de compresion, intente con alguno de los siguientes:");
+			invocador.mensaje("ppmc, aritmetico, lzp, lz78, ninguno");
+			return null;
+			
+		}else{
+		
+		try{
+		CompresorConsola.descomprimir(met, pathArchivoOrigen, pathArchivoDestino);
+		invocador.mensaje("archivo: "+pathArchivoDestino+ " creado");
+		return "";
+		
+		}catch(Exception e){
+			invocador.mensaje("hubo un error al Descomprimir el archivo, se aborta");
+			return null;
+		}
+		}
 	}
 	
 	/**

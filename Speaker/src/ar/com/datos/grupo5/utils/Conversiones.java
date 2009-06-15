@@ -193,6 +193,21 @@ public final class Conversiones {
 		
 	}
 	
+	
+	public static MetodoCompresion metodoDeCompresion(String s){
+		
+		s= s.toLowerCase();
+		
+
+		if(s.equalsIgnoreCase("ppmc")) return MetodoCompresion.PPMC;
+		if(s.equalsIgnoreCase("lzp")) return MetodoCompresion.LZP;
+		if(s.equalsIgnoreCase("lz78")) return MetodoCompresion.LZ78;
+		if(s.equalsIgnoreCase("aritmetico")) return MetodoCompresion.ARIT;
+		if(s.equalsIgnoreCase("ninguno")) return MetodoCompresion.NINGUNO;
+		
+		return null;	
+	}
+	
 	public static MetodoCompresion metodoDeCompresion (short s){
 		
 		switch (s) {

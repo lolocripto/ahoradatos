@@ -40,7 +40,6 @@ public class TestPPMCbis {
 			System.out.println(nueva);
 			
 			
-			
 		} catch (SessionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
