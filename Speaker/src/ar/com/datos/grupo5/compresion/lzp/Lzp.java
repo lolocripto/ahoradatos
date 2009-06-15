@@ -251,13 +251,10 @@ if ( cadena.length() > 2) {
 				ctx = caracteresContexto.getContexto(letra.toString());
 				
 				ctx.actualizarProbabilidades();
-				listaParCharProb = new ArrayList<ParCharProb>();
-				listaParCharProb.addAll(ctx.getArrayCharProb());
 				
+				letra = cadena.charAt(2);
 				
-				resultado +=  motorAritCaracteres.comprimir(String.valueOf(cadena.charAt(2)));
-				
-				resultado2 = ultCtx + "0" + String.valueOf(cadena.charAt(2));
+				resultado +=  motorAritmetico.comprimir(ctx.getArrayCharProb(), letra);
 				
 				ultCtx = cadena.substring(1, 3);
 			} else {
