@@ -378,7 +378,7 @@ public class Lzp implements Compresor {
 		ctx.actualizarContexto(letra);
 		//Ahora voy por la letra
 		//Obtengo el contexto ultCtx[1]
-		ctx = caracteresContexto.getContexto(ultCtx.substring(1,2));
+		ctx = caracteresContexto.getContexto(ultCtx.substring(0,1));
 		ctx.actualizarProbabilidades();
 		//Comprimo la longitud
 		result.append(motorAritmetico.comprimir(ctx.getArrayCharProb(),caracter.charAt(0)));
@@ -627,8 +627,8 @@ public class Lzp implements Compresor {
 			
 		} else {
 			if (esCompresion) {
-				ctx = caracteresContexto.getContexto(ultCtx.substring(1, 2));
-				//ctx = listaLongitudes.getContexto("");
+				//ctx = caracteresContexto.getContexto(ultCtx.substring(1, 2));
+				ctx = listaLongitudes.getContexto("");
 				
 				ctx.actualizarProbabilidades();
 
