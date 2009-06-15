@@ -84,8 +84,8 @@ public class TestLZP {
 		//result = comp.descomprimir(resultado);
 		//res = null;
 		StringBuffer Sbuffer = new StringBuffer();
-		//while (res != null) {
-		while (!comp.isFinalizada()) {
+		while (res != null) {
+		//while (!comp.isFinalizada()) {
 			Sbuffer.append(res);
 			result += comp.descomprimir(Sbuffer);
 			start += largo;

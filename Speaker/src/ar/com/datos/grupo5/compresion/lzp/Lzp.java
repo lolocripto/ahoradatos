@@ -419,8 +419,11 @@ public class Lzp implements Compresor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		return result;
+		if (finalizada){
+			return result;
+		} else {
+			return result.substring(0, result.length() - 2);
+		}
 	}
 	
 	/**
