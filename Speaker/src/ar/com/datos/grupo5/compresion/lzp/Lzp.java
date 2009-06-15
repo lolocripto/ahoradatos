@@ -411,8 +411,6 @@ public class Lzp implements Compresor {
 		esCompresion = false;
 		String result = new String();
 		
-		// Solo la primera vez.
-		listaContextos.clear();
 		try {
 			
 			result = descomprimirInterno(cadena);
