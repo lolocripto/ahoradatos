@@ -602,16 +602,12 @@ public class Lzp implements Compresor {
 				
 				//Actualizo el contexto
 				ctx.actualizarContexto(letra);
-				
-				
+
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (CodePointException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 			
 			//result += motorAritLongitudes.comprimir(String.valueOf(longMatch));
 			result2 = String.valueOf(longMatch);
