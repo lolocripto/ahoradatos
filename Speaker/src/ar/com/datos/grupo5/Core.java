@@ -70,6 +70,63 @@ public class Core {
 
 	private String metodo;
 	
+	public final String loadWithoutAudio(final InterfazUsuario invocador,
+			final String pathDocumento ) {
+		logger.debug("Entre en loadWithAudio");
+		
+		try {
+			Iterator<IunidadDeHabla> iterador;
+			// Cargo el parser con el documento en modo aprendizaje
+			try {
+				//Inicio la grabación del documento.
+				contenedor = this.parser.modolecturaYalmacenamiento(pathDocumento);
+			} catch (Exception e) {
+				logger.error("Error al crear contenedor: " + e.getMessage(), e);
+				return "Error inesperado, consulte al proveedor del software";
+			} 
+			/*catch (FileNotFoundException e) {
+				logger.error("Error al crear contenedor: " + e.getMessage(), e);
+				return "El archivo solicitado no existe.";
+			}
+			*/
+			logger.debug("tengo el contenedor de palabras.");
+			
+			if (!abrirArchivo(invocador)) {
+				return "Intente denuevo";
+			}
+						
+			Long offsetDoc = DocumentsManager.getInstance().getOffsetUltDoc();
+		
+			
+			IunidadDeHabla elemento;
+			iterador = contenedor.iterator();
+			
+			// Mientras tenga palabras para verificar consulto
+			while (iterador.hasNext()) {
+
+				elemento = iterador.next();
+		//		logger.debug("Termino: " + elemento.getTextoEscrito());
+				this.logger.debug(elemento.getTextoEscrito());
+				// Si no es StopWord entonces utilizo el Ftrs.
+				if (!elemento.isStopWord()) {
+					ftrsManager.validarTermino(elemento
+							.getTextoEscrito(), offsetDoc);
+				}
+
+			}
+			this.ftrsManager.generarListasInvertidas();
+
+			//cerrarArchivo(invocador);
+		}  catch (Exception e) {
+			logger.error("Error: " + e.getMessage());
+			
+			return "Error inesperado";
+		}
+		
+		logger.debug("Sali de al funcion load");
+		return "Las palabras han sido correctamente ingresadas.";
+	}
+	
 	/**
 	 * Busca las palabras a grabar, graba el audio y lo guarda.
 	 * 
@@ -177,12 +234,9 @@ public class Core {
 							return "Operacion cancelada.";
 						default:
 					}
-					//try {
-						this.playWord();	
-					//} catch (SimpleAudioPlayerException e) {
-//						respuesta = "N";
-						//continue;
-					//}
+
+					this.playWord();	
+
 					
 				    
 				    mensaje = "La grabación ha sido correcta? S/N: ";
@@ -308,6 +362,15 @@ public class Core {
 			+ "Ej: load \"/home/usuario/Escritorio/prueba.txt\" \n"
 			+ "Ej: load \"/home/usuario/Escritorio/prueba.txt\" \"ppmc\" \n\n"
 
+			+ "Funcion: loadWithoutAudio \n"
+			+ "Caracteristicas: Carga un documento para almacenar las palabras "
+			+ "desconocidas.\n"
+			+ "En el caso de no elegir un metodo de compresión se comprimirá\n"
+			+ "con el metodo especificado por default.\n"
+			+ "Uso: loadWithoutAudio <\"path_absoluto_del_documento\"> [<\"metodo_para_comprimir\">]\n"
+			+ "Ej: loadWithoutAudio \"/home/usuario/Escritorio/prueba.txt\" \n"
+			+ "Ej: load \"/home/usuario/Escritorio/prueba.txt\" \"ppmc\" \n\n"
+			
 			+ "Funcion: playDocument \n"
 			+ "Caracteristicas: carga un documento reproduciendo las "
 			+ "palabras reconocidas \n"
