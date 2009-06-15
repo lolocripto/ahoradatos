@@ -187,10 +187,10 @@ public class Ppmc implements Compresor{
 		Orden ordenAImprimir;
 		int i = 0;
 		while (it.hasNext()) {
-			System.out.println("\tOrden " + i);
+		//	System.out.println("\tOrden " + i);
 			ordenAImprimir = it.next();
 			ordenAImprimir.meImprimo();
-			System.out.println("");
+		//	System.out.println("");
 			i++;
 		}
 	}

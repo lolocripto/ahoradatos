@@ -67,6 +67,7 @@ public class ArchivoDocs {
     
     public ArchivoDocs() {
     	miArchivo = new Directo();
+
     	try {
 			miArchivo.abrir(rutaArchivo, Constantes.ABRIR_PARA_LECTURA_ESCRITURA);
 		} catch (FileNotFoundException e) {

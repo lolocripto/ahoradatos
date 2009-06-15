@@ -291,8 +291,7 @@ public class Core {
 
 		MetodoCompresion met = Conversiones.metodoDeCompresion(metodoExt);
 		
-		if (met == null){
-			
+		if (met == null || met.equals(MetodoCompresion.NINGUNO)){
 			invocador.mensaje("no se reconoce el tipo de compresion, intente con alguno de los siguientes:");
 			invocador.mensaje("ppmc, aritmetico, lzp, lz78");
 			return null;
@@ -326,7 +325,7 @@ public class Core {
 	
 		MetodoCompresion met = Conversiones.metodoDeCompresion(metodoExt);
 		
-		if (met == null){
+		if (met == null || met.equals(MetodoCompresion.NINGUNO)){
 			
 			invocador.mensaje("no se reconoce el tipo de compresion, intente con alguno de los siguientes:");
 			invocador.mensaje("ppmc, aritmetico, lzp, lz78");

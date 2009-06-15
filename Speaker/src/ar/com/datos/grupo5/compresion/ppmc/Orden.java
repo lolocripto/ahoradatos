@@ -85,7 +85,7 @@ public class Orden {
 	public final void meImprimo() {
 		Iterator<Entry<String,Contexto>> it = this.listaContexto.entrySet().iterator();
 		Entry<String,Contexto> elemento;
-		System.out.println("\tCtx\tChar\tFrec");
+	//	System.out.println("\tCtx\tChar\tFrec");
 		ParCharProb par;
 		Contexto contexto;
 		while (it.hasNext()) {
@@ -95,7 +95,7 @@ public class Orden {
 			Iterator<ParCharProb> itLista = contexto.getArrayCharProb().iterator();
 			while (itLista.hasNext()) {
 				par = itLista.next();
-				System.out.println(contexto.getContexto() + " " + par.getSimboloUnicode() + " " + par.getProbabilidad());
+	//			System.out.println(contexto.getContexto() + " " + par.getSimboloUnicode() + " " + par.getProbabilidad());
 			}
 		}
 	}
