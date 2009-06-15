@@ -505,6 +505,7 @@ public class Lzp implements Compresor {
 				}
 				else{
 					resultado = ultCtx;
+					ultIncompleto = null;
 					ctx = caracteresContexto.getContexto(ultCtx.substring(1));
 				}
 				//FIXME::Sacar el algo que es temporal.
@@ -534,6 +535,8 @@ public class Lzp implements Compresor {
 				ctx = listaLongitudes.getContexto("");
 				if (ultIncompleto == null) {
 					ctx.actualizarProbabilidades();
+				} else {
+					ultIncompleto = null;
 				}
 				//Comprimo la longitud
 				Character aux = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena);
