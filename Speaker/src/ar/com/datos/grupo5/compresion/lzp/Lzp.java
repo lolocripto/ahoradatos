@@ -499,9 +499,13 @@ public class Lzp implements Compresor {
 		while ( sigoDesc ) {
 			if ((ultIncompleto == null)||(ultIncompleto == 'C')) {
 				//devuelto = motorAritCaracteres.descomprimir(cadena);
-				ctx = caracteresContexto.getContexto(resultado.substring(resultado.length() - 1));
 				if (ultIncompleto == null) {
+					ctx = caracteresContexto.getContexto(resultado.substring(resultado.length() - 1));
 					ctx.actualizarProbabilidades();
+				}
+				else{
+					resultado = ultCtx;
+					ctx = caracteresContexto.getContexto(ultCtx.substring(1));
 				}
 				//FIXME::Sacar el algo que es temporal.
 				Character aux = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena);
