@@ -372,7 +372,8 @@ public class Lzp implements Compresor {
 			// buscar match.
 			if (lon > 0) {
 					// Matchea con un contexto.
-				try {		
+				try {
+					posActual += 2 * lon;
 					archivoTrabajo.seek(archivoTrabajo.length());
 					//Escribo en el archivo temporal en unicode.
 					byte[] escAux = ultCtx.getBytes(Constantes.CHARSET_UTF16);
