@@ -303,8 +303,6 @@ public class Lzp implements Compresor {
 		Integer posMatch = null;
 		String longitud = "0";
 		String caracter = "";
-		Contexto ctx;
-		Character letra = ' ';
 		
 		while (cadena.length() > 0) {
 
@@ -354,32 +352,8 @@ public class Lzp implements Compresor {
 					listaContextos.setPosicion(ultCtx, posActual);
 				}
 			}
-			
-			//Obtengo el contexto vacio
-			ctx = listaLongitudes.getContexto("");
-			ctx.actualizarProbabilidades();
-			
-			try {
-				letra = CodePoint.getChar(Integer.valueOf(longitud));
-			} catch (NumberFormatException e) {
-				LOG.error("Error en formato de numero.", e);
-			} catch (CodePointException e) {
-				LOG.error("Error en codepoint.", e);
-			}
-			
-			//Comprimo la longitud
-			result.append(motorAritmetico.comprimir(ctx.getArrayCharProb(),letra));
-			//Actualizo el contexto
-			ctx.actualizarContexto(letra);
-			//Ahora voy por la letra
-			//Obtengo el contexto ultCtx[1]
-			ctx = caracteresContexto.getContexto(ultCtx.substring(1,2));
-			ctx.actualizarProbabilidades();
-			//Comprimo la longitud
-			result.append(motorAritmetico.comprimir(ctx.getArrayCharProb(),caracter.charAt(0)));
-			//Actualizo el contexto
-			ctx.actualizarContexto(caracter.charAt(0));
 
+			emitir(caracter, longitud, result);
 			//result.append(motorAritLongitudes.comprimir(longitud));
 			//result.append(motorAritCaracteres.comprimir(caracter));
 			result2.append(longitud + caracter);
@@ -388,6 +362,37 @@ public class Lzp implements Compresor {
 		return simular?result2.toString():result.toString();
 	}
 
+	private void emitir(String caracter, String longitud, StringBuffer result) {
+		
+		Character letra = ' ';
+		Contexto ctx = null;
+		
+		//Obtengo el contexto vacio
+		ctx = listaLongitudes.getContexto("");
+		ctx.actualizarProbabilidades();
+		
+		try {
+			letra = CodePoint.getChar(Integer.valueOf(longitud));
+		} catch (NumberFormatException e) {
+			LOG.error("Error en formato de numero.", e);
+		} catch (CodePointException e) {
+			LOG.error("Error en codepoint.", e);
+		}
+		
+		//Comprimo la longitud
+		result.append(motorAritmetico.comprimir(ctx.getArrayCharProb(),letra));
+		//Actualizo el contexto
+		ctx.actualizarContexto(letra);
+		//Ahora voy por la letra
+		//Obtengo el contexto ultCtx[1]
+		ctx = caracteresContexto.getContexto(ultCtx.substring(1,2));
+		ctx.actualizarProbabilidades();
+		//Comprimo la longitud
+		result.append(motorAritmetico.comprimir(ctx.getArrayCharProb(),caracter.charAt(0)));
+		//Actualizo el contexto
+		ctx.actualizarContexto(caracter.charAt(0));
+	}
+	
 	/**
 	 * 
 	 * @param cadena
