@@ -111,6 +111,11 @@ public class Lzp implements Compresor {
 	private LogicaAritmetica motorAritmetico;
 	
 	/**
+	 * Ultimo caracter incompleto.
+	 */
+	private Character ultIncompleto;
+	
+	/**
 	 * @return the finalizada
 	 */
 	@Override
@@ -124,6 +129,7 @@ public class Lzp implements Compresor {
 		motorAritCaracteres.iniciarSesion();
 		motorAritLongitudes.iniciarSesion();
 		ultCtx = "";
+		ultIncompleto = null;
 		motorAritmetico = new LogicaAritmetica();
 		listaLongitudes = new Orden();
 		caracteresContexto = new Orden();
@@ -693,6 +699,7 @@ public class Lzp implements Compresor {
 		sesionIniciada = true;
 		finalizada = false;
 		ultCtx = "";
+		ultIncompleto = null;
 	}
 		
 	/**
