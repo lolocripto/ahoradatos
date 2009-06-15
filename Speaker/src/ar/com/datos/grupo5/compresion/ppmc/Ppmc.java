@@ -52,7 +52,7 @@ public class Ppmc implements Compresor{
 	 * Contructor de clase.
 	 */
 	public Ppmc(){
-		this.iniciarSesion();
+	//	this.iniciarSesion();
 	}
 
 	/**
@@ -278,8 +278,14 @@ public class Ppmc implements Compresor{
 			}
 				
 			//El contexto buscado existe! Entonces busco el contexto anterior en el orden anterior
-			if (ordenContexto < this.orden) {					
-				contextoMasUno = this.listaOrdenes.get(ordenContexto + 1).getContexto(contextoActual.substring(this.contextoActual.length() - (ordenContexto + 1), this.contextoActual.length()));
+			if (ordenContexto < this.orden) {
+				
+				int var1 = this.contextoActual.length() - (ordenContexto + 1);
+				int var2 = this.contextoActual.length();
+				
+				String ctx = contextoActual.substring(var1, var2);
+				
+				contextoMasUno = this.listaOrdenes.get(ordenContexto + 1).getContexto(ctx);
 			} else {
 				//No existe orden anterior porque estoy en el ultimo orden (el orden mas grande)
 				contextoMasUno = null;
