@@ -510,36 +510,38 @@ public class Lzp implements Compresor {
 		}
 		int lon = 0;
 		while ( sigoDesc ) {
-
-			//devuelto = motorAritCaracteres.descomprimir(cadena);
-			this.LOG.debug("Variable resultado: " + resultado.substring(resultado.length() - 1));
-			ctx = caracteresContexto.getContexto(resultado.substring(resultado.length() - 1));
-			ctx.actualizarProbabilidades();
-			this.LOG.debug("Map: " + ctx);
-			//Comprimo la longitud
-			this.LOG.debug("Cadena: " + cadena);
-			this.LOG.debug("array: " + ctx.getArrayCharProb());
-			
-			//FIXME::Sacar el algo que es temporal.
-			Character algo = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena);
-			
-			//devuelto = cadena.substring(0,1);
-			//cadena.delete(0, 1);
-			if (algo == null){
-				return resultado;
-			//} else if ( Constantes.EOF.equals(algo.charAt(0)) ) {
-			} else if ( Constantes.EOF.equals(algo) ) {				
-				finalizada = true;
-				return resultado;
+			if ((ultIncompleto == null)||(ultIncompleto == 'C')) {
+				//devuelto = motorAritCaracteres.descomprimir(cadena);
+				this.LOG.debug("Variable resultado: " + resultado.substring(resultado.length() - 1));
+				ctx = caracteresContexto.getContexto(resultado.substring(resultado.length() - 1));
+				if (ultIncompleto == 'C') {
+					ctx.actualizarProbabilidades();
+					this.LOG.debug("Map: " + ctx);
+					//Comprimo la longitud
+					this.LOG.debug("Cadena: " + cadena);
+					this.LOG.debug("array: " + ctx.getArrayCharProb());
+				}
+				//FIXME::Sacar el algo que es temporal.
+				Character algo = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena);
+				
+				//devuelto = cadena.substring(0,1);
+				//cadena.delete(0, 1);
+				if (algo == null){
+					ultIncompleto = 'C';
+					return resultado;
+				//} else if ( Constantes.EOF.equals(algo.charAt(0)) ) {
+				} else if ( Constantes.EOF.equals(algo) ) {				
+					finalizada = true;
+					return resultado;
+				}
+				devuelto = algo.toString();
+				//Actualizo el contexto
+				ctx.actualizarContexto(devuelto.charAt(0));
+				
+				resultado += devuelto;
+				LOG.info("Cadena descomprimida: " + resultado);
+				ultCtx = resultado.substring(resultado.length() - 2);
 			}
-			devuelto = algo.toString();
-			//Actualizo el contexto
-			ctx.actualizarContexto(devuelto.charAt(0));
-			
-			resultado += devuelto;
-			LOG.info("Cadena descomprimida: " + resultado);
-			ultCtx = resultado.substring(resultado.length() - 2);
-			
 			//devuelto = motorAritCaracteres.descomprimir(cadena);
 			ctx = listaLongitudes.getContexto("");
 			ctx.actualizarProbabilidades();
@@ -551,6 +553,7 @@ public class Lzp implements Compresor {
 			//longitud = cadena.substring(0, 1);
 			//cadena.delete(0, 1);
 			if (longitud == null){
+				ultIncompleto = 'L';
 				return resultado;
 			} else if ( Constantes.EOF.equals(longitud.charAt(0)) ){
 				finalizada = true;
