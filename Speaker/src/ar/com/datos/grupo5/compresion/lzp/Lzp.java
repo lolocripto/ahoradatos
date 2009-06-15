@@ -627,8 +627,8 @@ public class Lzp implements Compresor {
 			
 		} else {
 			if (esCompresion) {
-				//ctx = caracteresContexto.getContexto(ultCtx.substring(1, 2));
-				ctx = listaLongitudes.getContexto("");
+				ctx = caracteresContexto.getContexto(ultCtx.substring(1, 2));
+				//ctx = listaLongitudes.getContexto("");
 				
 				ctx.actualizarProbabilidades();
 
