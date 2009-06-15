@@ -56,7 +56,7 @@ public class TestLZP {
 		//TEST CON ARCHIVOS
 		Compresor comp = new Lzp();
 		comp.iniciarSesion();
-		//((Lzp)comp).simular = true;
+		((Lzp)comp).simular = false;
 		StringBuffer resultado = new StringBuffer();
 
 		FileInputStream fis = new FileInputStream("testLzp2.txt");
@@ -64,9 +64,11 @@ public class TestLZP {
 		BufferedReader buffer = new BufferedReader(isr);
 		
 		String datos = buffer.readLine();
+		int i = 0;
 		while (datos != null)  {
 			resultado.append(comp.comprimir(datos + "\n"));
 			datos = buffer.readLine();
+			LOG.info("Lei linea: " + i++);
 		}
 		resultado.append(comp.finalizarSession());
 		//resultado.append('\uFFFF');
@@ -78,16 +80,13 @@ public class TestLZP {
 		//int largo = 40;
 		int largo = resultado.length();
 		String res = resultado.substring(start, start + largo);
-		String result = null;
-		while (res != null) {
-			result += comp.descomprimir(new StringBuffer(res));
-			start += largo;
-			if (start + largo >= resultado.length()) {
-				res += resultado.substring(start);
-			} else {
-				res += resultado.substring(start, start + largo);
-			}
-		}
+		String result = "";
+		result += comp.descomprimir(new StringBuffer(resultado));
+//		while (res != null) {
+//			result += comp.descomprimir(new StringBuffer(res));
+//			start += largo;
+//			res += resultado.substring(start, start + largo);
+//		}
 		LOG.info(result + comp.finalizarSession());
 		buffer.close();
 		isr.close();

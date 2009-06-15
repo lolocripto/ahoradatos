@@ -250,6 +250,7 @@ public class Lzp implements Compresor {
 				letra = cadena.charAt(2);
 				resultado +=  motorAritmetico.comprimir(ctx.getArrayCharProb(), letra);
 				ctx.actualizarContexto(letra);
+				resultado2 = ultCtx + "0" + String.valueOf(cadena.charAt(2));
 				ultCtx = cadena.substring(1, 3);
 			} else {
 				resultado2 = ultCtx;
@@ -281,6 +282,7 @@ public class Lzp implements Compresor {
 		return simular?resultado2:resultado;
 	}
 
+	static String ultimaLetra = "";
 	/**
 	 * 
 	 * @param cadena
@@ -315,6 +317,7 @@ public class Lzp implements Compresor {
 					longMatchActual = longMatch(cadena, posMatch);
 					if (matchCompleto && longMatchActual > 0) {
 						longMatch += longMatchActual;
+						ultimaLetra = cadena.substring(cadena.length() -1);
 						break;
 					} else if (longMatchActual > 0){
 						posActual += 2;
@@ -329,10 +332,20 @@ public class Lzp implements Compresor {
 						posActual += ((longMatch + longMatchActual) * 2);
 						longMatch = 0;
 					} else {
-						posActual += 2;
+						if (longMatch > 0) {
+							posActual += ((longMatch + longMatchActual) * 2);
+							longitud = String.valueOf(longMatch);
+						} else {
+							posActual += 2;
+							longitud = "0";
+						}
 						listaContextos.setPosicion(ultCtx, posActual);
-						ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
-						longitud = "0";
+						if (longMatch > 0) {
+							ultCtx = ultimaLetra + String.valueOf(cadena.charAt(0));
+						} else {
+							ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
+						}
+						longMatch = 0;
 						caracter = cadena.substring(0, 1);
 						cadena.delete(0, 1);
 					}
