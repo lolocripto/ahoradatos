@@ -66,7 +66,7 @@ public class TestLZP {
 		String datos = buffer.readLine();
 		while (datos != null)  {
 			resultado.append(comp.comprimir(datos));
-			 datos = buffer.readLine();
+			datos = buffer.readLine();
 		}
 		resultado.append(comp.finalizarSession());
 		resultado.append('\uFFFF');

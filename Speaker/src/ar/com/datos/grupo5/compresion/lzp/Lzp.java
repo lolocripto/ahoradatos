@@ -85,6 +85,11 @@ public class Lzp implements Compresor {
 	public boolean simular = false;
 	
 	/**
+	 * flag para saber si es compresion o descompresion.
+	 */
+	private boolean esCompresion = true;
+	
+	/**
 	 * @return the finalizada
 	 */
 	@Override
@@ -131,6 +136,7 @@ public class Lzp implements Compresor {
 			throw new SessionException();
 		}
 		
+		esCompresion = true;
 		String resultado = "";
 		String resultado2 = "";
 
@@ -265,6 +271,8 @@ public class Lzp implements Compresor {
 	 */
 	@Override
 	public String descomprimir(StringBuffer cadena) {
+		
+		esCompresion = false;
 		String result = new String();
 		
 		// Solo la primera vez.
@@ -345,6 +353,9 @@ public class Lzp implements Compresor {
 		}
 		while ( sigoDesc ) {
 			
+			if (ultCtx.equals(" u")) {
+				LOG.info("parar");
+			}
 			//devuelto = motorAritCaracteres.descomprimir(cadena);
 			devuelto = cadena.substring(0,1);
 			cadena.delete(0, 1);
@@ -433,7 +444,7 @@ public class Lzp implements Compresor {
 		String result = "";
 		String result2 = "";
 		
-		if (matchCompleto) {
+		if (matchCompleto && esCompresion) {
 			
 			try {
 				result += motorAritLongitudes.comprimir(String.valueOf(longMatch));
