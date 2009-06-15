@@ -124,7 +124,18 @@ public class Ppmc implements Compresor{
 	private final void getContexto(final String cadena, final int posicion){
 		//FIXME: Ver si es > o >=
 		if (this.contextoPrevio) {
-			this.contextoPrevio = false;
+			
+			if (posicion > this.orden) {
+				this.contextoPrevio = false;
+			}
+			
+			if (posicion > 0) {
+				StringBuffer temp = new StringBuffer(this.contextoActual);
+				temp.delete(0, 1);
+				temp.append(cadena.substring(posicion - 1, posicion));
+				this.contextoActual = temp.toString();
+			}
+			
 		} else {
 		if (posicion > this.orden) {
 			//Obtengo un contexto de maximo orden
