@@ -56,7 +56,7 @@ public class TestLZP {
 		//TEST CON ARCHIVOS
 		Compresor comp = new Lzp();
 		comp.iniciarSesion();
-		((Lzp)comp).simular = true;
+		((Lzp)comp).simular = false;
 		StringBuffer resultado = new StringBuffer();
 
 		FileInputStream fis = new FileInputStream("testLzp.txt");
@@ -69,7 +69,7 @@ public class TestLZP {
 			datos = buffer.readLine();
 		}
 		resultado.append(comp.finalizarSession());
-		resultado.append('\uFFFF');
+		//resultado.append('\uFFFF');
 		LOG.info("Cadena comprimida: " + resultado);
 		
 		comp.iniciarSesion();
