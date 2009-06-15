@@ -553,6 +553,7 @@ public class Lzp implements Compresor {
 					byte[] escAux = ultCtx.getBytes(Constantes.CHARSET_UTF16);
 					//Parece que el getBytes pone un /0 al final.
 					archivoTrabajo.write(escAux, 0, escAux.length);
+					LOG.info("busco contexto: " + ultCtx);
 					int pos = this.listaContextos.getPosicion(ultCtx);
 					archivoTrabajo.seek(pos);
 					// Cuanto leo?
@@ -583,6 +584,7 @@ public class Lzp implements Compresor {
 					e.printStackTrace();
 				}
 			}
+			LOG.info("Seteo contexto: " + ultCtx + " pos: " + posActual);
 			listaContextos.setPosicion(ultCtx, posActual);
 			posActual += 2;
 		}
