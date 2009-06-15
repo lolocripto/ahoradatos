@@ -355,6 +355,12 @@ public class Lzp implements Compresor {
 		return simular?result2.toString():result.toString();
 	}
 
+	/**
+	 * Comprime una longitud seguida de una letra
+	 * @param caracter
+	 * @param longitud
+	 * @param result
+	 */
 	private void emitir(String caracter, String longitud, StringBuffer result) {
 		
 		Character letra = null;
