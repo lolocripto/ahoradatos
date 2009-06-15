@@ -446,6 +446,11 @@ public class Lzp implements Compresor {
 			//Pide la letra 2
 			//devuelto = motorAritCaracteres.descomprimir(cadena);
 			//devuelto = String.valueOf(cadena.charAt(1));
+			
+			ctx = caracteresContexto.getContexto(devuelto.toString());
+			
+			ctx.actualizarProbabilidades();
+			
 			devuelto = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena).toString();
 			//Actualizo el contexto
 			ctx.actualizarContexto(devuelto.charAt(0));
