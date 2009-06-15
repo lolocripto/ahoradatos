@@ -452,8 +452,6 @@ public class Lzp implements Compresor {
 			ctx.actualizarProbabilidades();
 			
 			devuelto = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena).toString();
-			//Actualizo el contexto
-			ctx.actualizarContexto(devuelto.charAt(0));
 			//cadena.delete(0, 2);
 			if (devuelto == null){
 				return ultCtx;
@@ -461,6 +459,10 @@ public class Lzp implements Compresor {
 				finalizada = true;
 				return ultCtx;
 			}
+			
+			//Actualizo el contexto
+			ctx.actualizarContexto(devuelto.charAt(0));
+			
 			ultCtx += devuelto;
 			resultado = ultCtx;
 
@@ -482,7 +484,14 @@ public class Lzp implements Compresor {
 		while ( sigoDesc ) {
 
 			//devuelto = motorAritCaracteres.descomprimir(cadena);
-			devuelto = cadena.substring(0,1);
+			ctx = caracteresContexto.getContexto(devuelto.toString());
+			ctx.actualizarProbabilidades();
+			//Comprimo la longitud
+			devuelto = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena).toString();
+			//Actualizo el contexto
+			ctx.actualizarContexto(devuelto.charAt(0));
+			
+			//devuelto = cadena.substring(0,1);
 			cadena.delete(0, 1);
 			if (devuelto == null){
 				return resultado;
@@ -492,17 +501,29 @@ public class Lzp implements Compresor {
 			}
 			resultado += devuelto;
 			ultCtx = resultado.substring(resultado.length() - 2);
+			
+			//devuelto = motorAritCaracteres.descomprimir(cadena);
+			ctx = listaLongitudes.getContexto("");
+			ctx.actualizarProbabilidades();
+			//Comprimo la longitud
+			devuelto = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena).toString();
+
+			
 			//longitud = motorAritLongitudes.descomprimir(cadena);
-			longitud = cadena.substring(0, 1);
-			cadena.delete(0, 1);
+			//longitud = cadena.substring(0, 1);
+			//cadena.delete(0, 1);
 			if (longitud == null){
 				return resultado;
 			} else if ( longitud.charAt(0) == Constantes.EOF ){
 				finalizada = true;
 				return resultado;
 			}
-			//int lon = CodePoint.getCodePoint(longitud.charAt(0));
-			int lon = Integer.parseInt(longitud);
+			
+			//Actualizo el contexto
+			ctx.actualizarContexto(devuelto.charAt(0));
+			int lon = CodePoint.getCodePoint(longitud.charAt(0));
+			
+			//int lon = Integer.parseInt(longitud);
 			
 			// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
 			// buscar match.
@@ -546,6 +567,7 @@ public class Lzp implements Compresor {
 				}
 			}
 			listaContextos.setPosicion(ultCtx, posActual);
+			devuelto = ultCtx.substring(1, 2);
 			posActual += 2;
 		}
 		return resultado;
