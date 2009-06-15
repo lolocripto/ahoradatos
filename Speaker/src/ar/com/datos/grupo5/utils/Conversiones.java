@@ -234,7 +234,7 @@ public final class Conversiones {
 		
 		for (int i = 1; i < array.length; i++) {
 			vuelta = ByteToBinaryString(array[i]);
-			retorno = retorno + vuelta;    //no se porque mierda si uso el concat acá no funciona
+			retorno += vuelta; 
 		}
 		
 		return retorno;
