@@ -206,10 +206,7 @@ public class Lzp implements Compresor {
 		String caracter = "";
 		
 		while (cadena.length() > 0) {
-			
-			if (ultCtx.equals(" u")) {
-				LOG.info("parar!!");
-			}
+
 			posMatch = listaContextos.getPosicion(ultCtx);
 			if ( posMatch == null) {
 				posActual += 2;
@@ -352,10 +349,7 @@ public class Lzp implements Compresor {
 			posActual += 2;
 		}
 		while ( sigoDesc ) {
-			
-			if (ultCtx.equals(" u")) {
-				LOG.info("parar");
-			}
+
 			//devuelto = motorAritCaracteres.descomprimir(cadena);
 			devuelto = cadena.substring(0,1);
 			cadena.delete(0, 1);
