@@ -289,10 +289,42 @@ public class ArchivoDocs {
 	
 	public boolean masLineasParaLeer (){
 		
+		if (this.tipoCompresion == MetodoCompresion.NINGUNO){
+			return this.masLineasSinCompresion();
+		}else{
+			return this.masLineasConCompresion();
+		}
+	
+	}
+	
+	
+	
+	private boolean masLineasConCompresion(){
+		
+		try {
+			if (this.archivoTemp.getFilePointer() >= this.archivoTemp.length()){
+				return false;
+			}else
+			{
+				return true;
+			
+		}
+			}
+			catch (IOException e) {
+			LOG.error("no se ha podido leer el file pointer",e);
+			e.printStackTrace();
+			return false;
+		}
+		
+		}
+	
+	
+	private boolean masLineasSinCompresion(){
 		long finDeDoc = this.offsetInicioTexto + this.longTextoDoc;
 		long posActual=0;
 		try {
 			posActual = this.miArchivo.file.getFilePointer();
+			
 		} catch (IOException e) {
 			LOG.error("no se ha podido leer el file pointer",e);
 			e.printStackTrace();
@@ -303,8 +335,8 @@ public class ArchivoDocs {
 		}else{
 			return true;
 		}
-
 	}
+	
 	
 	
 	public void escribirLinea(String linea){
@@ -427,7 +459,7 @@ public class ArchivoDocs {
 	public String leerLinea(){
 		if (this.tipoCompresion == MetodoCompresion.NINGUNO) 
 			return this.leerLineaDeArchivo(this.miArchivo.file);
-		else return this.leerLineaDeArchivo(archivoTemp);
+		else return this.leerLineaDeArchivo(this.archivoTemp);
 	}
 	
 	
@@ -505,6 +537,10 @@ public class ArchivoDocs {
 				//guardo en el temporal los datos en utf
 				this.archivoTemp.writeUTF(descomprimidos);
 			}
+			
+			//cuando ya tengo toda la info cargada vuelvo al inicio
+			this.archivoTemp.seek(0);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
