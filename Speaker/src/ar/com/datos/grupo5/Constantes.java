@@ -31,7 +31,7 @@ public final class Constantes {
 	/**
 	 * Maxima longitud de Match.
 	 */
-	public static final int MAX_LONGITD_MATCH = 2^16 - 1;
+	public static final int MAX_LONGITD_MATCH = (int)Math.pow(2, 16) - 1;
 	/**
 	 * Para indicar que la clave es mayor que la ultima del nodo.
 	 */

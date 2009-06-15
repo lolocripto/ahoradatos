@@ -201,6 +201,9 @@ public class Lzp implements Compresor {
 		
 		while (cadena.length() > 0) {
 			
+			if (ultCtx.equals(" u")) {
+				LOG.info("parar!!");
+			}
 			posMatch = listaContextos.getPosicion(ultCtx);
 			if ( posMatch == null) {
 				posActual += 2;
@@ -208,10 +211,6 @@ public class Lzp implements Compresor {
 				ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
 				longitud = "0";
 				caracter = cadena.substring(0, 1);
-				//result2.append("0" + cadena.substring(0, 1));
-				//resultAux = motorAritLongitudes.comprimir("0");
-				//resultAux += motorAritCaracteres.comprimir(cadena.substring(0, 1));
-				//result.append(resultAux);
 				cadena.delete(0, 1);
 			} else {
 				if (posMatch != null) {
@@ -223,40 +222,30 @@ public class Lzp implements Compresor {
 						longMatch += longMatchActual;
 						break;
 					} else if (longMatchActual > 0){
+						posActual += 2;
+						listaContextos.setPosicion(ultCtx, posActual);
 						//String match = cadena.substring(0, longMatchActual);
 						ultCtx = String.valueOf(cadena.charAt(longMatchActual-1));
 						cadena.delete(0, longMatchActual);
 						ultCtx += String.valueOf(cadena.charAt(0));
 						longitud = String.valueOf(longMatch + longMatchActual);
 						caracter = String.valueOf(cadena.charAt(0));
-//						result2.append(String.valueOf(longMatch + longMatchActual) + String.valueOf(cadena.charAt(0)));
-//						resultAux = motorAritLongitudes.comprimir(String.valueOf(longMatch + longMatchActual));
-//						resultAux += motorAritCaracteres.comprimir(String.valueOf(cadena.charAt(0)));
-//						result.append(resultAux);
 						cadena.deleteCharAt(0);
-						posActual += (longMatch + longMatchActual) * 2;
+						posActual += ((longMatch + longMatchActual) * 2);
 						longMatch = 0;
 					} else {
 						posActual += 2;
+						listaContextos.setPosicion(ultCtx, posActual);
 						ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
 						longitud = "0";
 						caracter = cadena.substring(0, 1);
-//						result2.append("0" + cadena.substring(0, 1));
-//						resultAux = motorAritLongitudes.comprimir("0");
-//						resultAux += motorAritCaracteres.comprimir(cadena.substring(0, 1));
-//						result.append(resultAux);
 						cadena.delete(0, 1);
-						listaContextos.setPosicion(ultCtx, posActual);
 					}
 				} else {
 					posActual += 2;
 					ultCtx = String.valueOf(ultCtx.charAt(1)) + String.valueOf(cadena.charAt(0));
 					longitud = "0";
 					caracter = cadena.substring(0, 1);
-//					result2.append("0" + cadena.substring(0, 1));
-//					resultAux = motorAritLongitudes.comprimir("0");
-//					resultAux += motorAritCaracteres.comprimir(cadena.substring(0, 1));
-//					result.append(resultAux);
 					cadena.delete(0, 1);
 					listaContextos.setPosicion(ultCtx, posActual);
 				}
