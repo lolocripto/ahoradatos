@@ -457,7 +457,7 @@ public class Lzp implements Compresor {
 			//cadena.delete(0, 2);
 			if (devuelto == null){
 				return ultCtx;
-			} else if ( devuelto.charAt(0) == Constantes.EOF ){
+			} else if ( Constantes.EOF.equals(devuelto.charAt(0) ) ){
 				finalizada = true;
 				return ultCtx;
 			}
@@ -495,7 +495,7 @@ public class Lzp implements Compresor {
 			//cadena.delete(0, 1);
 			if (devuelto == null){
 				return resultado;
-			} else if ( devuelto.charAt(0) == Constantes.EOF ){
+			} else if ( Constantes.EOF.equals(devuelto.charAt(0)) ) {
 				finalizada = true;
 				return resultado;
 			}
@@ -518,7 +518,7 @@ public class Lzp implements Compresor {
 			//cadena.delete(0, 1);
 			if (longitud == null){
 				return resultado;
-			} else if ( longitud.charAt(0) == Constantes.EOF ){
+			} else if ( Constantes.EOF.equals(longitud.charAt(0)) ){
 				finalizada = true;
 				return resultado;
 			}
@@ -614,8 +614,7 @@ public class Lzp implements Compresor {
 			
 			//result += motorAritLongitudes.finalizarSession();
 			//result += motorAritCaracteres.finalizarSession();
-		}
-		if (esCompresion) {
+			
 			ctx = caracteresContexto.getContexto(ultCtx.substring(1, 2));
 			
 			ctx.actualizarProbabilidades();
@@ -626,6 +625,20 @@ public class Lzp implements Compresor {
 			//Actualizo el contexto
 			ctx.actualizarContexto(Constantes.EOF);
 			result += motorAritmetico.finalizarCompresion();
+			
+		} else {
+			if (esCompresion) {
+				ctx = listaLongitudes.getContexto("");
+				
+				ctx.actualizarProbabilidades();
+
+				//Comprimo la longitud
+				result += motorAritmetico.comprimir(ctx.getArrayCharProb(),Constantes.EOF);
+					
+				//Actualizo el contexto
+				ctx.actualizarContexto(Constantes.EOF);
+				result += motorAritmetico.finalizarCompresion();
+			}
 		}
 		
 		return simular?result2:result;
