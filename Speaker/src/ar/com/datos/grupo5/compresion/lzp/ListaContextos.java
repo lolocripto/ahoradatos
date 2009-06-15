@@ -139,6 +139,9 @@ public class ListaContextos {
 		//Primero busco en memoria.
 		resultado = mapaContexto.get(clave);
 		if (resultado != null) {
+			if (actualizar) {
+				mapaContexto.put(clave, pos);
+			}
 			return resultado;
 		}
 		
