@@ -484,7 +484,7 @@ public class Lzp implements Compresor {
 		while ( sigoDesc ) {
 
 			//devuelto = motorAritCaracteres.descomprimir(cadena);
-			ctx = caracteresContexto.getContexto(devuelto.toString());
+			ctx = caracteresContexto.getContexto(ultCtx.substring(1, 2));
 			ctx.actualizarProbabilidades();
 			//Comprimo la longitud
 			devuelto = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena).toString();
@@ -567,7 +567,6 @@ public class Lzp implements Compresor {
 				}
 			}
 			listaContextos.setPosicion(ultCtx, posActual);
-			devuelto = ultCtx.substring(1, 2);
 			posActual += 2;
 		}
 		return resultado;
