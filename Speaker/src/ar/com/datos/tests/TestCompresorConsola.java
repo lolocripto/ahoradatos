@@ -17,15 +17,15 @@ public class TestCompresorConsola {
 	public static void main (String[] args){
 		
 		
-		
-		String archivoPlano = "./poemasreturns.txt";
+		//String archivoPlano = "./poemasreturns.txt";
+		String archivoPlano = "poemasLzp.txt";
 		String archivoComp = "./poemasreturns.comp";
 		String destinoDescomp = "./poemasreturnsDesc.txt";
 		
 
-		CompresorConsola.comprimir(MetodoCompresion.PPMC, archivoPlano, archivoComp);
+		CompresorConsola.comprimir(MetodoCompresion.LZP, archivoPlano, archivoComp);
 		
-		//CompresorConsola.descomprimir(MetodoCompresion.PPMC, archivoComp, destinoDescomp);
+		CompresorConsola.descomprimir(MetodoCompresion.LZP, archivoComp, destinoDescomp);
 		
 		
 	}
