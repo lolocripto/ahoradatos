@@ -132,14 +132,16 @@ public class CompresorLZ78 implements Compresor {
 				anterior = actual;
 			} else {
 				//no esta en la tabla
-				ultimoCodigoCompresion++;
+				
 				if (!actual.contains(this.caracterEOF)) {
 					if (ultimoCodigoCompresion == codigoClearing ) {
 						//Clearing parcial
 						clearingParcial();
 						clearing = true;
 					}
+					ultimoCodigoCompresion++;
 					System.out.println("inserta: "+ultimoCodigoCompresion+","+actual);
+					
 					this.tablaLZWCompresion.put(actual, ultimoCodigoCompresion);
 				}
 				//me quedo con el ultimo
@@ -361,7 +363,7 @@ public class CompresorLZ78 implements Compresor {
 					
 					textoDesComprimido +=ultimoValor;
 					actual = ultimoValor;
-					ultimoCodigoDescompresion++;
+					
 				}
 				if (!tablaLZWDescompresion.containsValue(actual) ) {
 					//no esta en la tabla
