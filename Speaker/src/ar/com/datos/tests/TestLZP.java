@@ -59,7 +59,7 @@ public class TestLZP {
 		((Lzp)comp).simular = false;
 		StringBuffer resultado = new StringBuffer();
 
-		FileInputStream fis = new FileInputStream("poemasLzp.txt");
+		FileInputStream fis = new FileInputStream("poemasLzp2.txt");
 		InputStreamReader isr = new InputStreamReader(fis, Constantes.CHARSET_UTF16);
 		BufferedReader buffer = new BufferedReader(isr);
 		

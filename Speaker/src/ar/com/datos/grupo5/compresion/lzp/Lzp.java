@@ -566,6 +566,8 @@ public class Lzp implements Compresor {
 				
 				// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
 				// buscar match.
+				listaContextos.setPosicion(ultCtx, posActual);
+				posActual += 2;
 				if (lon > 0) {
 						// Matchea con un contexto.
 					try {
@@ -575,7 +577,7 @@ public class Lzp implements Compresor {
 						byte[] escAux = ultCtx.getBytes(Constantes.CHARSET_UTF16);
 						//Parece que el getBytes pone un /0 al final.
 						archivoTrabajo.write(escAux, 0, escAux.length);
-						LOG.info("busco contexto: " + ultCtx);
+						//LOG.info("busco contexto: " + ultCtx);
 						int pos = this.listaContextos.getPosicion(ultCtx);
 						archivoTrabajo.seek(pos);
 						// Cuanto leo?
@@ -601,6 +603,7 @@ public class Lzp implements Compresor {
 						//Parece que el getBytes pone un /0 al final.
 						archivoTrabajo.write(escAux, 0, escAux.length);
 						resultado += persit;
+						//LOG.info("Cadena descomprimida: " + resultado);
 					} catch (IOException e) {
 						//TODO: Hacer algo
 						e.printStackTrace();
@@ -608,8 +611,8 @@ public class Lzp implements Compresor {
 				}
 			}
 			//LOG.info("Seteo contexto: " + ultCtx + " pos: " + posActual);
-			listaContextos.setPosicion(ultCtx, posActual);
-			posActual += 2;
+//			listaContextos.setPosicion(ultCtx, posActual);
+//			posActual += 2;
 		}
 		return resultado;
 	}
