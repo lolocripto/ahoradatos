@@ -540,8 +540,6 @@ public class ArchivoDocs {
 				
 				binario = Conversiones.arrayByteToBinaryString(datos);
 				
-			//	System.out.println(binario);
-				
 				//cargo ese string binario en un buffer
 				sb.append(binario);
 				

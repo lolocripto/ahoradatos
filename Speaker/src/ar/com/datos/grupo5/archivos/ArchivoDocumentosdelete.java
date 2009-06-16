@@ -111,7 +111,7 @@ public class ArchivoDocumentosdelete extends Directo {
 			//hago el chequeo del modo de ejecucion, si se trata mal puede corromperse el archivo
 			if (this.modoEnEjecucion != 0){
 				
-			//	System.out.println("el archivo de documentos no esta preparado para lectura");
+				this.LOG.debug("el archivo de documentos no esta preparado para lectura");
 				return false;
 			}
 			//verifico que no quiera posicionarme mas alla de los limites del archivo,
