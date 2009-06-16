@@ -77,6 +77,8 @@ public class CompresorConsola {
 				lectura = lecturaAnticipada;
 				lecturaAnticipada = bufferLectura.readLine();
 			}
+			
+			System.out.println("#");
 
 			// tratamiento final de la compresion
 
@@ -147,8 +149,8 @@ public class CompresorConsola {
 				// tamaño
 				// en caso contrario tendrá solo la cantidad restante
 				long restantes = (raf.length() - raf.getFilePointer());
-				if (restantes > 32) {
-					datos = new byte[32];
+				if (restantes > 100) {
+					datos = new byte[100];
 				} else {
 					datos = new byte[(int) restantes];
 				}
@@ -171,8 +173,10 @@ public class CompresorConsola {
 				}
 				
 				bw.write(lineaDescom);
-				sb.delete(0, sb.length());
+			//	sb.delete(0, sb.length());
 			}
+			
+			System.out.println("#");
 			
 			raf.close();
 			bw.flush();
