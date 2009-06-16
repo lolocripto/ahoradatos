@@ -73,7 +73,7 @@ public class TestLZP {
 		resultado.append(comp.finalizarSession());
 		//resultado.append('\uFFFF');
 		LOG.info("Cadena comprimida: " + resultado);
-		
+		comp = new Lzp();
 		comp.iniciarSesion();
 		// Descomprimir en bucle
 		int start = 0;
@@ -85,8 +85,6 @@ public class TestLZP {
 			res = resultado.substring(start, start + largo);
 		}
 		String result = "";
-		//result = comp.descomprimir(resultado);
-		//res = null;
 		StringBuffer Sbuffer = new StringBuffer();
 		//while (res != null) {
 		while (!comp.isFinalizada()) {

@@ -12,7 +12,7 @@ public class TestCompresorConsola {
 		String archivoComp = "./poemasreturns.comp";
 		String destinoDescomp = "./poemasreturnsDesc.txt";
 		
-		CompresorConsola.comprimir(MetodoCompresion.LZP, archivoPlano, archivoComp);	
+		//CompresorConsola.comprimir(MetodoCompresion.LZP, archivoPlano, archivoComp);	
 		CompresorConsola.descomprimir(MetodoCompresion.LZP, archivoComp, destinoDescomp);
 	}
 }

@@ -31,16 +31,6 @@ public class Lzp implements Compresor {
 	private static final Logger LOG = Logger.getLogger(Lzp.class);
 	
 	/**
-	 * Motor aritmetico para los cararteres emitidos.
-	 */
-	private CompresorAritmetico motorAritCaracteres;
-	
-	/**
-	 * Motor aritmetico para las longitudes.
-	 */
-	private CompresorAritmetico motorAritLongitudes;
-	
-	/**
 	 * Contextos y posiciones.
 	 */
 	private ListaContextos listaContextos;
@@ -124,10 +114,6 @@ public class Lzp implements Compresor {
 	}
 
 	public Lzp() {
-		motorAritCaracteres = new CompresorAritmetico(1, true);
-		motorAritLongitudes = new CompresorAritmetico(0, false);
-		motorAritCaracteres.iniciarSesion();
-		motorAritLongitudes.iniciarSesion();
 		ultCtx = "";
 		ultIncompleto = null;
 		motorAritmetico = new LogicaAritmetica();
@@ -454,15 +440,10 @@ public class Lzp implements Compresor {
 			devuelto = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena).toString();
 			//Actualizo el contexto
 			ctx.actualizarContexto(devuelto.charAt(0));
-			
-			
-			//devuelto = motorAritCaracteres.descomprimir(cadena);
-			//devuelto = String.valueOf(cadena.charAt(0));
+
 			ultCtx = devuelto;
 			
 			//Pide la letra 2
-			//devuelto = motorAritCaracteres.descomprimir(cadena);
-			//devuelto = String.valueOf(cadena.charAt(1));
 			
 			ctx = caracteresContexto.getContexto(devuelto.toString());
 			
@@ -511,11 +492,9 @@ public class Lzp implements Compresor {
 					ultIncompleto = null;
 					ctx = caracteresContexto.getContexto(ultCtx.substring(1));
 				}
-				//FIXME::Sacar el algo que es temporal.
+
 				Character aux = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena);
 				
-				//devuelto = cadena.substring(0,1);
-				//cadena.delete(0, 1);
 				if (aux == null){
 					ultIncompleto = 'C';
 					ultCtx = resultado.substring(resultado.length() - 2);
@@ -532,6 +511,16 @@ public class Lzp implements Compresor {
 				resultado += devuelto;
 				//LOG.info("Cadena descomprimida: " + resultado);
 				ultCtx = resultado.substring(resultado.length() - 2);
+				try {
+					archivoTrabajo.seek(archivoTrabajo.length());
+					//Escribo en el archivo temporal en unicode.
+					byte[] escAux = ultCtx.substring(ultCtx.length() - 1).getBytes(Constantes.CHARSET_UTF16);
+					//Parece que el getBytes pone un /0 al final.
+					archivoTrabajo.write(escAux, 0, escAux.length);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			if ((ultIncompleto == null)||(ultIncompleto == 'L')) {
 				//devuelto = motorAritCaracteres.descomprimir(cadena);
@@ -545,10 +534,6 @@ public class Lzp implements Compresor {
 				//Comprimo la longitud
 				Character aux = motorAritmetico.descomprimir(ctx.getArrayCharProb(),cadena);
 	
-				
-				//longitud = motorAritLongitudes.descomprimir(cadena);
-				//longitud = cadena.substring(0, 1);
-				//cadena.delete(0, 1);
 				if (aux == null){
 					ultIncompleto = 'L';
 					ultCtx = resultado.substring(resultado.length() - 2);
@@ -561,8 +546,6 @@ public class Lzp implements Compresor {
 				//Actualizo el contexto
 				ctx.actualizarContexto(longitud.charAt(0));
 				lon = CodePoint.getCodePoint(longitud.charAt(0));
-				
-				//int lon = Integer.parseInt(longitud);
 				
 				// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
 				// buscar match.
@@ -610,9 +593,6 @@ public class Lzp implements Compresor {
 					}
 				}
 			}
-			//LOG.info("Seteo contexto: " + ultCtx + " pos: " + posActual);
-//			listaContextos.setPosicion(ultCtx, posActual);
-//			posActual += 2;
 		}
 		return resultado;
 	}
@@ -620,9 +600,17 @@ public class Lzp implements Compresor {
 	@Override
 	public String finalizarSession() {
 		sesionIniciada = false;
-		File file = new File(ARCHIVO_TRABAJO);
 		
-		file.delete();
+		try {
+			archivoTrabajo.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		//File file = new File(ARCHIVO_TRABAJO);
+		
+		//file.delete();
+		 
 		String result = "";
 		String result2 = "";
 		Character letra;
@@ -696,10 +684,6 @@ public class Lzp implements Compresor {
 		listaLongitudes = new Orden();
 		caracteresContexto = new Orden();
 		iniciarOrdenes();
-		motorAritCaracteres = new CompresorAritmetico(1, true);
-		motorAritLongitudes = new CompresorAritmetico(0, false);
-		motorAritCaracteres.iniciarSesion();
-		motorAritLongitudes.iniciarSesion();
 		sesionIniciada = true;
 		finalizada = false;
 		ultCtx = "";
