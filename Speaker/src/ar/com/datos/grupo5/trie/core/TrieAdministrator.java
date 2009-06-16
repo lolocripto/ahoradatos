@@ -34,23 +34,6 @@ public class TrieAdministrator {
 		}
 	}
 
-	/*
-	private void recuperarRegistroAdministrativo(){
-		
-		admArchivo.iniciarRegistroAdministrativo();
-		
-		int a = Constantes.SIZE_OF_TRIE;
-		if (AdministrationRegistry.getCantidadNodosExistentes() ==0){
-			AdministrationRegistry.setProfundidadActual(a);
-		}
-		int b = AdministrationRegistry.getProfundidadCreacionTrie();
-		
-		if (a != b){
-		//	System.out.println("la profundidad de creacion del trie es diferente a la del archivo de configuracion, se aborta");
-		}
-	}
-	*/
-	
 	public boolean agregarPalabra(String pal, Long puntero){
 		
 		PunteroSonido punt = new PunteroSonido(puntero);

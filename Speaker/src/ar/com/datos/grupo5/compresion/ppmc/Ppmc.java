@@ -77,7 +77,6 @@ public class Ppmc implements Compresor{
 		while (it.hasNext()) {
 			letra = it.next();
 			this.contextoOrdenMenosUno.crearCharEnContexto(letra);
-			//System.out.println(letra);
 		}
 		
 		this.contextoOrdenMenosUno.crearCharEnContexto(Constantes.EOF);
@@ -126,7 +125,6 @@ public class Ppmc implements Compresor{
 	 * @return El contexto en la posición posicion
 	 */
 	private final void getContexto(final String cadena, final int posicion){
-		//FIXME: Ver si es > o >=
 		if (this.contextoPrevio) {
 			
 			if (posicion > this.orden) {
@@ -177,7 +175,6 @@ public class Ppmc implements Compresor{
 				logger.debug("Letra: " + cadena.charAt(pos) + ", Emision: " + this.tiraBits);
 				pos++;
 			}
-			//FIXME: Probar
 			this.getContexto(cadena, pos);
 			this.contextoPrevio = true;
 			return this.tiraBits;
@@ -191,10 +188,10 @@ public class Ppmc implements Compresor{
 		Orden ordenAImprimir;
 		int i = 0;
 		while (it.hasNext()) {
-		//	System.out.println("\tOrden " + i);
+			System.out.println("\tOrden " + i);
 			ordenAImprimir = it.next();
 			ordenAImprimir.meImprimo();
-		//	System.out.println("");
+			System.out.println("");
 			i++;
 		}
 	}

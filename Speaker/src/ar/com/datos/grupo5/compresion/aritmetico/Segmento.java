@@ -152,21 +152,12 @@ public class Segmento {
 				this.bitsUnderflow--;
 			}
 			emision = buffer.toString();
-			//Antes de devolver la emision no deberia seguir mirando si hay UnderFlow??
-//FIXME:			return emision;
-			//System.out.println("Luego de Normalizar:");
-			//System.out.println("Techo: " + Long.toHexString(new Long(this.techo.getLongAsociado())));
-			//System.out.println("Piso: " + Long.toHexString(new Long(this.piso.getLongAsociado())));
-		//	return emision;
 
 		}
 
 		while (this.hayUnderflow()) {
 			this.trabajarUnderFlow();
 		}
-	//	System.out.println("Luego de Normalizar:");
-	//	System.out.println("Techo: " + Long.toHexString(new Long(this.techo.getLongAsociado())));
-	//	System.out.println("Piso: " + Long.toHexString(new Long(this.piso.getLongAsociado())));
 		return emision;
 	}
 
@@ -219,7 +210,6 @@ public class Segmento {
 	 * el primer bit del techo sera 1 y el primer bit del piso será 0.
 	 * al finalizar Suma un bit al contador de underflow
 	 */
-	//TODO verificar la premisa anterior.
 	private void trabajarUnderFlow() {
 
 		// agrego hago un corrimiento de bits a la izquierda y coloco
@@ -297,7 +287,6 @@ public class Segmento {
 	public final String generarCadenaSinUndeFlow(StringBuffer binaryString){
 		String nuevaCadena = "";
 		nuevaCadena += binaryString.charAt(0);
-		//nuevaCadena += binaryString.substring(1+this.bitsUnderflow,31 + (1+this.bitsUnderflow));
 		nuevaCadena += binaryString.substring(1+this.bitsUnderflow);
 		return nuevaCadena;
 	}

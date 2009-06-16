@@ -41,7 +41,7 @@ public class LogicaAritmetica {
 		if (it.hasNext()) {
 			elemAnterior = it.next();
 			elemAnterior.setTecho(piso, longitudInterv);
-			//System.out.println("Letra: "+elemAnterior.getSimboloUnicode()+", techo: "+elemAnterior.getTecho()+", piso: "+elemAnterior.getPiso());
+			
 			if (elemAnterior.getSimboloUnicode() == caracterAcodificar) {
 				return elemAnterior;
 			}
@@ -54,7 +54,7 @@ public class LogicaAritmetica {
 			// el piso del elemento actual, sera el techo + 1 del elemento
 			// anterior
 			elemActual.setTecho(elemAnterior.getTecho() + 1, longitudInterv.getLongAsociado());
-			//System.out.println("Letra: "+elemActual.getSimboloUnicode()+", techo: "+elemActual.getTecho()+", piso: "+elemActual.getPiso());
+			
 			// me fijo si es el que debo codificar para no seguir segmentando
 			// sin sentido
 			if (elemActual.getSimboloUnicode() == caracterAcodificar) {
@@ -91,8 +91,6 @@ public class LogicaAritmetica {
 	 */
 	public String comprimir(Collection<ParCharProb> Contexto, char Caracter) {
 		
-	//	System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
-	//	System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
 		// obtengo el segmento del espacio de probabilidades asociado a la letra
 		// que quiero emitir
 		ParCharProb subIntervalo = this.segmentar(Contexto, Caracter);
@@ -102,9 +100,6 @@ public class LogicaAritmetica {
 		// probabilidades
 		this.intervalo.setPiso(subIntervalo.getPiso());
 		this.intervalo.setTecho(subIntervalo.getTecho());
-
-	//	System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
-	//	System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
 		
 		// con los nuevos piso y techo, estoy en condiciones de proceder a la
 		// normalizacion y emitir bits en el proceso.
@@ -124,94 +119,6 @@ public class LogicaAritmetica {
 		String emision = this.intervalo.emitirRestoBits();
 		this.intervalo.resetear();
 		return emision;
-	}
-
-	private ParCharProb segmentarMetodoAlternativoLZP(Collection<ParCharProb> contexto,
-			StringBuffer binaryString) {
-		ParCharProb par = null;
-
-		//Establezco el piso y el techo hasta el momento
-		UnsignedInt piso = this.intervalo.getPiso();
-		UnsignedInt techo = this.intervalo.getTecho();
-		
-		UnsignedInt longitudInterv = techo.menos(piso);
-		
-		String V = "";
-		//Lo siguiente lo hago para no modificar el string real aún.
-		//Valido si tengo que trabajar con una cadena normal o con una cadena con UndeFLow
-		if (!this.intervalo.estadoOverFlow() && this.intervalo.estadoUnderFlow()) {
-			//Si hay bits en UnderFlow es que no huvo overFlow!!! no bastaría con preguntar solo por underFlow? 
-			V = this.intervalo.generarCadenaSinUndeFlow(binaryString);
-		} else {
-			
-			V = binaryString.toString();
-		}
-		//System.out.println("Techo:            "+techo.get32BitsRepresentation());
-		//System.out.println("Cadena bits de V: "+V);
-		//System.out.println("Piso:             "+piso.get32BitsRepresentation());
-		
-		//Lo convierto a un entero sin signo.
-		UnsignedInt valor = new UnsignedInt(V);
-
-		// ordeno el contexto por orden alfabetico
-		// Collections.sort(contexto);
-
-		Iterator<ParCharProb> it = contexto.iterator();
-
-		//boolean encontrado = false;
-		ParCharProb elemAnterior = null;
-		ParCharProb elemActual = null;
-
-		// inicializo el primer elemento
-		if (it.hasNext()) {
-			elemAnterior = it.next();
-			elemAnterior.setTecho(piso, longitudInterv);
-		} 
-	
-		while (it.hasNext()) {
-			// tomo el objeto actual
-			elemActual = it.next();
-
-			// el piso del elemento actual, sera el techo + 1 del elemento
-			// anterior
-			elemActual.setTecho(elemAnterior.getTecho() + 1, longitudInterv.getLongAsociado());
-
-			//Preparo para la siguiente iteracion.
-			elemAnterior = elemActual;
-		}
-		
-		//A estas alturas ya generé todos los techos y piso, ahora comienzo a ver los bits que tengo.
-		it = contexto.iterator();
-
-		//boolean encontrado = false;
-		elemAnterior = null;
-		elemActual = null;		
-		
-		//Itero para encontrar el intervalo
-		while (it.hasNext()) {
-			elemActual = it.next();
-			
-			if (validarBitsIntervalo(elemActual,V)) {
-				
-			}
-			
-			
-			
-			elemAnterior = elemActual;
-		}
-		
-		return par;
-	}
-	private boolean validarBitsIntervalo(ParCharProb elemActual, String v) {
-		UnsignedInt techo = new UnsignedInt(elemActual.getTecho());
-		UnsignedInt piso = new UnsignedInt(elemActual.getPiso());
-		
-		//Puntero al bit analizado
-		int posBit = 0;
-		
-		
-		
-		return false;
 	}
 
 	/**
@@ -252,9 +159,6 @@ public class LogicaAritmetica {
 			throw new Exception();
 			
 		}
-		//System.out.println("Techo:            "+techo.get32BitsRepresentation());
-		//System.out.println("Cadena bits de V: "+V);
-		//System.out.println("Piso:             "+piso.get32BitsRepresentation());
 
 		//Lo convierto a un entero sin signo.
 		UnsignedInt valor = new UnsignedInt(V);
@@ -300,8 +204,6 @@ public class LogicaAritmetica {
 	
 	private boolean ValidarIntervalo(ParCharProb elemAnterior, UnsignedInt valor) {
 		if (elemAnterior.getPiso() <= valor.getLongAsociado() && elemAnterior.getTecho() >= valor.getLongAsociado()) {
-			//System.out.println("Letra: "+elemAnterior.getSimboloUnicode()+" Piso: "+elemAnterior.getPiso());
-			//System.out.println("Techo: "+elemAnterior.getTecho()+" Valor: "+valor.getLongAsociado());
 			return true;
 		}
 		return false;
@@ -324,8 +226,6 @@ public class LogicaAritmetica {
 	 */
 	public final Character descomprimir(Collection<ParCharProb> Contexto, StringBuffer cadenaBits){
 		
-	//	System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
-	//	System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
 		// obtengo el segmento del espacio de probabilidades del contexto y luego busco el intervalo donde esta la letra
 		ParCharProb subIntervalo;
 		try {
@@ -340,9 +240,6 @@ public class LogicaAritmetica {
 		// probabilidades
 		this.intervalo.setPiso(subIntervalo.getPiso());
 		this.intervalo.setTecho(subIntervalo.getTecho());
-
-	//	System.out.println("Techo: " + Long.toHexString(new Long(this.intervalo.getTecho().getLongAsociado())));
-	//	System.out.println("Piso: " + Long.toHexString(new Long(this.intervalo.getPiso().getLongAsociado())));
 		
 		// con los nuevos piso y techo, estoy en condiciones de proceder a la
 		// normalizacion y emitir bits en el proceso.

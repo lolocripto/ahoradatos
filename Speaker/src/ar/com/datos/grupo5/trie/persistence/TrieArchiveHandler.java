@@ -38,7 +38,6 @@ public class TrieArchiveHandler {
 			}
 			
 		} catch (Exception e) {
-		//	System.out.println("no se puede abrir el archivo de trie");
 			e.printStackTrace();
 		}
 	}

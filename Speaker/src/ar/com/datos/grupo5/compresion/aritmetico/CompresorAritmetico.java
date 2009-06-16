@@ -278,21 +278,7 @@ public class CompresorAritmetico implements Compresor {
 		while (it.hasNext()) {
 			letra = it.next();
 			ctx.crearCharEnContexto(letra);
-			//System.out.println(letra);
 		}
-		/*
-		for (int i = 0; i < 300; i++) {
-			if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
-				ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
-				//System.out.println(new Character(Character.toChars(i)[0]));
-			} else {
-				if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
-					ctx.crearCharEnContexto(new Character(Character.toChars(i)[0]));
-					//System.out.println(new Character(Character.toChars(i)[0]));
-				}
-			}
-		}
-		*/
 		ctx.crearCharEnContexto(Constantes.EOF);
 	}
 	
@@ -320,7 +306,6 @@ public class CompresorAritmetico implements Compresor {
 	}
 	
 	private void inicializarContexto() {
-		// TODO Auto-generated method stub
 		Contexto ctx = null;
 		if (this.charset) {
 			switch(this.orden){
@@ -343,19 +328,6 @@ public class CompresorAritmetico implements Compresor {
 					ctx = this.verificarCtx(letra.toString());
 					this.cargarCtxConUnicodeBlock(ctx);
 				}
-				/*
-				for (int i = 0; i < 300; i++) {
-					if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
-						ctx = this.verificarCtx(new Character(Character.toChars(i)[0]).toString());
-						this.cargarCtxConUnicodeBlock(ctx);
-					} else {
-						if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock.of(new Character(Character.toChars(i)[0]))) {
-							ctx = this.verificarCtx(new Character(Character.toChars(i)[0]).toString());
-							this.cargarCtxConUnicodeBlock(ctx);
-						}
-					}
-				}
-				*/
 				break;
 			}
 			//Cargo el charset LATIN
@@ -390,7 +362,6 @@ public class CompresorAritmetico implements Compresor {
 
 	@Override
 	public boolean isFinalizada() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

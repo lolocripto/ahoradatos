@@ -23,9 +23,9 @@ public class TestCompresorConsola {
 		String destinoDescomp = "./poemasreturnsDesc.txt";
 		
 
-		//CompresorConsola.comprimir(MetodoCompresion.PPMC, archivoPlano, archivoComp);
+		CompresorConsola.comprimir(MetodoCompresion.PPMC, archivoPlano, archivoComp);
 		
-		CompresorConsola.descomprimir(MetodoCompresion.PPMC, archivoComp, destinoDescomp);
+		//CompresorConsola.descomprimir(MetodoCompresion.PPMC, archivoComp, destinoDescomp);
 		
 		
 	}
