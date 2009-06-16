@@ -6,8 +6,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.RandomAccessFile;
 
@@ -15,11 +13,7 @@ import java.io.InputStreamReader;
 
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.aritmetico.CompresorAritmetico;
-import ar.com.datos.grupo5.excepciones.SessionException;
-
 import ar.com.datos.grupo5.interfaces.Compresor;
-import ar.com.datos.grupo5.interfaces.InterfazUsuario;
-
 import ar.com.datos.grupo5.utils.Conversiones;
 import ar.com.datos.grupo5.utils.MetodoCompresion;
 
@@ -49,8 +43,6 @@ public class CompresorConsola {
 			comp.iniciarSesion();
 
 			// instancio todos las estructuras
-			StringBuffer sb;
-			byte[] datos;
 			String binario;
 
 			//debo manejar una lectura anticipada del archivo para poder agregar los saltos de linea
@@ -140,6 +132,7 @@ public class CompresorConsola {
 			StringBuffer sb = new StringBuffer();
 			byte[] datos;
 			String binario;
+			int cantBytes = 512;
 
 			while (raf.getFilePointer() < raf.length()) {
 				
@@ -149,8 +142,8 @@ public class CompresorConsola {
 				// tamaño
 				// en caso contrario tendrá solo la cantidad restante
 				long restantes = (raf.length() - raf.getFilePointer());
-				if (restantes > 100) {
-					datos = new byte[100];
+				if (restantes > cantBytes) {
+					datos = new byte[cantBytes];
 				} else {
 					datos = new byte[(int) restantes];
 				}
@@ -162,16 +155,11 @@ public class CompresorConsola {
 				String lineaDescom = null;
 
 				if (met == MetodoCompresion.ARIT || met == MetodoCompresion.ARIT1) {
-
 					lineaDescom = ((CompresorAritmetico) comp)
 							.StringCompleto(sb); // descomprimo
-
 				} else {
-
 					lineaDescom = comp.descomprimir(sb);
-				
 				}
-				
 				bw.write(lineaDescom);
 			//	sb.delete(0, sb.length());
 			}
