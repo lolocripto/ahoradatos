@@ -18,14 +18,14 @@ import ar.com.datos.grupo5.compresion.aritmetico.CompresorAritmetico;
 import ar.com.datos.grupo5.excepciones.SessionException;
 
 import ar.com.datos.grupo5.interfaces.Compresor;
+import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 
 import ar.com.datos.grupo5.utils.Conversiones;
 import ar.com.datos.grupo5.utils.MetodoCompresion;
 
 public class CompresorConsola {
 
-	public static void comprimir(MetodoCompresion met, String rutaOrigen,
-			String rutaDestino) {
+	public static void comprimir(MetodoCompresion met, String rutaOrigen,String rutaDestino) {
 
 		try {
 
@@ -59,6 +59,8 @@ public class CompresorConsola {
 			String lecturaAnticipada = bufferLectura.readLine();
 
 			while (lectura != null) {
+				
+				System.out.print("#");
 				
 				//si la siguiente lectura es != null, osea que hay otra linea mas, agrego el salto
 				if (lecturaAnticipada !=null){
@@ -110,8 +112,8 @@ public class CompresorConsola {
 		}
 	}
 
-	public static void descomprimir(MetodoCompresion met, String rutaOrigen,
-			String rutaDestino) {
+	
+	public static void descomprimir(MetodoCompresion met, String rutaOrigen, String rutaDestino) {
 
 		try {
 
@@ -138,6 +140,8 @@ public class CompresorConsola {
 			String binario;
 
 			while (raf.getFilePointer() < raf.length()) {
+				
+				System.out.print("#");
 
 				// me fijo si puedo leer 32 bytes, para que array tenga ese
 				// tamaño
@@ -163,6 +167,7 @@ public class CompresorConsola {
 				} else {
 
 					lineaDescom = comp.descomprimir(sb);
+				
 				}
 				
 				bw.write(lineaDescom);

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 
 import ar.com.datos.grupo5.Constantes;
 import ar.com.datos.grupo5.compresion.CompresorConsola;
+import ar.com.datos.grupo5.interfaces.InterfazUsuario;
 import ar.com.datos.grupo5.parser.Parser;
 import ar.com.datos.grupo5.utils.MetodoCompresion;
 
@@ -17,13 +18,13 @@ public class TestCompresorConsola {
 		
 		
 		
-		String archivoPlano = "./poemaslzp.txt";
+		String archivoPlano = "./poemasreturns.txt";
 		String archivoComp = "./poemasreturns.comp";
 		String destinoDescomp = "./poemasreturnsDesc.txt";
 		
 
 		//CompresorConsola.comprimir(MetodoCompresion.PPMC, archivoPlano, archivoComp);
-
+		
 		CompresorConsola.descomprimir(MetodoCompresion.PPMC, archivoComp, destinoDescomp);
 		
 		

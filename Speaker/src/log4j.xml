@@ -34,7 +34,7 @@
 	<root>
 		<level value="ERROR, DEBUG" />
 <!--		<appender-ref ref="FILELOGGER" />-->
-		<appender-ref ref="ConsoleAppender" />
+<!--		<appender-ref ref="ConsoleAppender" /> -->
 	</root>
 	
 
