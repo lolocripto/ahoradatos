@@ -23,7 +23,7 @@
 		</path>
 	</target>
 
-	<target name="compile" depends="init" description="compile the source ">
+	<target name="compile" depends="init" description="compile the source">
 		<javac srcdir="${src}" destdir="${build}" encoding="ISO-8859-1" >
 			<classpath refid="classpath"/>
 		</javac>
@@ -59,7 +59,7 @@
 		</exec>
 		
 		<jar destfile="${dist}/bin/Speaker.jar" encoding="ISO-8859-1" >
-			<fileset dir="${build}" includes="**" />
+			<fileset dir="${build}" includes="**"/>
 			<manifest>
 				<attribute name="Main-Class" value="ar.com.datos.grupo5.Main" />
 				<attribute name="Class-Path" value="log4j-1.2.15.jar jdom.jar"/>
