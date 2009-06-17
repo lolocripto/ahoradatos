@@ -549,19 +549,25 @@ public class Lzp implements Compresor {
 				
 				// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
 				// buscar match.
-				listaContextos.setPosicion(ultCtx, posActual);
-				posActual += 2;
+				//listaContextos.setPosicion(ultCtx, posActual);
+				//posActual += 2;
 				if (lon > 0) {
 						// Matchea con un contexto.
 					try {
-						posActual += 2 * lon;
-						archivoTrabajo.seek(archivoTrabajo.length());
+						//posActual += 2 * lon;
+						//archivoTrabajo.seek(archivoTrabajo.length());
 						//Escribo en el archivo temporal en unicode.
 						byte[] escAux = ultCtx.getBytes(Constantes.CHARSET_UTF16);
 						//Parece que el getBytes pone un /0 al final.
-						archivoTrabajo.write(escAux, 0, escAux.length);
+						//archivoTrabajo.write(escAux, 0, escAux.length);
 						//LOG.info("busco contexto: " + ultCtx);
-						int pos = this.listaContextos.getPosicion(ultCtx);
+						int pos = 0;
+						try {
+							pos = this.listaContextos.getPosicion(ultCtx);
+						} catch (Exception e) {
+							e.printStackTrace();
+							System.exit(1);
+						}
 						archivoTrabajo.seek(pos);
 						// Cuanto leo?
 						
@@ -571,7 +577,13 @@ public class Lzp implements Compresor {
 						//escribirlos en el archivo
 						devuelto = new String(bytes, Constantes.CHARSET_UTF16);
 						archivoTrabajo.seek(archivoTrabajo.length());
-						String persit = new String();
+						if (posActual==82){
+							LOG.info("");
+						}
+						listaContextos.setPosicion(ultCtx, posActual);
+						posActual += 2 * lon + 2;
+						
+						String persit = "";
 						while (lon >0) {
 							if (devuelto.length() > lon){
 								persit += devuelto;
@@ -588,10 +600,14 @@ public class Lzp implements Compresor {
 						resultado += persit;
 						//LOG.info("Cadena descomprimida: " + resultado);
 					} catch (IOException e) {
-						//TODO: Hacer algo
 						e.printStackTrace();
 					}
+				} else {
+					listaContextos.setPosicion(ultCtx, posActual);
+					posActual += 2;
 				}
+				//listaContextos.setPosicion(ultCtx, posActual);
+				//posActual += 2;
 			}
 		}
 		return resultado;
