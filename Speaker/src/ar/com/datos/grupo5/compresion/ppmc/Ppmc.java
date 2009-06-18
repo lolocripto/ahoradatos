@@ -376,7 +376,7 @@ public class Ppmc implements Compresor{
 		if (datos.length() < 32) {
 			this.bitsBuffer = new StringBuffer(datos);
 			datos.delete(0, datos.length());
-			return null;
+			return "";
 		}
 		
 		boolean llegoEOF = false;
@@ -384,8 +384,6 @@ public class Ppmc implements Compresor{
 		this.result = "";
 		
 		if (this.initSession) {
-			sessionCompresion = true;
-
 			while (datos.length() >= 32 && !llegoEOF ) {
 					
 				//Recorro los contextos para las emisiones
