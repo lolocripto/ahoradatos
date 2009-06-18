@@ -76,6 +76,16 @@ public class ConversorABytes {
 		return binaryInt;
 
 	}
+	public static int binaryStringtoInt(String binaria) {
+		int resultado = 0;
+		for (int i = 0; i<binaria.length(); i++) {
+			resultado += (Math.pow(2,binaria.length()-1-i))*(Integer.parseInt(Character.toString(binaria.charAt(i))));
+		}
+		
+		return resultado;
+		
+		
+	}
 
 
      

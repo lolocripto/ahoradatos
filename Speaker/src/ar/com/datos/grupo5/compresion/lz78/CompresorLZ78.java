@@ -9,17 +9,21 @@ import ar.com.datos.grupo5.interfaces.Compresor;
 import ar.com.datos.grupo5.utils.Conversiones;
 
 public class CompresorLZ78 implements Compresor {
-
+	/*
 	private HashMap<String, Integer> tablaLZWCompresion;
 
 	private HashMap<Integer, String> tablaLZWDescompresion;
-
+	*/
+	private TablaLZ78 tabla;
 	private final char caracterClearing = 1; 
-    
-	private int ultimoCodigoCompresion;
+	private int ultimoCodigo;
+
+	/*private int ultimoCodigoCompresion;
 	private int ultimoCodigoDescompresion;
+	*/
     //Guarda la ultima descompresion al salir del descompresor
 	// se requiere por el tamaño de buffer variable
+	
 	private String ultimaDescompresion;
 	private final short codigosReservados = 255; //para los ASCII
 
@@ -31,14 +35,17 @@ public class CompresorLZ78 implements Compresor {
 	//utilizado para la descompresion final
 	//Indica que ha guardado datos en el buffer
 	private int estadoInicio = 0;
+	private int modo ;
 
 	/**
 	 * Constructor
 	 *
 	 */
 	public CompresorLZ78() {
-		ultimoCodigoCompresion = 0;
+		/*ultimoCodigoCompresion = 0;
 		ultimoCodigoDescompresion = 0;
+		*/
+		ultimoCodigo = 0;
 		estadoInicio = 0;
 
 	}
@@ -47,36 +54,33 @@ public class CompresorLZ78 implements Compresor {
 	 * Inicializa la tabla con los primeros 255 caracteres unicode
 	 *
 	 */
-	private void limpiaTabla() {
+	private void limpiaTabla(int modo) {
 		int i = 0;
-		tablaLZWCompresion = new HashMap<String, Integer>();
+		/*tablaLZWCompresion = new HashMap<String, Integer>();
 		tablaLZWDescompresion = new HashMap<Integer, String>();
+		*/
+		tabla = new TablaLZ78(modo);
 		for (i = 0; i < codigosReservados; i++) {
+			String valor = new String();
 			if (Character.UnicodeBlock.forName("BASIC_LATIN") == Character.UnicodeBlock
 					.of(new Character(Character.toChars(i)[0]))) {
-				String valor = new Character(Character.toChars(i)[0])
+				valor = new Character(Character.toChars(i)[0])
 						.toString();
-				tablaLZWCompresion.put(valor, i);
-				tablaLZWDescompresion.put(i, valor);
 			} else {
 				if (Character.UnicodeBlock.forName("LATIN_1_SUPPLEMENT") == Character.UnicodeBlock
 						.of(new Character(Character.toChars(i)[0]))) {
-					String valor = new Character(Character.toChars(i)[0])
+					valor = new Character(Character.toChars(i)[0])
 							.toString();
-					tablaLZWCompresion.put(valor, i);
-					tablaLZWDescompresion.put(i, valor);
 				}
 			}
-
+			tabla.put(i, valor);
 		}
 
 		//i++;
 		//tablaLZW.put(this.caracterEOF,new ParLZW(i,this.caracterEOF));
 		//tablaLZWCompresion.put(this.caracterEOF, i);
 		//tablaLZWDescompresion.put(i, this.caracterEOF);
-		ultimoCodigoCompresion = i;
-		ultimoCodigoDescompresion = i;
-
+		ultimoCodigo = i;
 	}
 
 	/**
@@ -85,7 +89,7 @@ public class CompresorLZ78 implements Compresor {
 	 * @return int -1 si n(ParLZW)o).getValor() o se encuentra el codigo
 	 */
 	private int buscaCodigoCompresion(String valor) {
-		Integer codigo = tablaLZWCompresion.get(valor);
+		Integer codigo = (Integer) tabla.get(valor);
 		if (codigo == null) {
 			return -1;
 		}
@@ -98,7 +102,7 @@ public class CompresorLZ78 implements Compresor {
 	 * @return String null si no se encuentra el codigo en la tabla
 	 */
 	private String buscaValorDescompresion(int valor) {
-		String codigo = tablaLZWDescompresion.get(new Integer(valor));
+		String codigo = (String) tabla.get(new Integer(valor));
 		return codigo;
 	}
     /**
@@ -110,6 +114,10 @@ public class CompresorLZ78 implements Compresor {
 	public String comprimir(String cadena) throws SessionException {
 		if (estadoInicio == 0)
 			throw new SessionException("Error!: Sesion no iniciada");
+		if (ultimoCodigo == 0) {
+			this.modo = 0;
+			limpiaTabla(this.modo);
+		}
 		String textoComprimidoEnBytes = new String();
 		String textoComprimido = new String();
 		int posicion = 0;
@@ -135,15 +143,15 @@ public class CompresorLZ78 implements Compresor {
 			} else {
 				//no esta en la tabla
 				if (!actual.contains(this.caracterEOF)) {
-					if (ultimoCodigoCompresion == codigoClearing ) {
+					if (ultimoCodigo == codigoClearing ) {
 						//Clearing parcial
 						clearingParcial();
 						clearing = true;
 					}
-					ultimoCodigoCompresion++;
+					ultimoCodigo++;
 					if (cadena.length() != actual.length()) {
-						System.out.println("inserta: "+ultimoCodigoCompresion+","+actual);
-						this.tablaLZWCompresion.put(actual, ultimoCodigoCompresion);
+						System.out.println("inserta: "+ultimoCodigo+","+actual);
+						tabla.put(actual, ultimoCodigo);
 					}
 					else 
 						break;
@@ -155,20 +163,25 @@ public class CompresorLZ78 implements Compresor {
 				if (ultimoMatch < 0) {
 					
 					textoComprimidoEnBytes += completaStringBinaria(Integer.toBinaryString(actual.charAt(0)));
+					System.out.println("emite "+actual.charAt(0)+" >>"+completaStringBinaria(Integer.toBinaryString(actual.charAt(0))));
 					textoComprimido += actual.charAt(0);
 				} else {
 					if (!actual.contains(this.caracterEOF)) {
 						textoComprimido += Integer.toString(ultimoMatch);
 						textoComprimidoEnBytes += completaStringBinaria(Integer.toBinaryString(ultimoMatch));
+						System.out.println("emite "+ultimoMatch+" >>"+completaStringBinaria(Integer.toBinaryString(ultimoMatch)));
 						//ConversorABytes.shortToBinaryString(ultimoMatch);
 					} else {
 						//ultimo Caracter a comprimir
 						textoComprimido += actual.substring(0, actual.length()
 								- this.caracterEOF.length());
+						
 						int longDif = actual.length()
 								- this.caracterEOF.length();
 						for (int i = 0; i < longDif; i++) {
 							textoComprimidoEnBytes += completaStringBinaria(Integer.toBinaryString(actual.charAt(i)));
+							System.out.println("emite "+actual.charAt(i)+">>"+completaStringBinaria(Integer.toBinaryString(actual.charAt(i))));
+							textoComprimido += actual.charAt(i);
 						}
 						//ver si emitir caracter Clearing
 					}
@@ -199,7 +212,11 @@ public class CompresorLZ78 implements Compresor {
 	public String descomprimir(StringBuffer datoscomprimidos) throws SessionException {
 		if (estadoInicio == 0)
 			throw new SessionException("Error!: Sesion no iniciada");
-
+        if (ultimoCodigo == 0) {
+        	this.modo = 1;
+        	limpiaTabla(this.modo);
+        }
+        	
 		if (bufferBits.length() > 0) {
 			//sumo lo que tenia
 			System.out.println("entro "+datoscomprimidos);
@@ -219,7 +236,6 @@ public class CompresorLZ78 implements Compresor {
 			actual = new String();
 			int bitsAtomar = cantidadDeBitsDescompresion();
 			System.out.println("tomar "+bitsAtomar);
-			System.out.println(posicion+"|"+datoscomprimidos.length());
 			if ((datoscomprimidos.length() < posicion+bitsAtomar)) {
 				System.out.println("guarda datois ");
 				this.bufferBits.append(datoscomprimidos.substring(posicion,datoscomprimidos.length()));
@@ -235,7 +251,7 @@ public class CompresorLZ78 implements Compresor {
 			if ( caracter >codigosReservados ) {
 				//numero
 				System.out.println("entra "+caracter);
-				if (caracter > ultimoCodigoDescompresion+2)
+				if (caracter > ultimoCodigo+2)
 					//ocurrio algo inesperado
 					 break;
 				ultimoValor = buscaValorDescompresion(caracter);
@@ -270,19 +286,14 @@ public class CompresorLZ78 implements Compresor {
 							//guardo lo que quedo menos el enter.
 							this.bufferBits.append(datoscomprimidos.substring(
 								posicion+bitsAtomar, datoscomprimidos.length()));
-							System.out
-									.println("Salio con enter "
-											+ textoDescomprimido);
-							System.out.println("y se guardo "+bufferBits);
-							System.out.println("en la poxi "+posicion);
 							// ultimaDescompresion = actual+'\n';
 							if (posicion !=0) {
-							ultimoCodigoDescompresion++;
+							ultimoCodigo++;
 							System.out.println("se ingreso "
-									+ ultimoCodigoDescompresion + ","
-									+ (actual + '\n'));
-							this.tablaLZWDescompresion.put(
-									ultimoCodigoDescompresion, (actual + '\n'));
+									+ ultimoCodigo + ","
+									+ (anterior+actual + '\n'));
+							tabla.put(
+									ultimoCodigo, (anterior+actual + '\n'));
 							}
 							ultimaDescompresion = new String();
 							textoDescomprimido+='\n';
@@ -304,11 +315,11 @@ public class CompresorLZ78 implements Compresor {
 			System.out.println("anteri: "+anterior);
 			System.out.println("ultimoValor: "+ultimoValor);
 			System.out.println("ultimaDesco: "+ultimaDescompresion);
-			if (!tablaLZWDescompresion.containsValue(anterior+actual) && (!anterior.isEmpty())) {
+			if (!tabla.containsValue(anterior+actual) && (!anterior.isEmpty())) {
 				//no estaba en tabla.
-				ultimoCodigoDescompresion++;
-				System.out.println("se ingreso "+ultimoCodigoDescompresion+","+(anterior+actual));
-				this.tablaLZWDescompresion.put(ultimoCodigoDescompresion, (anterior+actual));
+				ultimoCodigo++;
+				System.out.println("se ingreso "+ultimoCodigo+","+(anterior+actual));
+				this.tabla.put(ultimoCodigo, (anterior+actual));
 					if (ultimoValor.isEmpty())
 						textoDescomprimido += actual;
 					else {
@@ -360,7 +371,7 @@ public class CompresorLZ78 implements Compresor {
 
 			}
 		}
-		limpiaTabla();
+		limpiaTabla(modo);
 		estadoInicio = 0;
 		ultimaDescompresion= new String();
 		return textoFinal;
@@ -368,10 +379,11 @@ public class CompresorLZ78 implements Compresor {
 	}
 
 	public void iniciarSesion() {
-		limpiaTabla();
+		//limpiaTabla();
 		estadoInicio = 1;
 		ultimaDescompresion= new String();
 		bufferBits = new StringBuffer();
+		ultimoCodigo = 0;
 
 	}
 	/**
@@ -379,9 +391,7 @@ public class CompresorLZ78 implements Compresor {
 	 *
 	 */
     private void clearingParcial() {
-    	limpiaTabla();
-    	ultimoCodigoCompresion++;
-    	ultimoCodigoDescompresion++;
+    	limpiaTabla(modo);
     	
     }
 	public void imprimirHashMap() {
@@ -395,7 +405,7 @@ public class CompresorLZ78 implements Compresor {
 	}
 	
 	private int cantidadDeBitsCompresion() {
-		int resultado = ((int) (Math.log(ultimoCodigoCompresion)/Math.log(2)) +1);
+		int resultado = ((int) (Math.log(ultimoCodigo)/Math.log(2)) +1);
 		if (resultado < 9 )
 			resultado = 9;
 		return resultado;
@@ -403,7 +413,7 @@ public class CompresorLZ78 implements Compresor {
 	}
 	
 	private int cantidadDeBitsDescompresion() {
-		int resultado = ((int) (Math.log(ultimoCodigoDescompresion)/Math.log(2)) +1);
+		int resultado = ((int) (Math.log(ultimoCodigo+2)/Math.log(2)) +1);
 		if (resultado < 9 )
 			resultado = 9;
 		return resultado;
