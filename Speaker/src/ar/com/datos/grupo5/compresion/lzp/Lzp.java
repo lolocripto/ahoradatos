@@ -570,9 +570,13 @@ public class Lzp implements Compresor {
 						}
 						archivoTrabajo.seek(pos);
 						// Cuanto leo?
-						
-						byte[] bytes = new byte[lon * Constantes.SIZE_OF_SHORT];
-						archivoTrabajo.read(bytes, 0, lon * Constantes.SIZE_OF_SHORT);
+						int totLect = lon;
+						long longitudFD = archivoTrabajo.length();
+						if ((longitudFD - pos) / 2 < lon) {
+							totLect = (int) ((longitudFD - pos) / 2);
+						}
+						byte[] bytes = new byte[totLect * Constantes.SIZE_OF_SHORT];
+						archivoTrabajo.read(bytes, 0, totLect * Constantes.SIZE_OF_SHORT);
 						//ir replicando todos los cambios en la cadena, y luego 
 						//escribirlos en el archivo
 						devuelto = new String(bytes, Constantes.CHARSET_UTF16);
@@ -585,7 +589,7 @@ public class Lzp implements Compresor {
 						
 						String persit = "";
 						while (lon >0) {
-							if (devuelto.length() > lon){
+							if (devuelto.length() <= lon){
 								persit += devuelto;
 								lon -= devuelto.length();
 							} else {
