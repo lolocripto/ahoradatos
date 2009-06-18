@@ -132,7 +132,7 @@ public class CompresorConsola {
 			StringBuffer sb = new StringBuffer();
 			byte[] datos;
 			String binario;
-			int cantBytes = 512;
+			int cantBytes =32;
 
 			while (raf.getFilePointer() < raf.length()) {
 				
@@ -161,10 +161,11 @@ public class CompresorConsola {
 					lineaDescom = comp.descomprimir(sb);
 				}
 				bw.write(lineaDescom);
-			//	sb.delete(0, sb.length());
+				sb.delete(0, sb.length());
 			}
+			String finale = comp.finalizarSession();
+			bw.write(finale);
 			
-			System.out.println("#");
 			
 			raf.close();
 			bw.flush();
