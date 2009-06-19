@@ -210,7 +210,6 @@ public class CompresorLZ78 implements Compresor {
 			this.modo = 1;
 			limpiaTabla(this.modo);
 		}
-
 		if (bufferBits.length() > 0) {
 			//sumo lo que tenia
 			StringBuffer bitsAdescomprimir = bufferBits
@@ -234,12 +233,7 @@ public class CompresorLZ78 implements Compresor {
 					// devuelvo lo que tenia
 				
 				} 					//completa bits
-					return textoDescomprimido;
-					/*
-					String datosCompletados = completaStringBinaria(datoscomprimidos
-							.toString());
-					datoscomprimidos = new StringBuffer(datosCompletados);
-					*/
+				return textoDescomprimido;
 		
 			}
 			String binaria = datoscomprimidos.substring(posicion, posicion
@@ -287,7 +281,6 @@ public class CompresorLZ78 implements Compresor {
 						this.bufferBits.append(datoscomprimidos.substring(
 								posicion + bitsAtomar, datoscomprimidos
 										.length()));
-
 						// ultimaDescompresion = actual+'\n';
 						if (anterior.isEmpty())
 							anterior = ultimaDescompresion;
@@ -303,10 +296,6 @@ public class CompresorLZ78 implements Compresor {
 										(anterior + actual + '\n'));
 							}
 						//}
-						if (finalizaSesion) {
-							bufferBits = new StringBuffer();
-
-						}
 						textoDescomprimido +='\n';
 			
 						break;
@@ -359,7 +348,6 @@ public class CompresorLZ78 implements Compresor {
 			ultimaDescompresion = anterior;
 			posicion += bitsAtomar;
 		}
-		
 		return textoDescomprimido;
 	}
 
@@ -368,20 +356,18 @@ public class CompresorLZ78 implements Compresor {
 		if (estadoInicio == 1) {
 			//quedaron cosas para descomprimir
 			
-			/*
 			while (!isBufferZero()) {
-			
+
 				finalizaSesion = true;
 				try {
-					System.out.println("}}} finaliza sesion");
 					textoFinal += descomprimir(new StringBuffer());
 				} catch (SessionException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				/*
+			
 			}
-			*/
+			
 			
 		}
 		limpiaTabla(modo);
