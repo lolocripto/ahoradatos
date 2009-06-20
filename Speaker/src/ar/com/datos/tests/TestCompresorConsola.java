@@ -9,10 +9,10 @@ public class TestCompresorConsola {
 			
 		//String archivoPlano = "./poemasreturns.txt";
 		String archivoPlano = "poemasLzp2.txt";
-		String archivoComp = "./poemaslzp2testOrden2.comp";
-		String destinoDescomp = "./poemaslzp2testDescOrden2.txt";
+		String archivoComp = "./poemaslzp2testPpmc.comp";
+		String destinoDescomp = "./poemaslzp2testPpmc.txt";
 		
-		CompresorConsola.comprimir(MetodoCompresion.PPMC, archivoPlano, archivoComp);	
+		//CompresorConsola.comprimir(MetodoCompresion.PPMC, archivoPlano, archivoComp);	
 		CompresorConsola.descomprimir(MetodoCompresion.PPMC, archivoComp, destinoDescomp);
 	}
 }

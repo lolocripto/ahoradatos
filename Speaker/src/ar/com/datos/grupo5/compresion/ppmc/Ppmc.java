@@ -393,6 +393,7 @@ public class Ppmc implements Compresor{
 				//TODO: Buffer para manter los bits anteriores.
 				if (emision == null) {
 					this.bitsBuffer.append(datos);
+					datos.delete(0, datos.length());
 					return result;
 				}
 					
@@ -415,6 +416,7 @@ public class Ppmc implements Compresor{
 			}
 			if (datos.length() < 32) {
 				this.bitsBuffer.append(datos);
+				datos.delete(0, datos.length());
 			}
 			
 			
@@ -447,15 +449,18 @@ public class Ppmc implements Compresor{
 		
 		//Obtengo el largo del contexto para saber donde empiezo
 		int ordenContexto;
-		if (this.ordenActual == null) {
-			ordenContexto = this.contextoActual.length();
-		} else {
-			ordenContexto = this.ordenActual;
-		}
 		//Obtengo mi contexto actual
 		String contextoString;
+
 		try {
-			contextoString = this.contextoActual.substring(0, ordenContexto);
+			if (this.ordenActual == null) {
+				ordenContexto = this.contextoActual.length();
+				contextoString = this.contextoActual.substring(0, ordenContexto);
+			} else {
+				ordenContexto = this.ordenActual;
+				contextoString = this.contextoActual.substring(this.contextoActual.length() - ordenContexto, this.contextoActual.length());
+			}
+						
 		} catch (Exception e){
 			return "";
 		}

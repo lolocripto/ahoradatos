@@ -34,8 +34,8 @@ public class CompresorFactory {
 			return moduloCompresor;
 		} 
 		if (MetodoCompresion.valueOf(metodo) == MetodoCompresion.LZ78) {
-			moduloCompresor = new CompresorLZ78();
-			//moduloCompresor = new Lz78W();
+			//moduloCompresor = new CompresorLZ78();
+			moduloCompresor = new Lz78W();
 			return moduloCompresor;
 		} 
 		if (MetodoCompresion.valueOf(metodo) == MetodoCompresion.ARIT) {
@@ -65,8 +65,8 @@ public class CompresorFactory {
 			return moduloCompresor;
 		} 
 		if (m == MetodoCompresion.LZ78) {
-			moduloCompresor = new CompresorLZ78();
-			//moduloCompresor = new Lz78W();
+			//moduloCompresor = new CompresorLZ78();
+			moduloCompresor = new Lz78W();
 			return moduloCompresor;
 		} 
 		if (m == MetodoCompresion.ARIT) {
