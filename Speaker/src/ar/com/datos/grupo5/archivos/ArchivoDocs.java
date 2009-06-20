@@ -646,6 +646,8 @@ public class ArchivoDocs {
 				case 4:
 						metodo = MetodoCompresion.ARIT;
 					break;
+				case 5: metodo = MetodoCompresion.ARIT1;
+					break;
 				default:
 						metodo = MetodoCompresion.NINGUNO;
 			}

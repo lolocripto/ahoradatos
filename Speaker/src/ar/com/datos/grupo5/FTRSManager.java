@@ -274,9 +274,6 @@ public class FTRSManager {
 					if (registro.getBloqueListaInvertida() != -1) {
 						//Tengo lista invertida, ver como agarrar el bloque
 						this.logger.debug("NroBloque: "+registro.getBloqueListaInvertida()+" idtermino:" + idTermino);
-						if (idTermino.compareTo(336L) == 0) {
-							this.logger.debug("empieza la ecatombe");
-						}
 						RegistroTerminoDocumentos regTD = this.listasInvertidas
 								.leerLista(idTermino, registro.getBloqueListaInvertida());
 
@@ -295,9 +292,7 @@ public class FTRSManager {
 								.sort(
 										(List<ParFrecuenciaDocumento>) listaDatosDocumentos,
 										(new comparadorFrecuencias()));
-						if (i == 572) {
-							System.out.println("Registro complicado");
-						}
+
 						this.logger.debug("nRegistro: " + i);
 						// Ya esta ordenada la lista por frecuencias descendiente
 						this.listasInvertidas.modificarLista(

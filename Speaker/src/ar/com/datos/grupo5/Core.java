@@ -103,7 +103,7 @@ public class Core {
 			DocumentsManager.getInstance().setTipoCompresion(this.metodo.toUpperCase());
 			invocador.mensaje("Método de compresión no se reconoce, se utilizará: " + this.metodo);
 		} else {
-			DocumentsManager.getInstance().setTipoCompresion(metodoExt.toUpperCase());
+			DocumentsManager.getInstance().setTipoCompresion(met);
 		}
 		
 		try {
@@ -181,7 +181,7 @@ public class Core {
 			DocumentsManager.getInstance().setTipoCompresion(this.metodo.toUpperCase());
 			invocador.mensaje("Método de compresión no se reconoce, se utilizará: " + this.metodo);
 		} else {
-			DocumentsManager.getInstance().setTipoCompresion(metodoExt.toUpperCase());	
+			DocumentsManager.getInstance().setTipoCompresion(met);	
 		}
 		try {
 			Iterator<IunidadDeHabla> iterador;

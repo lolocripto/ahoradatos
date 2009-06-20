@@ -158,7 +158,7 @@ public class ListasInvertidas {
 					}
 					
 					/* Armo la lista para el termino especifico */
-					reg.setBytes(this.datosLeidosPorBloque, 
+					reg.setBytes(this.datosLeidosPorBloque,
 									(long) this.offsetLista);
 					cantBloquesLeidos++;
 				} else {

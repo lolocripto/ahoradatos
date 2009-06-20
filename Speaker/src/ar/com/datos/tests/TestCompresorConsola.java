@@ -9,10 +9,10 @@ public class TestCompresorConsola {
 			
 		//String archivoPlano = "./poemasreturns.txt";
 		String archivoPlano = "poemasLzp2.txt";
-		String archivoComp = "poemasLzp2.txt.lz78";
-		String destinoDescomp = "poemasLzp2.txt.desc";
+		String archivoComp = "poemasLzp2.lz78";
+		String destinoDescomp = "poemasLzp2.lz78.desc";
 		
-		CompresorConsola.comprimir(MetodoCompresion.LZP, archivoPlano, archivoComp);	
-		CompresorConsola.descomprimir(MetodoCompresion.LZP, archivoComp, destinoDescomp);
+		//CompresorConsola.comprimir(MetodoCompresion.LZ78, archivoPlano, archivoComp);	
+		CompresorConsola.descomprimir(MetodoCompresion.LZ78, archivoComp, destinoDescomp);
 	}
 }
