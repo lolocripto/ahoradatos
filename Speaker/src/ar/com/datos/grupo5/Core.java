@@ -100,10 +100,10 @@ public class Core {
 		MetodoCompresion met = Conversiones.metodoDeCompresion(metodoExt);
 		
 		if (met == null){
-			DocumentsManager.getInstance().setTipoCompresion(this.metodo);
+			DocumentsManager.getInstance().setTipoCompresion(this.metodo.toUpperCase());
 			invocador.mensaje("Método de compresión no se reconoce, se utilizará: " + this.metodo);
 		} else {
-			DocumentsManager.getInstance().setTipoCompresion(metodoExt);	
+			DocumentsManager.getInstance().setTipoCompresion(metodoExt.toUpperCase());
 		}
 		
 		try {
@@ -177,10 +177,10 @@ public class Core {
 		MetodoCompresion met = Conversiones.metodoDeCompresion(metodoExt);
 		
 		if (met == null){
-			DocumentsManager.getInstance().setTipoCompresion(this.metodo);
+			DocumentsManager.getInstance().setTipoCompresion(this.metodo.toUpperCase());
 			invocador.mensaje("Método de compresión no se reconoce, se utilizará: " + this.metodo);
 		} else {
-			DocumentsManager.getInstance().setTipoCompresion(metodoExt);			
+			DocumentsManager.getInstance().setTipoCompresion(metodoExt.toUpperCase());	
 		}
 		try {
 			Iterator<IunidadDeHabla> iterador;
