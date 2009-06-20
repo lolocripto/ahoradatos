@@ -4,6 +4,7 @@
 package ar.com.datos.grupo5.compresion;
 
 import ar.com.datos.grupo5.compresion.aritmetico.CompresorAritmetico;
+import ar.com.datos.grupo5.compresion.ffff.Lz78W;
 import ar.com.datos.grupo5.compresion.lz78.CompresorLZ78;
 import ar.com.datos.grupo5.compresion.lzp.Lzp;
 import ar.com.datos.grupo5.compresion.ppmc.Ppmc;
@@ -34,6 +35,7 @@ public class CompresorFactory {
 		} 
 		if (MetodoCompresion.valueOf(metodo) == MetodoCompresion.LZ78) {
 			moduloCompresor = new CompresorLZ78();
+			//moduloCompresor = new Lz78W();
 			return moduloCompresor;
 		} 
 		if (MetodoCompresion.valueOf(metodo) == MetodoCompresion.ARIT) {
@@ -64,6 +66,7 @@ public class CompresorFactory {
 		} 
 		if (m == MetodoCompresion.LZ78) {
 			moduloCompresor = new CompresorLZ78();
+			//moduloCompresor = new Lz78W();
 			return moduloCompresor;
 		} 
 		if (m == MetodoCompresion.ARIT) {
