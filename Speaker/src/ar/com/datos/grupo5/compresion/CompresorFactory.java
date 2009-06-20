@@ -5,6 +5,7 @@ package ar.com.datos.grupo5.compresion;
 
 import ar.com.datos.grupo5.compresion.aritmetico.CompresorAritmetico;
 import ar.com.datos.grupo5.compresion.lz78.CompresorLZ78;
+import ar.com.datos.grupo5.compresion.lzp.Lzp;
 import ar.com.datos.grupo5.compresion.ppmc.Ppmc;
 import ar.com.datos.grupo5.interfaces.Compresor;
 import ar.com.datos.grupo5.utils.MetodoCompresion;
