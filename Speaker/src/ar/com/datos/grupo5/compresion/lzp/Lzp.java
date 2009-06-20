@@ -443,8 +443,7 @@ public class Lzp implements Compresor {
 
 			ultCtx = devuelto;
 			
-			//Pide la letra 2
-			
+			//Pide la letra 2			
 			ctx = caracteresContexto.getContexto(devuelto.toString());
 			
 			ctx.actualizarProbabilidades();
@@ -470,10 +469,8 @@ public class Lzp implements Compresor {
 				archivoTrabajo.seek(0);
 				//Escribo en el archivo temporal en unicode.
 				byte[] escAux = ultCtx.getBytes(Constantes.CHARSET_UTF16);
-				//Parece que el getBytes pone un /0 al final.
 				archivoTrabajo.write(escAux, 0, escAux.length);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -482,7 +479,6 @@ public class Lzp implements Compresor {
 		int lon = 0;
 		while ( sigoDesc ) {
 			if ((ultIncompleto == null)||(ultIncompleto == 'C')) {
-				//devuelto = motorAritCaracteres.descomprimir(cadena);
 				if (ultIncompleto == null) {
 					ctx = caracteresContexto.getContexto(resultado.substring(resultado.length() - 1));
 					ctx.actualizarProbabilidades();
@@ -499,7 +495,6 @@ public class Lzp implements Compresor {
 					ultIncompleto = 'C';
 					ultCtx = resultado.substring(resultado.length() - 2);
 					return resultado;
-				//} else if ( Constantes.EOF.equals(algo.charAt(0)) ) {
 				} else if ( Constantes.EOF.equals(aux) ) {				
 					finalizada = true;
 					return resultado;
@@ -515,7 +510,6 @@ public class Lzp implements Compresor {
 					archivoTrabajo.seek(archivoTrabajo.length());
 					//Escribo en el archivo temporal en unicode.
 					byte[] escAux = ultCtx.substring(ultCtx.length() - 1).getBytes(Constantes.CHARSET_UTF16);
-					//Parece que el getBytes pone un /0 al final.
 					archivoTrabajo.write(escAux, 0, escAux.length);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -523,7 +517,6 @@ public class Lzp implements Compresor {
 				}
 			}
 			if ((ultIncompleto == null)||(ultIncompleto == 'L')) {
-				//devuelto = motorAritCaracteres.descomprimir(cadena);
 				ctx = listaLongitudes.getContexto("");
 				if (ultIncompleto == null) {
 					ctx.actualizarProbabilidades();
@@ -547,29 +540,19 @@ public class Lzp implements Compresor {
 				ctx.actualizarContexto(longitud.charAt(0));
 				lon = CodePoint.getCodePoint(longitud.charAt(0));
 				
-				// Voy guardando en el archivo de trabajo lo que voy leyendo para luego
-				// buscar match.
-				//listaContextos.setPosicion(ultCtx, posActual);
-				//posActual += 2;
 				if (lon > 0) {
 						// Matchea con un contexto.
 					try {
-						//posActual += 2 * lon;
-						//archivoTrabajo.seek(archivoTrabajo.length());
 						//Escribo en el archivo temporal en unicode.
 						byte[] escAux = ultCtx.getBytes(Constantes.CHARSET_UTF16);
-						//Parece que el getBytes pone un /0 al final.
-						//archivoTrabajo.write(escAux, 0, escAux.length);
-						//LOG.info("busco contexto: " + ultCtx);
 						int pos = 0;
 						try {
 							pos = this.listaContextos.getPosicion(ultCtx);
 						} catch (Exception e) {
+							LOG.debug("Error: " + e.getMessage());
 							e.printStackTrace();
-							System.exit(1);
 						}
 						archivoTrabajo.seek(pos);
-						// Cuanto leo?
 						int totLect = lon;
 						long longitudFD = archivoTrabajo.length();
 						if ((longitudFD - pos) / 2 < lon) {
@@ -599,7 +582,6 @@ public class Lzp implements Compresor {
 						}
 						//Escribo en el archivo temporal en unicode.
 						escAux = persit.getBytes(Constantes.CHARSET_UTF16);
-						//Parece que el getBytes pone un /0 al final.
 						archivoTrabajo.write(escAux, 0, escAux.length);
 						resultado += persit;
 						//LOG.info("Cadena descomprimida: " + resultado);
@@ -610,8 +592,6 @@ public class Lzp implements Compresor {
 					listaContextos.setPosicion(ultCtx, posActual);
 					posActual += 2;
 				}
-				//listaContextos.setPosicion(ultCtx, posActual);
-				//posActual += 2;
 			}
 		}
 		return resultado;
