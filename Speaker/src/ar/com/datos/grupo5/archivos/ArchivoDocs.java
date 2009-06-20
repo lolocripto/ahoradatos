@@ -520,7 +520,7 @@ public class ArchivoDocs {
 			//genero las estructuras necesarias para escirbir en utf16
 			
 			//leo el archivo de documentos y genero el temporal
-			while (this.miArchivo.file.getFilePointer() < terminoEn){
+			while (this.miArchivo.file.getFilePointer() < terminoEn && !comp.isFinalizada()){
 				
 				long bytesRestantes = terminoEn - this.miArchivo.file.getFilePointer();
 				
@@ -545,16 +545,17 @@ public class ArchivoDocs {
 				
 				//obtengo los datos descomprimidos
 				
-				if(this.tipoCompresion == MetodoCompresion.ARIT ){
-				desc.append(((CompresorAritmetico)this.comp).StringCompleto(sb));
+				if(this.tipoCompresion == MetodoCompresion.ARIT || this.tipoCompresion == MetodoCompresion.ARIT1){
+					desc.append(((CompresorAritmetico)this.comp).StringCompleto(sb));
 				}else{
-					desc.append(this.comp.descomprimir(sb));
+					desc.append(this.comp.descomprimir(sb) + "\n");
 				}
 			
 				//guardo en el temporal los datos en utf
 				this.guardarEnSalto(this.archivoTemp, desc);
-				sb.delete(0, sb.length());
-				
+				if (tipoCompresion != MetodoCompresion.LZP) {
+					sb.delete(0, sb.length());
+				}
 			}
 			
 		
