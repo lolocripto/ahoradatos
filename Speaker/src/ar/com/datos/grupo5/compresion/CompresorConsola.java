@@ -161,7 +161,8 @@ public class CompresorConsola {
 					lineaDescom = comp.descomprimir(sb);
 				}
 				bw.write(lineaDescom);
-				sb.delete(0, sb.length());
+				//Esto estaba mal, porque perdia bits.
+				//sb.delete(0, sb.length());
 			}
 			String finale = comp.finalizarSession();
 			bw.write(finale);
