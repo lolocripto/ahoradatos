@@ -146,6 +146,7 @@ public class Core {
 				}
 
 			}
+			DocumentsManager.getInstance().finalizaEscritura();
 			this.ftrsManager.generarListasInvertidas();
 
 			//cerrarArchivo(invocador);
@@ -291,7 +292,7 @@ public class Core {
 						offsetRegistroAudio);
 				
 			}
-			
+			DocumentsManager.getInstance().finalizaEscritura();
 			this.ftrsManager.generarListasInvertidas();
 
 			//cerrarArchivo(invocador);
