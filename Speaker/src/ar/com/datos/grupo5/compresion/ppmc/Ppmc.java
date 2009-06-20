@@ -630,14 +630,14 @@ public class Ppmc implements Compresor{
 		this.initSession = true;
 		this.tiraBits = "";
 		this.bitsBuffer = new StringBuffer();
-		this.finalizada = true;
+		this.finalizada = false;
 		this.contextoPrevio = false;
 		this.contextoActual = new String();
 	}
 
 	@Override
 	public boolean isFinalizada() {
-		return this.finalizada;
+		return false;
 	}
 	
 	private ArrayList<ParCharProb> calcularProbabilidadLista(ArrayList<ParCharProb> lista) {

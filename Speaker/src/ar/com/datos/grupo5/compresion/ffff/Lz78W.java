@@ -220,7 +220,7 @@ public class Lz78W implements Compresor{
 
 	@Override
 	public boolean isFinalizada() {
-		return finalizada;
+		return false;
 	}
 
 	/**
