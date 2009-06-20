@@ -379,6 +379,7 @@ public class ArchivoDocs {
 			//guardo la tira de bits
 			this.miArchivo.file.write(tirabits);
 			
+			System.out.print("#");
 			
 		} catch (Exception e) {
 
