@@ -1,11 +1,12 @@
 /**
  * 
  */
-package ar.com.datos.grupo5.compresion.lz78;
+package ar.com.datos.grupo5.compresion.ffff;
 
 import org.apache.log4j.Logger;
 
 import ar.com.datos.grupo5.Constantes;
+import ar.com.datos.grupo5.excepciones.CodePointException;
 import ar.com.datos.grupo5.excepciones.SessionException;
 import ar.com.datos.grupo5.interfaces.Compresor;
 import ar.com.datos.grupo5.utils.CodePoint;
@@ -25,6 +26,8 @@ public class Lz78W implements Compresor{
 	private StringBuffer bitsBuffer;
 	private int indexAnterior;
 	private int indexNuevo;
+	
+	private Character caracterClearing;
 	/**
 	 * Logger para la clase.
 	 */
@@ -37,6 +40,11 @@ public class Lz78W implements Compresor{
 	
 	public Lz78W() {
 		this.sesionIniciada = false;
+		try {
+			caracterClearing = CodePoint.getChar(65535);
+		} catch (CodePointException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -64,11 +72,14 @@ public class Lz78W implements Compresor{
 					//No la encontre
 					//Emito el codigo del contexto, para ello obtengo el indice del contexto
 					tiraBits += this.emitir(this.tabla.get(this.contexto));
+					
 					//Agrego el contexto nuevo a la tabla
-					if (valueABuscar.compareTo("que e") == 0) {
-						logger.debug("\nA partir de aca empieza a hacer cualquier cosa");
-					}
 					this.tabla.add(valueABuscar);
+					
+					if (tabla.isClearing()) {
+						//emito el codigo de clearing
+						tiraBits += this.emitir(CodePoint.getCodePoint(caracterClearing));
+					}
 					//el contexto ahora es la letra
 					this.contexto = letra.toString();
 					
@@ -132,7 +143,9 @@ public class Lz78W implements Compresor{
 			this.indexNuevo = Integer.parseInt(datos.substring(0,this.bitsEmision),2);
 			datos.delete(0,this.bitsEmision);
 			
-			//TODO: Diferenciar el caso en que son dos numeros seguidos!
+			if (this.indexNuevo == CodePoint.getCodePoint(caracterClearing)) {
+				this.tabla.aplicarClearing();
+			}
 			
 			//STRING (contexto) = translation of NEWCODE
 			this.contexto = this.tabla.get(this.indexNuevo);
@@ -159,6 +172,7 @@ public class Lz78W implements Compresor{
 		
 		if (datos.length() < this.bitsEmision) {
 			this.bitsBuffer.append(datos);
+			datos.delete(0, datos.length());
 		}
 		//Devuelvo todo el string generado
 		return descompresion.toString();

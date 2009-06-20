@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ar.com.datos.grupo5.compresion.lz78;
+package ar.com.datos.grupo5.compresion.ffff;
 
 /**
  * @author Led Zeppelin

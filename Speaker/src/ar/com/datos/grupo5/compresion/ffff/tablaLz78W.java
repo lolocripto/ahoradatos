@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ar.com.datos.grupo5.compresion.lz78;
+package ar.com.datos.grupo5.compresion.ffff;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,18 +16,14 @@ import ar.com.datos.grupo5.Constantes;
  *
  */
 public class tablaLz78W {
-	
-	/*
-	private HashMap<nodoTablaLZ78W,Integer> tablaCompresion;
-
-	private HashMap<Integer,nodoTablaLZ78W> tablaDescompresion;
-	*/
-	
+		
 	private HashMap<String,Integer> tablaCompresion;
 
 	private HashMap<Integer,String> tablaDescompresion;
 	
 	private boolean esCompresion;
+
+	private boolean esClearing;
 	
 	/**
 	 * Logger para la clase.
@@ -45,6 +41,7 @@ public class tablaLz78W {
 		this.tablaCompresion = new HashMap<String,Integer>();
 		this.tablaDescompresion = new HashMap<Integer,String>();
 		this.inicializarTabla();
+		esClearing = false;
 		
 	}
 
@@ -68,8 +65,14 @@ public class tablaLz78W {
 			}	
 	}
 
-	private void aplicarClearing() {
-		
+	public void aplicarClearing() {
+		if (esCompresion) {
+			this.tablaCompresion.clear();
+		} else {
+			this.tablaDescompresion.clear();
+		}
+		inicializarTabla();
+		esClearing = true;
 	}
 	
 	/**
@@ -85,8 +88,20 @@ public class tablaLz78W {
 		}
 		*/
 
-		//FIXME: Validar la necesidad de sumarle uno al tamaño de la tabla al momento de insertar el elemento
-		if (!this.esCompresion) { 
+		int tamanio; 
+		//Este if lo meto porque al leer un elemento que pasa de x a x+1 bits
+		//lo hace antes de guardar en la tabla por lo que necesito adelantarme
+		if (esCompresion) {
+			tamanio = this.tablaCompresion.size();
+		} else {
+			tamanio = this.tablaDescompresion.size() + 1;
+		}
+		
+		if (tamanio >= 65535) {
+			this.aplicarClearing();
+		}
+		
+		if (!this.esCompresion) {
 			logger.debug("\nNodo a insertar: " + nodo + ", Posicion: " + this.tablaDescompresion.size());
 			this.tablaDescompresion.put(this.tablaDescompresion.size(), nodo);
 		} else {
@@ -215,5 +230,14 @@ public class tablaLz78W {
 	 */
 	public void setEsCompresion(boolean esCompresion) {
 		this.esCompresion = esCompresion;
+	}
+
+	public boolean isClearing() {
+		if (esClearing){
+			esClearing = false;
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
