@@ -134,7 +134,7 @@ public class CompresorConsola {
 			String binario;
 			int cantBytes =32;
 
-			while (raf.getFilePointer() < raf.length()) {
+			while (raf.getFilePointer() < raf.length() && !comp.isFinalizada()) {
 				
 				System.out.print("#");
 
