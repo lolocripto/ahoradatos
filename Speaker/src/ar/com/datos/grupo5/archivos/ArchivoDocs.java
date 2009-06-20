@@ -408,7 +408,7 @@ public class ArchivoDocs {
 			//obtengo el string binario del compresor
 			String stringComprimido =this.comp.finalizarSession();
 			
-			if (stringComprimido != null){
+			if (stringComprimido != null && stringComprimido != ""){
 			//seteo los bits que obtengo 
 			this.conversor.setBits(stringComprimido);
 			
@@ -420,7 +420,7 @@ public class ArchivoDocs {
 			}
 			byte [] padding = this.conversor.finalizarConversion();
 			
-			if (padding != null){
+			if (padding != null && padding.length !=0){
 			
 			//pongo el padding final
 			this.miArchivo.file.write(padding);
