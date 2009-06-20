@@ -548,7 +548,7 @@ public class ArchivoDocs {
 				if(this.tipoCompresion == MetodoCompresion.ARIT || this.tipoCompresion == MetodoCompresion.ARIT1){
 					desc.append(((CompresorAritmetico)this.comp).StringCompleto(sb));
 				}else{
-					desc.append(this.comp.descomprimir(sb) + "\n");
+					desc.append(this.comp.descomprimir(sb));
 				}
 			
 				//guardo en el temporal los datos en utf
