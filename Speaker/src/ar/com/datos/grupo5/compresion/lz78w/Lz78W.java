@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ar.com.datos.grupo5.compresion.ffff;
+package ar.com.datos.grupo5.compresion.lz78w;
 
 import org.apache.log4j.Logger;
 

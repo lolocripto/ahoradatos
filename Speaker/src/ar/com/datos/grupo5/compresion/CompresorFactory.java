@@ -4,7 +4,7 @@
 package ar.com.datos.grupo5.compresion;
 
 import ar.com.datos.grupo5.compresion.aritmetico.CompresorAritmetico;
-import ar.com.datos.grupo5.compresion.ffff.Lz78W;
+import ar.com.datos.grupo5.compresion.lz78w.Lz78W;
 import ar.com.datos.grupo5.compresion.lz78.CompresorLZ78;
 import ar.com.datos.grupo5.compresion.lzp.Lzp;
 import ar.com.datos.grupo5.compresion.ppmc.Ppmc;
