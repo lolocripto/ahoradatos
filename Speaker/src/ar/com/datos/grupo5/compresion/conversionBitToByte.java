@@ -124,7 +124,7 @@ public class conversionBitToByte {
 					for (int i = 0; i < cantidad; i++) {
 						
 						//Convierto el string de binario a byte para luego escribirlo en binario puro
-						this.logger.debug("Inicio: "+beginIndex+" final: "+endIndex+" Longitud Total: "+this.datosBinarios.substring(beginIndex, endIndex));
+						//this.logger.debug("Inicio: "+beginIndex+" final: "+endIndex+" Longitud Total: "+this.datosBinarios.substring(beginIndex, endIndex));
 						Long elemento = Long.parseLong(this.datosBinarios.substring(beginIndex, endIndex), 2);
 						
 						try {

@@ -171,7 +171,7 @@ public class Ppmc implements Compresor{
 				//Actualizo los contextos para la próxima recorrida.
 				this.actualizarOrdenes(cadena.charAt(pos));
 				//FIXME: Imprimo los ordenes, es solo para debug. Por lo tanto borrarlo.
-				this.imprimirEstado();
+				//this.imprimirEstado();
 				logger.debug("Letra: " + cadena.charAt(pos) + ", Emision: " + this.tiraBits);
 				pos++;
 			}
@@ -453,7 +453,12 @@ public class Ppmc implements Compresor{
 			ordenContexto = this.ordenActual;
 		}
 		//Obtengo mi contexto actual
-		String contextoString = this.contextoActual.substring(0, ordenContexto);
+		String contextoString;
+		try {
+			contextoString = this.contextoActual.substring(0, ordenContexto);
+		} catch (Exception e){
+			return "";
+		}
 		
 		logger.debug("Nuevo contexto: " + contextoString);
 		
@@ -488,7 +493,7 @@ public class Ppmc implements Compresor{
 				emision = this.compresorAritmetico.descomprimir(temp, datos);
 				
 				//Valido la insuficiencia del buffer de bits
-				this.logger.debug("Cadena: " + datos + ", emite: " + emision);
+//				this.logger.debug("Cadena: " + datos + ", emite: " + emision);
 				if (emision == null) {
 					//Guardo Contexto string para la proxima
 					//ordenActual
@@ -528,7 +533,7 @@ public class Ppmc implements Compresor{
 			emision = this.compresorAritmetico.descomprimir(nuevoOrdenContexto, datos);
 
 			//Valido la insuficiencia del buffer de bits			
-			this.logger.debug("Cadena: " + datos + ", emite: " + emision);
+//			this.logger.debug("Cadena: " + datos + ", emite: " + emision);
 			if (emision == null) {
 				//Guardo Contexto string para la proxima
 				//ordenActual
@@ -564,7 +569,7 @@ public class Ppmc implements Compresor{
 			emision = this.compresorAritmetico.descomprimir(nuevoOrdenContexto, datos);
 			
 			//Valido la insuficiencia del buffer de bits			
-			this.logger.debug("Cadena: " + datos + ", emite: " + emision);
+	//		this.logger.debug("Cadena: " + datos + ", emite: " + emision);
 			if (emision == null) {
 				//Guardo Contexto string para la proxima
 				//ordenActual

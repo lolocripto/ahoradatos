@@ -333,18 +333,17 @@ public class Core {
 		
 		if (met == null || met.equals(MetodoCompresion.NINGUNO)){
 			invocador.mensaje("no se reconoce el tipo de compresion, intente con alguno de los siguientes:");
-			invocador.mensaje("ppmc, aritmetico, lzp, lz78");
+			invocador.mensaje("ppmc, aritmetico, aritmetico-1, lzp, lz78");
 			return null;
 			
 		}else{
 		
 		try{
 		CompresorConsola.comprimir(met, pathArchivoOrigen, pathArchivoDestino);
-		invocador.mensaje("archivo: "+pathArchivoDestino+ " creado");
-		return "";
+		return "\nArchivo: "+pathArchivoDestino+ " creado";
 		
 		}catch(Exception e){
-			invocador.mensaje("hubo un error al comprimir el archivo, se aborta");
+			invocador.mensaje("hubo un error al comprimir el archivo, se aborta.\nVerifique la codificación del archivo.");
 			return null;
 		}
 		}
@@ -375,8 +374,7 @@ public class Core {
 		
 		try{
 		CompresorConsola.descomprimir(met, pathArchivoOrigen, pathArchivoDestino);
-		invocador.mensaje("archivo: "+pathArchivoDestino+ " creado");
-		return "";
+		return "\nArchivo: "+pathArchivoDestino+ " creado";
 		
 		}catch(Exception e){
 			invocador.mensaje("hubo un error al Descomprimir el archivo, se aborta");
@@ -587,8 +585,8 @@ public class Core {
 				Long offsetAudio = this.diccionario
 					.buscarPalabra(elemento.getEquivalenteFonetico());
 
+				invocador.mensajeSinSalto(elemento.getTextoEscrito() + " ");
 				if (offsetAudio != null) {
-					invocador.mensajeSinSalto(elemento.getTextoEscrito() + " ");
 					playWord(this.audioFileManager.leerAudio(offsetAudio));
 					audioManager.esperarFin();
 				}

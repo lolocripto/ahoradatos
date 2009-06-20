@@ -8,11 +8,11 @@ public class TestCompresorConsola {
 	public static void main (String[] args){
 			
 		//String archivoPlano = "./poemasreturns.txt";
-		String archivoPlano = "poemasLzp.txt";
-		String archivoComp = "./poemasreturns.comp";
-		String destinoDescomp = "./poemasreturnsDesc.txt";
+		String archivoPlano = "poemasLzp2.txt";
+		String archivoComp = "./poemaslzp2testOrden2.comp";
+		String destinoDescomp = "./poemaslzp2testDescOrden2.txt";
 		
-		//CompresorConsola.comprimir(MetodoCompresion.LZP, archivoPlano, archivoComp);	
-		CompresorConsola.descomprimir(MetodoCompresion.LZP, archivoComp, destinoDescomp);
+		CompresorConsola.comprimir(MetodoCompresion.PPMC, archivoPlano, archivoComp);	
+		CompresorConsola.descomprimir(MetodoCompresion.PPMC, archivoComp, destinoDescomp);
 	}
 }
