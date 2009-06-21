@@ -14,7 +14,7 @@ public class CompresorLZ78 implements Compresor {
 	private final char caracterClearing = 1;
 
 	private int ultimoCodigo;
-
+	
 	private String ultimaDescompresion;
 
 	private final short codigosReservados = 255; //para los ASCII
@@ -34,7 +34,6 @@ public class CompresorLZ78 implements Compresor {
 
 	//indica que se esta finalizando la sesion. (ultima descompresion)
 	private boolean finalizaSesion;
-
 	/**
 	 * Constructor
 	 *
@@ -86,7 +85,7 @@ public class CompresorLZ78 implements Compresor {
 	}
 
 	/**
-	 * Devuelve el valor  asociado a un codigo
+	 * Devuelve el valor  asociado a un codputigo
 	 * @param valor asociado al codigo buscado
 	 * @return String null si no se encuentra el codigo en la tabla
 	 */
@@ -154,7 +153,6 @@ public class CompresorLZ78 implements Compresor {
 						.charAt(actual.length() - 1));
 				//Emito el primer caracter del actual
 				if (ultimoMatch < 0) {
-					
 					textoComprimidoEnBytes += completaStringBinaria(Integer
 							.toBinaryString(actual.charAt(0)));
 					textoComprimido += actual.charAt(0);
@@ -223,9 +221,9 @@ public class CompresorLZ78 implements Compresor {
 		String actual = new String();
 		String ultimoValor = new String();
 		//while (posicion < bitsAdescomprimir.length()) {
+		int bitsAtomar = cantidadDeBitsDescompresion();
 		while (posicion < datoscomprimidos.length()) {
 			actual = new String();
-			int bitsAtomar = cantidadDeBitsDescompresion();
 			if ((datoscomprimidos.length() < posicion + bitsAtomar)) {
 				if (!finalizaSesion) {
 					this.bufferBits.append(datoscomprimidos.substring(posicion,
@@ -241,7 +239,6 @@ public class CompresorLZ78 implements Compresor {
 			int caracter = ConversorABytes.binaryStringtoInt(binaria);
 			if (caracter > codigosReservados) {
 				//numero
-
 				if (caracter > ultimoCodigo + 2)
 					//ocurrio algo inesperado
 					break;
@@ -268,6 +265,9 @@ public class CompresorLZ78 implements Compresor {
 				} else {
 					if (caracter == 0) {
 						//caracteres de relleno
+						this.bufferBits.append(datoscomprimidos.substring(
+								posicion + bitsAtomar, datoscomprimidos
+										.length())); 
 						break;
 					}
 
@@ -288,10 +288,11 @@ public class CompresorLZ78 implements Compresor {
 						
 						//if (posicion != 0) {
 							if (!tabla.containsValue(anterior + actual + '\n')
-									&& !anterior.isEmpty()) {
+									&& !anterior.isEmpty() && ((posicion - bitsAtomar)!=0)) {
 									/*&& (!anterior.isEmpty() || !actual
 											.isEmpty())) {*/
 								ultimoCodigo++;
+
 								tabla.put(ultimoCodigo,
 										(anterior + actual + '\n'));
 							}
@@ -315,6 +316,7 @@ public class CompresorLZ78 implements Compresor {
 					&& (!anterior.isEmpty())) {
 				//no estaba en tabla.
 				ultimoCodigo++;
+				bitsAtomar = cantidadDeBitsDescompresion();
 				this.tabla.put(ultimoCodigo, (anterior + actual));
 				if (ultimoValor.isEmpty()) {
 					textoDescomprimido += actual;
@@ -326,7 +328,6 @@ public class CompresorLZ78 implements Compresor {
 				}
 			} else {
 				//estaba en tabla
-				
 				if (anterior.isEmpty()) {
 					//fue el primero
 					if (ultimoValor.isEmpty() && caracter != 1) {
@@ -357,7 +358,7 @@ public class CompresorLZ78 implements Compresor {
 			//quedaron cosas para descomprimir
 			
 			while (!isBufferZero()) {
-
+				
 				finalizaSesion = true;
 				try {
 					textoFinal += descomprimir(new StringBuffer());
@@ -415,7 +416,7 @@ public class CompresorLZ78 implements Compresor {
 	}
 
 	private int cantidadDeBitsDescompresion() {
-		int resultado = ((int) (Math.log(ultimoCodigo + 2) / Math.log(2)) + 1);
+		int resultado = ((int) (Math.log(ultimoCodigo +1) / Math.log(2)) + 1);
 		if (resultado < 9)
 			resultado = 9;
 		return resultado;
@@ -424,8 +425,9 @@ public class CompresorLZ78 implements Compresor {
 	private String completaStringBinaria(String binaria) {
 		String ceros = new String();
 		int cantidadDeBits = 0;
-		if (this.modo == 0)
+		if (this.modo == 0) {
 			cantidadDeBits = cantidadDeBitsCompresion();
+		}
 		else
 			cantidadDeBits = cantidadDeBitsDescompresion();
 
@@ -449,4 +451,5 @@ public class CompresorLZ78 implements Compresor {
 		}
 		return esIgual;
 	}
+
 }
