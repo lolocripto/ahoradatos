@@ -3,6 +3,8 @@ Organización de Datos – Curso Servetto Evaluación Módulo Archivos Multimedi
 
 1) Describa la función que cumple la Matriz de Cunatificación en JPG. ¿Hay pérdida de información en este paso?
 
+La matriz de cuantificacion elimina los coeficientes menos significativos () de la matriz resultante de la transformada discreta del coseno (DCT). Esta matris de cuantificacion contiene los pesos de cada uno de los coeficientes de la matris de DCT, dependiendo de los pesos los coeficientes se reducen((0,0) / (0,0)). Hay perdida de información dado que el resultado de la division puede ser decimal dejando en la tabla de DCT un cero. A medida que mas ceros se obtengan el la tabla DCT mas compresión por el método de run-length se obtendrá. Por lo tanto la matris de cuantificacion influye directamente sobre la compresión y la calidad de la imagen resultante. Si los pesos fueran todos 1 entonces no habría disminucion de las frecuencias espaciales, (Esto lo entendi así) ya que los coeficientes de DCT que representan las frecuencias espaciales no se ven modificados (fin de lo que entendí). Cuando los pesos aumentan las frecuencias espaciales disminuyen.
+
 2) ¿Para qué casos utilizaría un Buffer Circular antes que un Doble Buffer?
 
 3) ¿Cuáles son los límites de búsqueda en un cuadro B de MPEG?
