@@ -1,0 +1,14 @@
+
+Organización de Datos – Curso Servetto
+Evaluación Módulo Criptografía, 05 de agosto del 2009
+
+1) Analice la posibilidad de un ataque intermediario entre dos personas que se comunican mas de un mensaje utilizando herramientas como:
+* Firma digital sobre todos los mensajes que se enviann con clave publica sin resumen de mensaje, tampoco se dispone de un certificado digital.
+* Comparten sus mensajes publicandolos bajo un protocolo de TLS (SSL) en servidores propios.
+* Se comunican utilizando firma de clave privada.
+
+2) a) Aplique el cifrado de Vigenere al siguiente texto: "TATA" clave de cuatro elementos.
+b) Aplique el cifrado de Hill al mismo texto.  Mismos elementos de la clave.
+c) Indique cuàl cumple mejor con los principios de la criptografia y porque ocurre esto.
+
+3) Explique el intercambio de informacion bajo SSH para asegurar el canal y envie el mensaje "Hola",  ¿Cuales son los puntos criticos a asegurar para que el sistema funciones?
