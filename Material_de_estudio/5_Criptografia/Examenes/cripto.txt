@@ -1,0 +1,195 @@
+Organización de Datos ? Curso Servetto
+Evaluación Módulo Criptografía, 04 de Febrero de 2009 
+
+1.Hay que enviar una página web desde el servidor S al cliente C en forma segura.
+Ejemplifique cómo se llevaría a cabo con un sistema a) TLS(SSL) y con un sistema b) PGP.
+
+2.Según las reglas de Kerchoffs:
+
+-No debe existir ninguna forma de recuperar mediante el criptograma el texto inicial o la clave. 
+-Todo sistema criptográfico debe estar compuesto por dos tipos distintos de información.
+-Pública, como es la familia de algoritmos que lo definen.
+-Privada, como es la clave que se usa en cada cifrado particular. 
+-La forma de escoger la clave debe ser fácil de recordar y modificar.
+-Debe ser factible la comunicación del criptograma por los medios de transmisión habituales.
+-La complejidad del proceso de recuperación del texto original debe corresponderse con el beneficio obtenido.
+
+Analice la satisfacción alcanzada, en base a estas reglas, de los métodos criptográficos:
+  a) Vigénere, b) One Time Pad y c) RSA.
+
+3.Cifre con el método Merkle-Hellman (Knapsack) el texto ?indescifrable? con una clave que repita,
+tantas veces como sea necesario, la cadena 7506. Explique el método de desencriptación del mismo ejemplo.
+
+----------------------------------------------------------------------------------------------------
+Organización de Datos ? Curso Servetto
+Evaluación Módulo Criptografía, 25 de Febrero de 2009
+
+1.Explique por qué el algoritmo One Time Pad es resistente a los siguientes tipos de criptoanálisis:
+a.Ataque por frecuencias
+b.Ataque por texto plano escogido
+
+2.¿Qué es una función de resumen? ¿Por qué se la utiliza en firma digital? 
+¿Qué características debe cumplir una función de resumen para ser útil en firma digital?
+
+3.Mostrar un ejemplo de encriptación y desencriptación utilizando cifrado de Hill con bloque de tamaño 2.
+Indique si la clave debe cumplir con algún criterio. ¿Por qué se dice que es un cifrado poligráfico y cuál 
+es la diferencia con un cifrado polialfabético?
+
+--------------------------------------------------------------------------------------------------------
+Organización de Datos ? Curso Servetto
+Evaluación Módulo Criptografía, 15 de Diciembre de 2008
+
+
+1.Alice le quiere enviar a Bob un mensaje de seis bytes, encriptado con el esquema TDES. 
+Como no cuenta con una computadora y tiene que hacer todos los cálculos a mano, decide que en lugar 
+de usar DES como algoritmo de base, lo sustituirá con un algoritmo que reemplaza cada ocurrencia de
+un caracter por un caracter definido en una tabla, por lo tanto cada tabla es una clave. 
+Las tablas son:
+K1: 	ABCDEFGHIJKLMNOPQRSTUVWXYZ
+	TRANSPEKFLIMJHOGCZWBDUXQYV
+
+K2: 	ABCDEFGHIJKLMNOPQRSTUVWXYZ
+	GWBUSHCLINTOMYXKDRAFVJEZQP
+
+K3:	ABCDEFGHIJKLMNOPQRSTUVWXYZ
+	IZWLSVXGBKFJUPMTEQRACNOYHD
+	FRGY
+
+Y el mensaje encriptado es XQSWBI. Se pide responder a las siguientes cuestiones, justificando brevemente:
+a)Obtener el mensaje original si es posible. Si no es posible, explique por qué.
+b)Este método ¿tiene estructura de grupo? En caso afirmativo ¿cuál es K3?
+c)¿Si se contara con un texto largo encriptado con este mismo método, sería útil hacer criptoanálisis por frecuencias?
+d)Determinar si es posible un ataque por texto plano escogido, y en caso afirmativo mostrar cuántos textos 
+  planos se deberían escoger para romper el criptosistema. 
+e)Sólo 2º Cuat. 2007 / 1º 2008 / Libres ¿Cuántos intentos llevaría barrer todas las claves de este criptosistema
+  en un ataque por fuerza bruta? Tener en cuenta que la respuesta varía dependiendo de si tiene estructura de grupo.
+
+2.Responder brevemente cada una de las preguntas de la a) a la d). Luego, 
+  responder verdadero o falso a las afirmaciones e) a h)
+
+a)¿Cuándo la firma digital asimétrica con resumen de mensaje es conveniente por sobre 
+  la firma digital asimétrica sin resumen de mensaje?
+b)¿Es necesaria la utilización de certificados digitales cuando no se desea autenticación
+  sino solamente confidencialidad?
+c)¿Qué desventajas tiene la firma digital simétrica respecto de la asimétrica? 
+d)Sólo 2º Cuat. 2008 ¿Qué problema resuelve la autenticación por challenge-response, que no resuelvan
+  los certificados digitales? ¿Es necesario su uso en Kerberos?
+e)En el cifrado PlayFair siempre se da que D(E(m))=m
+f)El método de Vigénere tiene estructura de grupo si y sólo si K1 y K2 son tales que la longitud
+  de una es múltiplo de la longitud de la otra.
+g)En el cifrado One Time Pad, si una clave se repite y un intruso intercepta dos mensajes
+  cifrados con esa clave, puede romper el cifrado pero aún así sigue siendo computacionalmente costoso.
+h)Si una clave tiene caracteres repetidos es imposible utilizarla en el método de transposición por columnas.
+
+--------------------------------------------------------------------------------------------------------------
+
+Organización de Datos ? Curso Servetto
+Evaluación Módulo Criptografía, 4 de Febrero de 2008
+
+1.Explique qué es un cifrado por producto. Además indique y justifique si los siguientes
+  métodos corresponden a dicha familia:
+
+a. Hill 	b. DES 		c. RSA
+
+2.Explique como se puede obtener integridad de los datos en una firma digital simétrica.
+  ¿También se puede lograr el no repudio? Justificar
+3.Describa un ataque de intermediario realizado contra dos personas A y B que están utilizando
+  un esquema de encriptación asimétrico. ¿El intermediario hace criptoanálisis? Justificar.
+  Determine, fundamentando en cada caso por separado, si esos ataques se pueden realizar cuando los interlocutores A y B:
+
+  -Firman digitalmente todos los mensajes que se envían utilizando firma de clave pública sin resumen de mensaje.
+  -Utilizan cada uno un certificado digital, y encriptan sus mensajes sin firmarlos.
+  -Se comunican utilizando firma de clave privada
+
+-------------------------------------------------------------------------------------------------------------
+
+**Organización de Datos ? Curso Servetto**
+Evaluación Criptografía, 03 de 03 del 2007
+
+1.	Responder Verdadero o Falso, justificando en ambos casos la respuesta:
+
+a.	Si una clave tiene caracteres repetidos es imposible utilizarla en el método de transposición por columnas.
+
+b.	El cifrado por sustitución reemplaza símbolos del mensaje plano por otros símbolos pertenecientes al mismo alfabeto.
+
+c.	Una condición suficiente para que un criptosistema sea seguro es que el algoritmo de encriptación
+	sea extremadamente complejo o de alto nivel de seguridad.
+
+2.	Describa el tipo de algoritmos de cifrado Homofónico, características, debilidades, y de un ejemplo.
+
+3.	Describa el proceso de Firma Digital Simétrica. ¿Cumple con todos los principios de la Criptografía?
+
+4.	Cifrado por Flujo. ¿qué es? ¿qué utilidad y qué desventajas tiene contra los cifrados por bloque?
+
+------------------------------------------------------------------------------------------------------------
+
+Organización de Datos ? Curso Servetto
+Evaluación Módulo Criptografía-Archivos Multimediales , 02 de julio de 2008
+Resolver los ejercicios de Criptografía y Multimediales en hoja separadas.
+
+Criptografía (Para aprobar este examen, el ejercicio 3 NO puede estar mal.)
+
+1. Compare los sistemas simétricos y asimétricos en cuanto a su velocidad de cifra,
+    tamaños de claves utilizados, ventajas y desventajas.
+    ¿Qué se debe tener en cuenta para determinar la longitud de clave a utilizar?
+
+2. Elegir 5 de las siguientes cuestiones y responder Verdadero o Falso, justificando en las respuestas falsas:
+a. La firma digital asimétrica no garantiza la confidencialidad.
+b. El método DES es más fácil de romper por fuerza bruta que TDES porque DES tiene estructura de grupo.
+c. El método One Time Pad no se puede romper por fuerza bruta.
+d. El método One Time Pad se puede romper con un ataque de texto plano escogido.
+e. En el cifrado de Hill, existen algunas matrices cuadradas que no son válidas como clave de encriptación.
+f. En el cifrado homofónico, saber en qué idioma está escrito el mensaje original es un dato útil para desencriptarlo.
+
+3. Describa un ataque de intermediario realizado contra dos personas A y B que están utilizando
+   un esquema de encriptación asimétrico. 
+   Determine, justificando cada caso por separado, si esos ataques se pueden realizar cuando los interlocutores A y B:
+    a. Firman digitalmente todos los mensajes que se envían utilizando firma de clave pública sin resumen de mensaje.
+    b. Utilizan cada uno un certificado digital, y encriptan sus mensajes sin firmarlos.
+    c. Se comunican utilizando firma de clave privada.
+
+---------------------------------------------------------------------------------------------------------------
+
+Organización de Datos ? Curso Servetto
+Evaluación Módulo Criptografía-Archivos Multimediales , 23 de julio de 2008
+Resolver los ejercicios de Criptografía y Multimediales en hoja separadas.
+
+1. ¿Qué es una función resumen? Explique su uso en criptografía y las características que debería
+    cumplir para su aplicación.
+
+2. Explique qué significa que en un sistema de cifra asimétrica se obtengan la
+  confidencialidad y la integridad por separado.
+
+3. Crear una clave para un cifrado homofónico a partir de la siguiente frase, que tiene todas las letras del alfabeto español:
+
+    "Fabio me exige, sin tapujos, que añada cerveza al whisky". Considerar como alfabeto a las 27 letras del alfabeto español, 
+    obviando los espacios y signos de puntuación. Con esa clave, cifre esta frase: "Nosotros no somos como los Orozco"
+ 
+------------------------------------------------------------------------------------------------------------------
+
+Organización de Datos ? Curso Servetto
+Evaluación Módulo Criptografía, 30 de julio de 2008
+Resolver los ejercicios de Criptografía.
+
+1.- ¿Cuál es la principal debilidad de los métodos de cifrados por sustitución monoalfabéticos?
+  ¿Cómo los criptoanalizaría de manera no trivial?
+
+2.- Si una persona firmó digitalmente un mensaje utilizando un esquema asimétrico,
+  ¿qué debería hacer para repudiar la autoría del mensaje? Justificar
+
+3.- Responder Verdadero o Falso, justificando las respuestas "Falso": 
+a. Al aplicar tres veces la técnica de cifrado de transposición tomando en todos los casos bloques
+    de longitud t y diferentes claves, se obtiene un criptograma que se puede criptoanalizar en el mismo
+    tiempo promedio que si aplicase la misma técnica una sola vez, también con bloques de longitud t.
+b. El esquema de firma digital simétrica garantiza la confidencialidad.
+c. En un esquema de firma digital simétrica, se puede engañar al Big Brother haciéndose pasar por otra persona,
+    pero el receptor del mensaje descubrirá el engaño en la firma del Big Brother.
+d. En un esquema de firma digital de clave privada, el emisor y el receptor de un mensaje deben compartir
+    una clave que sólo ellos dos conozcan.
+e. Generalmente, aplicar un algoritmo asimétrico es más costoso en tiempo de procesamiento
+    que aplicar un algoritmo simétrico. 
+f. En un ataque de intermediario sobre un intercambio que utiliza un esquema asimétrico, el
+  intermediario no hace criptoanálisis.
+ 
+--------------------------------------------------------------------------------------------------------------------
+
