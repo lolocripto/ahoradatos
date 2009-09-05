@@ -1,0 +1,13 @@
+ORGANIZACIÓN DE DATOS - CURSO SERVETTO
+
+MÓDULO ORGANIZACIÓN DE ARCHIVOS - 8/2/06
+
+1) Graficar la evolución de un índice B+ con nodos de 32 bytes. Indicar para cada nodo su número relativo, y para cada entrada de índice el valor de la clave y el número relativo de registro, del cual deberá llevarse cuenta; asimismo se debe reutilizar los números de registro que se den de baja.
+Asumir que las claves son de 2 bytes, los números relativos de registro de 4 y los números relativos de nodo de 2.
+Rehacer el árbol completo toda vez que una operación afecte a más de un nodo. Realizar las siguientes operaciones (donde + implica alta, y - baja):
+
++1653, +2094, +642, +840, +2203, +1145, +1315, +914, +711, +1031, -2094, +980, +500, -1145, -711
+
+2) Definir estructuras físicas de índices B* de indentificación (clave única) y de clasificación (clave no única). Elegir una única variante para índices de clasificación y comentar otras. Comentar el problema de la partición de la raíz y aclarar qué solución eligió y qué otra alternativa hay.
+
+3) Considere una secuencia de quince claves desordenadas que deberán ordenarse ascendentemente por el método de ordenación del montón (heap sort), considerando un buffer interno con capacidad máxima para seis claves. Grafique la evolución del proceso de ordenación empleando el método de reemplazo de cada clave que sale ordenada, por otra desordenada, considerando un buffer de lectura con capacidad 2 y otro de escritura con la misma capacidad. Llegue hasta obtener el primer nivel de particiones ordenadas y comente y justifique qué estructuras en RAM usaría para la fase de fusión (merge).

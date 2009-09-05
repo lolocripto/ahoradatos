@@ -1,0 +1,38 @@
+ORGANIZACIÓN DE DATOS - CURSO SERVETTO
+
+MÓDULO ORGANIZACIÓN DE ARCHIVOS - 14/12/05
+
+1) Realizar las siguientes operaciones en un TRIE de no más de cuatro niveles con detalle de la información de control necesaria en un modelo a escala de implementación, y especificar las definiciones lógica y física:
+
+horacio, lucas, hernan, alez, aleee, (alez), (horacio), cecilia, alex
+
+2) Explicar algorítmicamente la primitiva "append" para un árbol B y enunciar casos en los que sea aplicable.
+
+3) ¿Por qué es necesario distinguir posiciones vacías de borradas en un archivo directo con dispersión lineal abierta y cómo se resuelve el problema si en lugar de posiciones para un único registro se tienen buckets?
+
+
+ORGANIZACIÓN DE DATOS - CURSO SERVETTO
+
+MÓDULO ORGANIZACIÓN DE ARCHIVOS - 14/12/05
+
+1) Realizar las siguientes operaciones en un TRIE de no más de cuatro niveles con detalle de la información de control necesaria en un modelo a escala de implementación, y especificar las definiciones lógica y física:
+
+horacio, lucas, hernan, alez, aleee, (alez), (horacio), cecilia, alex
+
+2) Explicar algorítmicamente la primitiva "append" para un árbol B y enunciar casos en los que sea aplicable.
+
+3) ¿Por qué es necesario distinguir posiciones vacías de borradas en un archivo directo con dispersión lineal abierta y cómo se resuelve el problema si en lugar de posiciones para un único registro se tienen buckets?
+
+
+ORGANIZACIÓN DE DATOS - CURSO SERVETTO
+
+MÓDULO ORGANIZACIÓN DE ARCHIVOS - 14/12/05
+
+1) Realizar las siguientes operaciones en un TRIE de no más de cuatro niveles con detalle de la información de control necesaria en un modelo a escala de implementación, y especificar las definiciones lógica y física:
+
+horacio, lucas, hernan, alez, aleee, (alez), (horacio), cecilia, alex
+
+2) Explicar algorítmicamente la primitiva "append" para un árbol B y enunciar casos en los que sea aplicable.
+
+3) ¿Por qué es necesario distinguir posiciones vacías de borradas en un archivo directo con dispersión lineal abierta y cómo se resuelve el problema si en lugar de posiciones para un único registro se tienen buckets?
+

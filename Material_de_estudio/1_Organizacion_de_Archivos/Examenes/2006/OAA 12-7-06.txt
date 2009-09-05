@@ -1,0 +1,8 @@
+ORGANIZACIÓN DE DATOS - CURSO SERVETTO
+Evaluación de Organización de Archivos - 12 de julio de 2006
+
+1. Ordenación externa. Explique y compare distintas técnicas en términos de resultados y formas de implementación.
+
+2. Defina lógica y físicamente índices B+ de identificación y de clasificación. Defina estructuras para implementarlos en C de manera que los nodos sean exactamente de 512 bytes y considerando que las claves son números enteros grandes y las referencias a nodos y a ubicaciones de registros son enteros de dos bytes.
+
+3. Defina físicamente un archivo directo con dispersión extendible abstrayendo la definición física de los registros de datos con el símbolo R. Explique la información de control involucrada. Detalle algorítmicamente la inserción de un registro R con clave C(R).

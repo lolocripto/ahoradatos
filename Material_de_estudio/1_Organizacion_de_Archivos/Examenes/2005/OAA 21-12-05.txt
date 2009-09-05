@@ -1,0 +1,13 @@
+ORGANIZACIÓN DE DATOS - CURSO SERVETTO
+
+MÓDULO ORGANIZACIÓN DE ARCHIVOS - 21, 12, 05
+
+1) Realizar las siguientes operaciones en un índice directo con dispersión dinámica y buckets con capacidad para cuatro registros (con detalle de la información de control necesaria en un modelo a escala de implementación), y especificar las definiciones lógica y física:
+
+(850, 0), (255, 1), (4463, 2), (2661, 3), (41, 4), (7768, 5), (495, 6), (220, 7), (1642, 8), (551, 9), (506, 10), (214, 11)
+
+Elegir un bucket cualquiera y dar de baja su contenido.
+
+2) ¿QUé información mantendría en RAM para implementar una primitiva "next_xrecord" que devuelva el próximo par (clave, referencia) de un índice B+ activo? Explicar algorítmicamente esta primitiva y enunciar casos en los que sea aplicable.
+
+3) ¿Qué características tienen los índices de archivos secuenciales indexados?

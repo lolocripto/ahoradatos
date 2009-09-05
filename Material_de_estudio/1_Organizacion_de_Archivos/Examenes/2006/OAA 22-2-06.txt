@@ -1,0 +1,27 @@
+ORGANIZACIÓN DE DATOS - CURSO SERVETTO
+
+MÓDULO ORGANIZACIÓN DE ARCHIVOS - 22/2/06
+
+Considere las siguientes definiciones lógicas de archivos para un restaurante:
+
+	agrupacion_productos(cod_grupo, título)
+
+	productos(cod_prod, nombre, (descripción)?, cod_grupo, (presentación, precio)*)
+
+	comandas(mesa, mozo, cant_cubiertos, (cod_prod, presentación, cant)+)
+
+	facturas(nro_fac, mozo, fecha, cant_cubiertos, precio_cubierto, (cod_prod, presentación, precio, cant)+)
+
+1) Defina físicamente los archivos agrupación_productos, productos y facturas junto con las definiciones físicas de archivos de control necesarios, considerando que:
+
+	agrupación_productos es secuencial por cod_grupo con registros de long. variable
+
+	productos es secuencial indexado por cod_prod con registros de long. variable y con actualizaciones
+
+	facturas es secuencial indexado por nro_fac con registros de long. variable, y sin actualizaciones
+
+2) Proponga una organización para las comandas y defina físicamente el o los archivos propuestos. Considere que las comandas se actualizan aleatoriamente según las mesas que se están sirviendo y que se eliminan una vez cobrado el servicio a la mesa (mesa y mozo las identifican, y se mantienen temporalmente en disco por seguridad).
+
+3) Defina lógicamente un índice para facturas que permita calcular lo facturado por día y aclare qué tipo de índice es.
+
+4) Clasifique los archivos definidos (maestros, transaccionales, de trabajo o de control). Justifique por qué el archivo de facturas tiene precios, y proponga dónde almacenar el precio de referencia del cubierto.
