@@ -1,0 +1,126 @@
+Capacidades de elementos en nodos internos y hojas respect.: 4, 6
+
+NODO 0  (i, 1 elemento/s)
+  8 (sucesor izquierdo del primer elemento)
+(24832)  7
+
+	NODO 8  (i, 2 elemento/s)
+	  2 (sucesor izquierdo del primer elemento)
+	(16747)  6(20759)  4	
+
+		NODO 2  (h, 3 elemento/s)
+		(12190)(12400)(16679)
+		Siguiente hoja: 6
+
+		NODO 6  (h, 3 elemento/s)
+		(16747)(19716)(20728)
+		Siguiente hoja: 4
+
+		NODO 4  (h, 5 elemento/s)
+		(20759)(22038)(22275)(23193)(23996)
+		Siguiente hoja: 3
+
+
+	NODO 7  (i, 3 elemento/s)
+	  3 (sucesor izquierdo del primer elemento)
+	(28000)  9(33748)  5(50318)  1	
+
+		NODO 3  (h, 4 elemento/s)
+		(24832)(26716)(27274)(27704)
+		Siguiente hoja: 9
+
+		NODO 9  (h, 3 elemento/s)
+		(28000)(30141)(30661)
+		Siguiente hoja: 5
+
+		NODO 5  (h, 4 elemento/s)
+		(33748)(34105)(39725)(44273)
+		Siguiente hoja: 1
+
+		NODO 1  (h, 5 elemento/s)
+		(50318)(51830)(57620)(59469)(64951)
+		Siguiente hoja: 0
+
+
+Baja 20759 (cuando se elimina el primer elemento de una hoja no es necesario actualizar el orientador -economía de escrituras-):
+
+NODO 0  (i, 1 elemento/s)
+  8 (sucesor izquierdo del primer elemento)
+(24832)  7
+
+	NODO 8  (i, 2 elemento/s)
+	  2 (sucesor izquierdo del primer elemento)
+	(16747)  6(20759)  4	
+
+		NODO 2  (h, 3 elemento/s)
+		(12190)(12400)(16679)
+		Siguiente hoja: 6
+
+		NODO 6  (h, 3 elemento/s)
+		(16747)(19716)(20728)
+		Siguiente hoja: 4
+
+		NODO 4  (h, 4 elemento/s)
+		(22038)(22275)(23193)(23996)
+		Siguiente hoja: 3
+
+
+	NODO 7  (i, 3 elemento/s)
+	  3 (sucesor izquierdo del primer elemento)
+	(28000)  9(33748)  5(50318)  1	
+
+		NODO 3  (h, 4 elemento/s)
+		(24832)(26716)(27274)(27704)
+		Siguiente hoja: 9
+
+		NODO 9  (h, 3 elemento/s)
+		(28000)(30141)(30661)
+		Siguiente hoja: 5
+
+		NODO 5  (h, 4 elemento/s)
+		(33748)(34105)(39725)(44273)
+		Siguiente hoja: 1
+
+		NODO 1  (h, 5 elemento/s)
+		(50318)(51830)(57620)(59469)(64951)
+		Siguiente hoja: 0
+
+
+Baja 12400:
+
+NODO 0  (i, 1 elemento/s)
+  8 (sucesor izquierdo del primer elemento)
+(28000)  7
+
+	NODO 8  (i, 2 elemento/s)
+	  2 (sucesor izquierdo del primer elemento)
+	(20759)  4(24832)  3	
+
+		NODO 2  (h, 5 elemento/s)
+		(12190)(16679)(16747)(19716)(20728)
+		Siguiente hoja: 4
+
+		NODO 4  (h, 4 elemento/s)
+		(22038)(22275)(23193)(23996)
+		Siguiente hoja: 3
+
+		NODO 3  (h, 4 elemento/s)
+		(24832)(26716)(27274)(27704)
+		Siguiente hoja: 9
+
+
+	NODO 7  (i, 2 elemento/s)
+	  9 (sucesor izquierdo del primer elemento)
+	(33748)  5(50318)  1	
+
+		NODO 9  (h, 3 elemento/s)
+		(28000)(30141)(30661)
+		Siguiente hoja: 5
+
+		NODO 5  (h, 4 elemento/s)
+		(33748)(34105)(39725)(44273)
+		Siguiente hoja: 1
+
+		NODO 1  (h, 5 elemento/s)
+		(50318)(51830)(57620)(59469)(64951)
+		Siguiente hoja: 0

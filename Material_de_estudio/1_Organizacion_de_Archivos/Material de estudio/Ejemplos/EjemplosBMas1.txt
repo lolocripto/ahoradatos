@@ -1,0 +1,65 @@
+Capacidades de elementos en nodos internos y hojas respect.: 4, 6
+
+NODO 0  (h, 6 elemento/s)
+( 7880)(10129)(16975)(33432)(36801)(55396)
+Siguiente hoja: 0
+
+
+Alta: 35000:
+
+NODO 0  (i, 1 elemento/s)
+  2 (sucesor izquierdo del primer elemento)
+(35000)  1
+
+	NODO 2  (h, 4 elemento/s)
+	( 7880)(10129)(16975)(33432)
+	Siguiente hoja: 1
+
+	NODO 1  (h, 3 elemento/s)
+	(35000)(36801)(55396)
+	Siguiente hoja: 0
+
+
+Baja 36801:
+
+NODO 0  (i, 1 elemento/s)
+  2 (sucesor izquierdo del primer elemento)
+(33432)  1
+
+	NODO 2  (h, 3 elemento/s)
+	( 7880)(10129)(16975)
+	Siguiente hoja: 1
+
+	NODO 1  (h, 3 elemento/s)
+	(33432)(35000)(55396)
+	Siguiente hoja: 0
+
+
+Alta 50000:
+
+NODO 0  (i, 1 elemento/s)
+  2 (sucesor izquierdo del primer elemento)
+(33432)  1
+
+	NODO 2  (h, 3 elemento/s)
+	( 7880)(10129)(16975)
+	Siguiente hoja: 1
+
+	NODO 1  (h, 4 elemento/s)
+	(33432)(35000)(50000)(55396)
+	Siguiente hoja: 0
+
+
+Baja 7880:
+
+NODO 0  (i, 1 elemento/s)
+  2 (sucesor izquierdo del primer elemento)
+(35000)  1
+
+	NODO 2  (h, 3 elemento/s)
+	(10129)(16975)(33432)
+	Siguiente hoja: 1
+
+	NODO 1  (h, 3 elemento/s)
+	(35000)(50000)(55396)
+	Siguiente hoja: 0

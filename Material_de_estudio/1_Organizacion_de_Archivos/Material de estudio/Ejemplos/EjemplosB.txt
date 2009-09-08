@@ -1,0 +1,189 @@
+Capacidades de elementos en nodos internos y hojas respect.: 3, 7
+
+ARBOL B:
+
+NODO 0  (i, 1 elementos)
+  6 (sucesor izquierdo del primer elemento)
+(44899)  7
+
+	NODO 6  (i, 2 elementos)
+	  1 (sucesor izquierdo del primer elemento)
+	(23068)  5(28298)  3
+
+		NODO 1  (h, 7 elementos)
+		( 8875)( 9342)(10373)(12774)(19987)(20945)(21404)
+
+		NODO 5  (h, 3 elementos)
+		(24696)(25445)(28088)
+
+		NODO 3  (h, 5 elementos)
+		(31721)(34866)(41220)(41571)(41821)
+
+
+	NODO 7  (i, 1 elementos)
+	  4 (sucesor izquierdo del primer elemento)
+	(52982)  2
+
+		NODO 4  (h, 4 elementos)
+		(46279)(49513)(50143)(51052)
+
+		NODO 2  (h, 7 elementos)
+		(53320)(55942)(56631)(57472)(60964)(61240)(63389)
+
+***** Baja 44899:
+
+NODO 0  (i, 1 elementos)
+  6 (sucesor izquierdo del primer elemento)
+(46297)  7
+
+	NODO 6  (i, 2 elementos)
+	  1 (sucesor izquierdo del primer elemento)
+	(23068)  5(28298)  3
+
+		NODO 1  (h, 7 elementos)
+		( 8875)( 9342)(10373)(12774)(19987)(20945)(21404)
+
+		NODO 5  (h, 3 elementos)
+		(24696)(25445)(28088)
+
+		NODO 3  (h, 5 elementos)
+		(31721)(34866)(41220)(41571)(41821)
+
+
+	NODO 7  (i, 1 elementos)
+	  4 (sucesor izquierdo del primer elemento)
+	(52982)  2
+
+		NODO 4  (h, 3 elementos)
+		(49513)(50143)(51052)
+
+		NODO 2  (h, 7 elementos)
+		(53320)(55942)(56631)(57472)(60964)(61240)(63389)
+
+***** Baja 50143:
+
+NODO 0  (i, 1 elementos)
+  6 (sucesor izquierdo del primer elemento)
+(46297)  7
+
+	NODO 6  (i, 2 elementos)
+	  1 (sucesor izquierdo del primer elemento)
+	(23068)  5(28298)  3
+
+		NODO 1  (h, 7 elementos)
+		( 8875)( 9342)(10373)(12774)(19987)(20945)(21404)
+
+		NODO 5  (h, 3 elementos)
+		(24696)(25445)(28088)
+
+		NODO 3  (h, 5 elementos)
+		(31721)(34866)(41220)(41571)(41821)
+
+
+	NODO 7  (i, 1 elementos)
+	  4 (sucesor izquierdo del primer elemento)
+	(55942)  2
+
+		NODO 4  (h, 4 elementos)
+		(49513)(51052)(52982)(53320)
+
+		NODO 2  (h, 5 elementos)
+		(56631)(57472)(60964)(61240)(63389)
+
+***** Alta 20000:
+
+NODO 0  (i, 1 elementos)
+  6 (sucesor izquierdo del primer elemento)
+(46297)  7
+
+	NODO 6  (i, 3 elementos)
+	  1 (sucesor izquierdo del primer elemento)
+	(19987)  8(23068)  5(28298)  3
+
+		NODO 1  (h, 4 elementos)
+		( 8875)( 9342)(10373)(12774)
+
+		NODO 8  (h, 3 elementos)
+		(20000)(20945)(21404)
+
+		NODO 5  (h, 3 elementos)
+		(24696)(25445)(28088)
+
+		NODO 3  (h, 5 elementos)
+		(31721)(34866)(41220)(41571)(41821)
+
+
+	NODO 7  (i, 1 elementos)
+	  4 (sucesor izquierdo del primer elemento)
+	(55942)  2
+
+		NODO 4  (h, 4 elementos)
+		(49513)(51052)(52982)(53320)
+
+		NODO 2  (h, 5 elementos)
+		(56631)(57472)(60964)(61240)(63389)
+
+***** Bajan 52982, 57472, 63389:
+
+NODO 0  (i, 1 elementos)
+  6 (sucesor izquierdo del primer elemento)
+(46297)  7
+
+	NODO 6  (i, 3 elementos)
+	  1 (sucesor izquierdo del primer elemento)
+	(19987)  8(23068)  5(28298)  3
+
+		NODO 1  (h, 4 elementos)
+		( 8875)( 9342)(10373)(12774)
+
+		NODO 8  (h, 3 elementos)
+		(20000)(20945)(21404)
+
+		NODO 5  (h, 3 elementos)
+		(24696)(25445)(28088)
+
+		NODO 3  (h, 5 elementos)
+		(31721)(34866)(41220)(41571)(41821)
+
+
+	NODO 7  (i, 1 elementos)
+	  4 (sucesor izquierdo del primer elemento)
+	(55942)  2
+
+		NODO 4  (h, 3 elementos)
+		(49513)(51052)(53320)
+
+		NODO 2  (h, 3 elementos)
+		(56631)(60964)(61240)
+
+***** Baja 55942:
+
+NODO 0  (i, 1 elementos)
+  6 (sucesor izquierdo del primer elemento)
+(28298)  7
+
+	NODO 6  (i, 2 elementos)
+	  1 (sucesor izquierdo del primer elemento)
+	(19987)  8(23068)  5
+
+		NODO 1  (h, 4 elementos)
+		( 8875)( 9342)(10373)(12774)
+
+		NODO 8  (h, 3 elementos)
+		(20000)(20945)(21404)
+
+		NODO 5  (h, 3 elementos)
+		(24696)(25445)(28088)
+
+
+	NODO 7  (i, 1 elementos)
+	  3 (sucesor izquierdo del primer elemento)
+	(46279)  4
+
+		NODO 3  (h, 5 elementos)
+		(31721)(34866)(41220)(41571)(41821)
+
+		NODO 4  (h, 6 elementos)
+		(49513)(51052)(53320)(56631)(60964)(61240)
+
+
