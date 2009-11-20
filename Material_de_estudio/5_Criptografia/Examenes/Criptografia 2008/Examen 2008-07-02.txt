@@ -6,18 +6,32 @@ Criptografía (Para aprobar este examen, el ejercicio 3 NO puede estar mal.)
 
 1. Compare los sistemas simétricos y asimétricos en cuanto a su velocidad de cifra, tamaños de claves utilizados, ventajas y desventajas.
     ¿Qué se debe tener en cuenta para determinar la longitud de clave a utilizar?
-
+	
+	El tiempo por el cual la información es válida o resulta importante que no se conozca por ejemplo una primicia en un canal de televisión.
+	El símetrico es más rápido que el asímetrico.
+	Ventajas y desventajas
+		Clave privada: Necesita dar a conocer su clave privada al receptor del mensaje mientras que con clave publica solo se da la clave 
+		publica que solo sirve para cifrar.
+		En clave publica tambien sirve para autentificacion
+		
+	
 2. Elegir 5 de las siguientes cuestiones y responder Verdadero o Falso, justificando en las respuestas falsas:
-a. La firma digital asimétrica no garantiza la confidencialidad.
-b. El método DES es más fácil de romper por fuerza bruta que TDES porque DES tiene estructura de grupo.
-c. El método One Time Pad no se puede romper por fuerza bruta.
-d. El método One Time Pad se puede romper con un ataque de texto plano escogido.
-e. En el cifrado de Hill, existen algunas matrices cuadradas que no son válidas como clave de encriptación.
-f. En el cifrado homofónico, saber en qué idioma está escrito el mensaje original es un dato útil para desencriptarlo.
+a. La firma digital asimétrica no garantiza la confidencialidad. V
+b. El método DES es más fácil de romper por fuerza bruta que TDES porque DES tiene estructura de grupo. F 
+		Porque DES no tiene estructura de grupo.
+c. El método One Time Pad no se puede romper por fuerza bruta. V
+d. El método One Time Pad se puede romper con un ataque de texto plano escogido. F
+e. En el cifrado de Hill, existen algunas matrices cuadradas que no son válidas como clave de encriptación. V
+f. En el cifrado homofónico, saber en qué idioma está escrito el mensaje original es un dato útil para desencriptarlo. V
 
 3. Describa un ataque de intermediario realizado contra dos personas A y B que están utilizando un esquema de encriptación asimétrico. 
    Determine, justificando cada caso por separado, si esos ataques se pueden realizar cuando los interlocutores A y B:
 a. Firman digitalmente todos los mensajes que se envían utilizando firma de clave pública sin resumen de mensaje.
+	NO
+	
 b. Utilizan cada uno un certificado digital, y encriptan sus mensajes sin firmarlos.
+		Si se encriptan por clave publica si puede recibir un ataque de intermediario, en caso de ser por clave privada no.
 c. Se comunican utilizando firma de clave privada.
+	No, dado que un ataque por intermediario es posible solo sobre un sistema con encriptación asímetrico.
+	
  

@@ -6,19 +6,30 @@ Ejemplifique cómo se llevaría a cabo con un sistema a) TLS(SSL) y con un sistema
 
 2.Según las reglas de Kerchoffs:
 
--No debe existir ninguna forma de recuperar mediante el criptograma el texto inicial o la clave. 
--Todo sistema criptográfico debe estar compuesto por dos tipos distintos de información.
+Principios:
+
+1) -No debe existir ninguna forma de recuperar mediante el criptograma el texto inicial o la clave. 
+2) -Todo sistema criptográfico debe estar compuesto por dos tipos distintos de información.
 -Pública, como es la familia de algoritmos que lo definen.
 -Privada, como es la clave que se usa en cada cifrado particular. 
--La forma de escoger la clave debe ser fácil de recordar y modificar.
--Debe ser factible la comunicación del criptograma por los medios de transmisión habituales.
--La complejidad del proceso de recuperación del texto original debe corresponderse con el beneficio obtenido.
+3)-La forma de escoger la clave debe ser fácil de recordar y modificar.
+4)-Debe ser factible la comunicación del criptograma por los medios de transmisión habituales.
+5)-La complejidad del proceso de recuperación del texto original debe corresponderse con el beneficio obtenido.
 
 Analice la satisfacción alcanzada, en base a estas reglas, de los métodos criptográficos:
   a) Vigénere, b) One Time Pad y c) RSA.
 
+        | Vigenere 	| OTP 	| RSA
+ 1		|			| 		|
+ 2		|			|		|
+ 3		|			|  X 	|
+ 4		|			|		|
+ 5		|			|		|
+  
 3.Cifre con el método Merkle-Hellman (Knapsack) el texto ?indescifrable? con una clave que repita,
 tantas veces como sea necesario, la cadena 7506. Explique el método de desencriptación del mismo ejemplo.
+
+
 
 ----------------------------------------------------------------------------------------------------
 Organización de Datos ? Curso Servetto
@@ -69,17 +80,33 @@ e)Sólo 2º Cuat. 2007 / 1º 2008 / Libres ¿Cuántos intentos llevaría barrer todas 
 
 a)¿Cuándo la firma digital asimétrica con resumen de mensaje es conveniente por sobre 
   la firma digital asimétrica sin resumen de mensaje?
+  Cuando se quiere asegurar la integridad del mensaje.
+  
 b)¿Es necesaria la utilización de certificados digitales cuando no se desea autenticación
   sino solamente confidencialidad?
-c)¿Qué desventajas tiene la firma digital simétrica respecto de la asimétrica? 
+  No es necesaria, pero se necesita pasar la clave publica del usuario que envia lo encriptado.
+  
+c)¿Qué desventajas tiene la firma digital simétrica (privada) respecto de la asimétrica (clave pública)? 
+	Que tiene un intermediario externo (big brother)
+
 d)Sólo 2º Cuat. 2008 ¿Qué problema resuelve la autenticación por challenge-response, que no resuelvan
   los certificados digitales? ¿Es necesario su uso en Kerberos?
+  
 e)En el cifrado PlayFair siempre se da que D(E(m))=m
+	No, dado que un par de caracteres iguales se transforma en algo de codificable por el cifrador, por lo tanto el mensaje es cambiado y se decodifica ese mensaje cambiado pero no es el mensaje original.
+	
 f)El método de Vigénere tiene estructura de grupo si y sólo si K1 y K2 son tales que la longitud
   de una es múltiplo de la longitud de la otra.
+  
+  Verdadero, ya que se suman las dos claves y la mas chica se repite tantas veces como entre en la más grande.
+    
 g)En el cifrado One Time Pad, si una clave se repite y un intruso intercepta dos mensajes
   cifrados con esa clave, puede romper el cifrado pero aún así sigue siendo computacionalmente costoso.
+  Si, porque al encontrar algo coherente en el primero lo prueba en el segundo, en el caso de no tener un resultado coherente descarta la clave.
+  En es caso de entontrar una clave que de como resultado en los dos mensajes algo coherente entonces se podría suponer que fue roto el cifrado?
+  
 h)Si una clave tiene caracteres repetidos es imposible utilizarla en el método de transposición por columnas.
+	Verdadero por ser condicion incial del algoritmo.
 
 --------------------------------------------------------------------------------------------------------------
 
