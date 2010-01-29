@@ -1,0 +1,153 @@
+Operaciones con registros representados por sus claves y los signos + para alta, y - para bajas, en un archivo directo con dispersión extensible con bloques con capacidad para tres registros:
+
++123, +915, +629, +411, +200, +863, -629, +408, +34, +510, -863, +775
+
+Resolución:
+
+Asumiendo que los números son menores que 1000, la cantidad de bits necesaria para representar el valor más alto, 999, sería log2(999)=10; entonces la representación binaria en 10 bits de las claves es
+
++0001111011, +1110010011, +1001110101, +0110011011, +0011001000, +1101011111, -1001110101, +0110011000, +0000100010, +0111111110, -1101011111, +1100000111
+
+Entonces se crea la tabla vacía y el archivo con un bloque, el 0, vacío y con tamaño de dispersión 1 (significa que la dispersión se realiza considerando log2(1)=0 bits de las claves)
+
+Tabla: vacía
+
+Archivo:
+	0|(1) 
+
+
+1, 2, 3. +0001111011, +1110010011, +1001110101
+
+Tabla: vacía
+
+Archivo:
+	0|(1) 0001111011, 1110010011, 1001110101
+
+
+4. +0110011011
+
+Como el bloque 0 se desborda y tiene tamaño de dispersión 1, se debe duplicar su tamaño de dispersión y agregar un nuevo bloque al archivo con este nuevo tamaño de dispersión; esto quiere decir que la tabla debe tener tamaño 2, referir a los bloques 0 y 1 (el nuevo), y que la dispersión debe efectuarse considerando log2(2)=1 bit de las claves (el bit 1 de la clave indica la posición de la tabla donde encontrar la referencia al bloque donde insertar o buscar el registro):
+
+Tabla: 0 1
+
+Archivo:
+	0|(2) 0001111011, 0110011011
+	1|(2) 1110010011, 1001110101
+
+
+5, 6. +0011001000, +1101011111
+
+Tabla: 0 1
+
+Archivo:
+	0|(2) 0001111011, 0110011011, 0011001000
+	1|(2) 1110010011, 1001110101, 1101011111
+
+
+7. -1001110101
+
+Tabla: 0 1
+
+Archivo:
+	0|(2) 0001111011, 0110011011, 0011001000
+	1|(2) 1110010011, 1101011111
+
+
+8. +0110011000
+
+Como el bloque 0 se desborda y su tamaño de dispersión coincide con el tamaño de la tabla, se debe duplicar la tabla reemplazando una de las referencias al bloque 0 por la referencia a un bloque nuevo (se adopta como convención sustituir la primera de ellas); el bloque 0 y el nuevo deben tener el tamaño de dispersión del bloque 0 duplicado, y los registros deben redispersarse contemplando log2(4)=2 bits:
+
+Tabla: 2 0 1 1
+
+Archivo:
+	0|(4) 0110011011, 0110011000
+	1|(2) 1110010011, 1101011111
+	2|(4) 0001111011, 0011001000
+
+9, 10: +0000100010, +0111111110
+
+Tabla: 2 0 1 1
+
+Archivo:
+	0|(4) 0110011011, 0110011000, 0111111110
+	1|(2) 1110010011, 1101011111
+	2|(4) 0001111011, 0011001000, 0000100010
+
+
+11. -1101011111
+
+Tabla: 2 0 1 1
+
+Archivo:
+	0|(4) 0110011011, 0110011000, 0111111110
+	1|(2) 1110010011
+	2|(4) 0001111011, 0011001000, 0000100010
+
+
+12. +1100000111
+
+Tabla: 2 0 1 1
+
+Archivo:
+	0|(4) 0110011011, 0110011000, 0111111110
+	1|(2) 1110010011, 1100000111
+	2|(4) 0001111011, 0011001000, 0000100010
+
+
+Veamos qué pasa cuando se desborda otro bloque:
+
++156 -- +0010011100
+
+Como la tabla tiene tamaño 4, se deben tomar los primeros log2(4)=2 bits de la clave: 00, o sea la posición 0 de la tabla -> el bloque 2. El bloque 2 se desborda, y como tiene tamaño de dispersión igual que el tamaño de la tabla, se debe duplicar la tabla, sustituyendo la primer referencia al 2 por la referencia a un bloque nuevo (el 3); ambos bloque quedan con tamaño de dispersión 8; los registros de redispersan considerando log2(8)=3 bits:
+
+Tabla: 3 2 0 0 1 1 1 1
+
+Archivo:
+	0|(4) 0110011011, 0110011000, 0111111110
+	1|(2) 1110010011, 1100000111
+	2|(8) 0011001000, 0010011100
+	3|(8) 0001111011, 0000100010
+
+
+Ahora veamos qué pasa cuando se desborda el 1:
+
++715 (1011001011), +928 (1110100000)
+
+Tabla: 3 2 0 0 1 1 1 1
+
+Archivo:
+	0|(4) 0110011011, 0110011000, 0111111110
+	1|(2) 1110010011, 1100000111, 1011001011
+	2|(8) 0011001000, 0010011100
+	3|(8) 0001111011, 0000100010
+
+Como el tamaño de dispersión del bloque 1 es 2, hay 8/2=4 referencias a él; en vez de duplicar la tabla, las primeras 4/2=2 referencias se reemplazan con el número de un nuevo bloque y se redispersan los registros (el bloque 1 y el nuevo quedan con el tamaño de dispersión del 1 duplicado):
+
+Tabla: 3 2 0 0 4 4 1 1
+
+Archivo:
+	0|(4) 0110011011, 0110011000, 0111111110
+	1|(4) 1110010011, 1100000111, 1110100000
+	2|(8) 0011001000, 0010011100
+	3|(8) 0001111011, 0000100010
+	4|(4) 1011001011
+
+
+Veamos qué pasa si se vacía el bloque 2:
+
+-200 (0011001000), -156 (0010011100)
+
+Se vacía el bloque referido en la posición 001 de la tabla, que como tiene el mismo tamaño de dispersión que el tamaño actual de la tabla, está referido una única vez; cambiando el último bit de la posición tenemos la posición 000 y se divide por 2 el tamaño de dispersión de ese bloque; se sustituye la referencia al bloque vacío por el número de bloque en la posición 000 y se valida que la tabla no tenga todas las referencias duplicadas para reducirla:
+
+Tabla: 3 3 0 0 4 4 1 1 --> 3 0 4 1
+
+Bloques libres: 2
+
+Archivo:
+	0|(4) 0110011011, 0110011000, 0111111110
+	1|(4) 1110010011, 1100000111, 1110100000
+	2|(8) 
+	3|(4) 0001111011, 0000100010
+	4|(4) 1011001011
+
+

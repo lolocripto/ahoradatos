@@ -1,0 +1,182 @@
+Capacidades de elementos en nodos internos y hojas respect.: 4, 7
+
+Capacidad raíz: interna (4 * 4) div 3 = 5; hoja (4 * 7) div 3 = 9
+
+Carga mín. nodos: internos (4 * 2) div 3 = 2; hojas (7 * 2) div 3 = 4
+
+NODO 0-1
+  2(  483)  3(  587)  5(  844)  4
+
+	NODO 2
+	(    1)(   74)(  154)(  157)(  280)(  360)(  473)	
+
+	NODO 3
+	(  491)(  508)(  521)(  541)(  543)(  549)(  573)
+
+	NODO 5
+	(  668)(  687)(  817)(  832)
+
+	NODO 4
+	(  879)(  885)(  906)(  941)(  955)(  976)(  981)	
+
+
+Alta 900
+Sobreflujo en nodo 4; como no hay hermano derecho se balancea con el izquierdo: (4 + 7 + 1) div 2 = 6
+
+NODO 0-1
+  2(  483)  3(  587)  5(  885)  4
+
+	NODO 2
+	(    1)(   74)(  154)(  157)(  280)(  360)(  473)	
+
+	NODO 3
+	(  491)(  508)(  521)(  541)(  543)(  549)(  573)
+
+	NODO 5
+	(  668)(  687)(  817)(  832)(  844)(  879)
+
+	NODO 4
+	(  900)(  906)(  941)(  955)(  976)(  981)	
+
+
+Alta 100
+Sobreflujo en nodo 2; como el hermano derecho está lleno se agrega un nodo y se distribuye la carga de ambos entre 3: 14 div 3 = 4; como 14 mod 3 = 2, se va cargando los hermanos con un elemento más de izq. a der. hasta repartir el resto (5-5-4)
+
+NODO 0-1
+  2(  280)  6(  521)  3(  587)  5(  885)  4
+
+	NODO 2
+	(    1)(   74)(  100)(  154)(  157)
+
+	NODO 6
+	(  360)(  473)(  483)(  491)(  508)
+
+	NODO 3
+	(  541)(  543)(  549)(  573)
+
+	NODO 5
+	(  668)(  687)(  817)(  832)(  844)(  879)
+
+	NODO 4
+	(  900)(  906)(  941)(  955)(  976)(  981)	
+
+
+Altas 600 y 700
+Sobreflujo en nodo 5 al incorporar el 700; se balancea con hermano derecho: (7 + 6 + 1 ) div 2 = 7
+
+NODO 0-1
+  2(  280)  6(  521)  3(  587)  5(  879)  4
+
+	NODO 2
+	(    1)(   74)(  100)(  154)(  157)
+
+	NODO 6
+	(  360)(  473)(  483)(  491)(  508)
+
+	NODO 3
+	(  541)(  543)(  549)(  573)
+
+	NODO 5
+	(  600)(  668)(  687)(  700)(  817)(  832)(  844)
+
+	NODO 4
+	(  885)(  900)(  906)(  941)(  955)(  976)(  981)
+
+
+Alta 759
+Sobreflujo en nodo 5; como no se puede balancear con hermano derecho porque está lleno, se agrega un nodo nuevo; la raíz no se parte porque su capacidad máxima como nodo interno es 5
+
+NODO 0-1
+  2(  280)  6(  521)  3(  587)  5(  817)  7(  906)  4
+
+	NODO 2
+	(    1)(   74)(  100)(  154)(  157)
+
+	NODO 6
+	(  360)(  473)(  483)(  491)(  508)
+
+	NODO 3
+	(  541)(  543)(  549)(  573)
+
+	NODO 5
+	(  600)(  668)(  687)(  700)(  759)
+
+	NODO 7
+	(  832)(  844)(  879)(  885)(  900)
+
+	NODO 4
+	(  941)(  955)(  976)(  981)
+
+
+Baja 521
+Como el elemento está en un nodo interno, se debe sustituir por el siguiente, que está siempre en una hoja, en este caso el nodo 3, que queda con subflujo y debe balancearse con su hermano derecho, el 5
+
+NODO 0-1
+  2(  280)  6(  541)  3(  600)  5(  817)  7(  906)  4
+
+	NODO 2
+	(    1)(   74)(  100)(  154)(  157)
+
+	NODO 6
+	(  360)(  473)(  483)(  491)(  508)
+
+	NODO 3
+	(  543)(  549)(  573)(  587)
+
+	NODO 5
+	(  668)(  687)(  700)(  759)
+
+	NODO 7
+	(  832)(  844)(  879)(  885)(  900)
+
+	NODO 4
+	(  941)(  955)(  976)(  981)
+
+
+Baja 573
+Subflujo en el nodo 3; se intenta balancear el nodo 3 con su hermano derecho (5), pero como tiene carga mínima no se puede, entonces se intenta con el izquierdo (6)
+
+NODO 0-1
+  2(  280)  6(  508)  3(  600)  5(  817)  7(  906)  4
+
+	NODO 2
+	(    1)(   74)(  100)(  154)(  157)
+
+	NODO 6
+	(  360)(  473)(  483)(  491)
+
+	NODO 3
+	(  541)(  543)(  549)(  587)
+
+	NODO 5
+	(  668)(  687)(  700)(  759)
+
+	NODO 7
+	(  832)(  844)(  879)(  885)(  900)
+
+	NODO 3
+	(  941)(  955)(  976)(  981)
+
+
+Baja 549
+Subflujo en nodo 3; no se puede balancear con hno. derecho ni con hno. izquierdo, entonces se divide el contenido del 3 entre sus hermanos quedando (4 + 1 + 3 + 4) div 2 = 6 elementos en cada uno, y se libera el 3
+
+NODO 0-1
+  2(  280)  6(  543)  5(  817)  7(  906)  4
+
+	NODO 2
+	(    1)(   74)(  100)(  154)(  157)
+
+	NODO 6
+	(  360)(  473)(  483)(  491)(  508)(  541)
+
+	NODO 5
+	(  587)(  600)(  668)(  687)(  700)(  759)
+
+	NODO 7
+	(  832)(  844)(  879)(  885)(  900)
+
+	NODO 4
+	(  941)(  955)(  976)(  981)
+
+Nodos libres: 3

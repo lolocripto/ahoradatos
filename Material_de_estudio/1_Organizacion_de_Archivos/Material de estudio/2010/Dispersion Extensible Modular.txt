@@ -1,0 +1,164 @@
+Operaciones con registros representados por sus claves y los signos + para alta, y - para bajas, en un archivo directo con dispersión extensible con bloques con capacidad para tres registros:
+
++123, +915, +629, +411, +200, +863, -629, +408, +34, +510, -863, +775
+
+Resolución:
+
++123, +915, +629, +411:
+
+Tabla: 0
+Archivo ("(", tamaño dispersión de bucket, ") ", (clave)*3):
+
+	0|(1) 123, 915, 629
+
+El registro con clave 411 no cabe en el bloque que consigna la posición 411 mod 1=0 de la tabla: 0
+Se duplica la tabla y en la posición 0 se consigna un nuevo bloque: 1
+
+Tabla: 1 0
+
+Se duplica el tamaño de dispersión del bloque 0 y se pone este último tamaño de dispersión también al bloque 1, y se redispersan los registros del bloque 0 con clave módulo 2:
+
+Archivo:
+
+	0|(2) 123, 915, 629
+	1|(2)
+
+Se reintenta agregar el registro con clave 411 y vuelve a desbordar el bloque 0. Se duplica la tabla y en la posición 1 se consigna un nuevo bloque: 2
+
+Tabla: 1 2 1 0
+
+Se duplica el tamaño de dispersión del bloque 0 y se pone este último tamaño de dispersión también al bloque 2, y se redispersan los registros del bloque 0 con clave módulo 4:
+
+Archivo:
+
+	0|(4) 123, 915, 411
+	1|(2)
+	2|(4) 629
+
++200, +863:
+
+Tabla: 1 2 1 0
+
+Archivo:
+
+	0|(4) 123, 915, 411
+	1|(2) 200
+	2|(4) 629
+
+El registro con clave 863 no cabe en el bloque que consigna la posición 863 mod 4=3 de la tabla: 0
+Se duplica la tabla y en la posición 3 se consigna un nuevo bloque: 3
+
+Tabla: 1 2 1 3 1 2 1 0
+
+Se duplica el tamaño de dispersión del bloque 0 y se pone este último tamaño de dispersión también al bloque 3, y se redispersan los registros del bloque 0 con clave módulo 8:
+
+Archivo:
+
+	0|(8)
+	1|(2) 200
+	2|(4) 629
+	3|(8) 123, 915, 411
+
+Se reintenta agregar el registro con clave 863: 863 mod 8=7 --> va en el bloque 0:
+
+Archivo:
+
+	0|(8) 863
+	1|(2) 200
+	2|(4) 629
+	3|(8) 123, 915, 411
+
+-629:
+
+629 mod 8=5 --> se busca en el bloque 2, se borra, y éste queda vacío. El bloque 2 tiene tamaño de dispersión 4, entonces a partir de la posición donde encontré consignado al bloque 2, la 5:
+
+Posibilidad 1: me muevo 4/2=2 posiciones circularmente en la tabla, hacia arriba o hacia abajo, indistintamente (lo hago hacia arriba): 5+2=7; en la posición 7 está consignado el bloque 0; el tamaño de dispersión del bloque 0 es distinto que el tamaño de dispersión del bloque 2, por lo que NO PUEDO LIBERAR EL BLOQUE "
+
+Posibilidad 2: me muevo 4/2=2 posiciones circularmente en la tabla, hacia arriba "Y" hacia abajo, y si en esas posiciones equidistantes en el tamaño de dispersión del bloque 2 no está consignado el mismo bloque NO PUEDO LIBERAR EL BLOQUE 2 (en este caso las posiciones 7 y 3 de la tabla consignan a los bloques 0 y 3 respectivamente, por lo que NO PUEDO LIBERAR EL BLOQUE 2).
+
+Tabla: 1 2 1 3 1 2 1 0
+
+Archivo:
+
+	0|(8) 863
+	1|(2) 200
+	2|(4)
+	3|(8) 123, 915, 411
+
++408, +34, +510:
+
+Tabla: 1 2 1 3 1 2 1 0
+
+Archivo:
+
+	0|(8) 863
+	1|(2) 200, 408, 34
+	2|(4)
+	3|(8) 123, 915, 411
+
+El registro con clave 510 no cabe en el bloque consignado en la posición 510 mod 8=6 de la tabla: 1
+COMO EL TAMAÑO DE DISPERSION DEL BLOQUE 1 ES MENOR QUE EL TAMAÑO DE LA TABLA, NO SE DUPLICA LA TABLA: se duplica el tamaño de dispersión del bloque 1 y se pone este mismo tamaño de dispersión a un bloque nuevo, el 4, se recorre la tabla circularmente desde la posición 6 y a saltos con distancia del tamaño de dispersión del bloque nuevo consignando este nuevo bloque en todas las posiciones, y se redispersa el contenido del bloque 1
+
+Tabla: 1 2 4 3 1 2 4 0
+
+Archivo:
+
+	0|(8) 863
+	1|(4) 200, 408
+	2|(4)
+	3|(8) 123, 915, 411
+	4|(4) 34
+
+Se reintenta el alta del registro con clave 510:
+
+Tabla: 1 2 4 3 1 2 4 0
+
+Archivo:
+
+	0|(8) 863
+	1|(4) 200, 408
+	2|(4)
+	3|(8) 123, 915, 411
+	4|(4) 34, 510
+
+-863:
+
+863 mod 8=7; el bloque 0, consignado en la posición 7, queda vacío. Su tamaño de dispersión es 8, así que moviéndome circularmente en la tabla 8/2=4 posiciones hacia adelante y hacia atrás encuentro en ambas posiciones consignado elmismo bloque: el 3; entonces PUDO LIBERAR EL BLOQUE 0 (en la posición 7 consigno al bloque 3, recorro la tabla desde allí y a saltos del tamaño actual de dispersión del bloque 3 consignando al bloque 3, divido por 2 el tamaño de dispersión del bloque 3, y comparo las dos mitades de la tabla truncándola a la mitad si fueran iguales):
+
+Tabla: 1 2 4 3 (1 2 4 3) <-- la segunda mitad de la tabla se trunca
+
+Archivo:
+
+	0|(8) 863
+	1|(4) 200, 408
+	2|(4)
+	3|(4) 123, 915, 411
+	4|(4) 34, 510
+
+Bloques libres: 0
+
++775:
+
+775 mod 4=3; en la posición 3 de la tabla está consignado el bloque 3, que no tiene más capacidad; como el tamaño de dispersión del bloque 3 es igual al tamaño de dispersión de la tabla, se duplica la tabla, y en la posición 3 se consigna a un nuevo bloque (en este caso el 0, que se reutiliza); se duplica el tamaño de dispersión del bloque 3, se pone este mismo tamaño de dispersión al bloque 0, y se redispersan los registros del bloque 3:
+
+Tabla: 1 2 4 0 1 2 4 3
+
+Archivo:
+
+	0|(8) 123, 915, 411
+	1|(4) 200, 408
+	2|(4)
+	3|(8)
+	4|(4) 34, 510
+
+Se reintenta el alta del registro con clave 775: 775 mod 8=7: al bloque 3:
+
+Tabla: 1 2 4 0 1 2 4 3
+
+Archivo:
+
+	0|(8) 123, 915, 411
+	1|(4) 200, 408
+	2|(4)
+	3|(8) 775
+	4|(4) 34, 510
